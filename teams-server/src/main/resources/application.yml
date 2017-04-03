@@ -1,0 +1,52 @@
+# The logging configuration. On a real server this will be a file url. e.g. file://{{ monitoring_tests_dir }}/logback.xml
+logging:
+  config: classpath:logback.xml
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# actual end-point for accessing VOOT
+voot:
+  serviceUrl: https://voot.vm.openconext.org
+  # oauth config for accessing voot.
+  accessTokenUri: https://authz.vm.openconext.org/oauth/token
+  clientId: surf-teams
+  clientSecret: secret
+  scopes: groups
+  api:
+    user: user
+    password: secret
+
+# Is this node in a load-balanced topology responsible for cleaning up resources (See ExpiredInvitationsRemover)
+cron:
+  node-cron-job-responsible: true
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        dialect: org.hibernate.dialect.MariaDB53Dialect
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://localhost/teams?autoReconnect=true&useSSL=false
+    username: root
+    password:
+    dbcp2:
+      test-while-idle: true
+      validation-query: SELECT 1
+
+# We disable all endpoints except health for the load-balancer and info for git information.
+endpoints:
+  enabled: false
+  health:
+    enabled: true
+    sensitive: false
+  info:
+    enabled: true
+
+# used by the git plugin
+info:
+  build:
+    artifact: "@project.artifactId@"
+    version: "@project.version@"

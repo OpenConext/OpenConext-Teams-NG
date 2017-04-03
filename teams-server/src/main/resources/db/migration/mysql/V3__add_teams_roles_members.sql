@@ -1,0 +1,36 @@
+CREATE TABLE teams (
+  id          MEDIUMINT    NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  urn         VARCHAR(255) NOT NULL UNIQUE,
+  name        VARCHAR(255) NOT NULL,
+  description TEXT,
+  viewable    BOOLEAN,
+  created     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+  ENGINE = InnoDB;
+
+CREATE TABLE persons (
+  id      MEDIUMINT    NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  urn     VARCHAR(255) NOT NULL UNIQUE,
+  name    VARCHAR(255) NOT NULL,
+  email   VARCHAR(255) NOT NULL UNIQUE,
+  guest   BOOLEAN,
+  created TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+  ENGINE = InnoDB;
+
+CREATE TABLE memberships (
+  id         MEDIUMINT    NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  role       VARCHAR(255) NOT NULL,
+  team_id    MEDIUMINT    NOT NULL,
+  person_id  MEDIUMINT    NOT NULL,
+  urn_person VARCHAR(255) NOT NULL,
+  created    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (team_id) REFERENCES teams (id)
+    ON DELETE CASCADE,
+  FOREIGN KEY (person_id) REFERENCES persons (id)
+    ON DELETE CASCADE
+)
+  ENGINE = InnoDB;
+
+ALTER TABLE memberships
+  ADD UNIQUE INDEX person_team_unique (team_id, person_id);
