@@ -7,7 +7,6 @@ import teams.AbstractApplicationTest;
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.*;
 
 @ActiveProfiles("dev")
 public class TeamControllerTest extends AbstractApplicationTest {
@@ -19,7 +18,8 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .get("api/teams/teams/me")
             .then()
             .statusCode(SC_OK)
-            .body("name", hasItems("giants", "gliders", "riders"));
+            .body("name", hasItems("giants", "gliders", "riders"))
+            .body("role", hasItems("MANAGER", "MEMBER", "ADMIN"));
 
     }
 

@@ -28,39 +28,39 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Membership {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column
-  @Enumerated(EnumType.STRING)
-  private Role role;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-  @Column
-  private Instant created;
+    @Column
+    private Instant created;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "person_id")
-  private Person person;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id")
+    private Person person;
 
-  @Column(name = "urn_person")
-  private String urnPerson;
+    @Column(name = "urn_person")
+    private String urnPerson;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "team_id")
-  private Team team;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
 
-  @Column(name = "urn_team")
-  private String urnTeam;
+    @Column(name = "urn_team")
+    private String urnTeam;
 
-  public Membership(Role role, Team team, Person person, Instant created) {
-    Assert.notNull(team.getUrn(), "Urn team required");
-    Assert.notNull(person.getUrn(), "Urn person required");
-    this.role = role;
-    this.team = team;
-    this.urnTeam = team.getUrn();
-    this.person = person;
-    this.urnPerson = person.getUrn();
-    this.created = created;
-  }
+    public Membership(Role role, Team team, Person person, Instant created) {
+        Assert.notNull(team.getUrn(), "Urn team required");
+        Assert.notNull(person.getUrn(), "Urn person required");
+        this.role = role;
+        this.team = team;
+        this.urnTeam = team.getUrn();
+        this.person = person;
+        this.urnPerson = person.getUrn();
+        this.created = created;
+    }
 }

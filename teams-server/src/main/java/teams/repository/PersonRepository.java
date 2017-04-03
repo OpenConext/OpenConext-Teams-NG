@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {
 
-  Optional<Person> findByUrn(String urn);
+    Optional<Person> findByUrn(String urn);
 
 }

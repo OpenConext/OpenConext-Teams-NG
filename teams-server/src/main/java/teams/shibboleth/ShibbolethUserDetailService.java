@@ -9,9 +9,8 @@ import teams.domain.Person;
 
 public class ShibbolethUserDetailService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
 
-  @Override
-  public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken authentication) throws UsernameNotFoundException {
-      Person person = Person.class.cast(authentication.getPrincipal());
-      return new FederatedUser(person);
-  }
+    @Override
+    public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken authentication) throws UsernameNotFoundException {
+        return new FederatedUser(Person.class.cast(authentication.getPrincipal()));
+    }
 }

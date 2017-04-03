@@ -7,7 +7,7 @@ import teams.domain.ExternalTeam;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ExternalTeamRepositoryTest extends AbstractApplicationTest {
 

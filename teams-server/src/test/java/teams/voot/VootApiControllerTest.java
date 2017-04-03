@@ -82,7 +82,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
 
     @Test
     public void getGroupsForMemberAndTeamUrnNotExists() throws Exception {
-        start("user/urn:collab:person:surfnet.nl:nope/groups/nl:surfnet:diensten:nope",  SC_NOT_FOUND);
+        start("user/urn:collab:person:surfnet.nl:nope/groups/nl:surfnet:diensten:nope", SC_NOT_FOUND);
     }
 
     private ValidatableResponse start(String path) {

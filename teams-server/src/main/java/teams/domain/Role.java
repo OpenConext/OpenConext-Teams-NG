@@ -2,16 +2,16 @@ package teams.domain;
 
 public enum Role {
 
-  MEMBER(0), MANAGER(1), ADMIN(2);
+    MEMBER(0), MANAGER(1), ADMIN(2);
 
-  private int importance;
+    private int importance;
 
-  Role(int importance) {
-    this.importance = importance;
-  }
+    Role(int importance) {
+        this.importance = importance;
+    }
 
-  boolean isMoreImportant(Role role) {
-    return this.importance > role.importance;
-  }
+    boolean isMoreImportant(Role role) {
+        return this.importance > role.importance;
+    }
 
 }

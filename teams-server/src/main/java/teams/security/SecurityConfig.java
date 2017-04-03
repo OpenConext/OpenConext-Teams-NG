@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import teams.repository.PersonRepository;
 import teams.shibboleth.ShibbolethPreAuthenticatedProcessingFilter;
@@ -94,7 +93,7 @@ public class SecurityConfig {
     public class MvcConfig extends WebMvcConfigurerAdapter {
 
         @Override
-        public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
+        public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
             argumentResolvers.add(new FederatedUserHandlerMethodArgumentResolver());
         }
 

@@ -32,8 +32,8 @@ public class FederatedUserHandlerMethodArgumentResolver implements
     }
 
     public FederatedUser resolveArgument(MethodParameter methodParameter,
-                                  ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
-                                  WebDataBinderFactory binderFactory) throws Exception {
+                                         ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
+                                         WebDataBinderFactory binderFactory) throws Exception {
         return FederatedUser.class.cast(PreAuthenticatedAuthenticationToken.class.cast(webRequest.getUserPrincipal())
             .getPrincipal());
     }
