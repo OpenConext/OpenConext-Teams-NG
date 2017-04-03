@@ -18,10 +18,10 @@ public class VootApiControllerTest extends AbstractApplicationTest {
 
     private String contextPath = "/api/voot/";
 
-    @Value("${voot.api.user}")
+    @Value("${security.user.name}")
     protected String user;
 
-    @Value("${voot.api.password}")
+    @Value("${security.user.password}")
     protected String password;
 
     @Test
@@ -74,7 +74,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
 
     @Test
     public void getGroupsForMemberAndTeamUrn() throws Exception {
-        start("/user/urn:collab:person:surfnet.nl:tdoe/groups/nl:surfnet:diensten:giants")
+        start("user/urn:collab:person:surfnet.nl:tdoe/groups/nl:surfnet:diensten:giants")
             //four properties, not elements
             .body("size()", equalTo(4))
             .body("displayName", equalTo("giants"));
@@ -86,7 +86,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     }
 
     private ValidatableResponse start(String path) {
-        return start(path, Optional.empty(), 200);
+        return start(path, Optional.empty(), SC_OK);
     }
 
     private ValidatableResponse start(String path, int statusCode) {

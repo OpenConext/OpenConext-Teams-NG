@@ -13,8 +13,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableAutoConfiguration(exclude = {
-    SecurityAutoConfiguration.class,
-    ManagementWebSecurityAutoConfiguration.class,
     FreeMarkerAutoConfiguration.class,
     TraceWebFilterAutoConfiguration.class,
     MetricFilterAutoConfiguration.class})

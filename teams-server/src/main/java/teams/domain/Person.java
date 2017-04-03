@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.Instant;
+
+import static org.springframework.util.StringUtils.hasText;
 
 @Entity(name = "persons")
 @Getter
@@ -41,16 +44,15 @@ public class Person {
   @Column
   private boolean guest;
 
-  public Person(String urn) {
-    this.urn = urn;
-  }
-
-  public Person(String urn, String name, String email, boolean isGuest, Instant created) {
+  public Person(String urn, String name, String email, boolean isGuest) {
     this.urn = urn;
     this.name = name;
     this.email = email;
     this.guest = isGuest;
-    this.created = created;
+  }
+
+  public boolean isValid() {
+      return hasText(urn) && hasText(name) && hasText(email);
   }
 
 }
