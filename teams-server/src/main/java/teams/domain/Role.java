@@ -10,8 +10,11 @@ public enum Role {
         this.importance = importance;
     }
 
-    boolean isMoreImportant(Role role) {
+    public boolean isMoreImportant(Role role) {
         return this.importance > role.importance;
     }
 
+    public boolean isLessImportant(Role role) {
+        return this.importance < role.importance;
+    }
 }

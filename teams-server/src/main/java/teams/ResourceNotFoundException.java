@@ -1,4 +1,4 @@
-package teams.voot;
+package teams;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

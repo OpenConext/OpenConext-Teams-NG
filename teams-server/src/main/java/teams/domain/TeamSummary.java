@@ -9,6 +9,8 @@ public class TeamSummary {
 
     private String name;
 
+    private String urn;
+
     private int membershipCount;
 
     private String description;
@@ -17,12 +19,13 @@ public class TeamSummary {
 
     public TeamSummary(Team team, FederatedUser user) {
         this.id = team.getId();
+        this.urn = team.getUrn();
         this.name = team.getName();
         this.membershipCount = team.getMembershipCount();
         this.description = team.getDescription();
         this.role = team.getMemberships()
             .stream()
-            .filter(membership -> membership.getUrnPerson().equals(user.urn))
+            .filter(membership -> membership.getUrnPerson().equals(user.getUrn()))
             .findAny()
             .map(Membership::getRole)
             .orElse(null);

@@ -17,9 +17,12 @@ import javax.persistence.Id;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Pattern;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 @Entity(name = "teams")
 @NamedEntityGraph(name = "Team.memberships", attributeNodes = @NamedAttributeNode("memberships"))
@@ -38,6 +41,7 @@ public class Team {
     private String urn;
 
     @Column
+    @Pattern(regexp = "[\\w \\-']{1,255}")
     private String name;
 
     @Column
@@ -55,17 +59,15 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Membership> memberships = new HashSet<>();
 
-    public Team(String urn, String name, String description) {
+    public Team(String urn, String name, String description, boolean viewable) {
         this.urn = urn;
         this.name = name;
         this.description = description;
+        this.viewable = viewable;
     }
 
-    public Team(String urn, String name, String description, Instant created) {
-        this.urn = urn;
-        this.name = name;
-        this.description = description;
-        this.created = created;
+    public Optional<Membership> member(String urn) {
+        return memberships.stream().filter(membership -> membership.getUrnPerson().equals(urn))
+            .findAny();
     }
-
 }

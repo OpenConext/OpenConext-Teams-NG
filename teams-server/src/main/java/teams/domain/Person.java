@@ -1,6 +1,7 @@
 package teams.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +51,7 @@ public class Person {
         this.guest = isGuest;
     }
 
+    @JsonIgnore
     public boolean isValid() {
         return hasText(urn) && hasText(name) && hasText(email);
     }
