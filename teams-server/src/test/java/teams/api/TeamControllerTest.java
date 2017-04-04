@@ -17,16 +17,20 @@ import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 @ActiveProfiles("dev")
 public class TeamControllerTest extends AbstractApplicationTest {
 
+
     @Test
     public void myTeams() throws Exception {
         given()
-            .param("name-id", "urn:collab:person:surfnet.nl:jdoe")
+            .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
             .when()
             .get("api/teams/teams/me")
             .then()
@@ -38,7 +42,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     @Test
     public void teamByUrn() throws Exception {
         given()
-            .param("name-id", "urn:collab:person:surfnet.nl:jdoe")
+            .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
             .when()
             .get("api/teams/teams/{urn}", "nl:surfnet:diensten:giants")
             .then()
@@ -58,17 +62,17 @@ public class TeamControllerTest extends AbstractApplicationTest {
     @Test
     public void teamByUrnNotAllowed() throws Exception {
         given()
-            .param("name-id", "not-a-member")
+            .header("name-id", "not-a-member")
             .when()
             .get("api/teams/teams/{urn}", "nl:surfnet:diensten:riders")
             .then()
-            .statusCode(SC_FORBIDDEN);
+            .statusCode(SC_BAD_REQUEST);
     }
 
     @Test
     public void teamSearch() throws Exception {
         given()
-            .param("name-id", "urn:collab:person:surfnet.nl:tdoe")
+            .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
             .param("query", "ERS")
             .when()
             .get("api/teams/teams")
@@ -81,7 +85,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
 
     @Test
     public void createTeam() throws Exception {
-        String urn = "urn:collab:group:dev.surfteams.nl:team_champions";
+        String urn =  "nl:surfnet:diensten:team_champions";
         given()
             .body(new Team("urn", "Team champions ", null, true))
             .header(CONTENT_TYPE, "application/json")
@@ -112,15 +116,100 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void createTeamDuplicateTeamName() throws Exception {
+        given()
+            .body(new Team("urn", "riders", null, true))
+            .header(CONTENT_TYPE, "application/json")
+            .when()
+            .post("api/teams/teams")
+            .then()
+            .statusCode(SC_BAD_REQUEST)
+            .body("message", equalTo("Team with name riders already exists"));
+    }
+
+    @Test
     public void createTeamAsGuest() throws Exception {
         given()
             .body(new Team("urn", "valid", null, true))
             .header(CONTENT_TYPE, "application/json")
+            .header("is-member-of","guest-org")
             .when()
-            .post("api/teams/teams?is-member-of=guest-org")
+            .post("api/teams/teams")
             .then()
             .statusCode(SC_FORBIDDEN)
             .body("message", equalTo("Access is denied"));
+    }
+
+    @Test
+    public void updateTeam() throws Exception {
+        given()
+            .header(CONTENT_TYPE, "application/json")
+            .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+            .body(new Team("nl:surfnet:diensten:riders", "changed", "changed", false))
+            .when()
+            .put("api/teams/teams")
+            .then()
+            .statusCode(SC_OK);
+
+        Team team = teamRepository.findByUrn("nl:surfnet:diensten:riders").get();
+        assertEquals("changed" , team.getDescription());
+        //name is immutable
+        assertEquals("riders" , team.getName());
+        assertFalse(team.isViewable());
+
+    }
+
+    @Test
+    public void updateTeamAsGuest() throws Exception {
+        given()
+            .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+            .header("is-member-of","guest-org")
+            .header(CONTENT_TYPE, "application/json")
+            .body(new Team("nl:surfnet:diensten:riders", "valid", null, true))
+            .when()
+            .put("api/teams/teams")
+            .then()
+            .statusCode(SC_FORBIDDEN)
+            .body("message", equalTo("Access is denied"));
+    }
+
+    @Test
+    public void updateTeamWithMemberRole() throws Exception {
+        given()
+            .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+            .header(CONTENT_TYPE, "application/json")
+            .body(new Team("nl:surfnet:diensten:giants", "valid", null, true))
+            .when()
+            .put("api/teams/teams")
+            .then()
+            .statusCode(SC_BAD_REQUEST)
+            .body("message", startsWith("Only ADMIN can update team"));
+    }
+
+    @Test
+    public void updateTeamWithoutBeingMember() throws Exception {
+        given()
+            .header(CONTENT_TYPE, "application/json")
+            .body(new Team("nl:surfnet:diensten:giants", "valid", null, true))
+            .when()
+            .put("api/teams/teams")
+            .then()
+            .statusCode(SC_BAD_REQUEST)
+            .body("message", startsWith("Member urn:collab:person:example.com:john.doe is not a member of team nl:surfnet:diensten:giants"));
+    }
+
+    @Test
+    public void deleteTeam() throws Exception {
+        given()
+            .header(CONTENT_TYPE, "application/json")
+            .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+            .body(new Team("nl:surfnet:diensten:riders", null, null, false))
+            .when()
+            .delete("api/teams/teams")
+            .then()
+            .statusCode(SC_OK);
+
+        assertFalse(teamRepository.findByUrn("nl:surfnet:diensten:riders").isPresent());
     }
 
 }

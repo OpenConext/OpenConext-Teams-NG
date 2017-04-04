@@ -15,10 +15,10 @@ import teams.domain.Team;
 public class MembershipController extends ApiController implements MembershipValidator{
 
     @PutMapping("api/teams/role")
-    public void changeMemberShip(@Validated @RequestBody Membership membershipProperties, FederatedUser federatedUser) {
-        Team team = teamByUrn(membershipProperties.getUrnTeam());
-        Person person = personByUrn(membershipProperties.getUrnPerson());
-        Membership membership = membership(team, person.getUrn());
+    public void changeMembership(@Validated @RequestBody Membership membershipProperties, FederatedUser federatedUser) {
+        Membership membership = membershipByUrns(membershipProperties.getUrnTeam(), membershipProperties.getUrnPerson());
+        Team team = membership.getTeam();
+        Person person = membership.getPerson();
 
         Role roleOfLoggedInPerson = membership(team, federatedUser.getUrn()).getRole();
         Role futureRole = membershipProperties.getRole();
@@ -31,5 +31,6 @@ public class MembershipController extends ApiController implements MembershipVal
             membership.getRole(), person.getUrn(), team.getUrn(), futureRole, federatedUser.getUrn());
 
         membership.setRole(futureRole);
+        membershipRepository.save(membership);
     }
 }

@@ -68,4 +68,10 @@ public class Membership {
         this.person = person;
         this.urnPerson = person.getUrn();
     }
+
+    public Membership(String urnTeam, String urnPerson, Role role) {
+        this.urnPerson = urnPerson;
+        this.urnTeam = urnTeam;
+        this.role = role;
+    }
 }

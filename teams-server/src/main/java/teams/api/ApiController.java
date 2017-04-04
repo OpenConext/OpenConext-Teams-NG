@@ -21,6 +21,7 @@ import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
 import teams.domain.TeamSummary;
+import teams.repository.ExternalTeamRepository;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 import teams.repository.TeamRepository;
@@ -46,19 +47,29 @@ public abstract class ApiController {
     @Autowired
     protected MembershipRepository membershipRepository;
 
+    @Autowired
+    protected ExternalTeamRepository externalTeamRepository;
+
     protected Team teamByUrn(String urn) {
         return teamRepository.findByUrn(urn)
-            .orElseThrow(() -> new ResourceNotFoundException(format("Team {} does not exist", urn)));
+            .orElseThrow(() -> new ResourceNotFoundException(format("Team %s does not exist", urn)));
     }
 
     protected Person personByUrn(String urn) {
         return personRepository.findByUrn(urn)
-            .orElseThrow(() -> new ResourceNotFoundException(format("Person {} does not exist", urn)));
+            .orElseThrow(() -> new ResourceNotFoundException(format("Person %s does not exist", urn)));
+    }
+
+    protected Membership membershipByUrns(String teamUrn, String personUrn) {
+        return membershipRepository.findByUrnTeamAndUrnPerson(teamUrn, personUrn)
+            .orElseThrow(() -> new ResourceNotFoundException(
+                format("Membership for team %s and person %s does not exist", teamUrn, personUrn)));
     }
 
     protected Membership membership(Team team, String urn) {
         return team.member(urn)
-            .orElseThrow(() -> new NotAllowedException(format("Member {} is not a member of team {}.")));
+            .orElseThrow(() -> new NotAllowedException(format
+                ("Member %s is not a member of team %s.",urn, team.getUrn())));
     }
 
 }

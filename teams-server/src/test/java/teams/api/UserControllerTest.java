@@ -22,7 +22,7 @@ public class UserControllerTest extends AbstractApplicationTest {
             .body("authorities.authority", hasItems("ROLE_ADMIN", "ROLE_USER"));
 
         given()
-            .param("name-id", "not-provisioned")
+            .header("name-id", "not-provisioned")
             .when()
             .get("api/teams/users/me")
             .then()

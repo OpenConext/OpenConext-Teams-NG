@@ -19,14 +19,14 @@ public interface MembershipValidator {
                 .filter(membership -> membership.getRole().equals(Role.ADMIN))
                 .findAny()
                 .orElseThrow(() ->
-                    new IllegalMembershipException(String.format("Not allowed to remove the only admin {}", person.getUrn())));
+                    new IllegalMembershipException(String.format("Not allowed to remove the only admin %s", person.getUrn())));
         }
     }
 
     default void canNotUpgradeToMoreImportantThenYourself(Role roleOfLoggedInPerson, Role futureRole) {
         if (futureRole.isMoreImportant(roleOfLoggedInPerson)) {
             throw new IllegalMembershipException(String.format(
-                "Not allowed to upgrade someone more import then yourself: your role is {} and future role is {}",
+                "Not allowed to upgrade someone more import then yourself: your role is %s and future role is %s",
                 roleOfLoggedInPerson, futureRole));
         }
     }

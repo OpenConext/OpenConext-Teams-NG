@@ -24,6 +24,7 @@ cron:
   node-cron-job-responsible: true
 
 teams:
+  default-stem-name: "nl:surfnet:diensten"
   group-name-context: "urn:collab:group:dev.surfteams.nl:"
 
 spring:
