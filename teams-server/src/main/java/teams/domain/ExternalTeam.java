@@ -17,11 +17,6 @@ import javax.persistence.ManyToMany;
 import java.util.Set;
 
 @Entity(name = "external_groups")
-@Getter
-@Setter
-@NoArgsConstructor
-@ToString(of = {"identifier", "name"})
-@EqualsAndHashCode(of = "identifier")
 public class ExternalTeam {
 
     @Id
@@ -45,4 +40,12 @@ public class ExternalTeam {
         joinColumns = @JoinColumn(name = "external_groups_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id"))
     private Set<Team> teams;
+
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
 }

@@ -29,8 +29,6 @@ import java.util.function.Function;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(of = {"urn", "name"})
-@EqualsAndHashCode(of = "urn")
 public class Team {
 
     @Id

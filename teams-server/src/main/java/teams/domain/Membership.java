@@ -25,8 +25,6 @@ import java.time.Instant;
 @Entity(name = "memberships")
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"urnPerson", "urnTeam"})
-@ToString
 @NoArgsConstructor
 public class Membership {
 

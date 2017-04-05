@@ -19,10 +19,7 @@ import static org.springframework.util.StringUtils.hasText;
 
 @Entity(name = "persons")
 @Getter
-@Setter
 @NoArgsConstructor
-@ToString(of = {"id", "urn", "name"})
-@EqualsAndHashCode(of = "urn")
 public class Person {
 
     @Id
@@ -49,6 +46,18 @@ public class Person {
         this.name = name;
         this.email = email;
         this.guest = isGuest;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setGuest(boolean guest) {
+        this.guest = guest;
     }
 
     @JsonIgnore

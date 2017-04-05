@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import teams.ResourceNotFoundException;
+import teams.domain.ExternalTeam;
 import teams.domain.Membership;
 import teams.domain.Team;
 import teams.repository.ExternalTeamRepository;
@@ -45,7 +46,7 @@ public class VootApiController {
     public Set<Group> linkedLocalTeamsGroup(@RequestParam("externalGroupIds") String fullyQualifiedExternalGroupIds) {
         List<String> identifiers = Arrays.asList(fullyQualifiedExternalGroupIds.split(","));
         return externalTeamRepository.findByIdentifierIn(identifiers).stream()
-            .map(externalTeam -> externalTeam.getTeams()).flatMap(Collection::stream)
+            .map(ExternalTeam::getTeams).flatMap(Collection::stream)
             .map(this::convertTeamToGroup)
             .collect(toSet());
     }
@@ -54,7 +55,7 @@ public class VootApiController {
     public List<String> linkedExternalGroupIds(@RequestParam("teamId") String localGroupUrn) {
         return externalTeamRepository.findByTeamsUrn(localGroupUrn)
             .stream()
-            .map(externalTeam -> externalTeam.getIdentifier())
+            .map(ExternalTeam::getIdentifier)
             .collect(toList());
     }
 
