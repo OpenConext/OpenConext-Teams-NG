@@ -156,7 +156,6 @@ public class TeamControllerTest extends AbstractApplicationTest {
         //name is immutable
         assertEquals("riders" , team.getName());
         assertFalse(team.isViewable());
-
     }
 
     @Test
