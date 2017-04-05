@@ -17,12 +17,16 @@ import javax.persistence.Id;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.EAGER;
 
 @Entity(name = "teams")
 @NamedEntityGraph(name = "Team.memberships", attributeNodes = @NamedAttributeNode("memberships"))
@@ -36,6 +40,7 @@ public class Team {
     private Long id;
 
     @Column
+    @NotNull
     private String urn;
 
     @Column
@@ -54,8 +59,14 @@ public class Team {
     @Formula("(select count(*) from memberships m where m.team_id = id)")
     private int membershipCount;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = ALL)
     private Set<Membership> memberships = new HashSet<>();
+
+    @OneToMany(mappedBy = "team", orphanRemoval = true)
+    private Set<Invitation> invitations = new HashSet<>();
+
+    @OneToMany(mappedBy = "team", orphanRemoval = true)
+    private Set<JoinRequest> joinRequests = new HashSet<>();
 
     public Team(String urn, String name, String description, boolean viewable) {
         this.urn = urn;

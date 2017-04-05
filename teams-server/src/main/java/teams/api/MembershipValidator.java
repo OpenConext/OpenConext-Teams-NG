@@ -1,14 +1,16 @@
 package teams.api;
 
+import teams.domain.FederatedUser;
 import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
+import teams.exception.IllegalMembershipException;
 
 public interface MembershipValidator {
 
-    default void membersCanNotDoAnything(Role roleOfLoggedInPerson) {
+    default void membersCanNotChangeRoles(Role roleOfLoggedInPerson) {
         if (roleOfLoggedInPerson.equals(Role.MEMBER)) {
-            throw new IllegalMembershipException("Members are not allowed to do anything");
+            throw new IllegalMembershipException("Members are not allowed to change roles");
         }
     }
 
@@ -31,4 +33,9 @@ public interface MembershipValidator {
         }
     }
 
+    default void membersCanNotRemoveOthers(Role roleOfLoggedInPerson, Person personWhoIsRemoved, FederatedUser federatedUser) {
+        if (roleOfLoggedInPerson.equals(Role.MEMBER) && !personWhoIsRemoved.getUrn().equals(federatedUser.getUrn())) {
+            throw new IllegalMembershipException("Members are not allowed to do remove memberships other then themselves");
+        }
+    }
 }

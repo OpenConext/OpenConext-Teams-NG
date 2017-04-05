@@ -1,3 +1,5 @@
+DELETE FROM invitations;
+DELETE FROM requests;
 DELETE FROM memberships;
 DELETE FROM team_external_groups;
 DELETE FROM teams;

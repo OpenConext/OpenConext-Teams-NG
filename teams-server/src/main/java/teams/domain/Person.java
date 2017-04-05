@@ -13,7 +13,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.springframework.util.StringUtils.hasText;
 
@@ -27,6 +31,7 @@ public class Person {
     private Long id;
 
     @Column
+    @NotNull
     private String urn;
 
     @Column
@@ -40,6 +45,9 @@ public class Person {
 
     @Column
     private boolean guest;
+
+    @OneToMany(mappedBy = "person", orphanRemoval = true)
+    private Set<JoinRequest> joinRequests = new HashSet<>();
 
     public Person(String urn, String name, String email, boolean isGuest) {
         this.urn = urn;

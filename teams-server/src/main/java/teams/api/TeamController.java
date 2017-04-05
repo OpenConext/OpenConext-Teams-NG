@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import teams.ResourceNotFoundException;
 import teams.domain.ExternalTeam;
 import teams.domain.FederatedUser;
 import teams.domain.Membership;
@@ -20,6 +19,8 @@ import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
 import teams.domain.TeamSummary;
+import teams.exception.DuplicateTeamNameException;
+import teams.exception.IllegalMembershipException;
 
 import java.util.List;
 import java.util.Optional;

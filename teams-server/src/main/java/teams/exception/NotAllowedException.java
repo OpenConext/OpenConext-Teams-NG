@@ -1,13 +1,12 @@
-package teams.api;
+package teams.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class IllegalMembershipException extends RuntimeException {
+public class NotAllowedException extends RuntimeException {
 
-    public IllegalMembershipException(String message) {
+    public NotAllowedException(String message) {
         super(message);
     }
-
 }

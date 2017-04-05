@@ -3,35 +3,17 @@ package teams.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import teams.NotAllowedException;
-import teams.ResourceNotFoundException;
-import teams.domain.FederatedUser;
 import teams.domain.Membership;
 import teams.domain.Person;
-import teams.domain.Role;
 import teams.domain.Team;
-import teams.domain.TeamSummary;
+import teams.exception.NotAllowedException;
+import teams.exception.ResourceNotFoundException;
 import teams.repository.ExternalTeamRepository;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 import teams.repository.TeamRepository;
-import teams.shibboleth.ShibbolethPreAuthenticatedProcessingFilter;
-
-import java.util.List;
-import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.util.stream.Collectors.toList;
 
 
 public abstract class ApiController {
