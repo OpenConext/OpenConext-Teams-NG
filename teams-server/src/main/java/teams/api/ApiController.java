@@ -17,7 +17,6 @@ import teams.repository.PersonRepository;
 import teams.repository.TeamRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Locale;
 
 import static java.lang.String.format;
@@ -76,7 +75,7 @@ public abstract class ApiController {
 
     protected Language resolveLanguage(HttpServletRequest request) {
         Locale locale = localeResolver.resolveLocale(request);
-        return locale.getCountry().equals("NL") ? Language.Dutch : Language.English;
+        return locale.getLanguage().equalsIgnoreCase("nl") ? Language.Dutch : Language.English;
     }
 
 }

@@ -10,15 +10,16 @@ import static java.util.Collections.singletonList;
 @Getter
 public class FederatedUser extends User {
 
-    private String urn;
-    private String email;
+    private final Person person;
 
     public FederatedUser(Person person) {
         super(person.getName(), "N/A", person.isGuest() ?
             singletonList(new SimpleGrantedAuthority("ROLE_USER")) :
             asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")));
-        this.urn = person.getUrn();
-        this.email = person.getEmail();
+        this.person = person;
     }
 
+    public String getUrn() {
+        return person.getUrn();
+    }
 }

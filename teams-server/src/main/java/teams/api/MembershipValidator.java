@@ -44,8 +44,8 @@ public interface MembershipValidator {
         if (team.getMemberships().stream().anyMatch(membership -> membership.getUrnPerson().equals(person.getUrn()))) {
             throw new IllegalJoinRequestException(String.format("Person %s is already a member of team %s", person.getUrn(), team.getUrn()));
         }
-
     }
+
     default void privateTeamDoesNotAllowMembers(Team team, Person person) {
         if (!team.isViewable()) {
             throw new IllegalJoinRequestException(String.format("Person %s can not join private team %s", person.getUrn(), team.getUrn()));

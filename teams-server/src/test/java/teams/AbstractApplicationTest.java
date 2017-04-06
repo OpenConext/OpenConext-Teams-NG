@@ -11,6 +11,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import teams.repository.ExternalTeamRepository;
+import teams.repository.InvitationRepository;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 import teams.repository.TeamRepository;
@@ -23,7 +24,7 @@ import static org.springframework.test.context.jdbc.SqlConfig.TransactionMode.IS
 @Transactional
 @Sql(scripts = {"classpath:sql/clear.sql", "classpath:sql/seed.sql"},
     config = @SqlConfig(errorMode = FAIL_ON_ERROR, transactionMode = ISOLATED))
-public abstract class AbstractApplicationTest {
+public abstract class AbstractApplicationTest implements Seed {
 
     @Autowired
     protected MembershipRepository membershipRepository;
@@ -36,6 +37,9 @@ public abstract class AbstractApplicationTest {
 
     @Autowired
     protected ExternalTeamRepository externalTeamRepository;
+
+    @Autowired
+    protected InvitationRepository invitationRepository;
 
     @LocalServerPort
     private int serverPort;

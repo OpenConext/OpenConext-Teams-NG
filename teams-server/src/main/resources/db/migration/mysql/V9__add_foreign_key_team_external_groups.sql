@@ -9,7 +9,7 @@ SET team_external_groups.team_id = (SELECT teams.id
 ALTER TABLE team_external_groups
   MODIFY COLUMN team_id MEDIUMINT NOT NULL;
 ALTER TABLE team_external_groups
-  ADD CONSTRAINT fk_teams_id FOREIGN KEY (team_id) REFERENCES teams (id);
+  ADD CONSTRAINT fk_team_external_groups_teams_id FOREIGN KEY (team_id) REFERENCES teams (id);
 ALTER TABLE team_external_groups
   DROP INDEX grouper_team_id;
 ALTER TABLE team_external_groups

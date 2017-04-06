@@ -3,7 +3,6 @@ package teams.repository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import teams.domain.Invitation;
-import teams.domain.JoinRequest;
 import teams.domain.Person;
 import teams.domain.Team;
 

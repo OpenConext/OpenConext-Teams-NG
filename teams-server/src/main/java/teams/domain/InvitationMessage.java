@@ -16,11 +16,14 @@
 
 package teams.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,14 +33,16 @@ import javax.persistence.ManyToOne;
 
 @Getter
 @Entity(name = "invitation_message")
+@NoArgsConstructor
 public class InvitationMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invitation_id")
+    @JsonIgnore
     private Invitation invitation;
 
     @Lob
@@ -46,13 +51,14 @@ public class InvitationMessage {
     @Column(nullable = false)
     private long timestamp;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     private Person person;
 
-    public InvitationMessage(Person person, String message) {
-        this.message = StringUtils.hasText(message) ? message : null;
+    public InvitationMessage(Invitation invitation, Person person, String message) {
+        this.invitation = invitation;
         this.person = person;
+        this.message = StringUtils.hasText(message) ? message : null;
         this.timestamp = System.currentTimeMillis();
     }
 

@@ -15,7 +15,7 @@ SET requests.team_id = (SELECT teams.id
 ALTER TABLE requests
   MODIFY COLUMN team_id MEDIUMINT NOT NULL;
 ALTER TABLE requests
-  ADD CONSTRAINT fk_teams_id FOREIGN KEY (team_id) REFERENCES teams (id)
+  ADD CONSTRAINT fk_requests_teams_id FOREIGN KEY (team_id) REFERENCES teams (id)
   ON DELETE CASCADE;
 ALTER TABLE requests
   DROP COLUMN group_id;
@@ -23,7 +23,7 @@ ALTER TABLE requests
 ALTER TABLE requests
   MODIFY COLUMN person_id MEDIUMINT NOT NULL;
 ALTER TABLE requests
-  ADD CONSTRAINT fk_person_id FOREIGN KEY (person_id) REFERENCES person (id)
+  ADD CONSTRAINT fk_requests_person_id FOREIGN KEY (person_id) REFERENCES persons (id)
   ON DELETE CASCADE;
 ALTER TABLE requests
   DROP COLUMN uuid;

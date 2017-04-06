@@ -13,7 +13,7 @@ import teams.domain.Team;
 
 
 @RestController
-public class MembershipController extends ApiController implements MembershipValidator{
+public class MembershipController extends ApiController implements MembershipValidator {
 
     @PutMapping("api/teams/role")
     public void changeMembership(@Validated @RequestBody Membership membershipProperties, FederatedUser federatedUser) {

@@ -77,7 +77,7 @@ public class TeamController extends ApiController {
 
         Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable());
         Person person = personByUrn(federatedUser.getUrn());
-        team.getMemberships().add(new Membership(Role.ADMIN, team, person));
+        new Membership(Role.ADMIN, team, person);
 
         LOG.info("Team {} created by {}", urn, federatedUser.getUrn());
 

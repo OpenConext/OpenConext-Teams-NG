@@ -17,12 +17,14 @@ package teams.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,25 +33,27 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
-import java.util.Date;
 
 
 @Entity(name = "requests")
 @Setter
 @Getter
+@NoArgsConstructor
 public class JoinRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     @NotNull
+    @JsonIgnore
     private Team team;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
+    @JsonIgnore
     private Person person;
 
     @Column
@@ -71,6 +75,14 @@ public class JoinRequest {
 
     @JsonIgnore
     public String getHtmlMessage() {
-        return isContainsMessage() ? message.replaceAll("\n","<br/>") : "";
+        return isContainsMessage() ? message.replaceAll("\n", "<br/>") : "";
+    }
+
+    public String getTeamName() {
+        return team.getName();
+    }
+
+    public String getTeamUrn() {
+        return team.getUrn();
     }
 }

@@ -1,6 +1,7 @@
 package teams.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,30 +14,29 @@ import teams.domain.Membership;
 import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
-import teams.exception.InvitationAlreadyAcceptedException;
-import teams.exception.InvitationAlreadyDeclinedException;
-import teams.exception.InvitationExpiredException;
 import teams.exception.ResourceNotFoundException;
 import teams.mail.MailBox;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @RestController
-public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator{
+public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator {
 
     @Autowired
     private MailBox mailBox;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/invitations")
     public void invitation(HttpServletRequest request,
-                     @Validated @RequestBody Invitation invitationProperties,
-                     FederatedUser federatedUser) throws UnsupportedEncodingException, MessagingException {
+                           @Validated @RequestBody Invitation invitationProperties,
+                           FederatedUser federatedUser) throws IOException, MessagingException {
         Team team = teamByUrn(invitationProperties.getTeam().getUrn());
-        Person person = personByUrn(federatedUser.getUrn());
+        Person person = federatedUser.getPerson();
 
-        membershipNotAllowed(team, person);
+        membershipRequired(team, person);
         privateTeamDoesNotAllowMembers(team, person);
 
         Invitation invitation = new Invitation(
@@ -44,7 +44,7 @@ public class InvitationController extends ApiController implements MembershipVal
             invitationProperties.getEmail(),
             invitationProperties.getIntendedRole(),
             resolveLanguage(request));
-        invitation.getInvitationMessages().add(invitationProperties.getLatestInvitationMessage());
+        invitation.addInvitationMessage(person, invitationProperties.getLatestInvitationMessage().getMessage());
 
         invitationRepository.save(invitation);
         mailBox.sendInviteMail(invitation);
@@ -53,13 +53,11 @@ public class InvitationController extends ApiController implements MembershipVal
     @GetMapping("api/teams/invitations/accept")
     public Team accept(@RequestParam("key") String key, FederatedUser federatedUser) {
         Invitation invitation = doAcceptOrDeny(key, true);
-
         Team team = invitation.getTeam();
-        Person person = invitation.getLatestInvitationMessage().getPerson();
+        Person person = federatedUser.getPerson();
         Role role = person.isGuest() ? Role.MEMBER : invitation.getIntendedRole();
-        Membership membership = new Membership(role, team, person);
+        new Membership(role, team, person);
 
-        team.getMemberships().add(membership);
         teamRepository.save(team);
 
         mailBox.sendInvitationAccepted(invitation);
@@ -68,9 +66,10 @@ public class InvitationController extends ApiController implements MembershipVal
     }
 
     @GetMapping("api/teams/invitations/deny")
-    public void deny(@RequestParam("key") String key) {
+    public Invitation deny(@RequestParam("key") String key) {
         Invitation invitation = doAcceptOrDeny(key, false);
         mailBox.sendInvitationDenied(invitation);
+        return invitation;
     }
 
     private Invitation doAcceptOrDeny(@RequestParam("key") String key, boolean accepted) {

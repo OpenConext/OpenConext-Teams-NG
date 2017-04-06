@@ -16,8 +16,6 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
-import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -85,7 +83,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
 
     @Test
     public void createTeam() throws Exception {
-        String urn =  "nl:surfnet:diensten:team_champions";
+        String urn = "nl:surfnet:diensten:team_champions";
         given()
             .body(new Team("urn", "Team champions ", null, true))
             .header(CONTENT_TYPE, "application/json")
@@ -132,7 +130,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
             .body(new Team("urn", "valid", null, true))
             .header(CONTENT_TYPE, "application/json")
-            .header("is-member-of","guest-org")
+            .header("is-member-of", "guest-org")
             .when()
             .post("api/teams/teams")
             .then()
@@ -152,9 +150,9 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .statusCode(SC_OK);
 
         Team team = teamRepository.findByUrn("nl:surfnet:diensten:riders").get();
-        assertEquals("changed" , team.getDescription());
+        assertEquals("changed", team.getDescription());
         //name is immutable
-        assertEquals("riders" , team.getName());
+        assertEquals("riders", team.getName());
         assertFalse(team.isViewable());
     }
 
@@ -162,7 +160,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     public void updateTeamAsGuest() throws Exception {
         given()
             .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
-            .header("is-member-of","guest-org")
+            .header("is-member-of", "guest-org")
             .header(CONTENT_TYPE, "application/json")
             .body(new Team("nl:surfnet:diensten:riders", "valid", null, true))
             .when()
@@ -210,5 +208,6 @@ public class TeamControllerTest extends AbstractApplicationTest {
 
         assertFalse(teamRepository.findByUrn("nl:surfnet:diensten:riders").isPresent());
     }
+
 
 }

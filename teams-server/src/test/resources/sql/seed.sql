@@ -44,3 +44,14 @@ INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUE
 INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUES (2, 1, 2);
 INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUES (3, 2, 2);
 
+INSERT INTO `invitations` (`id`, `mailaddress`, `timestamp`, `invitation_uiid`, `denied`, `accepted`, `intended_role`, `language`, `team_id`)
+VALUES
+  (1,'test@example.com', 2491484828910, 'secret', 0, 0, 'MANAGER', 'Dutch', 1);
+INSERT INTO `invitation_message` (`id`, `message`, `timestamp`, `invitation_id`, `person_id`)
+VALUES
+  (1, 'Please join', 2491484828910, 1, 6);
+
+INSERT INTO `requests` (`id`, `message`, `team_id`, `person_id`)
+VALUES
+  (1, 'Please let me join', 1, 6);
+

@@ -17,22 +17,20 @@ package teams.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Proxy;
-import org.hibernate.annotations.SortNatural;
+import lombok.NoArgsConstructor;
 import teams.exception.ResourceNotFoundException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.UnsupportedEncodingException;
@@ -50,6 +48,7 @@ import static javax.persistence.FetchType.EAGER;
 
 @Entity(name = "invitations")
 @Getter
+@NoArgsConstructor
 public class Invitation {
 
     private static final long TWO_WEEKS = 14L * 24L * 60L * 60L * 1000L;
@@ -58,7 +57,7 @@ public class Invitation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     @NotNull
     private Team team;
@@ -81,7 +80,7 @@ public class Invitation {
 
     @OneToMany(cascade = ALL, fetch = EAGER, mappedBy = "invitation")
     @NotNull
-    @Size(min=1)
+    @Size(min = 1)
     private Set<InvitationMessage> invitationMessages = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
@@ -95,7 +94,7 @@ public class Invitation {
     public Invitation(Team team, String email, Role intendedRole, Language language) throws UnsupportedEncodingException {
         this.team = team;
         this.email = email;
-        this.invitationHash =  generateInvitationHash();
+        this.invitationHash = generateInvitationHash();
         this.timestamp = new Date().getTime();
         this.language = language;
         this.intendedRole = intendedRole;
@@ -111,7 +110,7 @@ public class Invitation {
 
     private String generateInvitationHash() throws UnsupportedEncodingException {
         Random secureRandom = new SecureRandom();
-        byte[] aesKey = new byte[256];
+        byte[] aesKey = new byte[128];
         secureRandom.nextBytes(aesKey);
         String base64 = Base64.getEncoder().encodeToString(aesKey);
         return URLEncoder.encode(base64, "UTF-8").replaceAll("%", "");
@@ -129,5 +128,10 @@ public class Invitation {
         this.declined = !accepted;
     }
 
+    public InvitationMessage addInvitationMessage(Person person, String message) {
+        InvitationMessage invitationMessage = new InvitationMessage(this, person, message);
+        this.invitationMessages.add(invitationMessage);
+        return invitationMessage;
+    }
 
 }

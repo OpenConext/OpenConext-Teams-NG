@@ -1,6 +1,7 @@
 package teams.api;
 
 import org.junit.Test;
+import teams.Seed;
 import teams.domain.FederatedUser;
 import teams.domain.Membership;
 import teams.domain.Person;
@@ -8,22 +9,22 @@ import teams.domain.Role;
 import teams.domain.Team;
 import teams.exception.IllegalMembershipException;
 
-public class MembershipValidatorTest {
+public class MembershipValidatorTest implements Seed {
 
     private MembershipValidator subject = new MembershipController();
 
     @Test(expected = IllegalMembershipException.class)
-    public void membersCanNotDoAnything()  {
+    public void membersCanNotDoAnything() {
         subject.membersCanNotChangeRoles(Role.MEMBER);
     }
 
     @Test
-    public void membersCanNotDoAnythingNoException()  {
+    public void membersCanNotDoAnythingNoException() {
         subject.membersCanNotChangeRoles(Role.MANAGER);
     }
 
     @Test(expected = IllegalMembershipException.class)
-    public void oneAdminIsRequired()  {
+    public void oneAdminIsRequired() {
         Team team = team();
         Person person = person("urn");
         team.getMemberships().add(
@@ -32,7 +33,7 @@ public class MembershipValidatorTest {
     }
 
     @Test
-    public void oneAdminIsRequiredNoException()  {
+    public void oneAdminIsRequiredNoException() {
         Team team = team();
         Person person = person("urn");
         team.getMemberships().add(
@@ -41,7 +42,7 @@ public class MembershipValidatorTest {
     }
 
     @Test
-    public void oneAdminIsRequiredNoExceptionOtherAdmin()  {
+    public void oneAdminIsRequiredNoExceptionOtherAdmin() {
         Team team = team();
         Person person = person("urn");
         team.getMemberships().add(new Membership(Role.ADMIN, team, person));
@@ -51,36 +52,29 @@ public class MembershipValidatorTest {
     }
 
     @Test
-    public void canNotUpgradeToMoreImportantThenYourselfAllowed()  {
+    public void canNotUpgradeToMoreImportantThenYourselfAllowed() {
         subject.canNotUpgradeToMoreImportantThenYourself(Role.MANAGER, Role.MANAGER);
         subject.canNotUpgradeToMoreImportantThenYourself(Role.MANAGER, Role.MEMBER);
     }
 
     @Test(expected = IllegalMembershipException.class)
-    public void canNotUpgradeToMoreImportantThenYourself()  {
+    public void canNotUpgradeToMoreImportantThenYourself() {
         subject.canNotUpgradeToMoreImportantThenYourself(Role.MANAGER, Role.ADMIN);
     }
 
     @Test
-    public void membersCanNotRemoveOthersButAdminCan()  {
+    public void membersCanNotRemoveOthersButAdminCan() {
         subject.membersCanNotRemoveOthers(Role.ADMIN, person("urn"), new FederatedUser(person("diff")));
     }
 
     @Test
-    public void membersCanNotRemoveOthersButThemselves()  {
+    public void membersCanNotRemoveOthersButThemselves() {
         subject.membersCanNotRemoveOthers(Role.MEMBER, person("urn"), new FederatedUser(person("urn")));
     }
 
     @Test(expected = IllegalMembershipException.class)
-    public void membersCanNotRemoveOthers()  {
+    public void membersCanNotRemoveOthers() {
         subject.membersCanNotRemoveOthers(Role.MEMBER, person("urn"), new FederatedUser(person("diff")));
     }
 
-    private Team team() {
-        return new Team("urn", "name", "description", true);
-    }
-
-    private Person person(String urn) {
-        return new Person(urn,"name", "email", true);
-    }
 }

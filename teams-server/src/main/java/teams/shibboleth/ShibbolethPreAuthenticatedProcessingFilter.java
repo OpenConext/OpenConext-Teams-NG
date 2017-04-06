@@ -57,13 +57,12 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
             }
             if (needsUpdate) {
                 LOG.info(String.format("Updating person {}", person));
-                personRepository.save(personFromDatabase);
-
+                return personRepository.save(personFromDatabase);
             }
+            return personFromDatabase;
         } else {
-            personRepository.save(person);
+            return personRepository.save(person);
         }
-        return person;
     }
 
 }

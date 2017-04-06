@@ -8,10 +8,13 @@ SET invitations.team_id = (SELECT teams.id
 ALTER TABLE invitations
   MODIFY COLUMN team_id MEDIUMINT NOT NULL;
 ALTER TABLE invitations
-  ADD CONSTRAINT fk_teams_id FOREIGN KEY (team_id) REFERENCES teams (id)
+  ADD CONSTRAINT fk_invitation_teams_id FOREIGN KEY (team_id) REFERENCES teams (id)
   ON DELETE CASCADE;
 ALTER TABLE invitations
   DROP COLUMN group_id;
+
+ALTER TABLE invitations
+  ADD INDEX invitation_uiid_index (invitation_uiid);
 
 ALTER TABLE invitation_message
   ADD person_id MEDIUMINT;
@@ -23,7 +26,12 @@ SET invitation_message.person_id = (SELECT persons.id
 ALTER TABLE invitation_message
   MODIFY COLUMN person_id MEDIUMINT NOT NULL;
 ALTER TABLE invitation_message
-  ADD CONSTRAINT fk_person_id FOREIGN KEY (person_id) REFERENCES persons (id)
+  ADD CONSTRAINT fk_invitation_message_person_id FOREIGN KEY (person_id) REFERENCES persons (id)
   ON DELETE CASCADE;
 ALTER TABLE invitation_message
   DROP COLUMN inviter;
+
+ALTER TABLE invitation_message
+  ADD CONSTRAINT fk_invitation_message_invitation_id FOREIGN KEY (invitation_id) REFERENCES invitations (id)
+  ON DELETE CASCADE;
+

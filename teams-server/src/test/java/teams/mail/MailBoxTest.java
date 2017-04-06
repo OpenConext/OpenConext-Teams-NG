@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import teams.AbstractApplicationTest;
 import teams.domain.Invitation;
-import teams.domain.InvitationMessage;
 import teams.domain.Language;
 import teams.domain.Person;
 import teams.domain.Role;
@@ -19,13 +18,13 @@ import teams.domain.Team;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.Optional;
 
-import static org.junit.Assert.*;
 import static com.icegreen.greenmail.util.GreenMailUtil.getBody;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, value = {"spring.profiles.active=prod"})
-public class MailBoxTest extends AbstractApplicationTest{
+public class MailBoxTest extends AbstractApplicationTest {
 
     private static final String EMAIL = "test@test.org";
 
@@ -46,7 +45,7 @@ public class MailBoxTest extends AbstractApplicationTest{
         Person person = new Person("urn", "John Doe", EMAIL, false);
 
         Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.Dutch);
-        invitation.getInvitationMessages().add(new InvitationMessage(person, "Please join"));
+        invitation.addInvitationMessage(person, "Please join");
 
         mailBox.sendInviteMail(invitation);
 

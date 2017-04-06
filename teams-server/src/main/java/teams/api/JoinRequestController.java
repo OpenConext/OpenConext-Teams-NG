@@ -9,14 +9,14 @@ import teams.domain.FederatedUser;
 import teams.domain.JoinRequest;
 import teams.domain.Person;
 import teams.domain.Team;
-import teams.exception.IllegalJoinRequestException;
 import teams.mail.MailBox;
 import teams.repository.JoinRequestRepository;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 
 @RestController
-public class JoinRequestController extends ApiController implements MembershipValidator{
+public class JoinRequestController extends ApiController implements MembershipValidator {
 
     @Autowired
     private JoinRequestRepository joinRequestRepository;
@@ -25,9 +25,9 @@ public class JoinRequestController extends ApiController implements MembershipVa
     private MailBox mailBox;
 
     @PostMapping("api/teams/join")
-    public void join(@Validated @RequestBody JoinRequest joinRequestProperties, FederatedUser federatedUser) throws MessagingException {
+    public void join(@Validated @RequestBody JoinRequest joinRequestProperties, FederatedUser federatedUser) throws MessagingException, IOException {
         Team team = teamByUrn(joinRequestProperties.getTeam().getUrn());
-        Person person = personByUrn(federatedUser.getUrn());
+        Person person = federatedUser.getPerson();
 
         membershipNotAllowed(team, person);
         privateTeamDoesNotAllowMembers(team, person);

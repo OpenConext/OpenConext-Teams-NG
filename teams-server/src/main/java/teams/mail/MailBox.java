@@ -8,6 +8,7 @@ import teams.domain.Language;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class MailBox {
         this.teamsWhiteLabel = teamsWhiteLabel;
     }
 
-    public void sendInviteMail(Invitation invitation) throws MessagingException {
+    public void sendInviteMail(Invitation invitation) throws MessagingException, IOException {
         String languageCode = invitation.getLanguage().getLanguageCode();
         String title = String.format("%s %s ",
             languageCode.equals(Language.Dutch.getLanguageCode()) ? "Uitnodiging voor" : "Invitation for",
@@ -45,14 +46,14 @@ public class MailBox {
             invitation.getEmail(),
             variables);
     }
-
-    public void sendJoinRequestMail(JoinRequest joinRequest) throws MessagingException {
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("title", teamsWhiteLabel);
+    //TODO
+    public void sendJoinRequestMail(JoinRequest joinRequest) throws MessagingException, IOException {
+//        Map<String, Object> variables = new HashMap<>();
+//        variables.put("title", teamsWhiteLabel);
 //        variables.put("user", user);
 //        variables.put("confirmationHash", baseUrl + "/hypotheken/homecatcher/userProfile/c/4/7?key=" + user.getConfirmationHash());
 
-        sendMail("mail/" + "some", "TODO", joinRequest.getPerson().getEmail(), variables);
+//        sendMail("mail/" + "some", "", joinRequest.getPerson().getEmail(), variables);
     }
 
     public void sendInvitationAccepted(Invitation invitation) {
@@ -63,21 +64,21 @@ public class MailBox {
 
     }
 
-    private void sendMail(String templateName, String subject, String to, Map<String, Object> variables) throws MessagingException {
+    private void sendMail(String templateName, String subject, String to, Map<String, Object> variables) throws MessagingException, IOException {
         variables.put("current_date", LocalDate.now());
 
         String html = templateEngine.mailTemplate(templateName, variables);
 
         MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, false);
-            helper.setSubject(subject);
-            helper.setTo(to);
-            setText(html, helper);
-            helper.setFrom(emailFrom);
-            doSendMail(message);
+        MimeMessageHelper helper = new MimeMessageHelper(message, false);
+        helper.setSubject(subject);
+        helper.setTo(to);
+        setText(html, helper);
+        helper.setFrom(emailFrom);
+        doSendMail(message);
     }
 
-    protected void setText(String html, MimeMessageHelper helper) throws MessagingException {
+    protected void setText(String html, MimeMessageHelper helper) throws MessagingException, IOException {
         helper.setText(html, true);
     }
 

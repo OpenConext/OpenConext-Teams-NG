@@ -1,12 +1,9 @@
 package teams.api;
 
-import teams.domain.FederatedUser;
 import teams.domain.Invitation;
 import teams.domain.Person;
-import teams.domain.Role;
 import teams.domain.Team;
-import teams.exception.IllegalJoinRequestException;
-import teams.exception.IllegalMembershipException;
+import teams.exception.IllegalInviteException;
 import teams.exception.InvitationAlreadyAcceptedException;
 import teams.exception.InvitationAlreadyDeclinedException;
 import teams.exception.InvitationExpiredException;
@@ -23,7 +20,12 @@ public interface InvitationValidator {
         if (invitation.isDeclined()) {
             throw new InvitationAlreadyDeclinedException();
         }
+    }
 
+    default void membershipRequired(Team team, Person person) {
+        if (team.getMemberships().stream().noneMatch(membership -> membership.getUrnPerson().equals(person.getUrn()))) {
+            throw new IllegalInviteException(String.format("Person %s must be a member of team %s", person.getUrn(), team.getUrn()));
+        }
     }
 
 }

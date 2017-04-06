@@ -1,18 +1,14 @@
 package teams.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.Formula;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,10 +21,8 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
 
 @Entity(name = "teams")
 @NamedEntityGraph(name = "Team.memberships", attributeNodes = @NamedAttributeNode("memberships"))
@@ -89,6 +83,6 @@ public class Team {
 
     @JsonIgnore
     public String getHtmlMessage() {
-        return isContainsDescription() ? description.replaceAll("\n","<br/>") : "";
+        return isContainsDescription() ? description.replaceAll("\n", "<br/>") : "";
     }
 }

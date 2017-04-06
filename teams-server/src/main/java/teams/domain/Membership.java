@@ -2,11 +2,9 @@ package teams.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.util.Assert;
 
 import javax.persistence.Column;
@@ -62,14 +60,10 @@ public class Membership {
         Assert.notNull(person.getUrn(), "Urn person required");
         this.role = role;
         this.team = team;
+        this.team.getMemberships().add(this);
         this.urnTeam = team.getUrn();
         this.person = person;
         this.urnPerson = person.getUrn();
     }
 
-    public Membership(String urnTeam, String urnPerson, Role role) {
-        this.urnPerson = urnPerson;
-        this.urnTeam = urnTeam;
-        this.role = role;
-    }
 }
