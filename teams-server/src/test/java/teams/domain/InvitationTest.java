@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 import static teams.domain.Language.Dutch;
 import static teams.domain.Role.ADMIN;
 
-public class InvitationTest implements Seed{
+public class InvitationTest implements Seed {
 
     @Test
     public void invitationHash() throws UnsupportedEncodingException {
