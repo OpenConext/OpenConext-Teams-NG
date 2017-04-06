@@ -17,6 +17,7 @@ package teams.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.Column;
@@ -60,5 +61,9 @@ public class JoinRequest {
         this.person = person;
         this.team = team;
         this.message = HtmlUtils.htmlEscape(message);
+    }
+
+    public boolean isContainsMessage() {
+        return StringUtils.hasText(this.message);
     }
 }

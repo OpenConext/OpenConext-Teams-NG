@@ -15,9 +15,12 @@
  */
 package teams.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.SortNatural;
+import teams.exception.ResourceNotFoundException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,19 +33,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import static java.net.URLEncoder.encode;
-import static java.util.Base64.getEncoder;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
 
 @Entity(name = "invitations")
+@Getter
 public class Invitation {
 
     private static final long TWO_WEEKS = 14L * 24L * 60L * 60L * 1000L;
@@ -53,9 +60,11 @@ public class Invitation {
 
     @ManyToOne
     @JoinColumn(name = "team_id")
+    @NotNull
     private Team team;
 
     @Column(name = "mailaddress", nullable = false)
+    @NotNull
     private String email;
 
     @Column(nullable = false)
@@ -71,25 +80,29 @@ public class Invitation {
     private boolean accepted;
 
     @OneToMany(cascade = ALL, fetch = EAGER, mappedBy = "invitation")
+    @NotNull
+    @Size(min=1)
     private Set<InvitationMessage> invitationMessages = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "intended_role")
+    @NotNull
     private Role intendedRole;
 
     @Enumerated(EnumType.STRING)
-    private Language language = Language.English;
+    private Language language;
 
-    public Invitation(Team team, String email, Role intendedRole) throws UnsupportedEncodingException {
+    public Invitation(Team team, String email, Role intendedRole, Language language) throws UnsupportedEncodingException {
         this.team = team;
         this.email = email;
         this.invitationHash =  generateInvitationHash();
         this.timestamp = new Date().getTime();
+        this.language = language;
         this.intendedRole = intendedRole;
     }
 
-    public long getExpireTime() {
-        return timestamp + TWO_WEEKS;
+    public boolean hasExpired() {
+        return (timestamp + TWO_WEEKS) < System.currentTimeMillis();
     }
 
     public String getInvitationHash() {
@@ -100,7 +113,20 @@ public class Invitation {
         Random secureRandom = new SecureRandom();
         byte[] aesKey = new byte[256];
         secureRandom.nextBytes(aesKey);
-        return encode(getEncoder().encodeToString(aesKey), "UTF-8");
+        String base64 = Base64.getEncoder().encodeToString(aesKey);
+        return URLEncoder.encode(base64, "UTF-8").replaceAll("%", "");
+    }
+
+    @JsonIgnore
+    public InvitationMessage getLatestInvitationMessage() {
+        return invitationMessages.stream().max(Comparator.comparingLong(InvitationMessage::getTimestamp))
+            .orElseThrow(() -> new ResourceNotFoundException(
+                String.format("Invitation for team %s and person %s has no invitation message", team.getUrn(), email)));
+    }
+
+    public void accepted(boolean accepted) {
+        this.accepted = accepted;
+        this.declined = !accepted;
     }
 
 

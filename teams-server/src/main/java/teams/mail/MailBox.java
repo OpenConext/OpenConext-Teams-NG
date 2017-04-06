@@ -1,29 +1,47 @@
 package teams.mail;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import teams.domain.Invitation;
 import teams.domain.JoinRequest;
+import teams.domain.Language;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class MailBox {
 
-    @Autowired
     private JavaMailSender mailSender;
-
+    private String baseUrl;
     private String emailFrom;
 
     private MailTemplateEngine templateEngine = new MailTemplateEngine();
 
-    public MailBox(String emailFrom) {
+    public MailBox(JavaMailSender mailSender, String emailFrom, String baseUrl) {
+        this.mailSender = mailSender;
         this.emailFrom = emailFrom;
+        this.baseUrl = baseUrl;
+    }
+
+    public void sendInviteMail(Invitation invitation) {
+        String languageCode = invitation.getLanguage().getLanguageCode();
+        String title = String.format("%s %s ",
+            languageCode.equals(Language.Dutch.getLanguageCode()) ? "Uitnodiging voor" : "Invitation for",
+            invitation.getTeam().getName());
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("title", title);
+        variables.put("invitation", invitation);
+        variables.put("invitationMessage", invitation.getLatestInvitationMessage());
+        variables.put("baseUrl", baseUrl);
+        sendMail(
+            String.format("mail_templates/invitation_mail_%s.html", languageCode),
+            title,
+            invitation.getEmail(),
+            variables);
     }
 
     public void sendJoinRequestMail(JoinRequest joinRequest) {

@@ -1,3 +1,4 @@
+DELETE FROM invitation_message;
 DELETE FROM invitations;
 DELETE FROM requests;
 DELETE FROM memberships;

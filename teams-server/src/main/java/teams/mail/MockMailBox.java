@@ -1,5 +1,6 @@
 package teams.mail;
 
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.util.FileCopyUtils;
 
@@ -10,8 +11,8 @@ import java.io.IOException;
 
 public class MockMailBox extends MailBox {
 
-    public MockMailBox() {
-        super("test@surfnet.nl");
+    public MockMailBox(JavaMailSender mailSender) {
+        super(mailSender, "test@surfnet.nl", "http://localhost:8080");
     }
 
     @Override

@@ -10,4 +10,7 @@ public enum Language {
     this.languageCode = languageCode;
   }
 
+    public String getLanguageCode() {
+        return languageCode;
+    }
 }

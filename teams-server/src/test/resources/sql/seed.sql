@@ -43,3 +43,4 @@ VALUES (2, 'test description 2', 'org.example', 'urn:collab:group:example.org:na
 INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUES (1, 1, 1);
 INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUES (2, 1, 2);
 INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUES (3, 2, 2);
+

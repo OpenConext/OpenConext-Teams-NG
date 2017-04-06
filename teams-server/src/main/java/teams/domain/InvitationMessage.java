@@ -16,6 +16,7 @@
 
 package teams.domain;
 
+import lombok.Getter;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
@@ -27,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
+@Getter
 @Entity(name = "invitation_message")
 public class InvitationMessage {
 
@@ -52,6 +54,10 @@ public class InvitationMessage {
         this.message = StringUtils.hasText(message) ? message : null;
         this.person = person;
         this.timestamp = System.currentTimeMillis();
+    }
+
+    public boolean isContainsMessage() {
+        return StringUtils.hasText(this.message);
     }
 
 }

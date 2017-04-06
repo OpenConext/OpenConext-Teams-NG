@@ -12,3 +12,18 @@ ALTER TABLE invitations
   ON DELETE CASCADE;
 ALTER TABLE invitations
   DROP COLUMN group_id;
+
+ALTER TABLE invitation_message
+  ADD person_id MEDIUMINT;
+
+UPDATE invitation_message AS invitation_message
+SET invitation_message.person_id = (SELECT persons.id
+                           FROM persons
+                           WHERE persons.urn = invitation_message.inviter);
+ALTER TABLE invitation_message
+  MODIFY COLUMN person_id MEDIUMINT NOT NULL;
+ALTER TABLE invitation_message
+  ADD CONSTRAINT fk_person_id FOREIGN KEY (person_id) REFERENCES persons (id)
+  ON DELETE CASCADE;
+ALTER TABLE invitation_message
+  DROP COLUMN inviter;

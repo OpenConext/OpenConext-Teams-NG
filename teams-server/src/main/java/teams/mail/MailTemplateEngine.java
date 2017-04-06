@@ -12,11 +12,11 @@ import java.util.Map;
 /*
  * Thread-safe
  */
-class MailTemplateEngine {
+public class MailTemplateEngine {
 
     private final MustacheFactory mf = new DefaultMustacheFactory();
 
-    String mailTemplate(String templateName, Map<String, Object> context) {
+    public String mailTemplate(String templateName, Map<String, Object> context) {
         Mustache mustache = mf.compile(templateName);
         StringWriter writer = new StringWriter();
         try {
