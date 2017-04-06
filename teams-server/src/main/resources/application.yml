@@ -26,6 +26,7 @@ cron:
 teams:
   default-stem-name: "nl:surfnet:diensten"
   group-name-context: "urn:collab:group:dev.surfteams.nl:"
+  white-label: "SURFconext Teams"
 
 spring:
   jpa:

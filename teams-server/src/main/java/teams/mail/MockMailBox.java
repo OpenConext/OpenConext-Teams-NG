@@ -12,7 +12,7 @@ import java.io.IOException;
 public class MockMailBox extends MailBox {
 
     public MockMailBox(JavaMailSender mailSender) {
-        super(mailSender, "test@surfnet.nl", "http://localhost:8080");
+        super(mailSender, "test@surfnet.nl", "http://localhost:8080", "OpenConext Teams");
     }
 
     @Override

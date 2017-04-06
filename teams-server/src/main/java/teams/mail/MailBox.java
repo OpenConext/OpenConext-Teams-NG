@@ -19,14 +19,16 @@ public class MailBox {
     private String emailFrom;
 
     private MailTemplateEngine templateEngine = new MailTemplateEngine();
+    private String teamsWhiteLabel;
 
-    public MailBox(JavaMailSender mailSender, String emailFrom, String baseUrl) {
+    public MailBox(JavaMailSender mailSender, String emailFrom, String baseUrl, String teamsWhiteLabel) {
         this.mailSender = mailSender;
         this.emailFrom = emailFrom;
         this.baseUrl = baseUrl;
+        this.teamsWhiteLabel = teamsWhiteLabel;
     }
 
-    public void sendInviteMail(Invitation invitation) {
+    public void sendInviteMail(Invitation invitation) throws MessagingException {
         String languageCode = invitation.getLanguage().getLanguageCode();
         String title = String.format("%s %s ",
             languageCode.equals(Language.Dutch.getLanguageCode()) ? "Uitnodiging voor" : "Invitation for",
@@ -44,30 +46,35 @@ public class MailBox {
             variables);
     }
 
-    public void sendJoinRequestMail(JoinRequest joinRequest) {
+    public void sendJoinRequestMail(JoinRequest joinRequest) throws MessagingException {
         Map<String, Object> variables = new HashMap<>();
+        variables.put("title", teamsWhiteLabel);
 //        variables.put("user", user);
 //        variables.put("confirmationHash", baseUrl + "/hypotheken/homecatcher/userProfile/c/4/7?key=" + user.getConfirmationHash());
 
         sendMail("mail/" + "some", "TODO", joinRequest.getPerson().getEmail(), variables);
     }
 
-    private void sendMail(String templateName, String subject, String to, Map<String, Object> variables) {
+    public void sendInvitationAccepted(Invitation invitation) {
+
+    }
+
+    public void sendInvitationDenied(Invitation invitation) {
+
+    }
+
+    private void sendMail(String templateName, String subject, String to, Map<String, Object> variables) throws MessagingException {
         variables.put("current_date", LocalDate.now());
 
         String html = templateEngine.mailTemplate(templateName, variables);
 
         MimeMessage message = mailSender.createMimeMessage();
-        try {
             MimeMessageHelper helper = new MimeMessageHelper(message, false);
             helper.setSubject(subject);
             helper.setTo(to);
             setText(html, helper);
             helper.setFrom(emailFrom);
             doSendMail(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     protected void setText(String html, MimeMessageHelper helper) throws MessagingException {

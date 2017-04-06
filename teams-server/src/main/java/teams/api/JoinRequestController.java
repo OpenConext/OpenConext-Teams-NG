@@ -13,6 +13,8 @@ import teams.exception.IllegalJoinRequestException;
 import teams.mail.MailBox;
 import teams.repository.JoinRequestRepository;
 
+import javax.mail.MessagingException;
+
 @RestController
 public class JoinRequestController extends ApiController implements MembershipValidator{
 
@@ -23,7 +25,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
     private MailBox mailBox;
 
     @PostMapping("api/teams/join")
-    public void join(@Validated @RequestBody JoinRequest joinRequestProperties, FederatedUser federatedUser) {
+    public void join(@Validated @RequestBody JoinRequest joinRequestProperties, FederatedUser federatedUser) throws MessagingException {
         Team team = teamByUrn(joinRequestProperties.getTeam().getUrn());
         Person person = personByUrn(federatedUser.getUrn());
 

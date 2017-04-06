@@ -1,11 +1,13 @@
 package teams.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Formula;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -78,5 +80,15 @@ public class Team {
     public Optional<Membership> member(String urn) {
         return memberships.stream().filter(membership -> membership.getUrnPerson().equals(urn))
             .findAny();
+    }
+
+    @JsonIgnore
+    public boolean isContainsDescription() {
+        return StringUtils.hasText(this.description);
+    }
+
+    @JsonIgnore
+    public String getHtmlMessage() {
+        return isContainsDescription() ? description.replaceAll("\n","<br/>") : "";
     }
 }

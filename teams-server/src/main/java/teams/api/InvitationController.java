@@ -19,11 +19,12 @@ import teams.exception.InvitationExpiredException;
 import teams.exception.ResourceNotFoundException;
 import teams.mail.MailBox;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @RestController
-public class InvitationController extends ApiController implements MembershipValidator{
+public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator{
 
     @Autowired
     private MailBox mailBox;
@@ -31,7 +32,7 @@ public class InvitationController extends ApiController implements MembershipVal
     @PostMapping("api/teams/invitations")
     public void invitation(HttpServletRequest request,
                      @Validated @RequestBody Invitation invitationProperties,
-                     FederatedUser federatedUser) throws UnsupportedEncodingException {
+                     FederatedUser federatedUser) throws UnsupportedEncodingException, MessagingException {
         Team team = teamByUrn(invitationProperties.getTeam().getUrn());
         Person person = personByUrn(federatedUser.getUrn());
 
@@ -52,7 +53,6 @@ public class InvitationController extends ApiController implements MembershipVal
     @GetMapping("api/teams/invitations/accept")
     public Team accept(@RequestParam("key") String key, FederatedUser federatedUser) {
         Invitation invitation = doAcceptOrDeny(key, true);
-        invitationRepository.save(invitation);
 
         Team team = invitation.getTeam();
         Person person = invitation.getLatestInvitationMessage().getPerson();
@@ -61,29 +61,24 @@ public class InvitationController extends ApiController implements MembershipVal
 
         team.getMemberships().add(membership);
         teamRepository.save(team);
+
+        mailBox.sendInvitationAccepted(invitation);
+
         return team;
     }
 
     @GetMapping("api/teams/invitations/deny")
     public void deny(@RequestParam("key") String key) {
         Invitation invitation = doAcceptOrDeny(key, false);
-        invitationRepository.save(invitation);
+        mailBox.sendInvitationDenied(invitation);
     }
 
     private Invitation doAcceptOrDeny(@RequestParam("key") String key, boolean accepted) {
         Invitation invitation = invitationRepository.findFirstByInvitationHash(key).orElseThrow(() ->
             new ResourceNotFoundException(String.format("Invitation %s not found", key))
         );
-        if (invitation.hasExpired()) {
-            throw new InvitationExpiredException();
-        }
-        if (invitation.isAccepted()) {
-            throw new InvitationAlreadyAcceptedException();
-        }
-        if (invitation.isDeclined()) {
-            throw new InvitationAlreadyDeclinedException();
-        }
+        validateInvitation(invitation);
         invitation.accepted(accepted);
-        return invitation;
+        return invitationRepository.save(invitation);
     }
 }

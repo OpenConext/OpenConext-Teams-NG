@@ -15,6 +15,7 @@
  */
 package teams.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.StringUtils;
@@ -63,7 +64,13 @@ public class JoinRequest {
         this.message = HtmlUtils.htmlEscape(message);
     }
 
+    @JsonIgnore
     public boolean isContainsMessage() {
         return StringUtils.hasText(this.message);
+    }
+
+    @JsonIgnore
+    public String getHtmlMessage() {
+        return isContainsMessage() ? message.replaceAll("\n","<br/>") : "";
     }
 }

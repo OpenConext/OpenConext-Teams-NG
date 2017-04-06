@@ -20,14 +20,16 @@ public class MailConfiguration {
     @Value("${email.base-url}")
     private String baseUrl;
 
+    @Value("${teams.white-label}")
+    private String teamsWhiteLabel;
+
     @Autowired
     private JavaMailSender mailSender;
-
 
     @Bean
     @Profile({"!dev"})
     public MailBox mailSenderProd() {
-        return new MailBox(mailSender, emailFrom, baseUrl);
+        return new MailBox(mailSender, emailFrom, baseUrl, teamsWhiteLabel);
     }
 
     @Bean
