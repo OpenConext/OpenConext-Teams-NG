@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.StreamSupport;
 
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
@@ -75,4 +76,14 @@ public class InvitationControllerTest extends AbstractApplicationTest {
             .body("declined", equalTo(true));
     }
 
+    @Test
+    public void denyInvalidKey() throws Exception {
+        given()
+            .header(CONTENT_TYPE, "application/json")
+            .queryParam("key", "nope")
+            .when()
+            .get("api/teams/invitations/deny")
+            .then()
+            .statusCode(SC_NOT_FOUND);
+    }
 }
