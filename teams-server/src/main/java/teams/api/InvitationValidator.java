@@ -15,11 +15,11 @@ import teams.exception.ResourceNotFoundException;
 
 public interface InvitationValidator {
 
-    default void validateInvitation(Invitation invitation) {
+    default void validateInvitation(Invitation invitation, Person person) {
         if (invitation.hasExpired()) {
             throw new InvitationExpiredException();
         }
-        if (invitation.isAccepted()) {
+        if (invitation.isAccepted() || invitation.getTeam().member(person.getUrn()).isPresent()) {
             throw new InvitationAlreadyAcceptedException();
         }
         if (invitation.isDeclined()) {

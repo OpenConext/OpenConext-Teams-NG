@@ -85,9 +85,9 @@ public class InvitationController extends ApiController implements MembershipVal
 
     @GetMapping("api/teams/invitations/accept")
     public Team accept(@RequestParam("key") String key, FederatedUser federatedUser) throws IOException, MessagingException {
-        Invitation invitation = doAcceptOrDeny(key, true);
-        Team team = invitation.getTeam();
         Person person = federatedUser.getPerson();
+        Invitation invitation = doAcceptOrDeny(key, true, person);
+        Team team = invitation.getTeam();
         Role role = person.isGuest() ? Role.MEMBER : invitation.getIntendedRole();
         new Membership(role, team, person);
 
@@ -96,15 +96,15 @@ public class InvitationController extends ApiController implements MembershipVal
     }
 
     @GetMapping("api/teams/invitations/deny")
-    public Invitation deny(@RequestParam("key") String key) throws IOException, MessagingException {
-        return doAcceptOrDeny(key, false);
+    public Invitation deny(@RequestParam("key") String key, FederatedUser federatedUser) throws IOException, MessagingException {
+        return doAcceptOrDeny(key, false, federatedUser.getPerson());
     }
 
-    private Invitation doAcceptOrDeny(@RequestParam("key") String key, boolean accepted) {
+    private Invitation doAcceptOrDeny(String key, boolean accepted, Person person) {
         Invitation invitation = invitationRepository.findFirstByInvitationHash(key).orElseThrow(() ->
             new ResourceNotFoundException(String.format("Invitation %s not found", key))
         );
-        validateInvitation(invitation);
+        validateInvitation(invitation, person);
         invitation.accepted(accepted);
         return invitationRepository.save(invitation);
     }

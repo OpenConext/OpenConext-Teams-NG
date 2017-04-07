@@ -19,6 +19,10 @@ public interface Seed {
         return new Team("urn", "name", "description", viewable);
     }
 
+    default Person person() {
+        return person("urn");
+    }
+
     default Person person(String urn) {
         return new Person(urn, "name", "email", false);
     }

@@ -26,17 +26,25 @@ public class InvitationValidatorTest implements Seed {
     public void invitationExpired() throws Exception {
         Invitation invitation = invitation(false, false);
         ReflectionTestUtils.setField(invitation, "timestamp", 1000);
-        subject.validateInvitation(invitation);
+        subject.validateInvitation(invitation, person());
     }
 
     @Test(expected = InvitationAlreadyAcceptedException.class)
     public void invitationAlreadyAccepted() throws Exception {
-        subject.validateInvitation(invitation(true, false));
+        subject.validateInvitation(invitation(true, false), person());
+    }
+
+    @Test(expected = InvitationAlreadyAcceptedException.class)
+    public void invitationPersonAlreadyMember() throws Exception {
+        Invitation invitation = invitation(false, false);
+        Person person = person();
+        membership(Role.ADMIN, invitation.getTeam(), person);
+        subject.validateInvitation(invitation, person);
     }
 
     @Test(expected = InvitationAlreadyDeclinedException.class)
     public void invitationAlreadyDeclined() throws Exception {
-        subject.validateInvitation(invitation(false, true));
+        subject.validateInvitation(invitation(false, true), person());
     }
 
     @Test
@@ -52,7 +60,6 @@ public class InvitationValidatorTest implements Seed {
     public void membershipRequiredException() throws Exception {
         Team team = team();
         Person person = person("urn");
-
         subject.membershipRequired(team, person);
     }
 
@@ -64,7 +71,7 @@ public class InvitationValidatorTest implements Seed {
     @Test(expected = NotAllowedException.class)
     public void mustBeTeamAdminOrManagerNoMember() throws UnsupportedEncodingException {
         Invitation invitation = invitation(false, false);
-        invitation.addInvitationMessage(person("urn"),"Please join");
+        invitation.addInvitationMessage(person("urn"), "Please join");
         subject.mustBeTeamAdminOrManager(invitation, new FederatedUser(person("urn")));
     }
 
@@ -73,7 +80,7 @@ public class InvitationValidatorTest implements Seed {
         Invitation invitation = invitation(false, false);
         FederatedUser federatedUser = new FederatedUser(person("urn"));
         membership(Role.MEMBER, invitation.getTeam(), federatedUser.getPerson());
-        invitation.addInvitationMessage(person("urn"),"Please join");
+        invitation.addInvitationMessage(person("urn"), "Please join");
 
         subject.mustBeTeamAdminOrManager(invitation, federatedUser);
     }

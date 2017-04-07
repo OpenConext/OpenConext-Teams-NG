@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.hasItems;
 public class UserControllerTest extends AbstractApplicationTest {
 
     @Test
-    public void person() throws Exception {
+    public void currentUser() throws Exception {
         given()
             .when()
             .get("api/teams/users/me")
