@@ -31,9 +31,6 @@ public abstract class ApiController {
     protected TeamRepository teamRepository;
 
     @Autowired
-    protected PersonRepository personRepository;
-
-    @Autowired
     protected MembershipRepository membershipRepository;
 
     @Autowired

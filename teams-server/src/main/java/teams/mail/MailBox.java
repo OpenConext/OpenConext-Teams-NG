@@ -18,9 +18,9 @@ public class MailBox {
     private JavaMailSender mailSender;
     private String baseUrl;
     private String emailFrom;
+    private String teamsWhiteLabel;
 
     private MailTemplateEngine templateEngine = new MailTemplateEngine();
-    private String teamsWhiteLabel;
 
     public MailBox(JavaMailSender mailSender, String emailFrom, String baseUrl, String teamsWhiteLabel) {
         this.mailSender = mailSender;
@@ -78,8 +78,6 @@ public class MailBox {
     }
 
     private void sendMail(String templateName, String subject, String to, Map<String, Object> variables) throws MessagingException, IOException {
-        variables.put("current_date", LocalDate.now());
-
         String html = templateEngine.mailTemplate(templateName, variables);
 
         MimeMessage message = mailSender.createMimeMessage();

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TeamRepositoryTest extends AbstractApplicationTest {
 
@@ -37,6 +38,14 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
         List<Team> teams = teamRepository.findByNameContainingIgnoreCaseAndMembershipsUrnPersonOrderByNameAsc(
             "ERS", "urn:collab:person:surfnet.nl:jdoe", new PageRequest(0, 10)).getContent();
         assertEquals(2, teams.size());
+    }
+
+    @Test
+    public void autoComplete() {
+        List<String> teamNames = teamRepository.autocomplete("%ers%", "urn:collab:person:surfnet.nl:tdoe");
+        assertEquals(2, teamNames.size());
+        assertTrue(teamNames.contains("riders"));
+        assertTrue(teamNames.contains("gliders"));
     }
 
 }

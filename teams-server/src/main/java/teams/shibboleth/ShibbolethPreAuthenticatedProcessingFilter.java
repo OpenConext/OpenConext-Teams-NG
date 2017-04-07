@@ -50,8 +50,11 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
                 personFromDatabase.setGuest(person.isGuest());
                 needsUpdate = true;
             }
-            if (personFromDatabase.getEmail().equals("UNKNOWN_ATTRIBUTE")) {
+            if (!person.getEmail().equals(personFromDatabase.getEmail())) {
                 personFromDatabase.setEmail(person.getEmail());
+                needsUpdate = true;
+            }
+            if (!person.getName().equals(personFromDatabase.getName())) {
                 personFromDatabase.setName(person.getName());
                 needsUpdate = true;
             }
