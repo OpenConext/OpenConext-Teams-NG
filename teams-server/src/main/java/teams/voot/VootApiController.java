@@ -67,7 +67,8 @@ public class VootApiController {
 
     @GetMapping("api/voot/groups")
     public List<Group> getAllGroups() {
-        return StreamSupport.stream(teamRepository.findAll().spliterator(), false).map(this::convertTeamToGroup).collect(toList());
+        return StreamSupport.stream(teamRepository.findAll().spliterator(), false)
+            .map(this::convertTeamToGroup).collect(toList());
     }
 
     @GetMapping("api/voot/user/{uid}/groups")
