@@ -21,9 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
-@ActiveProfiles("dev")
 public class TeamControllerTest extends AbstractApplicationTest {
-
 
     @Test
     public void myTeams() throws Exception {
@@ -200,9 +198,8 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
             .header(CONTENT_TYPE, "application/json")
             .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
-            .body(new Team("nl:surfnet:diensten:riders", null, null, false))
             .when()
-            .delete("api/teams/teams")
+            .delete("api/teams/teams/{id}", 1)
             .then()
             .statusCode(SC_OK);
 

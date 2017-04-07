@@ -41,27 +41,40 @@ public class MailBox {
         variables.put("invitationMessage", invitation.getLatestInvitationMessage());
         variables.put("baseUrl", baseUrl);
         sendMail(
-            String.format("mail_templates/invitation_mail_%s.html", languageCode),
+            String.format("mail_templates/invitation_%s.html", languageCode),
             title,
             invitation.getEmail(),
             variables);
     }
-    //TODO
+
     public void sendJoinRequestMail(JoinRequest joinRequest) throws MessagingException, IOException {
-//        Map<String, Object> variables = new HashMap<>();
-//        variables.put("title", teamsWhiteLabel);
-//        variables.put("user", user);
-//        variables.put("confirmationHash", baseUrl + "/hypotheken/homecatcher/userProfile/c/4/7?key=" + user.getConfirmationHash());
-
-//        sendMail("mail/" + "some", "", joinRequest.getPerson().getEmail(), variables);
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("title", teamsWhiteLabel);
+        variables.put("joinRequest", joinRequest);
+        sendMail(
+            "mail_templates/join_request.html",
+            String.format("Membership request for %s", joinRequest.getTeamName()),
+            joinRequest.getPerson().getEmail(),
+            variables);
     }
 
-    public void sendInvitationAccepted(Invitation invitation) {
-
+    public void sendJoinRequestAccepted(JoinRequest joinRequest) throws IOException, MessagingException {
+        doSendJoinRequestAcceptedOrDenied(joinRequest, "Your request has been accepted", "join_request_accepted.html");
     }
 
-    public void sendInvitationDenied(Invitation invitation) {
+    public void sendJoinRequestDenied(JoinRequest joinRequest) throws IOException, MessagingException {
+        doSendJoinRequestAcceptedOrDenied(joinRequest, "Your request has been declined", "join_request_declined.html");
+    }
 
+    private void doSendJoinRequestAcceptedOrDenied(JoinRequest joinRequest, String subject, String emailTemplate) throws MessagingException, IOException {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("title", teamsWhiteLabel);
+        variables.put("joinRequest", joinRequest);
+        sendMail(
+            String.format("mail_templates/%s", emailTemplate),
+            subject,
+            joinRequest.getPerson().getEmail(),
+            variables);
     }
 
     private void sendMail(String templateName, String subject, String to, Map<String, Object> variables) throws MessagingException, IOException {

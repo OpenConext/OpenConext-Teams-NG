@@ -5,6 +5,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import teams.domain.ClientJoinRequest;
 import teams.domain.FederatedUser;
 import teams.domain.JoinRequest;
 import teams.domain.Person;
@@ -25,17 +26,19 @@ public class JoinRequestController extends ApiController implements MembershipVa
     private MailBox mailBox;
 
     @PostMapping("api/teams/join")
-    public void join(@Validated @RequestBody JoinRequest joinRequestProperties, FederatedUser federatedUser) throws MessagingException, IOException {
-        Team team = teamByUrn(joinRequestProperties.getTeam().getUrn());
+    public JoinRequest join(@Validated @RequestBody ClientJoinRequest clientJoinRequest, FederatedUser federatedUser) throws MessagingException, IOException {
+        Team team = teamByUrn(clientJoinRequest.getTeamUrn());
         Person person = federatedUser.getPerson();
 
         membershipNotAllowed(team, person);
         privateTeamDoesNotAllowMembers(team, person);
 
-        JoinRequest joinRequest = new JoinRequest(person, team, joinRequestProperties.getMessage());
+        JoinRequest joinRequest = new JoinRequest(person, team, clientJoinRequest.getMessage());
         joinRequestRepository.save(joinRequest);
 
         mailBox.sendJoinRequestMail(joinRequest);
+
+        return joinRequest;
     }
 
 }

@@ -2,6 +2,7 @@ package teams.api;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ import teams.domain.Team;
 @RestController
 public class MembershipController extends ApiController implements MembershipValidator {
 
-    @PutMapping("api/teams/role")
+    @PutMapping("api/teams/membership")
     public void changeMembership(@Validated @RequestBody Membership membershipProperties, FederatedUser federatedUser) {
         Membership membership = membershipByUrns(membershipProperties.getUrnTeam(), membershipProperties.getUrnPerson());
         Team team = membership.getTeam();
@@ -36,9 +37,12 @@ public class MembershipController extends ApiController implements MembershipVal
     }
 
 
-    @DeleteMapping("api/teams/role")
-    public void deleteMembership(@Validated @RequestBody Membership membershipProperties, FederatedUser federatedUser) {
-        Membership membership = membershipByUrns(membershipProperties.getUrnTeam(), membershipProperties.getUrnPerson());
+    @DeleteMapping("api/teams/membership/{id}")
+    public void deleteMembership(@PathVariable("id") Long id, FederatedUser federatedUser) {
+        Membership membership = membershipRepository.findOne(id);
+
+        assertNotNull(Membership.class.getSimpleName(), membership, id);
+
         Team team = membership.getTeam();
         Person person = membership.getPerson();
 

@@ -36,7 +36,6 @@ import java.time.Instant;
 
 
 @Entity(name = "requests")
-@Setter
 @Getter
 @NoArgsConstructor
 public class JoinRequest {

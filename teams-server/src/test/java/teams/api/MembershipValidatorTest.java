@@ -7,6 +7,7 @@ import teams.domain.Membership;
 import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
+import teams.exception.IllegalJoinRequestException;
 import teams.exception.IllegalMembershipException;
 
 public class MembershipValidatorTest implements Seed {
@@ -75,6 +76,20 @@ public class MembershipValidatorTest implements Seed {
     @Test(expected = IllegalMembershipException.class)
     public void membersCanNotRemoveOthers() {
         subject.membersCanNotRemoveOthers(Role.MEMBER, person("urn"), new FederatedUser(person("diff")));
+    }
+
+    @Test(expected = IllegalJoinRequestException.class)
+    public void membershipNotAllowed() {
+        Person person = person("urn");
+        Team team = team();
+        membership(Role.ADMIN, team, person);
+
+        subject.membershipNotAllowed(team, person);
+    }
+
+    @Test(expected = IllegalJoinRequestException.class)
+    public void privateTeamDoesNotAllowMembers() {
+        subject.privateTeamDoesNotAllowMembers(team(false), person("urn"));
     }
 
 }

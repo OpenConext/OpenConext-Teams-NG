@@ -20,6 +20,7 @@ public class GroupTest {
         assertTrue(group.equals(other));
         assertTrue(group.equals(group));
         assertFalse(group.equals(""));
+        assertFalse(group.equals(null));
         assertEquals(group.hashCode(), other.hashCode());
     }
 

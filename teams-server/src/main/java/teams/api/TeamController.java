@@ -21,6 +21,7 @@ import teams.domain.Team;
 import teams.domain.TeamSummary;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
+import teams.exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +77,7 @@ public class TeamController extends ApiController {
         }
 
         Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable());
-        Person person = personByUrn(federatedUser.getUrn());
+        Person person = federatedUser.getPerson();
         new Membership(Role.ADMIN, team, person);
 
         LOG.info("Team {} created by {}", urn, federatedUser.getUrn());
@@ -100,9 +101,10 @@ public class TeamController extends ApiController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("api/teams/teams")
-    public void deleteTeam(@RequestBody Team teamProperties, FederatedUser federatedUser) {
-        Team team = teamByUrn(teamProperties.getUrn());
+    @DeleteMapping("api/teams/teams/{id}")
+    public void deleteTeam(@PathVariable("id") Long id, FederatedUser federatedUser) {
+        Team team = teamRepository.findOne(id);
+        assertNotNull(Team.class.getSimpleName(), team, id);
 
         String federatedUserUrn = onlyAdminAllowed(federatedUser, team, "delete");
 

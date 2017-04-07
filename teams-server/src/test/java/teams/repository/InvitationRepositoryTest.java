@@ -9,15 +9,17 @@ import teams.domain.Team;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class InvitationRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByInvitationMessagesPerson() throws Exception {
-        Person person = personRepository.findByUrn("urn:collab:person:example.com:john.doe").get();
+        Person person = personRepository.findByUrn("urn:collab:person:surfnet.nl:rdoe").get();
 
         List<Invitation> invitations = invitationRepository.findByInvitationMessagesPerson(person);
         assertEquals(1, invitations.size());
+        assertFalse(invitations.get(0).getLatestInvitationMessage().getInvitation().hasExpired());
     }
 
     @Test

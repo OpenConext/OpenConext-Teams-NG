@@ -28,6 +28,16 @@ public class TeamTest {
         assertEquals("must match \"[\\w \\-']{1,255}\"", violations.get(0).getMessage());
     }
 
+    @Test
+    public void containsMessage() {
+        Team team = new Team("urn", "name", " ", true);
+        assertEquals("", team.getHtmlDescription());
+
+        team.setDescription("Nice\n");
+        assertEquals("Nice<br/>", team.getHtmlDescription());
+    }
+
+
     private List<ConstraintViolation<Team>> team(String name) {
         return new ArrayList<>(this.validator.validate(new Team("urn", name, "Description", true)));
     }

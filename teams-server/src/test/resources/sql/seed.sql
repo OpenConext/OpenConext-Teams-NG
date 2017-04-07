@@ -49,7 +49,7 @@ VALUES
   (1,'test@example.com', 2491484828910, 'secret', 0, 0, 'MANAGER', 'Dutch', 1);
 INSERT INTO `invitation_message` (`id`, `message`, `timestamp`, `invitation_id`, `person_id`)
 VALUES
-  (1, 'Please join', 2491484828910, 1, 6);
+  (1, 'Please join', 2491484828910, 1, 5);
 
 INSERT INTO `requests` (`id`, `message`, `team_id`, `person_id`)
 VALUES

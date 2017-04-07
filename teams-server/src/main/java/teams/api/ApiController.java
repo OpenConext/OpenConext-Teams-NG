@@ -56,11 +56,6 @@ public abstract class ApiController {
             .orElseThrow(() -> new ResourceNotFoundException(format("Team %s does not exist", urn)));
     }
 
-    protected Person personByUrn(String urn) {
-        return personRepository.findByUrn(urn)
-            .orElseThrow(() -> new ResourceNotFoundException(format("Person %s does not exist", urn)));
-    }
-
     protected Membership membershipByUrns(String teamUrn, String personUrn) {
         return membershipRepository.findByUrnTeamAndUrnPerson(teamUrn, personUrn)
             .orElseThrow(() -> new ResourceNotFoundException(
@@ -77,5 +72,13 @@ public abstract class ApiController {
         Locale locale = localeResolver.resolveLocale(request);
         return locale.getLanguage().equalsIgnoreCase("nl") ? Language.Dutch : Language.English;
     }
+
+    protected void assertNotNull(String entityName, Object entity, Long id) {
+        if (entity == null) {
+            throw new ResourceNotFoundException(String.format("%s %s does not exist", entityName, id));
+        }
+    }
+
+
 
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import teams.AbstractApplicationTest;
 import teams.domain.Invitation;
+import teams.domain.JoinRequest;
 import teams.domain.Language;
 import teams.domain.Person;
 import teams.domain.Role;
@@ -18,6 +19,7 @@ import teams.domain.Team;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 
 import static com.icegreen.greenmail.util.GreenMailUtil.getBody;
 import static org.junit.Assert.assertEquals;
@@ -27,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 public class MailBoxTest extends AbstractApplicationTest {
 
     private static final String EMAIL = "test@test.org";
+    private static final String TEAM_DESCRIPTION = "name";
 
     @Autowired
     private MailBox mailBox;
@@ -57,8 +60,32 @@ public class MailBoxTest extends AbstractApplicationTest {
 
     @Test
     public void sendJoinRequestMail() throws Exception {
+        JoinRequest joinRequest = joinRequest();
+        mailBox.sendJoinRequestMail(joinRequest);
+
+        String body = mailBody();
+        assertTrue(body.contains(String.format("\"%s\"", joinRequest.getTeam().getHtmlDescription())));
+        assertTrue(body.contains(String.format("\"%s\"", joinRequest.getHtmlMessage())));
+        assertTrue(body.contains(String.format("<a href=\"mailto:%s\">%s</a> would like to join team",
+            EMAIL, joinRequest.getPerson().getName())));
     }
 
+    @Test
+    public void sendJoinRequestAcceptedMail() throws Exception {
+        mailBox.sendJoinRequestAccepted(joinRequest());
+        validateJoinRequestStatusMail("accepted");
+    }
+
+    @Test
+    public void sendJoinRequestDeclinedMail() throws Exception {
+        mailBox.sendJoinRequestDenied(joinRequest());
+        validateJoinRequestStatusMail("declined");
+    }
+
+    private void validateJoinRequestStatusMail(String status) throws IOException, MessagingException, InterruptedException {
+        String body = mailBody();
+        assertTrue(body.contains(String.format("Your <strong>request</strong> to join team %s has been <strong>%s</strong>", "name", status)));
+    }
 
     private String mailBody() throws InterruptedException, MessagingException {
         //we send async
@@ -69,4 +96,9 @@ public class MailBoxTest extends AbstractApplicationTest {
         return getBody(mimeMessage);
     }
 
+    private JoinRequest joinRequest() {
+        Person person = new Person("urn", "John Doe", EMAIL, false);
+        Team team = new Team("urn", "name", TEAM_DESCRIPTION, true);
+        return new JoinRequest(person, team, "Let me join");
+    }
 }

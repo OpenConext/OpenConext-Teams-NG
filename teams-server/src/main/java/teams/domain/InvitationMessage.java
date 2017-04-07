@@ -63,7 +63,7 @@ public class InvitationMessage {
     }
 
     public boolean isContainsMessage() {
-        return StringUtils.hasText(this.message);
+        return this.message != null;
     }
 
 }

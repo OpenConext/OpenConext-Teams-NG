@@ -9,7 +9,6 @@ import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 
-@ActiveProfiles("dev")
 public class UserControllerTest extends AbstractApplicationTest {
 
     @Test

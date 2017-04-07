@@ -6,12 +6,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import teams.repository.ExternalTeamRepository;
 import teams.repository.InvitationRepository;
+import teams.repository.JoinRequestRepository;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 import teams.repository.TeamRepository;
@@ -20,7 +22,8 @@ import static org.springframework.test.context.jdbc.SqlConfig.ErrorMode.FAIL_ON_
 import static org.springframework.test.context.jdbc.SqlConfig.TransactionMode.ISOLATED;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, value = {"spring.profiles.active=dev"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("dev")
 @Transactional
 @Sql(scripts = {"classpath:sql/clear.sql", "classpath:sql/seed.sql"},
     config = @SqlConfig(errorMode = FAIL_ON_ERROR, transactionMode = ISOLATED))
@@ -40,6 +43,9 @@ public abstract class AbstractApplicationTest implements Seed {
 
     @Autowired
     protected InvitationRepository invitationRepository;
+
+    @Autowired
+    protected JoinRequestRepository joinRequestRepository;
 
     @LocalServerPort
     private int serverPort;

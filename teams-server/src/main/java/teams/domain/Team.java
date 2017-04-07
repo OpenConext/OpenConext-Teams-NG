@@ -82,7 +82,7 @@ public class Team {
     }
 
     @JsonIgnore
-    public String getHtmlMessage() {
+    public String getHtmlDescription() {
         return isContainsDescription() ? description.replaceAll("\n", "<br/>") : "";
     }
 }
