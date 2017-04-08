@@ -7,16 +7,16 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import teams.Seed;
 import teams.domain.FederatedUser;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
-import teams.domain.TeamSummary;
+import teams.domain.TeamAutocomplete;
 import teams.repository.TeamRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -31,17 +31,26 @@ public class TeamLocalControllerTest implements Seed {
 
     @Test
     public void testSearchWithNonViewableTeam() throws Exception {
-        Team notViewableTeam = team(false);
-        Team memberTeam = team(false);
-        Person person = person("jdoe");
-        membership(Role.ADMIN, memberTeam, person);
+        when(teamRepository.autocomplete(anyString(), anyString()))
+            .thenReturn(seed());
 
-        when(teamRepository.findByNameContainingIgnoreCaseOrderByNameAsc("q"))
-            .thenReturn(Arrays.asList(notViewableTeam, memberTeam));
+        List<TeamAutocomplete> teamAutocompletes = teamController.teamSearch("test", new FederatedUser(person("urn")));
+        assertEquals(seed().size(), teamAutocompletes.size());
+        IntStream.range(0, seed().size()).forEachOrdered(i -> assertEquals(i, Integer.valueOf(teamAutocompletes.get(i).getUrn()).intValue()));
 
-        List<TeamSummary> summaries = teamController.teamSearch("q", new FederatedUser(person));
-        assertEquals(1, summaries.size());
+    }
 
+    private List<Object[]> seed() {
+        //second 'urn' is the sorted position in the autoCompletes List
+        return Arrays.asList(
+            new String[]{"ContainingLaterTest", "6"},
+            new String[]{"ContainingTest", "5"},
+            new String[]{"Second test", "2"},
+            new String[]{"Test first", "0"},
+            new String[]{"1 2 3 test", "3"},
+            new String[]{"1_2_3_4_ test", "4"},
+            new String[]{"testtesttest", "1"}
+        );
     }
 
 }

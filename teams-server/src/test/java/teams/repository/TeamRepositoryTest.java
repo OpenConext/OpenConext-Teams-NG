@@ -5,20 +5,15 @@ import org.springframework.data.domain.PageRequest;
 import teams.AbstractApplicationTest;
 import teams.domain.Team;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TeamRepositoryTest extends AbstractApplicationTest {
-
-    @Test
-    public void findByNameContainingIgnoreCaseOrderByNameAsc() throws Exception {
-        List<Team> teams = teamRepository.findByNameContainingIgnoreCaseOrderByNameAsc("ER");
-        assertEquals("gliders", teams.get(0).getName());
-        assertEquals("riders", teams.get(1).getName());
-    }
 
     @Test
     public void findByUrn() throws Exception {
@@ -42,8 +37,10 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void autoComplete() {
-        List<String> teamNames = teamRepository.autocomplete("%ers%", "urn:collab:person:surfnet.nl:tdoe");
-        assertEquals(2, teamNames.size());
+        List<Object[]> result = teamRepository.autocomplete("%ERS%", "urn:collab:person:surfnet.nl:tdoe");
+        assertEquals(2, result.size());
+
+        List<String> teamNames = result.stream().map(s -> String.valueOf(s[0])).collect(toList());
         assertTrue(teamNames.contains("riders"));
         assertTrue(teamNames.contains("gliders"));
     }

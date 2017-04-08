@@ -7,6 +7,7 @@ import teams.domain.Membership;
 import teams.domain.Role;
 import teams.domain.Team;
 
+import java.util.List;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
@@ -66,7 +67,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamSearch() throws Exception {
+    public void teamAutocomplete() throws Exception {
         given()
             .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
             .param("query", "ERS")
@@ -75,8 +76,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .then()
             .statusCode(SC_OK)
             .body("urn", hasItems("nl:surfnet:diensten:riders", "nl:surfnet:diensten:gliders"))
-            .body("name", hasItems("riders", "gliders"))
-            .body("role", hasItems("ADMIN", null));
+            .body("name", hasItems("riders", "gliders"));
     }
 
     @Test

@@ -18,13 +18,17 @@ import teams.domain.Membership;
 import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
+import teams.domain.TeamAutocomplete;
 import teams.domain.TeamSummary;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
 import teams.exception.ResourceNotFoundException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
@@ -38,6 +42,8 @@ public class TeamController extends ApiController {
 
     @Value("${teams.default-stem-name}")
     private String defaultStemName;
+
+    private TeamMatcher teamMatcher = new TeamMatcher();
 
     @GetMapping("api/teams/teams/me")
     public List<TeamSummary> myTeams(FederatedUser federatedUser) {
@@ -57,12 +63,18 @@ public class TeamController extends ApiController {
     }
 
     @GetMapping("api/teams/teams")
-    public List<TeamSummary> teamSearch(@RequestParam("query") String query, FederatedUser federatedUser) {
-        return teamRepository.findByNameContainingIgnoreCaseOrderByNameAsc(query).stream()
-            .filter(team -> team.isViewable() || team.member(federatedUser.getUrn()).isPresent())
-            .map(team -> new TeamSummary(team, federatedUser))
+    public List<TeamAutocomplete> teamSearch(@RequestParam("query") String query, FederatedUser federatedUser) {
+        if (query.length() < 3) {
+            throw new IllegalArgumentException("Minimal query lenght is 3");
+        }
+        List<TeamAutocomplete> autocompleteList = teamRepository.autocomplete(("%" + query + "%").toUpperCase(), federatedUser.getUrn())
+            .stream()
+            .sorted((s1, s2) -> teamMatcher.compare(s1[0].toString().toLowerCase(), s2[0].toString().toLowerCase(), query.toLowerCase()))
+            .map(arr -> new TeamAutocomplete(arr[0].toString(), arr[1].toString()))
             .collect(toList());
+        return autocompleteList.subList(0, Math.max(0, Math.min(autocompleteList.size(), 15)));
     }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/teams")
