@@ -12,10 +12,10 @@ public class TeamMatcher {
         boolean name1StartsWith = name1.startsWith(query);
         boolean name2StartsWith = name2.startsWith(query);
         if (name1StartsWith || name2StartsWith) {
-            return (name1StartsWith && name2StartsWith) ? 0 : (name1StartsWith ? -1 : 1);
+            return (name1StartsWith && name2StartsWith) ? name1.compareTo(name2) : (name1StartsWith ? -1 : 1);
         }
         int n1  = compareStartWithParts(name1.split("[-_ ]"), query);
-        int n2  = compareStartWithParts(name2.split(" "), query);
+        int n2  = compareStartWithParts(name2.split("[-_ ]"), query);
         if (n1 == -1 && n2 == -1) {
             return Integer.compare(name1.indexOf(query), name2.indexOf(query));
         }
