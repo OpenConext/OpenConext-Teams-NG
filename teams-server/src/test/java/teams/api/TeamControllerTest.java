@@ -17,6 +17,7 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -77,6 +78,18 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .statusCode(SC_OK)
             .body("urn", hasItems("nl:surfnet:diensten:riders", "nl:surfnet:diensten:gliders"))
             .body("name", hasItems("riders", "gliders"));
+    }
+
+    @Test
+    public void teamAutocompleteIllegalArgument() throws Exception {
+        given()
+            .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
+            .param("query", "ER")
+            .when()
+            .get("api/teams/teams")
+            .then()
+            .statusCode(SC_BAD_REQUEST)
+            .body("message", equalTo("Minimal query length is 3"));
     }
 
     @Test

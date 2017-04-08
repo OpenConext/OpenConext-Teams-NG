@@ -22,6 +22,7 @@ import teams.domain.TeamAutocomplete;
 import teams.domain.TeamSummary;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
+import teams.exception.IllegalSearchParamException;
 import teams.exception.ResourceNotFoundException;
 
 import java.util.Comparator;
@@ -65,7 +66,7 @@ public class TeamController extends ApiController {
     @GetMapping("api/teams/teams")
     public List<TeamAutocomplete> teamSearch(@RequestParam("query") String query, FederatedUser federatedUser) {
         if (query.length() < 3) {
-            throw new IllegalArgumentException("Minimal query lenght is 3");
+            throw new IllegalSearchParamException("Minimal query length is 3");
         }
         List<TeamAutocomplete> autocompleteList = teamRepository.autocomplete(("%" + query + "%").toUpperCase(), federatedUser.getUrn())
             .stream()

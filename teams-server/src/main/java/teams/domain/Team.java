@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import org.springframework.util.StringUtils;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -67,6 +68,7 @@ public class Team {
     public Team(String urn, String name, String description, boolean viewable) {
         this.urn = urn;
         this.name = name;
+        this.description = HtmlUtils.htmlEscape(description);
         this.description = description;
         this.viewable = viewable;
     }

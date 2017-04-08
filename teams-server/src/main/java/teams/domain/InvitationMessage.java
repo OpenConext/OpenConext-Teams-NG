@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,12 +59,18 @@ public class InvitationMessage {
     public InvitationMessage(Invitation invitation, Person person, String message) {
         this.invitation = invitation;
         this.person = person;
-        this.message = StringUtils.hasText(message) ? message : null;
+        this.message = StringUtils.hasText(message) ? HtmlUtils.htmlEscape(message) : null;
         this.timestamp = System.currentTimeMillis();
     }
 
+    @JsonIgnore
     public boolean isContainsMessage() {
         return this.message != null;
+    }
+
+    @JsonIgnore
+    public String getHtmlMessage() {
+        return isContainsMessage() ? message.replaceAll("\n", "<br/>") : "";
     }
 
 }
