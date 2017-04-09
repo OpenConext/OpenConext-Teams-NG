@@ -6,6 +6,7 @@ import teams.Seed;
 import teams.domain.FederatedUser;
 import teams.domain.Invitation;
 import teams.domain.Language;
+import teams.domain.Membership;
 import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
@@ -17,6 +18,8 @@ import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
 
 import java.io.UnsupportedEncodingException;
+
+import static org.junit.Assert.assertEquals;
 
 public class InvitationValidatorTest implements Seed {
 
@@ -83,6 +86,33 @@ public class InvitationValidatorTest implements Seed {
         invitation.addInvitationMessage(person("urn"), "Please join");
 
         subject.mustBeTeamAdminOrManager(invitation, federatedUser);
+    }
+
+    @Test(expected = IllegalInviteException.class)
+    public void determineFutureRoleNoMembership() throws Exception {
+        subject.determineFutureRole(team(), person(), Role.ADMIN);
+    }
+
+    @Test
+    public void determineFutureRoleManager() throws Exception {
+        doDetermineFutureRole(Role.MANAGER, Role.MEMBER);
+    }
+
+    @Test
+    public void determineFutureRoleAdmin() throws Exception {
+        doDetermineFutureRole(Role.ADMIN, Role.ADMIN);
+    }
+
+    @Test(expected = IllegalInviteException.class)
+    public void determineFutureRoleMember() throws Exception {
+        doDetermineFutureRole(Role.MEMBER, Role.ADMIN);
+    }
+
+    private void doDetermineFutureRole(Role role, Role intendedRole) {
+        Team team = team();
+        Person person = person();
+        new Membership(role, team, person);
+        assertEquals(intendedRole, subject.determineFutureRole(team, person, Role.ADMIN));
     }
 
     private Invitation invitation(boolean accepted, boolean declined) throws UnsupportedEncodingException {

@@ -13,6 +13,8 @@ import teams.exception.InvitationExpiredException;
 import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
 
+import java.util.Optional;
+
 public interface InvitationValidator {
 
     default void validateInvitation(Invitation invitation, Person person) {
@@ -49,5 +51,21 @@ public interface InvitationValidator {
                 "Person %s is not the inviter of invitation %s", federatedUser.getUrn(), invitation.getId()));
         }
     }
+
+    default Role determineFutureRole(Team team, Person person, Role intendedRole) {
+        Optional<Membership> membershipOptional = team.member(person.getUrn());
+        return membershipOptional.map(membership -> doDetermineFutureRole(membership.getRole(), intendedRole))
+            .orElseThrow(() -> new IllegalInviteException(
+                String.format("Person %s must be a member of team %s", person.getUrn(), team.getUrn())));
+    }
+
+    default Role doDetermineFutureRole(Role role, Role intendedRole) {
+        switch (role) {
+            case ADMIN: return intendedRole;
+            case MANAGER: return Role.MEMBER;
+            default: throw new IllegalInviteException("Only ADMIN and MANAGER can invite members");
+        }
+    }
+
 
 }

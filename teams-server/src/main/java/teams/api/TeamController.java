@@ -20,8 +20,6 @@ import teams.domain.Role;
 import teams.domain.Team;
 import teams.domain.TeamAutocomplete;
 import teams.domain.TeamSummary;
-import teams.exception.DuplicateTeamNameException;
-import teams.exception.IllegalMembershipException;
 import teams.exception.IllegalSearchParamException;
 
 import java.util.List;
@@ -32,7 +30,7 @@ import static java.util.stream.Collectors.toList;
 
 
 @RestController
-public class TeamController extends ApiController {
+public class TeamController extends ApiController implements TeamValidator {
 
     @Value("${teams.group-name-context}")
     private String groupNameContext;
@@ -56,7 +54,7 @@ public class TeamController extends ApiController {
     public Object teamByUrn(@PathVariable("urn") String urn, FederatedUser federatedUser) {
         Team team = teamByUrn(urn);
         Optional<Membership> membership = team.member(federatedUser.getUrn());
-        return membership.isPresent() ? lazyLoadTeam(team) : new TeamSummary(team, federatedUser);
+        return membership.isPresent() ? lazyLoadTeam(team, membership.get().getRole(), federatedUser) : new TeamSummary(team, federatedUser);
     }
 
     @GetMapping("api/teams/teams")
@@ -82,9 +80,7 @@ public class TeamController extends ApiController {
             name.toLowerCase().trim().replaceAll("[ ']", "_"));
         Optional<Team> teamOptional = teamRepository.findByUrn(urn);
 
-        if (teamOptional.isPresent()) {
-            throw new DuplicateTeamNameException(format("Team with name %s already exists", name));
-        }
+        teamNameDuplicated(name, teamOptional);
 
         Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable());
         Person person = federatedUser.getPerson();
@@ -100,7 +96,9 @@ public class TeamController extends ApiController {
     public Team updateTeam(@Validated @RequestBody Team teamProperties, FederatedUser federatedUser) {
         Team team = teamByUrn(teamProperties.getUrn());
 
-        String federatedUserUrn = onlyAdminAllowed(federatedUser, team, "update");
+        String federatedUserUrn = federatedUser.getUrn();
+        Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
+        onlyAdminAllowed(roleOfLoggedInPerson, federatedUser, team, "update");
 
         team.setDescription(teamProperties.getDescription());
         team.setViewable(teamProperties.isViewable());
@@ -116,7 +114,9 @@ public class TeamController extends ApiController {
         Team team = teamRepository.findOne(id);
         assertNotNull(Team.class.getSimpleName(), team, id);
 
-        String federatedUserUrn = onlyAdminAllowed(federatedUser, team, "delete");
+        String federatedUserUrn = federatedUser.getUrn();
+        Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
+        onlyAdminAllowed(roleOfLoggedInPerson, federatedUser, team, "delete");
 
         List<ExternalTeam> externalTeams = externalTeamRepository.findByTeamsUrn(team.getUrn());
         externalTeams.forEach(externalTeam -> removeTeamFromExternalTeam(externalTeam, team));
@@ -129,23 +129,5 @@ public class TeamController extends ApiController {
         externalTeam.getTeams().remove(team);
         externalTeamRepository.save(externalTeam);
     }
-
-    private String onlyAdminAllowed(FederatedUser federatedUser, Team team, String action) {
-        String federatedUserUrn = federatedUser.getUrn();
-        Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
-
-        if (roleOfLoggedInPerson.isLessImportant(Role.ADMIN)) {
-            throw new IllegalMembershipException(String.format(
-                "Only ADMIN can %s team. Person %s is %s in team %s",
-                action, federatedUserUrn, roleOfLoggedInPerson, team.getUrn()));
-        }
-        return federatedUserUrn;
-    }
-
-    private Team lazyLoadTeam(Team team) {
-        team.getMemberships().forEach(membership -> membership.getPerson().isValid());
-        return team;
-    }
-
 
 }

@@ -54,6 +54,7 @@ public class InvitationMessage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
+    @JsonIgnore
     private Person person;
 
     public InvitationMessage(Invitation invitation, Person person, String message) {

@@ -60,6 +60,7 @@ public class Invitation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     @NotNull
+    @JsonIgnore
     private Team team;
 
     @Column(name = "mailaddress", nullable = false)

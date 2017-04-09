@@ -1,13 +1,11 @@
 package teams.api;
 
 import org.junit.Test;
-import org.springframework.test.context.ActiveProfiles;
 import teams.AbstractApplicationTest;
 import teams.domain.Membership;
 import teams.domain.Role;
 import teams.domain.Team;
 
-import java.util.List;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
@@ -43,10 +41,12 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
             .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
             .when()
-            .get("api/teams/teams/{urn}", "nl:surfnet:diensten:giants")
+            .get("api/teams/teams/{urn}", "nl:surfnet:diensten:riders")
             .then()
             .statusCode(SC_OK)
-            .body("memberships.person.name", hasItems("Tracey Doe", "William Doe", "John Doe", "Mary Doe"));
+            .body("memberships.person.name", hasItems("John Doe"))
+            .body("invitations.intendedRole", hasItems("MANAGER"))
+            .body("joinRequests.message", hasItems("Please let me join"));
     }
 
     @Test

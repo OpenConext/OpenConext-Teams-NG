@@ -19,12 +19,14 @@ import teams.domain.Membership;
 import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
+import teams.exception.IllegalInviteException;
 import teams.exception.ResourceNotFoundException;
 import teams.mail.MailBox;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator {
@@ -42,11 +44,12 @@ public class InvitationController extends ApiController implements MembershipVal
 
         membershipRequired(team, person);
         privateTeamDoesNotAllowMembers(team, person);
+        Role role = determineFutureRole(team, person, clientInvitation.getIntendedRole());
 
         Invitation invitation = new Invitation(
             team,
             clientInvitation.getEmail(),
-            clientInvitation.getIntendedRole(),
+            role,
             resolveLanguage(request));
         invitation.addInvitationMessage(person, clientInvitation.getMessage());
 
