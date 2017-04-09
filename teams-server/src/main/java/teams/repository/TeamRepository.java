@@ -23,7 +23,8 @@ public interface TeamRepository extends PagingAndSortingRepository<Team, Long> {
     @EntityGraph(value = "Team.memberships", type = EntityGraph.EntityGraphType.LOAD)
     Page<Team> findByNameContainingIgnoreCaseAndMembershipsUrnPersonOrderByNameAsc(String name, String personUrn, Pageable pageable);
 
-    @Query(value = "select distinct(name), urn from teams as teams left outer join memberships on memberships.team_id = teams.id " +
-        "where upper(name) like ?1 and (teams.viewable = 1 or memberships.urn_person = ?2)", nativeQuery = true)
-    List<Object[]> autocomplete(String query, String personUrn);
+    @Query(value = "select distinct(name), urn, (select memberships.role where memberships.urn_person = ?1) as role " +
+        "from teams as teams left outer join memberships on memberships.team_id = teams.id " +
+        "where upper(name) like ?2 and (teams.viewable = 1 or memberships.urn_person = ?3)", nativeQuery = true)
+    List<Object[]> autocomplete(String personUrn, String query, String memberUrn);
 }

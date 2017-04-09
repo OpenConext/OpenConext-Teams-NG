@@ -8,8 +8,10 @@ import teams.domain.Team;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -37,10 +39,12 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void autoComplete() {
-        List<Object[]> result = teamRepository.autocomplete("%ERS%", "urn:collab:person:surfnet.nl:tdoe");
-        assertEquals(2, result.size());
+        String urn = "urn:collab:person:surfnet.nl:tdoe";
+        List<Object[]> result = teamRepository.autocomplete(urn,"%ERS%", urn);
+        assertEquals(3, result.size());
 
-        List<String> teamNames = result.stream().map(s -> String.valueOf(s[0])).collect(toList());
+        Set<String> teamNames = result.stream().map(s -> s[0].toString()).collect(toSet());
+        assertEquals(2, teamNames.size());
         assertTrue(teamNames.contains("riders"));
         assertTrue(teamNames.contains("gliders"));
     }

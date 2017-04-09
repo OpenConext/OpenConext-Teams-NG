@@ -17,6 +17,7 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
@@ -76,8 +77,10 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .get("api/teams/teams")
             .then()
             .statusCode(SC_OK)
+            .body("size()", is(2))
             .body("urn", hasItems("nl:surfnet:diensten:riders", "nl:surfnet:diensten:gliders"))
-            .body("name", hasItems("riders", "gliders"));
+            .body("name", hasItems("riders", "gliders"))
+            .body("role", hasItems("ADMIN", null));
     }
 
     @Test

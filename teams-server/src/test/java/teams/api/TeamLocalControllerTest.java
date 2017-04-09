@@ -12,6 +12,7 @@ import teams.repository.TeamRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
@@ -30,12 +31,17 @@ public class TeamLocalControllerTest implements Seed {
 
     @Test
     public void testSearchWithNonViewableTeam() throws Exception {
-        when(teamRepository.autocomplete(anyString(), anyString()))
-            .thenReturn(seed());
+        List<Object[]> seed = seed();
+        when(teamRepository.autocomplete(anyString(), anyString(), anyString()))
+            .thenReturn(seed);
 
-        List<TeamAutocomplete> teamAutocompletes = teamController.teamSearch("test", new FederatedUser(person("urn")));
-        assertEquals(seed().size(), teamAutocompletes.size());
-        IntStream.range(0, seed().size()).forEachOrdered(i -> assertEquals(i, Integer.valueOf(teamAutocompletes.get(i).getUrn()).intValue()));
+        List<TeamAutocomplete> teamAutocompletes = teamController.
+            teamSearch("test", new FederatedUser(person("urn")));
+        seed = seed.stream().filter(arr -> arr.length == 2).collect(Collectors.toList());
+        assertEquals(seed.stream().filter(arr -> arr.length == 2).count(), teamAutocompletes.size());
+
+        IntStream.range(0, seed.size())
+            .forEachOrdered(i -> assertEquals(i, Integer.valueOf(teamAutocompletes.get(i).getUrn()).intValue()));
 
     }
 
@@ -45,8 +51,10 @@ public class TeamLocalControllerTest implements Seed {
             new String[]{"ContainingLaterTest", "6"},
             new String[]{"ContainingTest", "5"},
             new String[]{"Second test", "2"},
+            new String[]{"Second test", "2", "ADMIN"},
             new String[]{"Test first", "0"},
             new String[]{"1 2 3 test", "3"},
+            new String[]{"1 2 3 test", "3", "MEMBER"},
             new String[]{"1_2_3_4_ test", "4"},
             new String[]{"testtesttest", "1"}
         );

@@ -23,13 +23,9 @@ import teams.domain.TeamSummary;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
 import teams.exception.IllegalSearchParamException;
-import teams.exception.ResourceNotFoundException;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
@@ -68,10 +64,17 @@ public class TeamController extends ApiController {
         if (query.length() < 3) {
             throw new IllegalSearchParamException("Minimal query length is 3");
         }
-        List<TeamAutocomplete> autocompleteList = teamRepository.autocomplete(("%" + query + "%").toUpperCase(), federatedUser.getUrn())
+        String urn = federatedUser.getUrn();
+        List<TeamAutocomplete> autoCompletes = teamRepository.autocomplete(urn, ("%" + query + "%").toUpperCase(), urn).stream()
+            .map(arr -> new TeamAutocomplete(arr[0].toString(), arr[1].toString(), (arr.length == 3 && arr[2] != null)? arr[2].toString() : null))
+            .collect(toList());
+        List<String> myTeams = autoCompletes.stream().filter(autocomplete -> autocomplete.getRole() != null)
+            .map(TeamAutocomplete::getUrn).collect(toList());
+
+        List<TeamAutocomplete> autocompleteList = autoCompletes
             .stream()
-            .sorted((s1, s2) -> teamMatcher.compare(s1[0].toString().toLowerCase(), s2[0].toString().toLowerCase(), query.toLowerCase()))
-            .map(arr -> new TeamAutocomplete(arr[0].toString(), arr[1].toString()))
+            .filter(autoComplete -> !(autoComplete.getRole() == null) || !myTeams.contains(autoComplete.getUrn()))
+            .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), query.toLowerCase()))
             .collect(toList());
         return autocompleteList.subList(0, Math.max(0, Math.min(autocompleteList.size(), 15)));
     }
