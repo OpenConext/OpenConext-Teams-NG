@@ -20,8 +20,10 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.util.Collections;
 
 import static com.icegreen.greenmail.util.GreenMailUtil.getBody;
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -61,7 +63,7 @@ public class MailBoxTest extends AbstractApplicationTest {
     @Test
     public void sendJoinRequestMail() throws Exception {
         JoinRequest joinRequest = joinRequest();
-        mailBox.sendJoinRequestMail(joinRequest);
+        mailBox.sendJoinRequestMail(joinRequest, singletonList(EMAIL));
 
         String body = mailBody();
         assertTrue(body.contains(String.format("\"%s\"", joinRequest.getTeam().getHtmlDescription())));

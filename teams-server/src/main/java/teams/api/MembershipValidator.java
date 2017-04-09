@@ -7,6 +7,10 @@ import teams.domain.Team;
 import teams.exception.IllegalJoinRequestException;
 import teams.exception.IllegalMembershipException;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 public interface MembershipValidator {
 
     default void membersCanNotChangeRoles(Role roleOfLoggedInPerson) {
@@ -51,5 +55,17 @@ public interface MembershipValidator {
             throw new IllegalJoinRequestException(String.format("Person %s can not join private team %s", person.getUrn(), team.getUrn()));
         }
     }
+
+    default List<String> admins(Team team) {
+        List<String> admins = team.getMemberships().stream()
+            .filter(membership -> membership.getRole().equals(Role.ADMIN))
+            .map(membership -> membership.getPerson().getEmail())
+            .collect(toList());
+        if (admins.isEmpty()) {
+            throw new IllegalJoinRequestException(String.format("Team %s does not have an ADMIN user", team.getUrn()));
+        }
+        return admins;
+    }
+
 
 }

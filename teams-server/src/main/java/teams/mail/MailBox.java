@@ -10,6 +10,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MailBox {
@@ -42,19 +43,19 @@ public class MailBox {
         sendMail(
             String.format("mail_templates/invitation_%s.html", languageCode),
             title,
-            invitation.getEmail(),
-            variables);
+            variables,
+            invitation.getEmail());
     }
 
-    public void sendJoinRequestMail(JoinRequest joinRequest) throws MessagingException, IOException {
+    public void sendJoinRequestMail(JoinRequest joinRequest, List<String> admins) throws MessagingException, IOException {
         Map<String, Object> variables = new HashMap<>();
         variables.put("title", teamsWhiteLabel);
         variables.put("joinRequest", joinRequest);
         sendMail(
             "mail_templates/join_request.html",
             String.format("Membership request for %s", joinRequest.getTeamName()),
-            joinRequest.getPerson().getEmail(),
-            variables);
+            variables,
+            admins.toArray(new String[admins.size()]));
     }
 
     public void sendJoinRequestAccepted(JoinRequest joinRequest) throws IOException, MessagingException {
@@ -72,11 +73,11 @@ public class MailBox {
         sendMail(
             String.format("mail_templates/%s", emailTemplate),
             subject,
-            joinRequest.getPerson().getEmail(),
-            variables);
+            variables,
+            joinRequest.getPerson().getEmail());
     }
 
-    private void sendMail(String templateName, String subject, String to, Map<String, Object> variables) throws MessagingException, IOException {
+    private void sendMail(String templateName, String subject, Map<String, Object> variables, String... to ) throws MessagingException, IOException {
         String html = templateEngine.mailTemplate(templateName, variables);
 
         MimeMessage message = mailSender.createMimeMessage();

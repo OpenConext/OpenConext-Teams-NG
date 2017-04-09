@@ -61,7 +61,7 @@ public class InvitationController extends ApiController implements MembershipVal
                        FederatedUser federatedUser) throws IOException, MessagingException {
         Invitation invitation = invitationRepository.findOne(id);
 
-        assertNotNull(invitation, id);
+        assertNotNull(Invitation.class.getSimpleName(), invitation, id);
         mustBeTeamAdminOrManager(invitation, federatedUser);
 
         invitationRepository.delete(invitation);
@@ -71,9 +71,10 @@ public class InvitationController extends ApiController implements MembershipVal
     @PutMapping("api/teams/invitations")
     public void resend(@Validated @RequestBody ClientResendInvitation resendInvitation,
                        FederatedUser federatedUser) throws IOException, MessagingException {
-        Invitation invitation = invitationRepository.findOne(resendInvitation.getInvitationId());
+        Long invitationId = resendInvitation.getInvitationId();
+        Invitation invitation = invitationRepository.findOne(invitationId);
 
-        assertNotNull(invitation, resendInvitation.getInvitationId());
+        assertNotNull(Invitation.class.getSimpleName(), invitation, invitationId);
         mustBeTeamAdminOrManager(invitation, federatedUser);
 
         invitation.addInvitationMessage(federatedUser.getPerson(), resendInvitation.getMessage());

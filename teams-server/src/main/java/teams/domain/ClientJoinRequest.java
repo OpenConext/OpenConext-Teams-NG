@@ -11,6 +11,7 @@ public class ClientJoinRequest {
 
     @NotNull
     private String teamUrn;
+
     private String message;
 
 

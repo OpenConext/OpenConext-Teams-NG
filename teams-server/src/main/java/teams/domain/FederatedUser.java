@@ -10,7 +10,7 @@ import static java.util.Collections.singletonList;
 @Getter
 public class FederatedUser extends User {
 
-    private final Person person;
+    private Person person;
 
     public FederatedUser(Person person) {
         super(person.getName(), "N/A", person.isGuest() ?

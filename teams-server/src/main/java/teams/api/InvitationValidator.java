@@ -36,12 +36,6 @@ public interface InvitationValidator {
         }
     }
 
-    default void assertNotNull(Invitation invitation, Long id) {
-        if (invitation == null) {
-            throw new ResourceNotFoundException(String.format("Invitation %s does not exists", id));
-        }
-    }
-
     default void mustBeTeamAdminOrManager(Invitation invitation, FederatedUser federatedUser) {
         Membership membership = invitation.getTeam().member(federatedUser.getUrn()).orElseThrow(() ->
             new NotAllowedException(String.format(

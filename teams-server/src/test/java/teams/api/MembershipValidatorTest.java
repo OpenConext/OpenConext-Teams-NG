@@ -10,6 +10,10 @@ import teams.domain.Team;
 import teams.exception.IllegalJoinRequestException;
 import teams.exception.IllegalMembershipException;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
 public class MembershipValidatorTest implements Seed {
 
     private MembershipValidator subject = new MembershipController();
@@ -92,4 +96,17 @@ public class MembershipValidatorTest implements Seed {
         subject.privateTeamDoesNotAllowMembers(team(false), person("urn"));
     }
 
+    @Test(expected = IllegalJoinRequestException.class)
+    public void adminsException() {
+        subject.admins(team());
+    }
+
+    @Test
+    public void admins() {
+        Team team = team();
+        new Membership(Role.ADMIN, team, person());
+        List<String> admins = subject.admins(team);
+
+        assertEquals(1, admins.size());
+    }
 }

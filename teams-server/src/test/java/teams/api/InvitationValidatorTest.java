@@ -66,11 +66,6 @@ public class InvitationValidatorTest implements Seed {
         subject.membershipRequired(team, person);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
-    public void assertNotNull() {
-        subject.assertNotNull(null, 1L);
-    }
-
     @Test(expected = NotAllowedException.class)
     public void mustBeTeamAdminOrManagerNoMember() throws UnsupportedEncodingException {
         Invitation invitation = invitation(false, false);
