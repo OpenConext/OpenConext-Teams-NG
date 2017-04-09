@@ -8,20 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 import teams.domain.ClientJoinRequest;
 import teams.domain.FederatedUser;
 import teams.domain.JoinRequest;
-import teams.domain.Membership;
 import teams.domain.Person;
-import teams.domain.Role;
 import teams.domain.Team;
-import teams.exception.IllegalJoinRequestException;
 import teams.mail.MailBox;
 import teams.repository.JoinRequestRepository;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 public class JoinRequestController extends ApiController implements MembershipValidator {
@@ -46,6 +40,8 @@ public class JoinRequestController extends ApiController implements MembershipVa
         joinRequestRepository.save(joinRequest);
 
         mailBox.sendJoinRequestMail(joinRequest, admins);
+
+        LOG.info("Created joinRequest for team {} and person {}", team.getUrn(), person.getUrn());
 
         return joinRequest;
     }

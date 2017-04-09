@@ -52,6 +52,9 @@ public class InvitationController extends ApiController implements MembershipVal
         invitation.addInvitationMessage(person, clientInvitation.getMessage());
 
         invitationRepository.save(invitation);
+
+        LOG.info("Created invitation for team {} and person {}", team.getUrn(), person.getUrn());
+
         mailBox.sendInviteMail(invitation);
     }
 
@@ -65,6 +68,9 @@ public class InvitationController extends ApiController implements MembershipVal
         mustBeTeamAdminOrManager(invitation, federatedUser);
 
         invitationRepository.delete(invitation);
+
+        LOG.info("Deleted invitation for team {} and person {}",
+            invitation.getTeam().getUrn(), federatedUser.getUrn());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -82,6 +88,9 @@ public class InvitationController extends ApiController implements MembershipVal
         invitationRepository.save(invitation);
 
         mailBox.sendInviteMail(invitation);
+
+        LOG.info("Resend invitation for team {} and person {}",
+            invitation.getTeam().getUrn(), federatedUser.getUrn());
     }
 
 
@@ -93,8 +102,7 @@ public class InvitationController extends ApiController implements MembershipVal
         Role role = person.isGuest() ? Role.MEMBER : invitation.getIntendedRole();
         new Membership(role, team, person);
 
-        Team savedTeam = teamRepository.save(team);
-        return savedTeam;
+        return teamRepository.save(team);
     }
 
     @GetMapping("api/teams/invitations/deny")
@@ -108,6 +116,10 @@ public class InvitationController extends ApiController implements MembershipVal
         );
         validateInvitation(invitation, person);
         invitation.accepted(accepted);
+
+        LOG.info("Invitation {} for team {} and person {}",
+            accepted ? "Accepted" : "Denied", invitation.getTeam().getUrn(), person.getUrn());
+
         return invitationRepository.save(invitation);
     }
 }

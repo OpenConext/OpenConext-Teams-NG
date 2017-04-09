@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -70,4 +71,17 @@ public class Person {
         return hasText(urn) && hasText(name) && hasText(email);
     }
 
+    public boolean needsUpdate(Person person) {
+        return Objects.hash(name, email, guest) != Objects.hash(person.getName(), person.getEmail(), person.isGuest());
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+            "urn='" + urn + '\'' +
+            ", name='" + name + '\'' +
+            ", email='" + email + '\'' +
+            ", guest=" + guest +
+            '}';
+    }
 }

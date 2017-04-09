@@ -34,6 +34,9 @@ public class MembershipController extends ApiController implements MembershipVal
 
         membership.setRole(futureRole);
         membershipRepository.save(membership);
+
+        LOG.info("Changed membership for team {} and person {} from {} to {}",
+            team.getUrn(), person.getUrn(), membership.getRole(), futureRole);
     }
 
 
@@ -51,11 +54,11 @@ public class MembershipController extends ApiController implements MembershipVal
         membersCanNotRemoveOthers(roleOfLoggedInPerson, person, federatedUser);
         oneAdminIsRequired(team, person, Role.MEMBER);
 
-        LOG.info("Deleting current {} membership of {} in team {} by {}",
-            membership.getRole(), person.getUrn(), team.getUrn(), federatedUser.getUrn());
-
         //http://stackoverflow.com/a/16901857
         team.getMemberships().remove(membership);
         membershipRepository.delete(membership);
+
+        LOG.info("Deleted current {} membership of {} in team {} by {}",
+            membership.getRole(), person.getUrn(), team.getUrn(), federatedUser.getUrn());
     }
 }
