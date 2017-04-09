@@ -5,13 +5,10 @@ import org.springframework.data.domain.PageRequest;
 import teams.AbstractApplicationTest;
 import teams.domain.Team;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -39,7 +36,7 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void autoComplete() {
-        List<Object[]> result = teamRepository.autocomplete(4L,"%ERS%", 4L);
+        List<Object[]> result = teamRepository.autocomplete(4L, "%ERS%", 4L);
         assertEquals(2, result.size());
 
         List<String> teamNames = result.stream().map(s -> s[0].toString()).collect(toList());

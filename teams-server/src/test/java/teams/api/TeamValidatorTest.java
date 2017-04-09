@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
-public class TeamValidatorTest implements Seed{
+public class TeamValidatorTest implements Seed {
 
     private TeamValidator subject = new TeamController();
 
@@ -47,7 +47,7 @@ public class TeamValidatorTest implements Seed{
     @Test
     public void lazyLoadTeamMember() throws Exception {
         Team team = team();
-        new Membership(Role.ADMIN, team, person("test") );
+        new Membership(Role.ADMIN, team, person("test"));
         TeamDetailsSummary summary = TeamDetailsSummary.class.cast(subject.lazyLoadTeam(team, Role.MEMBER, new FederatedUser(person())));
         assertEquals(team.getName(), summary.getName());
         assertEquals("test", summary.getMemberShips().iterator().next().getPerson().getUrn());

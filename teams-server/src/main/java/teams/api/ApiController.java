@@ -6,14 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import teams.domain.Language;
 import teams.domain.Membership;
-import teams.domain.Person;
 import teams.domain.Team;
 import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
 import teams.repository.ExternalTeamRepository;
 import teams.repository.InvitationRepository;
 import teams.repository.MembershipRepository;
-import teams.repository.PersonRepository;
 import teams.repository.TeamRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,7 +73,6 @@ public abstract class ApiController {
             throw new ResourceNotFoundException(String.format("%s %s does not exist", entityName, id));
         }
     }
-
 
 
 }

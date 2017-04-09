@@ -1,11 +1,11 @@
 package teams.domain;
 
 import org.junit.Test;
-import teams.Seed;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class PersonTest  {
+public class PersonTest {
     @Test
     public void isValid() throws Exception {
         assertTrue(new Person("urn", "name", "email", true).isValid());

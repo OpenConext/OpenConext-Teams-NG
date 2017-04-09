@@ -35,6 +35,7 @@ public interface InvitationValidator {
                 "Person %s must be a member of team %s", person.getUrn(), team.getUrn()));
         }
     }
+
     default void assertNotNull(Invitation invitation, Long id) {
         if (invitation == null) {
             throw new ResourceNotFoundException(String.format("Invitation %s does not exists", id));
@@ -61,9 +62,12 @@ public interface InvitationValidator {
 
     default Role doDetermineFutureRole(Role role, Role intendedRole) {
         switch (role) {
-            case ADMIN: return intendedRole;
-            case MANAGER: return Role.MEMBER;
-            default: throw new IllegalInviteException("Only ADMIN and MANAGER can invite members");
+            case ADMIN:
+                return intendedRole;
+            case MANAGER:
+                return Role.MEMBER;
+            default:
+                throw new IllegalInviteException("Only ADMIN and MANAGER can invite members");
         }
     }
 

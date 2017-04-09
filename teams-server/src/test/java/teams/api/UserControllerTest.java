@@ -1,7 +1,6 @@
 package teams.api;
 
 import org.junit.Test;
-import org.springframework.test.context.ActiveProfiles;
 import teams.AbstractApplicationTest;
 
 import static io.restassured.RestAssured.given;

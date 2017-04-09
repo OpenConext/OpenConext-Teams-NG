@@ -2,7 +2,7 @@ package teams.api;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TeamMatcherTest {
 
@@ -20,7 +20,7 @@ public class TeamMatcherTest {
         assertCompare(AFTER, "nope", "test");
         assertCompare(AFTER, "1 test", "test");
         assertCompare(AFTER, "laterTest", "1 test");
-        assertCompare(AFTER,  "laterPositionTest", "positionTest");
+        assertCompare(AFTER, "laterPositionTest", "positionTest");
         assertCompare(AFTER, "1 2 test", "1 Test");
 
         assertCompare(EQUALS, "1 test", "1 test");

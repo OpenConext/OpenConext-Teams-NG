@@ -9,7 +9,9 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class JoinRequestControllerTest extends AbstractApplicationTest {

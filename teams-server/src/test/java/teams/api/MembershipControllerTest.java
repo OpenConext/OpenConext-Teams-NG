@@ -1,7 +1,6 @@
 package teams.api;
 
 import org.junit.Test;
-import org.springframework.test.context.ActiveProfiles;
 import teams.AbstractApplicationTest;
 import teams.domain.Membership;
 import teams.domain.Role;
@@ -13,7 +12,6 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class MembershipControllerTest extends AbstractApplicationTest {

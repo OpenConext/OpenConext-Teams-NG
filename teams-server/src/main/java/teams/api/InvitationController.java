@@ -19,14 +19,12 @@ import teams.domain.Membership;
 import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
-import teams.exception.IllegalInviteException;
 import teams.exception.ResourceNotFoundException;
 import teams.mail.MailBox;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Optional;
 
 @RestController
 public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator {
@@ -60,7 +58,7 @@ public class InvitationController extends ApiController implements MembershipVal
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("api/teams/invitations/{id}")
     public void delete(@PathVariable("id") Long id,
-                           FederatedUser federatedUser) throws IOException, MessagingException {
+                       FederatedUser federatedUser) throws IOException, MessagingException {
         Invitation invitation = invitationRepository.findOne(id);
 
         assertNotNull(invitation, id);

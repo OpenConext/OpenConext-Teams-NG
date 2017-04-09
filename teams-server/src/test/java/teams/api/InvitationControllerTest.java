@@ -6,14 +6,11 @@ import teams.domain.ClientInvitation;
 import teams.domain.ClientResendInvitation;
 import teams.domain.Invitation;
 import teams.domain.InvitationMessage;
-import teams.domain.Language;
 import teams.domain.Role;
-import teams.domain.Team;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.StreamSupport;
 
 import static io.restassured.RestAssured.given;
@@ -22,7 +19,6 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -140,7 +136,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
     public void delete() throws Exception {
         given()
             .header(CONTENT_TYPE, "application/json")
-            .header("name-id","urn:collab:person:surfnet.nl:jdoe")
+            .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
             .when()
             .delete("api/teams/invitations/{id}", 1)
             .then()

@@ -9,7 +9,6 @@ import teams.domain.Language;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
