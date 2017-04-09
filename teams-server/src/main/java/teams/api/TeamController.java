@@ -53,10 +53,10 @@ public class TeamController extends ApiController {
     }
 
     @GetMapping("api/teams/teams/{urn}")
-    public Team teamByUrn(@PathVariable("urn") String urn, FederatedUser federatedUser) {
+    public Object teamByUrn(@PathVariable("urn") String urn, FederatedUser federatedUser) {
         Team team = teamByUrn(urn);
-        membership(team, federatedUser.getUrn());
-        return lazyLoadTeam(team);
+        Optional<Membership> membership = team.member(federatedUser.getUrn());
+        return membership.isPresent() ? lazyLoadTeam(team) : new TeamSummary(team, federatedUser);
     }
 
     @GetMapping("api/teams/teams")

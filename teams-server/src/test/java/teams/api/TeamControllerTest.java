@@ -59,13 +59,16 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamByUrnNotAllowed() throws Exception {
+    public void teamByUrnNoMemberships() throws Exception {
         given()
             .header("name-id", "not-a-member")
             .when()
             .get("api/teams/teams/{urn}", "nl:surfnet:diensten:riders")
             .then()
-            .statusCode(SC_BAD_REQUEST);
+            .statusCode(SC_OK)
+            .body("description", equalTo("we are riders"))
+            .body("memberships", isEmptyOrNullString())
+            .body("role", isEmptyOrNullString());
     }
 
     @Test
