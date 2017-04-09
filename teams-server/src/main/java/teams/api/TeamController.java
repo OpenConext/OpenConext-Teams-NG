@@ -64,19 +64,13 @@ public class TeamController extends ApiController {
         if (query.length() < 3) {
             throw new IllegalSearchParamException("Minimal query length is 3");
         }
-        String urn = federatedUser.getUrn();
-        List<TeamAutocomplete> autoCompletes = teamRepository.autocomplete(urn, ("%" + query + "%").toUpperCase(), urn).stream()
-            .map(arr -> new TeamAutocomplete(arr[0].toString(), arr[1].toString(), (arr.length == 3 && arr[2] != null)? arr[2].toString() : null))
-            .collect(toList());
-        List<String> myTeams = autoCompletes.stream().filter(autocomplete -> autocomplete.getRole() != null)
-            .map(TeamAutocomplete::getUrn).collect(toList());
-
-        List<TeamAutocomplete> autocompleteList = autoCompletes
+        Long id = federatedUser.getPerson().getId();
+        List<TeamAutocomplete> autoCompletes = teamRepository.autocomplete(id, ("%" + query + "%").toUpperCase(), id)
             .stream()
-            .filter(autoComplete -> !(autoComplete.getRole() == null) || !myTeams.contains(autoComplete.getUrn()))
+            .map(arr -> new TeamAutocomplete(arr[0].toString(), arr[1].toString(), (arr.length == 3 && arr[2] != null)? arr[2].toString() : null))
             .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), query.toLowerCase()))
             .collect(toList());
-        return autocompleteList.subList(0, Math.max(0, Math.min(autocompleteList.size(), 15)));
+        return autoCompletes.subList(0, Math.max(0, Math.min(autoCompletes.size(), 15)));
     }
 
 

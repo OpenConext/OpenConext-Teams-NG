@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -32,13 +33,12 @@ public class TeamLocalControllerTest implements Seed {
     @Test
     public void testSearchWithNonViewableTeam() throws Exception {
         List<Object[]> seed = seed();
-        when(teamRepository.autocomplete(anyString(), anyString(), anyString()))
+        when(teamRepository.autocomplete(anyLong(), anyString(), anyLong()))
             .thenReturn(seed);
 
         List<TeamAutocomplete> teamAutocompletes = teamController.
-            teamSearch("test", new FederatedUser(person("urn")));
-        seed = seed.stream().filter(arr -> arr.length == 2).collect(Collectors.toList());
-        assertEquals(seed.stream().filter(arr -> arr.length == 2).count(), teamAutocompletes.size());
+            teamSearch("test", new FederatedUser(person()));
+        assertEquals(seed.size(), teamAutocompletes.size());
 
         IntStream.range(0, seed.size())
             .forEachOrdered(i -> assertEquals(i, Integer.valueOf(teamAutocompletes.get(i).getUrn()).intValue()));
@@ -50,10 +50,8 @@ public class TeamLocalControllerTest implements Seed {
         return Arrays.asList(
             new String[]{"ContainingLaterTest", "6"},
             new String[]{"ContainingTest", "5"},
-            new String[]{"Second test", "2"},
             new String[]{"Second test", "2", "ADMIN"},
             new String[]{"Test first", "0"},
-            new String[]{"1 2 3 test", "3"},
             new String[]{"1 2 3 test", "3", "MEMBER"},
             new String[]{"1_2_3_4_ test", "4"},
             new String[]{"testtesttest", "1"}

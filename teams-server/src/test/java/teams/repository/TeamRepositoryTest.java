@@ -39,11 +39,10 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void autoComplete() {
-        String urn = "urn:collab:person:surfnet.nl:tdoe";
-        List<Object[]> result = teamRepository.autocomplete(urn,"%ERS%", urn);
-        assertEquals(3, result.size());
+        List<Object[]> result = teamRepository.autocomplete(4L,"%ERS%", 4L);
+        assertEquals(2, result.size());
 
-        Set<String> teamNames = result.stream().map(s -> s[0].toString()).collect(toSet());
+        List<String> teamNames = result.stream().map(s -> s[0].toString()).collect(toList());
         assertEquals(2, teamNames.size());
         assertTrue(teamNames.contains("riders"));
         assertTrue(teamNames.contains("gliders"));
