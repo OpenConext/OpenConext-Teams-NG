@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -50,7 +51,9 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .statusCode(SC_OK)
             .body("memberships.person.name", hasItems("John Doe"))
             .body("invitations.intendedRole", hasItems("MANAGER"))
-            .body("joinRequests.message", hasItems("Please let me join"));
+            .body("joinRequests.message", hasItems("Please let me join"))
+            .body("externalTeams.name", hasItems("name1", "name2"));
+
     }
 
     @Test

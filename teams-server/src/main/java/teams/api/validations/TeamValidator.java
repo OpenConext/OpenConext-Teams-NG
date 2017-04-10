@@ -38,6 +38,7 @@ public interface TeamValidator {
         team.getInvitations().forEach(
             invitation -> invitation.getInvitationMessages().forEach(message -> message.getMessage()));
         team.getJoinRequests().forEach(joinRequest -> joinRequest.getMessage());
+        team.getExternalTeams().forEach(externalTeam -> externalTeam.getIdentifier());
         return team;
     }
 
