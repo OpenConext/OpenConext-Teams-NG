@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import teams.api.validations.TeamValidator;
 import teams.domain.ExternalTeam;
 import teams.domain.FederatedUser;
 import teams.domain.Membership;

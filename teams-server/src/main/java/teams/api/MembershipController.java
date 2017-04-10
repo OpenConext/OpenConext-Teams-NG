@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import teams.api.validations.MembershipValidator;
 import teams.domain.FederatedUser;
 import teams.domain.Membership;
 import teams.domain.Person;

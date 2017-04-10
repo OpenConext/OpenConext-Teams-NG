@@ -1,7 +1,9 @@
-package teams.api;
+package teams.api.validations;
 
 import org.junit.Test;
 import teams.Seed;
+import teams.api.TeamController;
+import teams.api.validations.TeamValidator;
 import teams.domain.FederatedUser;
 import teams.domain.Membership;
 import teams.domain.Role;

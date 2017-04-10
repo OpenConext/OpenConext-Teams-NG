@@ -1,8 +1,10 @@
-package teams.api;
+package teams.api.validations;
 
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import teams.Seed;
+import teams.api.InvitationController;
+import teams.api.validations.InvitationValidator;
 import teams.domain.FederatedUser;
 import teams.domain.Invitation;
 import teams.domain.Language;
@@ -15,7 +17,6 @@ import teams.exception.InvitationAlreadyAcceptedException;
 import teams.exception.InvitationAlreadyDeclinedException;
 import teams.exception.InvitationExpiredException;
 import teams.exception.NotAllowedException;
-import teams.exception.ResourceNotFoundException;
 
 import java.io.UnsupportedEncodingException;
 

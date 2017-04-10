@@ -1,4 +1,4 @@
-package teams.api;
+package teams.api.validations;
 
 import teams.domain.FederatedUser;
 import teams.domain.Person;
