@@ -1,5 +1,8 @@
 package teams.domain;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +14,8 @@ import javax.persistence.ManyToMany;
 import java.util.Set;
 
 @Entity(name = "external_groups")
+@NoArgsConstructor
+@Getter
 public class ExternalTeam {
 
     @Id
@@ -35,11 +40,10 @@ public class ExternalTeam {
         inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id"))
     private Set<Team> teams;
 
-    public Set<Team> getTeams() {
-        return teams;
-    }
-
-    public String getIdentifier() {
-        return identifier;
+    public ExternalTeam(String description, String groupProvider, String identifier, String name) {
+        this.description = description;
+        this.groupProvider = groupProvider;
+        this.identifier = identifier;
+        this.name = name;
     }
 }

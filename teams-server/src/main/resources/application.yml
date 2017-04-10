@@ -6,15 +6,6 @@ logging:
 #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 #    org.hibernate.event: TRACE
 
-# actual end-point for accessing VOOT
-voot:
-  service-url: https://voot.vm.openconext.org
-  # oauth config for accessing voot.
-  access-token-uri: https://authz.vm.openconext.org/oauth/token
-  client-id: surf-teams
-  client-secret: secret
-  scopes: groups
-
 security:
   user:
     name: user
@@ -29,6 +20,13 @@ teams:
   group-name-context: "urn:collab:group:dev.surfteams.nl:"
   white-label: "SURFconext Teams"
   non-guest-member-of: "urn:collab:org:surf.nl"
+
+voot:
+  serviceUrl: "https://voot.vm.openconext.org"
+  accessTokenUri: "https://authz.vm.openconext.org/oauth/token"
+  clientId: surf-teams
+  clientSecret: secret
+  scopes: groups
 
 spring:
   jpa:

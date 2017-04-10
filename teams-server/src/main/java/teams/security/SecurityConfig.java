@@ -14,7 +14,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import teams.repository.PersonRepository;
 import teams.shibboleth.ShibbolethPreAuthenticatedProcessingFilter;
@@ -84,13 +86,16 @@ public class SecurityConfig {
                 .antMatcher("/api/teams/**")
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
-                .csrf().disable()
+                .csrf()
+                .requireCsrfProtectionMatcher(new CsrfProtectionMatcher()).and()
+                .addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class)
                 .addFilterBefore(filter, AbstractPreAuthenticatedProcessingFilter.class)
                 .authorizeRequests()
                 .antMatchers("/**").hasRole("USER");
 
             if (environment.acceptsProfiles("dev")) {
                 http.addFilterBefore(new MockShibbolethFilter(), ShibbolethPreAuthenticatedProcessingFilter.class);
+                http.csrf().disable();
             }
 
         }
@@ -102,6 +107,12 @@ public class SecurityConfig {
         @Override
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
             argumentResolvers.add(new FederatedUserHandlerMethodArgumentResolver());
+        }
+
+        @Override
+        public void addInterceptors(InterceptorRegistry registry) {
+            super.addInterceptors(registry);
+            registry.addInterceptor(new SessionAliveInterceptor());
         }
 
     }

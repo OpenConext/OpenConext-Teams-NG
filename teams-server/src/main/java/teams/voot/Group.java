@@ -1,22 +1,35 @@
 package teams.voot;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import java.util.Objects;
 
+@Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Group {
 
-    public final String id;
-    public final String displayName;
-    public final String description;
-    public final String membership;
+    private String id;
+    private String displayName;
+    private String description;
+    private String membership;
+    private String sourceID;
 
     public Group(String id, String displayName, String description, String membership) {
+        this(id, displayName, description, membership, null);
+    }
+
+    public Group(String id, String displayName, String description, String membership, String sourceID) {
         Assert.notNull(id, "Id can not be null");
         this.id = id;
         this.displayName = displayName;
         this.description = description;
         this.membership = membership;
+        this.sourceID = sourceID;
     }
 
     @Override

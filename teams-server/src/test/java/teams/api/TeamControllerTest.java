@@ -5,6 +5,10 @@ import teams.AbstractApplicationTest;
 import teams.domain.Membership;
 import teams.domain.Role;
 import teams.domain.Team;
+import teams.exception.DuplicateTeamNameException;
+import teams.exception.IllegalMembershipException;
+import teams.exception.IllegalSearchParamException;
+import teams.exception.NotAllowedException;
 
 import java.util.Set;
 
@@ -95,7 +99,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .get("api/teams/teams")
             .then()
             .statusCode(SC_BAD_REQUEST)
-            .body("message", equalTo("Minimal query length is 3"));
+            .body("exception", equalTo(IllegalSearchParamException.class.getName()));
     }
 
     @Test
@@ -139,7 +143,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .post("api/teams/teams")
             .then()
             .statusCode(SC_BAD_REQUEST)
-            .body("message", equalTo("Team with name riders already exists"));
+            .body("exception", equalTo(DuplicateTeamNameException.class.getName()));
     }
 
     @Test
@@ -197,7 +201,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .put("api/teams/teams")
             .then()
             .statusCode(SC_BAD_REQUEST)
-            .body("message", startsWith("Only ADMIN can update team"));
+            .body("exception", equalTo(IllegalMembershipException.class.getName()));
     }
 
     @Test
@@ -209,7 +213,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .put("api/teams/teams")
             .then()
             .statusCode(SC_BAD_REQUEST)
-            .body("message", startsWith("Member urn:collab:person:example.com:john.doe is not a member of team nl:surfnet:diensten:giants"));
+            .body("exception", equalTo(NotAllowedException.class.getName()));
     }
 
     @Test

@@ -13,6 +13,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
@@ -64,6 +67,9 @@ public class Team {
 
     @OneToMany(mappedBy = "team", orphanRemoval = true)
     private Set<JoinRequest> joinRequests = new HashSet<>();
+
+    @ManyToMany(mappedBy = "teams")
+    private Set<ExternalTeam> externalTeams = new HashSet<>();
 
     public Team(String urn, String name, String description, boolean viewable) {
         this.urn = urn;

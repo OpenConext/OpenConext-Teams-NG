@@ -30,10 +30,37 @@ Execute the following:
 CREATE DATABASE teams_ng DEFAULT CHARACTER SET utf8;
 ```
 
-# Start the app
+### The teams-server
 
 To run locally:
 
 `mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=dev"`
 
-Or run / debug the [TeamsApplication](teams-server/src/main/java/teams/TeamsApplication.java).
+Or run / debug the [TeamsApplication](teams-server/src/main/java/teams/TeamsApplication.java) and don't forget to set 
+the active profile to dev otherwise the application uses the real VOOT client on the test environment.
+
+
+
+### The pdp-gui
+
+    cd pdp-gui
+
+Initial setup if you do:
+
+    nvm install
+    npm install
+
+Add new dependencies to `devDependencies`:
+
+    npm install --save-dev ${dep}
+
+To build:
+
+    npm run webpack
+
+To run locally:
+
+    npm run webpack-dev-server
+
+Browse to the [application homepage](http://localhost:8001/).
+
