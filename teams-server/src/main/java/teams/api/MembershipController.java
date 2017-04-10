@@ -52,7 +52,7 @@ public class MembershipController extends ApiController implements MembershipVal
 
         Role roleOfLoggedInPerson = membership(team, federatedUser.getUrn()).getRole();
 
-        membersCanNotRemoveOthers(roleOfLoggedInPerson, person, federatedUser);
+        onlyAdminsCanRemoveOthers(roleOfLoggedInPerson, person, federatedUser);
         oneAdminIsRequired(team, person, Role.MEMBER);
 
         //http://stackoverflow.com/a/16901857

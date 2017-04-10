@@ -65,6 +65,9 @@ public class SecurityConfig {
         @Autowired
         private Environment environment;
 
+        @Value("${teams.non-guest-member-of}")
+        private String nonGuestsMemberOf;
+
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             PreAuthenticatedAuthenticationProvider authenticationProvider = new PreAuthenticatedAuthenticationProvider();
@@ -74,7 +77,9 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            ShibbolethPreAuthenticatedProcessingFilter filter = new ShibbolethPreAuthenticatedProcessingFilter(authenticationManager(), personRepository);
+            ShibbolethPreAuthenticatedProcessingFilter filter =
+                new ShibbolethPreAuthenticatedProcessingFilter(authenticationManager(), personRepository, nonGuestsMemberOf);
+
             http
                 .antMatcher("/api/teams/**")
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)

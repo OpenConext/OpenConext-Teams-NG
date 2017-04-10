@@ -38,8 +38,8 @@ public interface MembershipValidator {
         }
     }
 
-    default void membersCanNotRemoveOthers(Role roleOfLoggedInPerson, Person personWhoIsRemoved, FederatedUser federatedUser) {
-        if (roleOfLoggedInPerson.equals(Role.MEMBER) && !personWhoIsRemoved.getUrn().equals(federatedUser.getUrn())) {
+    default void onlyAdminsCanRemoveOthers(Role roleOfLoggedInPerson, Person personWhoIsRemoved, FederatedUser federatedUser) {
+        if (!(roleOfLoggedInPerson.equals(Role.ADMIN) || personWhoIsRemoved.getUrn().equals(federatedUser.getUrn()))) {
             throw new IllegalMembershipException("Members are not allowed to do remove memberships other then themselves");
         }
     }

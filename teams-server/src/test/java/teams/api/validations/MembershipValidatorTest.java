@@ -3,7 +3,6 @@ package teams.api.validations;
 import org.junit.Test;
 import teams.Seed;
 import teams.api.MembershipController;
-import teams.api.validations.MembershipValidator;
 import teams.domain.FederatedUser;
 import teams.domain.Membership;
 import teams.domain.Person;
@@ -71,17 +70,27 @@ public class MembershipValidatorTest implements Seed {
 
     @Test
     public void membersCanNotRemoveOthersButAdminCan() {
-        subject.membersCanNotRemoveOthers(Role.ADMIN, person("urn"), new FederatedUser(person("diff")));
+        subject.onlyAdminsCanRemoveOthers(Role.ADMIN, person("urn"), new FederatedUser(person("diff")));
     }
 
     @Test
     public void membersCanNotRemoveOthersButThemselves() {
-        subject.membersCanNotRemoveOthers(Role.MEMBER, person("urn"), new FederatedUser(person("urn")));
+        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), new FederatedUser(person("urn")));
+    }
+
+    @Test
+    public void managersCanNotRemoveOthersButThemselves() {
+        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), new FederatedUser(person("urn")));
     }
 
     @Test(expected = IllegalMembershipException.class)
     public void membersCanNotRemoveOthers() {
-        subject.membersCanNotRemoveOthers(Role.MEMBER, person("urn"), new FederatedUser(person("diff")));
+        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), new FederatedUser(person("diff")));
+    }
+
+    @Test(expected = IllegalMembershipException.class)
+    public void managersCanNotRemoveOthers() {
+        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), new FederatedUser(person("diff")));
     }
 
     @Test(expected = IllegalJoinRequestException.class)

@@ -15,11 +15,14 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
     private final static Logger LOG = LoggerFactory.getLogger(ShibbolethPreAuthenticatedProcessingFilter.class);
 
     private final PersonRepository personRepository;
+    private String nonGuestsMemberOf;
 
     public ShibbolethPreAuthenticatedProcessingFilter(AuthenticationManager authenticationManager,
-                                                      PersonRepository personRepository) {
+                                                      PersonRepository personRepository,
+                                                      String nonGuestsMemberOf) {
         super();
         this.personRepository = personRepository;
+        this.nonGuestsMemberOf = nonGuestsMemberOf;
         setAuthenticationManager(authenticationManager);
     }
 
@@ -30,7 +33,7 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
         String email = request.getHeader("Shib-InetOrgPerson-mail");
         String memberOf = request.getHeader("is-member-of");
 
-        Person person = new Person(nameId, name, email, !"urn:collab:org:surf.nl".equals(memberOf));
+        Person person = new Person(nameId, name, email, !nonGuestsMemberOf.equals(memberOf));
 
         //this is the Spring security contract. Returning null results in AuthenticationException 403
         return person.isValid() ? provision(person) : null;
