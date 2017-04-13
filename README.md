@@ -15,6 +15,7 @@ See the NOTICE file
 
 - Java 8
 - Maven 3
+- yarn
 
 ## Building and running
 
@@ -34,7 +35,7 @@ CREATE DATABASE teams_ng DEFAULT CHARACTER SET utf8;
 
 To run locally:
 
-`mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=dev"`
+`mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=dev,test"`
 
 Or run / debug the [TeamsApplication](teams-server/src/main/java/teams/TeamsApplication.java) and don't forget to set 
 the active profile to dev otherwise the application uses the real VOOT client on the test environment.
@@ -47,20 +48,19 @@ the active profile to dev otherwise the application uses the real VOOT client on
 
 Initial setup if you do:
 
-    nvm install
-    npm install
+    yarn install
 
 Add new dependencies to `devDependencies`:
 
-    npm install --save-dev ${dep}
+    yarn install --save-dev ${dep}
 
 To build:
 
-    npm run webpack
+    ./build.sh
 
 To run locally:
 
-    npm run webpack-dev-server
+    yarn run webpack-dev-server
 
 Browse to the [application homepage](http://localhost:8001/).
 

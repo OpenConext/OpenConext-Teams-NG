@@ -38,7 +38,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
 
     private void doInvitation(String languageCode) throws UnsupportedEncodingException {
         ClientInvitation clientInvitation = new ClientInvitation(
-            "nl:surfnet:diensten:giants", Role.ADMIN, "test@test.org", "Please join");
+            2L, Role.ADMIN, "test@test.org", "Please join");
         given()
             .header(CONTENT_TYPE, "application/json")
             .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
@@ -51,7 +51,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
 
         List<Invitation> collect = StreamSupport.stream(invitationRepository.findAll().spliterator(), false).collect(toList());
         Invitation invitation = StreamSupport.stream(invitationRepository.findAll().spliterator(), false)
-            .filter(i -> i.getTeam().getUrn().equals(clientInvitation.getTeamUrn())).findFirst().get();
+            .filter(i -> i.getTeam().getId().equals(clientInvitation.getTeamId())).findFirst().get();
 
         assertTrue(invitation.getInvitationHash().length() > 150);
 

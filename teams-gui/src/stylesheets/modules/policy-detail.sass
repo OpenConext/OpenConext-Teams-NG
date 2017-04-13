@@ -1,0 +1,149 @@
+.mod-policy-detail, .mod-playground, .mod-violations, .mod-revisions, .mod-conflicts
+
+  div.bottom
+    margin-top: 25px
+    height: 1px
+    border-bottom: 1px solid $light-grey
+
+  .form-element
+    padding: 5px 70px 10px 40px
+    margin: 25px 0px 0px 0px
+
+    &.split
+      padding-right: 10px
+
+      &.no-pad-right
+        padding-right: 0px
+
+    &.success
+      border-left: 6px solid $blue
+
+    &.failure
+      border-left: 6px solid $medium-grey
+
+    &.form-title
+      font-size: large
+      border-bottom: 1px solid $light-grey
+      padding: 25px 300px 25px 40px
+
+    p.label
+      margin: 5px 0px
+      color: $blue
+
+      &.before-em
+        margin: 0px
+
+    p.info
+      font-weight: 700
+      margin-top: 5px
+
+      &.not-selected
+        color: $medium-grey
+
+    em
+      font-size: 13px
+      color: $dark-grey
+
+      &.not-selected
+        color: lighten($dark-grey, 20)
+
+      &.note
+        display: block
+        margin-top: 20px
+
+  .column-3
+    display: inline-block
+    width: 35%
+    vertical-align: top
+
+    &.first
+      width: 30%
+
+    &.middle
+      padding-right: 30px
+
+  .logical-rule
+    float: left
+    line-height: 30px
+    overflow: hidden
+    border-radius: $br
+
+    li
+      float: left
+      list-style: none
+      text-align: center
+
+    a, span
+      display: block
+      width: 60px
+      border: 1px solid $medium-grey
+      text-decoration: none
+      color: $medium-grey
+
+      &.AND, &.EN
+        border-top-left-radius: 5px
+        border-bottom-left-radius: 5px
+
+      &.OR, &.OF
+        border-top-right-radius: 5px
+        border-bottom-right-radius: 5px
+
+      &.selected:hover
+        text-decoration: none
+
+    a:hover, a.selected
+      background: $blue
+      color: #fff
+      border-color: $blue
+
+    span.selected
+      background: $medium-grey
+      color: #fff
+      border-color: $medium-grey
+
+
+  select
+    font-size: inherit
+    color: $dark-grey
+    border: 1px solid $medium-grey
+    background: white
+    height: 30px
+    width: 100%
+
+  .attribute-values
+    margin: 10px 0px 10px 25px
+    padding-left: 20px
+    border-left: 1px solid $medium-grey
+
+    input
+      margin-bottom: 10px
+
+      &.before-em
+        margin-bottom: 0px
+
+  .attribute-container, .value-container
+    position: relative
+
+    a
+      position: absolute
+      right: 8px
+      top: 4px
+      font-size: 18px
+
+      &.remove
+        color: $remove-red
+
+      &.add
+        color: $blue
+      
+  input[type="text"]:disabled
+    background-color: #fbfbfb
+
+  a.plus i
+    margin-right: 10px
+
+  input + em.attribute-value
+    margin-bottom: 10px
+    display: inline-block
+    margin-top: 3px
+

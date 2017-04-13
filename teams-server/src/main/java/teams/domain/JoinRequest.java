@@ -48,7 +48,7 @@ public class JoinRequest {
     public JoinRequest(Person person, Team team, String message) {
         this.person = person;
         this.team = team;
-        this.message = HtmlUtils.htmlEscape(message);
+        this.message = StringUtils.hasText(message) ? message : null;
     }
 
     @JsonIgnore
@@ -58,7 +58,7 @@ public class JoinRequest {
 
     @JsonIgnore
     public String getHtmlMessage() {
-        return isContainsMessage() ? message.replaceAll("\n", "<br/>") : "";
+        return isContainsMessage() ? HtmlUtils.htmlEscape(message).replaceAll("\n", "<br/>") : "";
     }
 
     public String getTeamName() {

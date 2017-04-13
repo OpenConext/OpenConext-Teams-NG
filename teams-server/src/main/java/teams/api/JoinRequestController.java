@@ -29,7 +29,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
 
     @PostMapping("api/teams/join")
     public JoinRequest join(@Validated @RequestBody ClientJoinRequest clientJoinRequest, FederatedUser federatedUser) throws MessagingException, IOException {
-        Team team = teamByUrn(clientJoinRequest.getTeamUrn());
+        Team team = teamById(clientJoinRequest.getTeamId());
         Person person = federatedUser.getPerson();
 
         List<String> admins = admins(team);

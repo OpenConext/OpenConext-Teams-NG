@@ -20,6 +20,7 @@ import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
 import teams.domain.TeamAutocomplete;
+import teams.domain.TeamProperties;
 import teams.domain.TeamSummary;
 import teams.exception.IllegalSearchParamException;
 
@@ -41,7 +42,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
     private TeamMatcher teamMatcher = new TeamMatcher();
 
-    @GetMapping("api/teams/teams/me")
+    @GetMapping("api/teams/my-teams")
     public List<TeamSummary> myTeams(FederatedUser federatedUser) {
         return teamRepository
             .findByMembershipsUrnPersonOrderByNameAsc(federatedUser.getUrn(), new PageRequest(0, Integer.MAX_VALUE))
@@ -51,9 +52,9 @@ public class TeamController extends ApiController implements TeamValidator {
             .collect(toList());
     }
 
-    @GetMapping("api/teams/teams/{urn}")
-    public Object teamByUrn(@PathVariable("urn") String urn, FederatedUser federatedUser) {
-        Team team = teamByUrn(urn);
+    @GetMapping("api/teams/teams/{id}")
+    public Object teamById(@PathVariable("id") Long id, FederatedUser federatedUser) {
+        Team team = teamById(id);
         Optional<Membership> membership = team.member(federatedUser.getUrn());
         return membership.isPresent() ? lazyLoadTeam(team, membership.get().getRole(), federatedUser) : new TeamSummary(team, federatedUser);
     }
@@ -72,13 +73,16 @@ public class TeamController extends ApiController implements TeamValidator {
         return autoCompletes.subList(0, Math.max(0, Math.min(autoCompletes.size(), 15)));
     }
 
+    @GetMapping("api/teams/team-exists-by-name")
+    public boolean teamExistsByName(@RequestParam("name") String name) {
+        return teamRepository.findByUrn(constructUrn(name)).isPresent();
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/teams")
     public Team createTeam(@Validated @RequestBody Team teamProperties, FederatedUser federatedUser) {
         String name = teamProperties.getName();
-        String urn = format("%s:%s", defaultStemName,
-            name.toLowerCase().trim().replaceAll("[ ']", "_"));
+        String urn = constructUrn(name);
         Optional<Team> teamOptional = teamRepository.findByUrn(urn);
 
         teamNameDuplicated(name, teamOptional);
@@ -92,10 +96,15 @@ public class TeamController extends ApiController implements TeamValidator {
         return teamRepository.save(team);
     }
 
+    private String constructUrn(String name) {
+        return format("%s:%s", defaultStemName,
+                name.toLowerCase().trim().replaceAll("[ ']", "_"));
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("api/teams/teams")
-    public Team updateTeam(@Validated @RequestBody Team teamProperties, FederatedUser federatedUser) {
-        Team team = teamByUrn(teamProperties.getUrn());
+    public Team updateTeam(@Validated @RequestBody TeamProperties teamProperties, FederatedUser federatedUser) {
+        Team team = teamById(teamProperties.getId());
 
         String federatedUserUrn = federatedUser.getUrn();
         Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();

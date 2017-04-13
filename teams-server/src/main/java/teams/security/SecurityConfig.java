@@ -94,7 +94,7 @@ public class SecurityConfig {
                 .antMatchers("/**").hasRole("USER");
 
             if (environment.acceptsProfiles("dev")) {
-                http.addFilterBefore(new MockShibbolethFilter(), ShibbolethPreAuthenticatedProcessingFilter.class);
+                http.addFilterBefore(new MockShibbolethFilter(environment.acceptsProfiles("test")), ShibbolethPreAuthenticatedProcessingFilter.class);
                 http.csrf().disable();
             }
 

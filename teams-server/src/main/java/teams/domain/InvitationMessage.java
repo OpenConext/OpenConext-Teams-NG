@@ -44,7 +44,7 @@ public class InvitationMessage {
     public InvitationMessage(Invitation invitation, Person person, String message) {
         this.invitation = invitation;
         this.person = person;
-        this.message = StringUtils.hasText(message) ? HtmlUtils.htmlEscape(message) : null;
+        this.message = StringUtils.hasText(message) ? message : null;
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -55,7 +55,7 @@ public class InvitationMessage {
 
     @JsonIgnore
     public String getHtmlMessage() {
-        return isContainsMessage() ? message.replaceAll("\n", "<br/>") : "";
+        return isContainsMessage() ? HtmlUtils.htmlEscape(message).replaceAll("\n", "<br/>") : "";
     }
 
 }

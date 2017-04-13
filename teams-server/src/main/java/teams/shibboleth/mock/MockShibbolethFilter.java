@@ -13,12 +13,18 @@ import java.util.HashMap;
 
 public class MockShibbolethFilter extends GenericFilterBean {
 
+    private final boolean test;
+
+    public MockShibbolethFilter(boolean test) {
+        this.test = test;
+    }
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         SetHeader wrapper = new SetHeader(request);
 
-        String nameId = request.getHeader("name-id");
+        String nameId = test ? "urn:collab:person:surfnet.nl:jdoe" : request.getHeader("name-id");
         wrapper.setHeader("name-id", nameId == null ? "urn:collab:person:example.com:john.doe" : nameId);
 
         wrapper.setHeader("uid", "John Doe");

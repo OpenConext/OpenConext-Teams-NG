@@ -74,8 +74,7 @@ public class Team {
     public Team(String urn, String name, String description, boolean viewable) {
         this.urn = urn;
         this.name = name;
-        this.description = HtmlUtils.htmlEscape(description);
-        this.description = description;
+        this.description = StringUtils.hasText(description) ? description : null;
         this.viewable = viewable;
     }
 
@@ -91,6 +90,6 @@ public class Team {
 
     @JsonIgnore
     public String getHtmlDescription() {
-        return isContainsDescription() ? description.replaceAll("\n", "<br/>") : "";
+        return isContainsDescription() ? HtmlUtils.htmlEscape(description).replaceAll("\n", "<br/>") : "";
     }
 }

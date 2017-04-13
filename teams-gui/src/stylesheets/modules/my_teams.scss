@@ -1,0 +1,64 @@
+.my_teams {
+    max-width: $medium;
+    margin: 0 auto;
+
+    .search {
+        position: relative;
+
+        input {
+            margin: 25px 0 15px 0;
+            padding: 7px;
+            border: 3px solid $light-grey;
+            border-radius: 3px;
+            font-size: large;
+            width: 100%;
+        }
+
+        i {
+            color: lighten($blue, 5);
+            position: absolute;
+            right: 10px;
+            top: 32px;
+            font-weight: bold;
+            font-size: 25px;
+        }
+    }
+
+    table {
+        width: 100%;
+        border: 1px solid $light-grey;
+        thead {
+
+            background-color: $light-grey;
+
+
+            span {
+                position: relative;
+                display: inline-block;
+                width: 100%;
+                text-transform: uppercase;
+                font-weight: bold;
+                font-size: larger;
+                color: $medium-grey;
+                padding: 7px 2px 7px 0px;
+
+                i {
+                    position: absolute;
+                    right: 5px;
+                    top: 2px;
+                    color: $medium-grey;
+                    &.active {
+                        color: darken($blue, 15);
+                    }
+                }
+            }
+        }
+        tbody {
+            td.membership-count {
+                text-align: right;
+            }
+
+
+        }
+    }
+}

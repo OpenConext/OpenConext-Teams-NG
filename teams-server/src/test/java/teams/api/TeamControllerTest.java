@@ -5,6 +5,7 @@ import teams.AbstractApplicationTest;
 import teams.domain.Membership;
 import teams.domain.Role;
 import teams.domain.Team;
+import teams.domain.TeamProperties;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
 import teams.exception.IllegalSearchParamException;
@@ -34,7 +35,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
             .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
             .when()
-            .get("api/teams/teams/me")
+            .get("api/teams/my-teams")
             .then()
             .statusCode(SC_OK)
             .body("name", hasItems("giants", "gliders", "riders"))
@@ -42,25 +43,24 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamByUrn() throws Exception {
+    public void teamById() throws Exception {
         given()
             .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
             .when()
-            .get("api/teams/teams/{urn}", "nl:surfnet:diensten:riders")
+            .get("api/teams/teams/{id}", 1L)
             .then()
             .statusCode(SC_OK)
             .body("memberships.person.name", hasItems("John Doe"))
             .body("invitations.intendedRole", hasItems("MANAGER"))
             .body("joinRequests.message", hasItems("Please let me join"))
             .body("externalTeams.name", hasItems("name1", "name2"));
-
     }
 
     @Test
     public void teamByUrnNotExistent() throws Exception {
         given()
             .when()
-            .get("api/teams/teams/{urn}", "nope")
+            .get("api/teams/teams/{id}", -1L)
             .then()
             .statusCode(SC_NOT_FOUND);
     }
@@ -70,12 +70,32 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
             .header("name-id", "not-a-member")
             .when()
-            .get("api/teams/teams/{urn}", "nl:surfnet:diensten:riders")
+            .get("api/teams/teams/{id}", 1L)
             .then()
             .statusCode(SC_OK)
             .body("description", equalTo("we are riders"))
             .body("memberships", isEmptyOrNullString())
             .body("role", isEmptyOrNullString());
+    }
+
+    @Test
+    public void teamExistsByNameFalse() throws Exception {
+        boolean exists = given()
+            .param("name", "nope")
+            .when()
+            .get("api/teams/team-exists-by-name")
+            .as(Boolean.class);
+        assertEquals(false, exists);
+    }
+
+    @Test
+    public void teamExistsByNameTrue() throws Exception {
+        boolean exists = given()
+            .param("name", "RIdErS")
+            .when()
+            .get("api/teams/team-exists-by-name")
+            .as(Boolean.class);
+        assertEquals(true, exists);
     }
 
     @Test
@@ -167,7 +187,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
             .header(CONTENT_TYPE, "application/json")
             .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
-            .body(new Team("nl:surfnet:diensten:riders", "changed", "changed", false))
+            .body(new TeamProperties(1L,"changed", false))
             .when()
             .put("api/teams/teams")
             .then()
@@ -186,7 +206,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
             .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
             .header("is-member-of", "guest-org")
             .header(CONTENT_TYPE, "application/json")
-            .body(new Team("nl:surfnet:diensten:riders", "valid", null, true))
+            .body(new TeamProperties(2L,null, true))
             .when()
             .put("api/teams/teams")
             .then()
@@ -199,7 +219,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
             .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
             .header(CONTENT_TYPE, "application/json")
-            .body(new Team("nl:surfnet:diensten:giants", "valid", null, true))
+            .body(new TeamProperties(2L,null, true))
             .when()
             .put("api/teams/teams")
             .then()
@@ -211,7 +231,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     public void updateTeamWithoutBeingMember() throws Exception {
         given()
             .header(CONTENT_TYPE, "application/json")
-            .body(new Team("nl:surfnet:diensten:giants", "valid", null, true))
+            .body(new TeamProperties(2L, null, true))
             .when()
             .put("api/teams/teams")
             .then()

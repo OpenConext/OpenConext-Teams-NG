@@ -46,9 +46,12 @@ public abstract class ApiController {
         localeResolver.getSupportedLocales().addAll(asList(Locale.ENGLISH, nl));
     }
 
-    protected Team teamByUrn(String urn) {
-        return teamRepository.findByUrn(urn)
-            .orElseThrow(() -> new ResourceNotFoundException(format("Team %s does not exist", urn)));
+    protected Team teamById(Long id) {
+        Team team = teamRepository.findOne(id);
+        if (team == null) {
+            throw new ResourceNotFoundException(format("Team %s does not exist", id));
+        }
+        return team;
     }
 
     protected Membership membershipByUrns(String teamUrn, String personUrn) {

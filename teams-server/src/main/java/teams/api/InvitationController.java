@@ -39,7 +39,7 @@ public class InvitationController extends ApiController implements MembershipVal
     public void invitation(HttpServletRequest request,
                            @Validated @RequestBody ClientInvitation clientInvitation,
                            FederatedUser federatedUser) throws IOException, MessagingException {
-        Team team = teamByUrn(clientInvitation.getTeamUrn());
+        Team team = teamById(clientInvitation.getTeamId());
         Person person = federatedUser.getPerson();
 
         membershipRequired(team, person);

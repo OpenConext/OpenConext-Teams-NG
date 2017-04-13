@@ -19,7 +19,7 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
     @Test
     public void join() throws Exception {
         JoinRequest joinRequest = doJoin(new ClientJoinRequest(
-            "nl:surfnet:diensten:riders", "Join request\n"));
+            1L, "Join request\n"));
 
         assertTrue(joinRequest.isContainsMessage());
         assertEquals("Join request<br/>", joinRequest.getHtmlMessage());
@@ -31,7 +31,7 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
     @Test
     public void joinEmptyMessage() throws Exception {
         JoinRequest joinRequest = doJoin(new ClientJoinRequest(
-            "nl:surfnet:diensten:riders", null));
+            1L, null));
 
         assertFalse(joinRequest.isContainsMessage());
         assertEquals("", joinRequest.getHtmlMessage());

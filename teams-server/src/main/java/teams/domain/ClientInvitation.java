@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class ClientInvitation {
 
     @NotNull
-    private String teamUrn;
+    private Long teamId;
 
     @NotNull
     private Role intendedRole;

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class ClientJoinRequest {
 
     @NotNull
-    private String teamUrn;
+    private Long teamId;
 
     private String message;
 
