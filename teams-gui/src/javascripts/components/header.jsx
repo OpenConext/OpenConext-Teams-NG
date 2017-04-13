@@ -19,7 +19,7 @@ class Header extends React.Component {
     render() {
         return (
             <div className="mod-header">
-                <Link to="/"><img src={logo} className="logo"/></Link>
+                <Link to="/" className="logo"><img src={logo} /></Link>
                 <ul className="links">
                     <li>
                         {this.renderProfileLink()}
@@ -27,8 +27,10 @@ class Header extends React.Component {
                     </li>
                     <li dangerouslySetInnerHTML={{__html: I18n.t("header.links.help_html")}}></li>
                     {this.renderExitLogout()}
+                    <li>
+                        <LanguageSelector />
+                    </li>
                 </ul>
-                <LanguageSelector />
             </div>
         );
     }
@@ -37,7 +39,7 @@ class Header extends React.Component {
         const {currentUser} = this.context;
         const welcome = I18n.t("header.welcome") + " " + currentUser.username;
         return (
-            <a href="#" onClick={this.handleToggle.bind(this)}>
+            <a href="#" className="welcome-link" onClick={this.handleToggle.bind(this)}>
                 {welcome}
                 {this.renderDropDownIndicator()}
             </a>
@@ -55,7 +57,7 @@ class Header extends React.Component {
 
     renderExitLogout() {
         return (
-            <li><a href="#" onClick={this.stop.bind(this)}>{I18n.t("header.links.logout")}</a></li>
+            <li className="border-left"><a href="#" onClick={this.stop.bind(this)}>{I18n.t("header.links.logout")}</a></li>
         );
     }
 

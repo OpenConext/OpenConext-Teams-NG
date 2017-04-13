@@ -64,6 +64,11 @@ I18n.translations.en = {
         delete: "Delete"
     },
 
+    profile: {
+        true: "SURFconext Guest",
+        false: "SURFconext Member"
+    },
+
     contact: {
         email: "Service support email"
     },

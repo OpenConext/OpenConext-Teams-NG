@@ -2,7 +2,7 @@ import React from "react";
 import I18n from "i18n-js";
 import { getMyTeams, deleteTeam } from "../api";
 import { setFlash } from "../utils/flash";
-import Utils from "../utils/Utils";
+import { stop } from "../utils/utils";
 
 export default class MyTeams extends React.Component {
 
@@ -27,12 +27,12 @@ export default class MyTeams extends React.Component {
     componentDidUpdate = () => document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     handleShowTeam = (team) => (e) => {
-        Utils.stop(e);
+        stop(e);
         this.props.history.replace("/team/" + team.urn);
     };
 
     handleDeleteTeam = (team) => (e) => {
-        Utils.stop(e);
+        stop(e);
         if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
             deleteTeam(team.id).then(() => this.fetchMyTeams())
             setFlash(I18n.t("teams.flash", { policyName: team.name, action: I18n.t("teams.flash_deleted") }));
@@ -64,7 +64,7 @@ export default class MyTeams extends React.Component {
     }
 
     sort = (column, teams) => (e) => {
-        Utils.stop(e);
+        stop(e);
         if (column.sortFunction === undefined) {
             return;
         }

@@ -15,16 +15,21 @@
         max-width: $medium;
         margin: 0 auto;
         padding: 25px 0;
-        display: flex;
-        align-items: center;
+        position: relative;
 
-        img.logo {
-            height: 50px;
+        a.logo {
+            position: absolute;
+            top: 18px;
+
+            img {
+                height: 65px;
+            }
         }
 
         ul.links {
-            margin-left: auto;
-            font-size: large;
+            display: flex;
+            align-items: center;
+            font-size: larger;
             list-style: none;
 
             li {
@@ -36,47 +41,78 @@
                     margin-right: 30px;
                 }
 
-                &:last-child {
+                &:first-child {
+                    margin-left: auto;
+                }
+
+                &.border-left {
                     border-left: 1px solid white;
                     padding-left: 15px;
                 }
-            }
 
-        }
+                ul.language-selector {
+                    margin-left: 25px;
+                    list-style: none;
+                    border: 1px solid white;
+                    border-radius: 5px;
+                    font-size: medium;
 
-        // Styling for elements
-        .language {
-            margin-left: 25px;
-            font-size: large;
-            list-style: none;
-            border: 1px solid white;
-            border-radius: 5px;
+                    li {
+                        display: inline-block;
+                        padding: 5px 15px;
+                        margin: 0;
+                        a {
+                            font-weight: normal;
+                        }
+                        &.active {
+                            background-color: white;
+                            a {
+                                color: $blue;
+                            }
 
-            li {
-                display: inline-block;
-                padding: 10px;
-                &.active {
-                    background-color: white;
-                    a {
-                        color: $blue;
+                        }
                     }
 
+                }
+
+            }
+            a.welcome-link {
+                position: relative;
+            }
+            ul.user-profile {
+                position: absolute;
+                z-index: 100;
+                padding: 15px 15px 0;
+                list-style: none;
+                min-width: 100px;
+                top: 60px;
+                background: #fff;
+                border-radius: $br;
+                box-shadow: 1px 1px $br rgba(black, .4);
+
+                li {
+                    color: darken($blue, 25);
+                    font-weight: 300;
+                    display: block;
+                    margin-bottom: 5px;
                 }
             }
 
         }
+
     }
 
     .mod-navigation {
         max-width: $medium;
-        margin: 0 auto;
-        font-size: 28px;
+        margin: 20px auto 0;
+        font-size: 26px;
         display: flex;
 
         a {
             color: $light-blue;
             margin-right: 50px;
             padding-bottom: 12px;
+            text-transform: uppercase;
 
             &.active {
                 color: white;
