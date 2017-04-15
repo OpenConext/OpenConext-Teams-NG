@@ -1,5 +1,3 @@
-// Hihi sneaky global
-
 const spinner = {
   onStart: null,
   onStop: null,

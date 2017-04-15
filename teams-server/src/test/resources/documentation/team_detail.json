@@ -1,0 +1,73 @@
+{
+  "id": 1,
+  "urn": "nl:surfnet:diensten:riders",
+  "name": "riders",
+  "description": "we are riders",
+  "viewable": true,
+  "created": 1492103055.000000000,
+  "membershipCount": 1,
+  "memberships": [
+    {
+      "id": 1,
+      "role": "ADMIN",
+      "created": 1492103055.000000000,
+      "person": {
+        "id": 1,
+        "urn": "urn:collab:person:surfnet.nl:jdoe",
+        "name": "John Doe",
+        "email": "john.doe@example.org",
+        "created": 1492103055.000000000,
+        "guest": false,
+        "joinRequests": null
+      },
+      "urnPerson": "urn:collab:person:surfnet.nl:jdoe",
+      "urnTeam": "nl:surfnet:diensten:riders"
+    }
+  ],
+  "invitations": [
+    {
+      "id": 1,
+      "email": "test@example.com",
+      "timestamp": 2491484828910,
+      "invitationHash": "secret",
+      "declined": false,
+      "accepted": false,
+      "invitationMessages": [
+        {
+          "id": 1,
+          "message": "Please join",
+          "timestamp": 2491484828910
+        }
+      ],
+      "intendedRole": "MANAGER",
+      "language": "Dutch"
+    }
+  ],
+  "joinRequests": [
+    {
+      "id": 1,
+      "created": 1492103055.000000000,
+      "message": "Please let me join",
+      "teamName": "riders",
+      "teamUrn": "nl:surfnet:diensten:riders"
+    }
+  ],
+  "externalTeams": [
+    {
+      "id": 1,
+      "description": "test description 1",
+      "groupProvider": "org.example",
+      "identifier": "urn:collab:group:example.org:name1",
+      "name": "name1",
+      "teams": null
+    },
+    {
+      "id": 2,
+      "description": "test description 2",
+      "groupProvider": "org.example",
+      "identifier": "urn:collab:group:example.org:name2",
+      "name": "name2",
+      "teams": null
+    }
+  ]
+}

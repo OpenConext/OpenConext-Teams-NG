@@ -45,8 +45,7 @@ public class TeamController extends ApiController implements TeamValidator {
     @GetMapping("api/teams/my-teams")
     public List<TeamSummary> myTeams(FederatedUser federatedUser) {
         return teamRepository
-            .findByMembershipsUrnPersonOrderByNameAsc(federatedUser.getUrn(), new PageRequest(0, Integer.MAX_VALUE))
-            .getContent()
+            .findByMembershipsUrnPersonOrderByNameAsc(federatedUser.getUrn())
             .stream()
             .map(team -> new TeamSummary(team, federatedUser))
             .collect(toList());
@@ -61,7 +60,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @GetMapping("api/teams/teams")
     public List<TeamAutocomplete> teamSearch(@RequestParam("query") String query, FederatedUser federatedUser) {
-        if (query.length() < 3) {
+        if (query.trim().length() < 3) {
             throw new IllegalSearchParamException("Minimal query length is 3");
         }
         Long id = federatedUser.getPerson().getId();

@@ -1,40 +1,47 @@
 import React from "react";
 import I18n from "i18n-js";
-import { getMyTeams, deleteTeam } from "../api";
+import { getTeamDetail } from "../api";
 import { setFlash } from "../utils/flash";
 import { stop } from "../utils/utils";
+import moment from 'moment';
 
-export default class MyTeams extends React.Component {
+export default class TeamDetail extends React.Component {
 
     constructor(props, context) {
         super(props, context);
         this.state = {
-            teams: [],
-            filteredTeams: [],
-            sorted: {name: "name", order: "down"}
+            team: {},
+            filteredMembers: [],
+            sorted: {name: "status", order: "down"}
         };
     }
 
-    fetchMyTeams() {
-        getMyTeams().then(myTeams => {
-            const teams = myTeams.sort((team, otherTeam) => team.name.localeCompare(otherTeam.name));
-            this.setState({teams: teams, filteredTeams: teams});
+    fetchTeam() {
+        getTeamDetail(this.props.params.id).then(team => {
+            this.setState({
+                team: team,
+                filteredMembers: team.memberships.sort(this.sortByStatus)
+            });
         });
     }
 
-    componentWillMount = () => this.fetchMyTeams();
+    sortByStatus = (member, otherMember) => {
+      return member.status.localeCompare(otherMember.status);
+    };
+
+    componentWillMount = () => this.fetchTeam();
 
     componentDidUpdate = () => document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-    handleShowTeam = (team) => (e) => {
+    handleAcceptJoinRequest = (team) => (e) => {
         stop(e);
-        this.props.history.replace("/team/" + team.id);
+        this.props.history.replace("/team/" + team.urn);
     };
 
     handleDeleteTeam = (team) => (e) => {
         stop(e);
         if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
-            deleteTeam(team.id).then(() => this.fetchMyTeams());
+            deleteTeam(team.id).then(() => this.fetchMyTeams())
             setFlash(I18n.t("teams.flash", { policyName: team.name, action: I18n.t("teams.flash_deleted") }));
         }
     };
@@ -86,7 +93,7 @@ export default class MyTeams extends React.Component {
         return "fa fa-arrow-" + sorted;
     }
 
-    renderTeamsTable() {
+    renderMembersTable() {
         let columns = [
             {title: I18n.t("teams.name"), sort: "name", sortFunction: this.sortByAttribute("name")},
             {title: I18n.t("teams.description"), sort: "description", sortFunction: this.sortByAttribute("description")},
@@ -110,7 +117,7 @@ export default class MyTeams extends React.Component {
                 {this.state.filteredTeams.map((team) =>
                     <tr key={team.urn}>
                         <td>{team.name}</td>
-                        <td>{team.description}</td>
+                        <td>{moment(member.created).format('LLLL')}</td>
                         <td>{team.role.substring(0,1) + team.role.substring(1).toLowerCase()}</td>
                         <td className="membership-count">{team.membershipCount}</td>
                         <td>{this.renderActions(team)}</td>
@@ -126,12 +133,12 @@ export default class MyTeams extends React.Component {
 
     render() {
         return (
-                <div className="my_teams">
+                <div className="team_detail">
                     <div className="search">
                         <input placeholder={I18n.t("teams.searchPlaceHolder")} type="text" onChange={this.search}/>
                         <i className="fa fa-search"></i>
                     </div>
-                    {this.renderTeamsTable()}
+                    {this.renderTeamTable()}
                 </div>
         );
     }

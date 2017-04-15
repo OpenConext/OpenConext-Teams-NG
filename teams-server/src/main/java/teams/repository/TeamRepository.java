@@ -18,7 +18,7 @@ public interface TeamRepository extends PagingAndSortingRepository<Team, Long> {
     Optional<Team> findByUrn(String urn);
 
     @EntityGraph(value = "Team.memberships", type = EntityGraph.EntityGraphType.LOAD)
-    Page<Team> findByMembershipsUrnPersonOrderByNameAsc(String personUrn, Pageable pageable);
+    List<Team> findByMembershipsUrnPersonOrderByNameAsc(String personUrn);
 
     @EntityGraph(value = "Team.memberships", type = EntityGraph.EntityGraphType.LOAD)
     Page<Team> findByNameContainingIgnoreCaseAndMembershipsUrnPersonOrderByNameAsc(String name, String personUrn, Pageable pageable);

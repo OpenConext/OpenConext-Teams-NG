@@ -22,3 +22,5 @@ npm-debug.log
 dist
 node_modules
 build
+
+TODO.txt

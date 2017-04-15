@@ -73,8 +73,7 @@ public class VootApiController {
 
     @GetMapping("api/voot/user/{uid}/groups")
     public List<Group> getGroupsForMember(@PathVariable("uid") String uid) {
-        return teamRepository.findByMembershipsUrnPersonOrderByNameAsc(uid, new PageRequest(0, Integer.MAX_VALUE))
-            .getContent()
+        return teamRepository.findByMembershipsUrnPersonOrderByNameAsc(uid)
             .stream()
             .map(this::convertTeamToGroup)
             .collect(toList());

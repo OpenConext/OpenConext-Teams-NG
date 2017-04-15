@@ -38,7 +38,7 @@ function validFetch(path, options) {
     "X-CSRF-TOKEN": csrfToken
   };
 
-  const fetchOptions = _.merge({}, { headers: { ...contentHeaders } }, options, {
+  const fetchOptions = Object.assign({}, { headers: { ...contentHeaders } }, options, {
     credentials: "same-origin"
   });
 

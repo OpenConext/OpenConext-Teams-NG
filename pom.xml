@@ -19,7 +19,7 @@
 
     <modules>
         <module>teams-server</module>
-        <!--<module>teams-gui</module>-->
+        <module>teams-gui</module>
     </modules>
 
     <scm>

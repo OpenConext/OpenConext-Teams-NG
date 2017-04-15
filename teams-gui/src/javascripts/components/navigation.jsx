@@ -25,10 +25,11 @@ class Navigation extends React.Component {
             if (!this.spinner) {
                 this.spinner = new Spinner({
                     lines: 25, // The number of lines to draw
-                    length: 25, // The length of each line
-                    width: 4, // The line thickness
-                    radius: 20, // The radius of the inner circle
+                    length: 12, // The length of each line
+                    width: 2, // The line thickness
+                    radius: 8, // The radius of the inner circle
                     color: "#4DB3CF", // #rgb or #rrggbb or array of colors
+                    top: "20%"
                 }).spin(this.spinnerNode);
             }
         } else {

@@ -23,7 +23,7 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
     @Test
     public void findByMembershipsPersonUrn() throws Exception {
         List<Team> teams = teamRepository.findByMembershipsUrnPersonOrderByNameAsc(
-            "urn:collab:person:surfnet.nl:jdoe", new PageRequest(0, 10)).getContent();
+            "urn:collab:person:surfnet.nl:jdoe");
         assertEquals(3, teams.size());
     }
 

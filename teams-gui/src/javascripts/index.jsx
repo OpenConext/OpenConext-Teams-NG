@@ -17,6 +17,7 @@ import I18n from "i18n-js";
 
 import { getUser } from "./api";
 import QueryParameter from "./utils/query-parameters";
+import {isEmpty} from "./utils/utils"
 
 import NotFound from "./pages/not_found";
 import Footer from "./components/footer";
@@ -80,11 +81,11 @@ App.propTypes = {
 function determineLanguage() {
   let parameterByName = QueryParameter.getParameterByName("lang");
 
-  if (_.isEmpty(parameterByName)) {
-    parameterByName = Cookies.get("lang");
+  if (isEmpty(parameterByName)) {
+      parameterByName = navigator.language.startsWith("en") ? "en" : "nl";
   }
 
-  I18n.locale = parameterByName ? parameterByName : "en";
+  I18n.locale = parameterByName;
 }
 
 determineLanguage();
