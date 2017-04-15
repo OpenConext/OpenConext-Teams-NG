@@ -51,7 +51,7 @@ class Header extends React.Component {
     }
 
     renderDropDown() {
-        return this.state.dropDownActive ? <UserProfile /> : null;
+        return this.state.dropDownActive ? <UserProfile currentUser={this.context.currentUser}/> : null;
     }
 
 

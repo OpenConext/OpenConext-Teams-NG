@@ -34,7 +34,11 @@ class LanguageSelector extends React.Component {
       Cookies.set("lang", locale, { expires: 356, secure: document.location.protocol.endsWith("https") });
       I18n.locale = locale;
       moment.locale(locale);
-      window.location.search = QueryParameter.replaceQueryParameter("lang", locale);
+        debugger;
+        //TODO write tests for QueryParameter and fix bugs - replace should be add if mssing
+        let replaceQueryParameter = QueryParameter.replaceQueryParameter("lang", locale);
+
+      window.location.search = replaceQueryParameter;
     };
   }
 }
