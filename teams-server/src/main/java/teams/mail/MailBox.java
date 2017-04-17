@@ -1,5 +1,7 @@
 package teams.mail;
 
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.MustacheFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import teams.domain.Invitation;
@@ -9,6 +11,7 @@ import teams.domain.Language;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +23,7 @@ public class MailBox {
     private String emailFrom;
     private String teamsWhiteLabel;
 
-    private MailTemplateEngine templateEngine = new MailTemplateEngine();
+    private final MustacheFactory mustacheFactory = new DefaultMustacheFactory();
 
     public MailBox(JavaMailSender mailSender, String emailFrom, String baseUrl, String teamsWhiteLabel) {
         this.mailSender = mailSender;
@@ -78,7 +81,7 @@ public class MailBox {
     }
 
     private void sendMail(String templateName, String subject, Map<String, Object> variables, String... to ) throws MessagingException, IOException {
-        String html = templateEngine.mailTemplate(templateName, variables);
+        String html = this.mailTemplate(templateName, variables);
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, false);
@@ -95,6 +98,10 @@ public class MailBox {
 
     protected void doSendMail(MimeMessage message) {
         new Thread(() -> mailSender.send(message)).start();
+    }
+
+    private String mailTemplate(String templateName, Map<String, Object> context) throws IOException {
+        return mustacheFactory.compile(templateName).execute(new StringWriter(), context).toString();
     }
 
 }
