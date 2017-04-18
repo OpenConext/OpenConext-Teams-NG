@@ -36,18 +36,6 @@ I18n.translations.en = {
         external_teams: "Institution Teams"
     },
 
-    team: {
-        edit: "Edit",
-        delete: "Delete",
-        name: "Name",
-        description: "Description",
-        actions: "...",
-        confirmation: "Are you sure you want to delete team {{name}}?",
-        deleted: "Successfully deleted team {{name}}",
-        no_found: "No teams found",
-        searchPlaceHolder: "Search..."
-    },
-
     teams: {
         name: "Name",
         description: "Description",
@@ -64,13 +52,43 @@ I18n.translations.en = {
         delete: "Delete"
     },
 
+    team_detail: {
+        back: "BACK TO MY TEAMS",
+        urn: "Identifier",
+        description: "Description",
+        personalNote: "Personal note",
+        viewable: "Public team",
+        viewable_info: "People can see team information and request membership for this team",
+        name: "Name",
+        actions: "...",
+        confirmation: "Are you sure you want to delete team {{name}}?",
+        deleted: "Successfully deleted team {{name}}",
+        no_found: "No teams found",
+        leave: "Leave",
+        team_members: "Team Members",
+        membership: {
+            name: "name",
+            email: "email",
+            status: "status",
+            role: "role"
+        },
+        pending: "PENDING",
+        resend_invitation: "Resend invitation",
+        delete: "Delete",
+        edit: "Edit",
+        invite: "Invite",
+        link_to_institution_team: "Link to institution team",
+        search_members_placeholder: "Search members",
+        no_found: "No members found"
+    },
+
+    sort: {
+        label: "SORT BY"
+    },
+
     profile: {
         true: "SURFconext Guest",
         false: "SURFconext Member"
-    },
-
-    contact: {
-        email: "Service support email"
     },
 
     not_found: {

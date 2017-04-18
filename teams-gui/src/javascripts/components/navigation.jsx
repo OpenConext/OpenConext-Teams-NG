@@ -4,9 +4,9 @@ import I18n from "i18n-js";
 import Spinner from "spin.js";
 import spinner from "../lib/spin";
 
-import Link from "react-router/Link";
+import {NavLink} from "react-router-dom";
 
-class Navigation extends React.Component {
+export default class Navigation extends React.Component {
     constructor() {
         super();
 
@@ -51,7 +51,7 @@ class Navigation extends React.Component {
 
     renderItem(href, value) {
         return (
-            <Link activeClassName="active" to={href}>{I18n.t("navigation." + value)}</Link>
+            <NavLink activeClassName="active" to={href}>{I18n.t("navigation." + value)}</NavLink>
         );
     }
 
@@ -60,9 +60,3 @@ class Navigation extends React.Component {
     }
 
 }
-
-Navigation.contextTypes = {
-    currentUser: React.PropTypes.object
-};
-
-export default Navigation;

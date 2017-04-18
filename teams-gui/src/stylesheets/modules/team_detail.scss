@@ -1,0 +1,128 @@
+.team-detail {
+    max-width: $medium;
+    margin: 0 auto;
+
+    .team-header {
+        padding: 35px 0 15px 0;
+        border-bottom: 1px solid $lighter-grey;
+
+        a.back {
+            font-weight: bold;
+            font-size: 18px;
+            text-decoration: none;
+            color: $blue;
+            &:hover, &:visited {
+                text-decoration: none
+            }
+            i {
+                margin-right: 15px;
+            }
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            h2 {
+                font-size: 30px;
+                margin-right: auto;
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    .team-attributes {
+        margin-top: 20px;
+
+        .team-attribute {
+            label {
+                display: block;
+                color: $medium-grey;
+                font-size: 16px;
+                text-transform: uppercase;
+                font-weight: bold;
+                margin: 5px 0;
+
+                &.info-after {
+                    margin-bottom: 0;
+                }
+            }
+            em {
+                font-size: 11px;
+                color: $medium-grey;
+            }
+
+            span {
+                position: relative;
+                border-bottom: 1px solid $light-grey;
+                border-top-left-radius: $br;
+                border-top-right-radius: $br;
+                background-color: $light-grey;
+                width: 100%;
+                padding: 1px 8px;
+                input {
+                    width: 100%;
+                    border: none;
+                }
+
+                i {
+                    color: $blue;
+                    position: absolute;
+                    top: 2px;
+                    right: 3px;
+                }
+
+            }
+
+        }
+    }
+
+    .search {
+        position: relative;
+
+        input {
+            margin: 25px 0 15px 0;
+            padding: 10px;
+            border: 2px solid $light-grey;
+            border-radius: 2px;
+            font-size: medium;
+            width: 100%;
+        }
+
+        i {
+            color: lighten($blue, 5);
+            position: absolute;
+            right: 10px;
+            top: 32px;
+            font-size: 24px;
+        }
+    }
+
+    table {
+        width: 100%;
+        border: 1px solid $light-grey;
+        thead {
+
+            background-color: $light-grey;
+
+
+            span {
+                position: relative;
+                display: inline-block;
+                width: 100%;
+                text-transform: uppercase;
+                font-weight: bold;
+                font-size: larger;
+                color: $medium-grey;
+                padding: 7px 2px 7px 0px;
+            }
+        }
+        tbody {
+            td.membership-count {
+                text-align: right;
+            }
+
+
+        }
+    }
+}

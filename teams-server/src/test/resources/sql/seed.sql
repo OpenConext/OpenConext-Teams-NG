@@ -1,7 +1,7 @@
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
 VALUES (1, 'nl:surfnet:diensten:riders', 'riders', 'we are riders', 1);
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
-VALUES (2, 'nl:surfnet:diensten:giants', 'giants', 'we are giants', 1);
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `personal_note`)
+VALUES (2, 'nl:surfnet:diensten:giants', 'giants', 'we are giants', 1, 'Why did I create this team');
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
 VALUES (3, 'nl:surfnet:diensten:gliders', 'gliders', 'we are gliders', 1);
 

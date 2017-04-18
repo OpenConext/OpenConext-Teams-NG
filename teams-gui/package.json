@@ -35,15 +35,15 @@
     "moment": "2.18.1",
     "node-sass": "3.10.1",
     "qs": "6.2.1",
-    "react": "15.3.2",
-    "react-dom": "15.3.2",
-    "react-router": "4.0.0-alpha.4",
-    "react-select": "1.0.0-rc.2",
+    "react": "15.5.4",
+    "react-dom": "15.5.4",
+    "react-router-dom": "4.1.1",
     "sass-loader": "4.0.2",
     "spin.js": "2.3.2",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "1.13.2",
-    "webpack-dev-server": "1.16.1"
+    "webpack-dev-server": "1.16.1",
+    "react-copy-to-clipboard": "^4.3.0"
   }
 }

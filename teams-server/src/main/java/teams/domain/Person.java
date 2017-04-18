@@ -45,6 +45,7 @@ public class Person {
     private boolean guest;
 
     @OneToMany(mappedBy = "person", orphanRemoval = true)
+    @JsonIgnore
     private Set<JoinRequest> joinRequests = new HashSet<>();
 
     public Person(String urn, String name, String email, boolean isGuest) {

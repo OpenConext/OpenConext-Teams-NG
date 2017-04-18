@@ -1,0 +1,26 @@
+{
+  "password": null,
+  "username": "John Doe",
+  "authorities": [
+    {
+      "authority": "ROLE_ADMIN"
+    },
+    {
+      "authority": "ROLE_USER"
+    }
+  ],
+  "accountNonExpired": true,
+  "accountNonLocked": true,
+  "credentialsNonExpired": true,
+  "enabled": true,
+  "person": {
+    "id": 1,
+    "urn": "urn:collab:person:surfnet.nl:jdoe",
+    "name": "John Doe",
+    "email": "john.doe@example.org",
+    "created": 1492498956.000000000,
+    "guest": false,
+    "joinRequests": null
+  },
+  "urn": "urn:collab:person:surfnet.nl:jdoe"
+}

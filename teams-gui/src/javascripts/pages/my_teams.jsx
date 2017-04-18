@@ -1,13 +1,13 @@
 import React from "react";
 import I18n from "i18n-js";
-import { getMyTeams, deleteTeam } from "../api";
-import { setFlash } from "../utils/flash";
-import { stop } from "../utils/utils";
+import {deleteTeam, getMyTeams} from "../api";
+import {setFlash} from "../utils/flash";
+import {stop} from "../utils/utils";
 
 export default class MyTeams extends React.Component {
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
         this.state = {
             teams: [],
             filteredTeams: [],
@@ -26,21 +26,22 @@ export default class MyTeams extends React.Component {
 
     componentDidUpdate = () => document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-    handleShowTeam = (team) => (e) => {
+    showTeam = (team) => (e) => {
         stop(e);
-        this.props.history.replace("/team/" + team.id);
+        //http://stackoverflow.com/questions/42123261/programmatically-navigate-using-react-router-v4
+        this.props.history.push("/teams/" + team.id);
     };
 
     handleDeleteTeam = (team) => (e) => {
         stop(e);
         if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
             deleteTeam(team.id).then(() => this.fetchMyTeams());
-            setFlash(I18n.t("teams.flash", { policyName: team.name, action: I18n.t("teams.flash_deleted") }));
+            setFlash(I18n.t("teams.flash", {policyName: team.name, action: I18n.t("teams.flash_deleted")}));
         }
     };
 
     renderActions = (team) => (<div className="actions">
-        <a href="#" onClick={this.handleShowTeam(team)}>
+        <a href="#" onClick={this.showTeam(team)}>
             <i className="fa fa-edit"></i>
         </a>
         <a href="#" onClick={this.handleDeleteTeam(team)}>
@@ -79,7 +80,7 @@ export default class MyTeams extends React.Component {
         this.setState({sortedTeams: sortedTeams, sorted: {name: column.sort, order: newOrder}})
     };
 
-    sortByAttribute = (name) =>  (a, b) => a[name].localeCompare(b[name]);
+    sortByAttribute = (name) => (a, b) => a[name].localeCompare(b[name]);
 
     iconClassName(column) {
         const sorted = this.state.sorted.name === column.sort ? (this.state.sorted.order + " active") : "down";
@@ -87,38 +88,49 @@ export default class MyTeams extends React.Component {
     }
 
     renderTeamsTable() {
+        const {router} = this.context;
         let columns = [
             {title: I18n.t("teams.name"), sort: "name", sortFunction: this.sortByAttribute("name")},
-            {title: I18n.t("teams.description"), sort: "description", sortFunction: this.sortByAttribute("description")},
+            {
+                title: I18n.t("teams.description"),
+                sort: "description",
+                sortFunction: this.sortByAttribute("description")
+            },
             {title: I18n.t("teams.role"), sort: "role", sortFunction: this.sortByAttribute("role")},
-            {title: I18n.t("teams.membershipCount"), sort: "membershipCount", sortFunction: (a, b) => a > b ? -1 : a < b ? 1 : 0 },
+            {
+                title: I18n.t("teams.membershipCount"),
+                sort: "membershipCount",
+                sortFunction: (a, b) => a > b ? -1 : a < b ? 1 : 0
+            },
             {title: I18n.t("teams.actions")}
         ];
-        if (this.state.filteredTeams.length !== 0) {
-            return (<table>
-                <thead>
-                <tr>
-                    {columns.map((column) =>
-                        <th key={column.title} onClick={this.sort(column, this.state.filteredTeams)}>
+        const filteredTeams = this.state.filteredTeams;
+        if (filteredTeams.length !== 0) {
+            return (
+                <table>
+                    <thead>
+                    <tr>
+                        {columns.map((column) =>
+                            <th key={column.title} onClick={this.sort(column, filteredTeams)}>
                             <span>{column.title}
                                 {column.sortFunction && <i className={this.iconClassName(column)}></i>}
                             </span>
-                        </th>)}
-                </tr>
-                </thead>
-                <tbody>
-                {this.state.filteredTeams.map((team) =>
-                    <tr key={team.urn}>
-                        <td>{team.name}</td>
-                        <td>{team.description}</td>
-                        <td>{team.role.substring(0,1) + team.role.substring(1).toLowerCase()}</td>
-                        <td className="membership-count">{team.membershipCount}</td>
-                        <td>{this.renderActions(team)}</td>
+                            </th>)}
                     </tr>
-                )}
+                    </thead>
+                    <tbody>
+                    {filteredTeams.map((team) =>
+                        <tr key={team.urn} onClick={this.showTeam(team)}>
+                            <td>{team.name}</td>
+                            <td>{team.description}</td>
+                            <td>{team.role.substring(0, 1) + team.role.substring(1).toLowerCase()}</td>
+                            <td className="membership-count">{team.membershipCount}</td>
+                            <td>{this.renderActions(team)}</td>
+                        </tr>
+                    )}
 
-                </tbody>
-            </table>)
+                    </tbody>
+                </table>)
         } else {
             return <div><em>{I18n.t("teams.no_found")}</em></div>
         }
@@ -126,16 +138,16 @@ export default class MyTeams extends React.Component {
 
     renderUserDropDown() {
         return (
-            <div class="btn-group open">
-                <a class="btn btn-primary" href="#"><i class="fa fa-user fa-fw"></i> User</a>
-                <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+            <div className="btn-group open">
+                <a className="btn btn-primary" href="#"><i className="fa fa-user fa-fw"></i> User</a>
+                <a className="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
                     <span className="fa fa-caret-down" title="Toggle dropdown menu"></span>
                 </a>
-                <ul class="dropdown-menu">
+                <ul className="dropdown-menu">
                     <li><a href="#"><i className="fa fa-pencil fa-fw"></i> Edit</a></li>
                     <li><a href="#"><i className="fa fa-trash-o fa-fw"></i> Delete</a></li>
                     <li><a href="#"><i className="fa fa-ban fa-fw"></i> Ban</a></li>
-                    <li class="divider"></li>
+                    <li className="divider"></li>
                     <li><a href="#"><i className="fa fa-unlock"></i> Make admin</a></li>
                 </ul>
             </div>
@@ -144,15 +156,14 @@ export default class MyTeams extends React.Component {
 
     render() {
         return (
-                <div className="my_teams">
-                    {this.renderUserDropDown()}
-                    <div className="search">
-                        <input placeholder={I18n.t("teams.searchPlaceHolder")} type="text" onChange={this.search}/>
-                        <i className="fa fa-search"></i>
-                    </div>
-                    {this.renderTeamsTable()}
+            <div className="my_teams">
+                {this.renderUserDropDown()}
+                <div className="search">
+                    <input placeholder={I18n.t("teams.searchPlaceHolder")} type="text" onChange={this.search}/>
+                    <i className="fa fa-search"></i>
                 </div>
+                {this.renderTeamsTable()}
+            </div>
         );
     }
 }
-

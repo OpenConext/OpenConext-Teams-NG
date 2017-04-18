@@ -3,22 +3,22 @@
   "urn": "nl:surfnet:diensten:riders",
   "name": "riders",
   "description": "we are riders",
+  "personalNote": null,
   "viewable": true,
-  "created": 1492103055.000000000,
+  "created": 1492498956.000000000,
   "membershipCount": 1,
   "memberships": [
     {
       "id": 1,
       "role": "ADMIN",
-      "created": 1492103055.000000000,
+      "created": 1492498956.000000000,
       "person": {
         "id": 1,
         "urn": "urn:collab:person:surfnet.nl:jdoe",
         "name": "John Doe",
         "email": "john.doe@example.org",
-        "created": 1492103055.000000000,
-        "guest": false,
-        "joinRequests": null
+        "created": 1492498956.000000000,
+        "guest": false
       },
       "urnPerson": "urn:collab:person:surfnet.nl:jdoe",
       "urnTeam": "nl:surfnet:diensten:riders"
@@ -46,7 +46,15 @@
   "joinRequests": [
     {
       "id": 1,
-      "created": 1492103055.000000000,
+      "person": {
+        "id": 6,
+        "urn": "urn:collab:person:example.com:john.doe",
+        "name": "John Doe Junior",
+        "email": "UNKNOWN_ATTRIBUTE",
+        "created": 1492498956.000000000,
+        "guest": true
+      },
+      "created": 1492498956.000000000,
       "message": "Please let me join",
       "teamName": "riders",
       "teamUrn": "nl:surfnet:diensten:riders"
@@ -54,19 +62,19 @@
   ],
   "externalTeams": [
     {
-      "id": 1,
-      "description": "test description 1",
-      "groupProvider": "org.example",
-      "identifier": "urn:collab:group:example.org:name1",
-      "name": "name1",
-      "teams": null
-    },
-    {
       "id": 2,
       "description": "test description 2",
       "groupProvider": "org.example",
       "identifier": "urn:collab:group:example.org:name2",
       "name": "name2",
+      "teams": null
+    },
+    {
+      "id": 1,
+      "description": "test description 1",
+      "groupProvider": "org.example",
+      "identifier": "urn:collab:group:example.org:name1",
+      "name": "name1",
       "teams": null
     }
   ]

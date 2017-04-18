@@ -5,7 +5,8 @@ import QueryParameter from "../utils/query-parameters";
 import {stop} from "../utils/utils";
 import moment from 'moment';
 
-class LanguageSelector extends React.Component {
+export default class LanguageSelector extends React.Component {
+
   render() {
     return (
       <ul className="language-selector">
@@ -34,7 +35,6 @@ class LanguageSelector extends React.Component {
       Cookies.set("lang", locale, { expires: 356, secure: document.location.protocol.endsWith("https") });
       I18n.locale = locale;
       moment.locale(locale);
-        debugger;
         //TODO write tests for QueryParameter and fix bugs - replace should be add if mssing
         let replaceQueryParameter = QueryParameter.replaceQueryParameter("lang", locale);
 
@@ -42,5 +42,3 @@ class LanguageSelector extends React.Component {
     };
   }
 }
-
-export default LanguageSelector;

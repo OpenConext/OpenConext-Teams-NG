@@ -1,0 +1,31 @@
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"] + label.checkbox-label span.checkbox-label {
+  font-size: 11px;
+  background-color: white;
+  border: 1px solid $blue;
+  border-radius: 3px;
+  padding: 1px 2px;
+  i {
+    color: transparent;
+    padding: 0 1px;
+}
+}
+
+input[type="checkbox"]:checked + label.checkbox-label span.checkbox-label {
+  border: 3px solid $blue;
+  border-radius: 3px;
+  box-shadow: none;
+  padding: 0;
+  i {
+    background-color: $blue;
+    color: white;
+    padding: 3px 2px;
+}
+}
+
+.pointer_hand {
+  cursor: pointer;
+}

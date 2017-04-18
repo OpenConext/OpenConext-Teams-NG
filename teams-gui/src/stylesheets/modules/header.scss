@@ -105,14 +105,13 @@
     .mod-navigation {
         max-width: $medium;
         margin: 20px auto 0;
-        font-size: 26px;
+        font-size: 22px;
         display: flex;
 
         a {
             color: $light-blue;
             margin-right: 50px;
             padding-bottom: 12px;
-            text-transform: uppercase;
 
             &.active {
                 color: white;

@@ -51,6 +51,9 @@ public class Team {
     private String description;
 
     @Column
+    private String personalNote;
+
+    @Column
     private boolean viewable;
 
     @Column

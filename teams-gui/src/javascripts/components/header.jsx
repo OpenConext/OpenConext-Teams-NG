@@ -1,13 +1,13 @@
 import React from "react";
 import I18n from "i18n-js";
 import {render, unmountComponentAtNode} from "react-dom";
-import Link from "react-router/Link";
+import {Link} from "react-router-dom";
 import logo from "../../images/logo.jpg";
 import LanguageSelector from "./language_selector";
 import UserProfile from "./user_profile";
 import Logout from "../pages/logout";
 
-class Header extends React.Component {
+export default class Header extends React.Component {
 
     constructor() {
         super();
@@ -17,13 +17,14 @@ class Header extends React.Component {
     }
 
     render() {
+        const currentUser = this.props.currentUser;
         return (
             <div className="mod-header">
                 <Link to="/" className="logo"><img src={logo} /></Link>
                 <ul className="links">
                     <li>
-                        {this.renderProfileLink()}
-                        {this.renderDropDown()}
+                        {this.renderProfileLink(currentUser)}
+                        {this.renderDropDown(currentUser)}
                     </li>
                     <li dangerouslySetInnerHTML={{__html: I18n.t("header.links.help_html")}}></li>
                     {this.renderExitLogout()}
@@ -35,8 +36,7 @@ class Header extends React.Component {
         );
     }
 
-    renderProfileLink() {
-        const {currentUser} = this.context;
+    renderProfileLink(currentUser) {
         const welcome = I18n.t("header.welcome") + " " + currentUser.username;
         return (
             <a href="#" className="welcome-link" onClick={this.handleToggle.bind(this)}>
@@ -50,8 +50,8 @@ class Header extends React.Component {
         return this.state.dropDownActive ? <i className="fa fa-caret-up"/> : <i className="fa fa-caret-down"/>;
     }
 
-    renderDropDown() {
-        return this.state.dropDownActive ? <UserProfile currentUser={this.context.currentUser}/> : null;
+    renderDropDown(currentUser) {
+        return this.state.dropDownActive ? <UserProfile currentUser={currentUser}/> : null;
     }
 
 
@@ -74,9 +74,3 @@ class Header extends React.Component {
         this.setState({dropDownActive: !this.state.dropDownActive});
     }
 }
-
-Header.contextTypes = {
-    currentUser: React.PropTypes.object
-};
-
-export default Header;

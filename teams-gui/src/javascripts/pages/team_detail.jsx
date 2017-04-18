@@ -1,9 +1,14 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import I18n from "i18n-js";
-import { getTeamDetail } from "../api";
-import { setFlash } from "../utils/flash";
-import { stop } from "../utils/utils";
-import moment from 'moment';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import {deleteTeam, getTeamDetail, leaveTeam} from "../api";
+import {setFlash} from "../utils/flash";
+import {stop} from "../utils/utils";
+import moment from "moment";
+import SortDropDown from "../components/sort_drop_down";
+import InlineEditable from "../components/inline_editable";
+
 
 export default class TeamDetail extends React.Component {
 
@@ -12,26 +17,42 @@ export default class TeamDetail extends React.Component {
         this.state = {
             team: {},
             filteredMembers: [],
-            sorted: {name: "status", order: "down"}
+            sortAttributes: [
+                {name: "status", order: "down", current: true},
+                {name: "name", order: "down", current: false},
+                {name: "email", order: "down", current: false},
+                {name: "role", order: "down", current: false}
+            ],
+            editableTeamAttributes: {
+                description: false,
+                personalNote: false
+            },
+            loaded: false,
+            copiedToClipboard: true
         };
     }
 
     fetchTeam() {
-        getTeamDetail(this.props.params.id).then(team => {
+        getTeamDetail(this.props.match.params.id).then(team => {
             this.setState({
                 team: team,
-                filteredMembers: team.memberships.sort(this.sortByStatus)
+                filteredMembers: team.memberships.concat(team.joinRequests).sort(this.sortByStatus),
+                loaded: true
             });
         });
     }
 
     sortByStatus = (member, otherMember) => {
-      return member.status.localeCompare(otherMember.status);
+        const isJoinRequestMember = !member.role;
+        const isJoinRequestOtherMember = !otherMember.role;
+        if ((isJoinRequestMember && isJoinRequestOtherMember) ||
+            (!isJoinRequestMember && !isJoinRequestOtherMember)) {
+            return member.created > otherMember.created ? 1 : member.created === otherMember.created ? 0 : -1
+        }
+        return isJoinRequestMember ? 1 : -1;
     };
 
     componentWillMount = () => this.fetchTeam();
-
-    componentDidUpdate = () => document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     handleAcceptJoinRequest = (team) => (e) => {
         stop(e);
@@ -39,21 +60,17 @@ export default class TeamDetail extends React.Component {
     };
 
     handleDeleteTeam = (team) => (e) => {
+        const {router} = this.context;
         stop(e);
         if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
-            deleteTeam(team.id).then(() => this.fetchMyTeams())
-            setFlash(I18n.t("teams.flash", { policyName: team.name, action: I18n.t("teams.flash_deleted") }));
+            deleteTeam(team.id).then(() => router.transitionTo("my-teams"));
+            setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_deleted")}));
         }
     };
 
-    renderActions = (team) => (<div className="actions">
-        <a href="#" onClick={this.handleShowTeam(team)}>
-            <i className="fa fa-edit"></i>
-        </a>
-        <a href="#" onClick={this.handleDeleteTeam(team)}>
-            <i className="fa fa-remove"></i>
-        </a>
-    </div>);
+    handleLeaveTeam = (team) => (e) => {
+
+    };
 
     search = (e) => {
         let input = e.target.value;
@@ -64,83 +81,141 @@ export default class TeamDetail extends React.Component {
         }
     };
 
-    filterTeams(input) {
-        return this.state.teams.filter((team) =>
-            team.name.toLowerCase().includes(input) || team.description.toLowerCase().includes(input)
-        )
-    }
-
-    sort = (column, teams) => (e) => {
+    sort = (item) => (e) => {
         stop(e);
-        if (column.sortFunction === undefined) {
-            return;
-        }
-        let sortedTeams = teams.sort(column.sortFunction);
-        let newOrder = "down";
-        if (this.state.sorted.name === column.sort) {
-            newOrder = this.state.sorted.order === "down" ? "up" : "down";
-            if (newOrder === "up") {
-                sortedTeams = sortedTeams.reverse();
-            }
-        }
-        this.setState({sortedTeams: sortedTeams, sorted: {name: column.sort, order: newOrder}})
+        // if (column.sortFunction === undefined) {
+        //     return;
+        // }
+        // let sortedTeams = teams.sort(column.sortFunction);
+        // let newOrder = "down";
+        // if (this.state.sorted.name === column.sort) {
+        //     newOrder = this.state.sorted.order === "down" ? "up" : "down";
+        //     if (newOrder === "up") {
+        //         sortedTeams = sortedTeams.reverse();
+        //     }
+        // }
+        // this.setState({sortedTeams: sortedTeams, sorted: {name: column.sort, order: newOrder}})
     };
 
-    sortByAttribute = (name) =>  (a, b) => a[name].localeCompare(b[name]);
+    sortByAttribute = (name) => (a, b) => a[name].localeCompare(b[name]);
 
-    iconClassName(column) {
-        const sorted = this.state.sorted.name === column.sort ? (this.state.sorted.order + " active") : "down";
-        return "fa fa-arrow-" + sorted;
+    teamDetailHeader(team, role) {
+        return (
+            <section className="team-header">
+                <Link className="back" to="/my-teams"><i className="fa fa-arrow-left"></i>
+                    {I18n.t("team_detail.back")}
+                </Link>
+                <div className="actions">
+                    <h2>{team.name}</h2>
+                    <a className="button" href="#"
+                       onClick={this.handleLeaveTeam(team)}>{I18n.t("team_detail.leave")}
+                        <i className="fa fa-sign-out"></i>
+                    </a>
+                    {role === "ADMIN" && <a className="button" href="#"
+                       onClick={this.handleDeleteTeam(team)}>{I18n.t("team_detail.delete")}
+                        <i className="fa fa-trash"></i>
+                    </a>}
+                </div>
+            </section>
+        );
     }
 
-    renderMembersTable() {
-        let columns = [
-            {title: I18n.t("teams.name"), sort: "name", sortFunction: this.sortByAttribute("name")},
-            {title: I18n.t("teams.description"), sort: "description", sortFunction: this.sortByAttribute("description")},
-            {title: I18n.t("teams.role"), sort: "role", sortFunction: this.sortByAttribute("role")},
-            {title: I18n.t("teams.membershipCount"), sort: "membershipCount", sortFunction: (a, b) => a > b ? -1 : a < b ? 1 : 0 },
-            {title: I18n.t("teams.actions")}
-        ];
-        if (this.state.filteredTeams.length !== 0) {
+    changeDescription = (description) => {
+        debugger;
+    };
+
+    changeViewable = e => {
+
+    };
+
+    teamDetailAttributes(team, role) {
+        const isAdmin = role === "ADMIN";
+        return (
+            <section className="team-attributes">
+                <div className="inline-editable">
+                    <label>{I18n.t(name)}</label>
+                    <CopyToClipboard text={team.urn}
+                                     onCopy={() => this.setState({copiedToClipboard: true})}>
+                        <span>{team.urn}<i className="fa fa-copy"></i></span>
+                    </CopyToClipboard>
+
+                </div>
+                {isAdmin && <InlineEditable name="team_detail.description" value={team.urn} onChange={this.changeDescription}/>}
+                {isAdmin && <InlineEditable name="team_detail.personalNote" value={team.personalNote} onChange={this.changeDescription}/>}
+                <div className="team-viewable">
+                    <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
+                    <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>
+                    <input type="checkbox" id="viewable" name="viewable" checked={team.viewable}
+                           onChange={this.changeViewable}/>
+                    <label className="checkbox-label" htmlFor="viewable"><span className="checkbox-labe"><i className="fa fa-check"></i></span></label>
+                </div>
+            </section>
+        );
+    }
+
+    currentUserRoleInTeam = (team, currentUser) => team.memberships.filter(membership => membership.urnPerson === currentUser.urn)[0].role;
+
+    statusOfMembership = (member) => member.role ? moment(member.created).format('LLLL') :
+        <span className="status-pending"><i className="fa fa-clock-o"></i>{I18n.t("team_detail.pending")}</span>;
+
+    roleOfMembership = (member) => member.role ?
+        member.role.substring(0, 1) + member.role.substring(1).toLowerCase() :
+        "Member";
+
+    renderMembersTable(team) {
+        if (this.state.filteredMembers.length !== 0) {
             return (<table>
                 <thead>
                 <tr>
-                    {columns.map((column) =>
-                        <th key={column.title} onClick={this.sort(column, this.state.filteredTeams)}>
-                            <span>{column.title}
-                                {column.sortFunction && <i className={this.iconClassName(column)}></i>}
-                            </span>
-                        </th>)}
+                    <th>{I18n.t("team_detail.membership.name")}</th>
+                    <th>{I18n.t("team_detail.membership.email")}</th>
+                    <th>{I18n.t("team_detail.membership.status")}</th>
+                    <th>{I18n.t("team_detail.membership.role")}</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                {this.state.filteredTeams.map((team) =>
-                    <tr key={team.urn}>
-                        <td>{team.name}</td>
-                        <td>{moment(member.created).format('LLLL')}</td>
-                        <td>{team.role.substring(0,1) + team.role.substring(1).toLowerCase()}</td>
-                        <td className="membership-count">{team.membershipCount}</td>
-                        <td>{this.renderActions(team)}</td>
+                {this.state.filteredMembers.map((member) =>
+                    <tr key={member.urnPerson}>
+                        <td>{member.person.name}</td>
+                        <td>{member.person.email}</td>
+                        <td>{this.statusOfMembership(member)}</td>
+                        <td>{this.roleOfMembership(member)}</td>
+                        <td className="actions">...</td>
                     </tr>
                 )}
 
                 </tbody>
             </table>)
         } else {
-            return <div><em>{I18n.t("teams.no_found")}</em></div>
+            return <div><em>{I18n.t("team_detail.no_found")}</em></div>
         }
     }
 
     render() {
+        const {team, sortAttributes, loaded} = this.state;
+        const {currentUser} = this.props;
+        if (!loaded) {
+            return null;
+        }
+        const role = this.currentUserRoleInTeam(team, currentUser);
+
         return (
-                <div className="team_detail">
+            <div className="team-detail">
+                {this.teamDetailHeader(team, role)}
+                {this.teamDetailAttributes(team, role)}
+                <h2>{`${I18n.t("team_detail.team_members")} (${team.memberships.length + team.joinRequests.length})`}</h2>
+                <section className="team-detail-controls">
+                    <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                     <div className="search">
-                        <input placeholder={I18n.t("teams.searchPlaceHolder")} type="text" onChange={this.search}/>
+                        <input placeholder={I18n.t("team_detail.search_members_placeholder")} type="text"
+                               onChange={this.search}/>
                         <i className="fa fa-search"></i>
                     </div>
-                    {this.renderTeamTable()}
-                </div>
+
+                </section>
+                {this.renderMembersTable(team)}
+            </div>
         );
     }
 }
-

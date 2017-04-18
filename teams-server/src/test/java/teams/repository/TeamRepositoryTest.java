@@ -16,8 +16,9 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByUrn() throws Exception {
-        Optional<Team> teamOptional = teamRepository.findByUrn("nl:surfnet:diensten:giants");
-        assertEquals("giants", teamOptional.get().getName());
+        Team team = teamRepository.findByUrn("nl:surfnet:diensten:giants").get();
+        assertEquals("giants", team.getName());
+        assertEquals("Why did I create this team", team.getPersonalNote());
     }
 
     @Test
