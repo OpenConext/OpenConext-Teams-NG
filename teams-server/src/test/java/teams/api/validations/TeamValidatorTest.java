@@ -3,11 +3,7 @@ package teams.api.validations;
 import org.junit.Test;
 import teams.Seed;
 import teams.api.TeamController;
-import teams.domain.FederatedUser;
-import teams.domain.Membership;
-import teams.domain.Role;
-import teams.domain.Team;
-import teams.domain.TeamDetailsSummary;
+import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
 

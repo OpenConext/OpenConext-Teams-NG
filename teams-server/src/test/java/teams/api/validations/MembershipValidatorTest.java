@@ -3,11 +3,7 @@ package teams.api.validations;
 import org.junit.Test;
 import teams.Seed;
 import teams.api.MembershipController;
-import teams.domain.FederatedUser;
-import teams.domain.Membership;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
+import teams.domain.*;
 import teams.exception.IllegalJoinRequestException;
 import teams.exception.IllegalMembershipException;
 
@@ -34,7 +30,7 @@ public class MembershipValidatorTest implements Seed {
         Team team = team();
         Person person = person("urn");
         team.getMemberships().add(
-            new Membership(Role.ADMIN, team, person));
+                new Membership(Role.ADMIN, team, person));
         subject.oneAdminIsRequired(team, person, Role.MEMBER);
     }
 
@@ -43,7 +39,7 @@ public class MembershipValidatorTest implements Seed {
         Team team = team();
         Person person = person("urn");
         team.getMemberships().add(
-            new Membership(Role.ADMIN, team, person));
+                new Membership(Role.ADMIN, team, person));
         subject.oneAdminIsRequired(team, person, Role.ADMIN);
     }
 

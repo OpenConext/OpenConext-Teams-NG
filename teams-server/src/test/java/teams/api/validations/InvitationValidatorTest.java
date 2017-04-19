@@ -4,19 +4,8 @@ import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import teams.Seed;
 import teams.api.InvitationController;
-import teams.api.validations.InvitationValidator;
-import teams.domain.FederatedUser;
-import teams.domain.Invitation;
-import teams.domain.Language;
-import teams.domain.Membership;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
-import teams.exception.IllegalInviteException;
-import teams.exception.InvitationAlreadyAcceptedException;
-import teams.exception.InvitationAlreadyDeclinedException;
-import teams.exception.InvitationExpiredException;
-import teams.exception.NotAllowedException;
+import teams.domain.*;
+import teams.exception.*;
 
 import java.io.UnsupportedEncodingException;
 

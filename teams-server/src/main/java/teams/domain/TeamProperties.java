@@ -12,6 +12,7 @@ public class TeamProperties {
     @NotNull
     private Long id;
     private String description;
+    private String personalNote;
     private boolean viewable;
 
 }

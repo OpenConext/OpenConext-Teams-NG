@@ -63,7 +63,6 @@ I18n.translations.en = {
         actions: "...",
         confirmation: "Are you sure you want to delete team {{name}}?",
         deleted: "Successfully deleted team {{name}}",
-        no_found: "No teams found",
         leave: "Leave",
         team_members: "Team Members",
         membership: {

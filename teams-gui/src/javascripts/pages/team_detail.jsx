@@ -1,14 +1,14 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
 import I18n from "i18n-js";
 import CopyToClipboard from "react-copy-to-clipboard";
-import {deleteTeam, getTeamDetail, leaveTeam} from "../api";
+import {deleteTeam, getTeamDetail, leaveTeam, saveTeam} from "../api";
 import {setFlash} from "../utils/flash";
-import {stop} from "../utils/utils";
+import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
 import SortDropDown from "../components/sort_drop_down";
 import InlineEditable from "../components/inline_editable";
-
 
 export default class TeamDetail extends React.Component {
 
@@ -33,14 +33,14 @@ export default class TeamDetail extends React.Component {
         moment.locale(I18n.locale);
     }
 
-    fetchTeam() {
-        getTeamDetail(this.props.match.params.id).then(team => {
-            const joinRequests = team.joinRequests || [];
-            this.setState({
-                team: team,
-                filteredMembers: team.memberships.concat(joinRequests).sort(this.sortByStatus),
-                loaded: true
-            })
+    fetchTeam = () => getTeamDetail(this.props.match.params.id).then(team => this.stateTeam(team));
+
+    stateTeam(team) {
+        const joinRequests = team.joinRequests || [];
+        this.setState({
+            team: team,
+            filteredMembers: team.memberships.concat(joinRequests).sort(this.sortByStatus),
+            loaded: true
         });
     }
 
@@ -49,20 +49,19 @@ export default class TeamDetail extends React.Component {
         const isJoinRequestOtherMember = !otherMember.role;
         if ((isJoinRequestMember && isJoinRequestOtherMember) ||
             (!isJoinRequestMember && !isJoinRequestOtherMember)) {
-            return member.created > otherMember.created ? 1 : member.created === otherMember.created ? 0 : -1
+            return member.created > otherMember.created ? 1 : member.created === otherMember.created ? 0 : -1;
         }
         return isJoinRequestMember ? -1 : 1;
     };
 
     componentWillMount = () => this.fetchTeam();
 
-    handleAcceptJoinRequest = (team) => (e) => {
+    handleAcceptJoinRequest = team => e => {
         stop(e);
         this.props.history.replace("/team/" + team.urn);
     };
 
-    handleDeleteTeam = (team) => (e) => {
-        const {router} = this.context;
+    handleDeleteTeam = team => e => {
         stop(e);
         if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
             deleteTeam(team.id).then(() => {
@@ -73,20 +72,21 @@ export default class TeamDetail extends React.Component {
         }
     };
 
-    handleLeaveTeam = (myMembershipId) => (e) =>
+    handleLeaveTeam = myMembershipId => () =>
         leaveTeam(myMembershipId).then(() => this.props.history.replace("/my-teams"));
 
-    search = (e) => {
-        let input = e.target.value;
-        if (input === undefined || input === null || input.trim().length === 0) {
+    search = e => {
+        const input = e.target.value;
+        if (isEmpty(input)) {
             this.setState({filteredTeams: this.state.teams});
         } else {
             this.setState({filteredTeams: this.filterTeams(input.toLowerCase())});
         }
     };
 
-    sort = (item) => (e) => {
+    sort = item => e => {
         stop(e);
+        return item;
         // if (column.sortFunction === undefined) {
         //     return;
         // }
@@ -101,7 +101,7 @@ export default class TeamDetail extends React.Component {
         // this.setState({sortedTeams: sortedTeams, sorted: {name: column.sort, order: newOrder}})
     };
 
-    sortByAttribute = (name) => (a, b) => a[name].localeCompare(b[name]);
+    sortByAttribute = name => (a, b) => a[name].localeCompare(b[name]);
 
     teamDetailHeader(team, role, currentUser) {
         const myMembershipId =
@@ -118,7 +118,7 @@ export default class TeamDetail extends React.Component {
                         <i className="fa fa-sign-out"></i>
                     </a>
                     {role === "ADMIN" && <a className="button" href="#"
-                       onClick={this.handleDeleteTeam(team)}>{I18n.t("team_detail.delete")}
+                                            onClick={this.handleDeleteTeam(team)}>{I18n.t("team_detail.delete")}
                         <i className="fa fa-trash"></i>
                     </a>}
                 </div>
@@ -126,15 +126,27 @@ export default class TeamDetail extends React.Component {
         );
     }
 
-    changePersonalNote = (description) => {
-
+    changePersonalNote = personalNote => {
+        this.saveTeamProperties({personalNote: personalNote});
     };
 
-    changeDescription = (description) => {
+    changeDescription = description => {
+        this.saveTeamProperties({description: description});
     };
 
-    changeViewable = e => {
+    changeViewable = () => {
+        this.saveTeamProperties({viewable: !this.state.team.viewable});
+    };
 
+    saveTeamProperties = changedAttribute => {
+        const {team} = this.state;
+        const teamProperties = {
+            id: team.id,
+            description: team.description,
+            personalNote: team.personalNote,
+            viewable: team.viewable
+        };
+        saveTeam(...teamProperties, ...changedAttribute).then(team => this.stateTeam(team));
     };
 
     copiedToClipboard = () => {
@@ -155,56 +167,60 @@ export default class TeamDetail extends React.Component {
                     </CopyToClipboard>
 
                 </div>
-                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description} onChange={this.changeDescription}/>
-                {isAdmin && <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote} onChange={this.changeDescription}/>}
+                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description}
+                                onChange={this.changeDescription}/>
+                {isAdmin && <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote}
+                                            onChange={this.changePersonalNote}/>}
                 <div className="team-viewable">
                     <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
                     <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>
                     <input type="checkbox" id="viewable" name="viewable" checked={team.viewable}
                            onChange={this.changeViewable}/>
-                    <label className="checkbox-label" htmlFor="viewable"><span className="checkbox-labe"><i className="fa fa-check"></i></span></label>
+                    <label className="checkbox-label" htmlFor="viewable"><span className="checkbox-labe"><i
+                        className="fa fa-check"></i></span></label>
                 </div>
             </section>
         );
     }
 
-    currentUserRoleInTeam = (team, currentUser) => team.memberships.filter(membership => membership.urnPerson === currentUser.urn)[0].role;
+    currentUserRoleInTeam =
+        (team, currentUser) => team.memberships.filter(membership => membership.urnPerson === currentUser.urn)[0].role;
 
-    statusOfMembership = (member) => member.role ? moment(member.created).format("LLL") :
+    statusOfMembership = member => member.role ? moment(member.created).format("LLL") :
         <span className="status-pending"><i className="fa fa-clock-o"></i>{I18n.t("team_detail.pending")}</span>;
 
-    roleOfMembership = (member) => member.role ?
-        member.role.substring(0, 1) + member.role.substring(1).toLowerCase() :
-        "Member";
+    roleOfMembership = member =>
+        member.role ? member.role.substring(0, 1) + member.role.substring(1).toLowerCase() : "Member";
 
-    renderMembersTable(team) {
+    renderMembersTable() {
         if (this.state.filteredMembers.length !== 0) {
-            return (<table>
-                <thead>
-                <tr>
-                    <th>{I18n.t("team_detail.membership.name")}</th>
-                    <th>{I18n.t("team_detail.membership.email")}</th>
-                    <th>{I18n.t("team_detail.membership.status")}</th>
-                    <th>{I18n.t("team_detail.membership.role")}</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {this.state.filteredMembers.map((member) =>
-                    <tr key={member.urnPerson}>
-                        <td>{member.person.name}</td>
-                        <td>{member.person.email}</td>
-                        <td>{this.statusOfMembership(member)}</td>
-                        <td>{this.roleOfMembership(member)}</td>
-                        <td className="actions"><i className="fa fa-ellipsis-h"></i></td>
+            return (
+                <table>
+                    <thead>
+                    <tr>
+                        <th>{I18n.t("team_detail.membership.name")}</th>
+                        <th>{I18n.t("team_detail.membership.email")}</th>
+                        <th>{I18n.t("team_detail.membership.status")}</th>
+                        <th>{I18n.t("team_detail.membership.role")}</th>
+                        <th></th>
                     </tr>
-                )}
+                    </thead>
+                    <tbody>
+                    {this.state.filteredMembers.map(member =>
+                        <tr key={member.urnPerson}>
+                            <td>{member.person.name}</td>
+                            <td>{member.person.email}</td>
+                            <td>{this.statusOfMembership(member)}</td>
+                            <td>{this.roleOfMembership(member)}</td>
+                            <td className="actions"><i className="fa fa-ellipsis-h"></i></td>
+                        </tr>
+                    )}
 
-                </tbody>
-            </table>)
-        } else {
-            return <div><em>{I18n.t("team_detail.no_found")}</em></div>
+                    </tbody>
+                </table>
+            );
         }
+        return <div><em>{I18n.t("team_detail.no_found")}</em></div>;
     }
 
     render() {
@@ -229,8 +245,14 @@ export default class TeamDetail extends React.Component {
                     </div>
 
                 </section>
-                {this.renderMembersTable(team)}
+                {this.renderMembersTable()}
             </div>
         );
     }
 }
+
+TeamDetail.propTypes = {
+    match: PropTypes.object.required,
+    history: PropTypes.object.required,
+    currentUser: PropTypes.object.required
+};

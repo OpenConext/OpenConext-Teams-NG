@@ -6,7 +6,6 @@ import teams.AbstractApplicationTest;
 import teams.domain.Team;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
@@ -24,14 +23,14 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
     @Test
     public void findByMembershipsPersonUrn() throws Exception {
         List<Team> teams = teamRepository.findByMembershipsUrnPersonOrderByNameAsc(
-            "urn:collab:person:surfnet.nl:jdoe");
+                "urn:collab:person:surfnet.nl:jdoe");
         assertEquals(3, teams.size());
     }
 
     @Test
     public void findByNameContainingIgnoreCaseAndMembershipsPersonUrnOrderByNameAsc() throws Exception {
         List<Team> teams = teamRepository.findByNameContainingIgnoreCaseAndMembershipsUrnPersonOrderByNameAsc(
-            "ERS", "urn:collab:person:surfnet.nl:jdoe", new PageRequest(0, 10)).getContent();
+                "ERS", "urn:collab:person:surfnet.nl:jdoe", new PageRequest(0, 10)).getContent();
         assertEquals(2, teams.size());
     }
 

@@ -24,10 +24,10 @@ public class TeamSummary {
         this.membershipCount = team.getMembershipCount();
         this.description = team.getDescription();
         this.role = team.getMemberships()
-            .stream()
-            .filter(membership -> membership.getUrnPerson().equals(user.getUrn()))
-            .findAny()
-            .map(Membership::getRole)
-            .orElse(null);
+                .stream()
+                .filter(membership -> membership.getUrnPerson().equals(user.getUrn()))
+                .findAny()
+                .map(Membership::getRole)
+                .orElse(null);
     }
 }

@@ -3,24 +3,10 @@ package teams.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import teams.api.validations.InvitationValidator;
 import teams.api.validations.MembershipValidator;
-import teams.domain.ClientInvitation;
-import teams.domain.ClientResendInvitation;
-import teams.domain.FederatedUser;
-import teams.domain.Invitation;
-import teams.domain.Membership;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
+import teams.domain.*;
 import teams.exception.ResourceNotFoundException;
 import teams.mail.MailBox;
 
@@ -47,10 +33,10 @@ public class InvitationController extends ApiController implements MembershipVal
         Role role = determineFutureRole(team, person, clientInvitation.getIntendedRole());
 
         Invitation invitation = new Invitation(
-            team,
-            clientInvitation.getEmail(),
-            role,
-            resolveLanguage(request));
+                team,
+                clientInvitation.getEmail(),
+                role,
+                resolveLanguage(request));
         invitation.addInvitationMessage(person, clientInvitation.getMessage());
 
         invitationRepository.save(invitation);
@@ -72,7 +58,7 @@ public class InvitationController extends ApiController implements MembershipVal
         invitationRepository.delete(invitation);
 
         LOG.info("Deleted invitation for team {} and person {}",
-            invitation.getTeam().getUrn(), federatedUser.getUrn());
+                invitation.getTeam().getUrn(), federatedUser.getUrn());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -92,7 +78,7 @@ public class InvitationController extends ApiController implements MembershipVal
         mailBox.sendInviteMail(invitation);
 
         LOG.info("Resend invitation for team {} and person {}",
-            invitation.getTeam().getUrn(), federatedUser.getUrn());
+                invitation.getTeam().getUrn(), federatedUser.getUrn());
     }
 
 
@@ -114,13 +100,13 @@ public class InvitationController extends ApiController implements MembershipVal
 
     private Invitation doAcceptOrDeny(String key, boolean accepted, Person person) {
         Invitation invitation = invitationRepository.findFirstByInvitationHash(key).orElseThrow(() ->
-            new ResourceNotFoundException(String.format("Invitation %s not found", key))
+                new ResourceNotFoundException(String.format("Invitation %s not found", key))
         );
         validateInvitation(invitation, person);
         invitation.accepted(accepted);
 
         LOG.info("Invitation {} for team {} and person {}",
-            accepted ? "Accepted" : "Denied", invitation.getTeam().getUrn(), person.getUrn());
+                accepted ? "Accepted" : "Denied", invitation.getTeam().getUrn(), person.getUrn());
 
         return invitationRepository.save(invitation);
     }

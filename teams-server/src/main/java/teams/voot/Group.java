@@ -3,7 +3,6 @@ package teams.voot;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import java.util.Objects;

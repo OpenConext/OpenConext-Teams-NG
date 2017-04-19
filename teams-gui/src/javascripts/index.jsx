@@ -23,6 +23,7 @@ import TeamDetail from "./pages/team_detail";
 
 import "./locale/en";
 import "./locale/nl";
+import PropTypes from "prop-types";
 polyfill();
 
 class App extends React.Component {
@@ -41,7 +42,8 @@ class App extends React.Component {
                             return <Redirect to="/my-teams"/>;
                         }}/>
                         <Route path="/my-teams" component={MyTeams}/>
-                        <Route path="/teams/:id" render={(props) => <TeamDetail currentUser={currentUser} {...props}/>} />
+                        <Route path="/teams/:id"
+                               render={props => <TeamDetail currentUser={currentUser} {...props}/>}/>
                         <Route component={NotFound}/>
                     </Switch>
                     <Footer />
@@ -52,11 +54,17 @@ class App extends React.Component {
 
 }
 
+App.propTypes = {
+    currentUser: PropTypes.object.required
+};
+
+
+
 function determineLanguage() {
     let parameterByName = QueryParameter.getParameterByName("lang");
 
     if (isEmpty(parameterByName)) {
-        let lang = navigator.language.toLowerCase();
+        const lang = navigator.language.toLowerCase();
         parameterByName = lang.startsWith("en") ? "en" : lang.startsWith("nl") ? "nl" : undefined;
     }
 

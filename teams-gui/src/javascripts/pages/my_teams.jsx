@@ -1,8 +1,10 @@
 import React from "react";
 import I18n from "i18n-js";
+import PropTypes from "prop-types";
+
 import {deleteTeam, getMyTeams} from "../api";
 import {setFlash} from "../utils/flash";
-import {stop} from "../utils/utils";
+import {isEmpty, stop} from "../utils/utils";
 
 export default class MyTeams extends React.Component {
 
@@ -26,13 +28,13 @@ export default class MyTeams extends React.Component {
 
     componentDidUpdate = () => document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-    showTeam = (team) => (e) => {
+    showTeam = team => e => {
         stop(e);
         //http://stackoverflow.com/questions/42123261/programmatically-navigate-using-react-router-v4
         this.props.history.push("/teams/" + team.id);
     };
 
-    handleDeleteTeam = (team) => (e) => {
+    handleDeleteTeam = team => e => {
         stop(e);
         if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
             deleteTeam(team.id).then(() => this.fetchMyTeams());
@@ -40,7 +42,7 @@ export default class MyTeams extends React.Component {
         }
     };
 
-    renderActions = (team) => (<div className="actions">
+    renderActions = team => (<div className="actions">
         <a href="#" onClick={this.showTeam(team)}>
             <i className="fa fa-edit"></i>
         </a>
@@ -49,9 +51,9 @@ export default class MyTeams extends React.Component {
         </a>
     </div>);
 
-    search = (e) => {
-        let input = e.target.value;
-        if (input === undefined || input === null || input.trim().length === 0) {
+    search = e => {
+        const input = e.target.value;
+        if (isEmpty(input)) {
             this.setState({filteredTeams: this.state.teams});
         } else {
             this.setState({filteredTeams: this.filterTeams(input.toLowerCase())});
@@ -59,12 +61,11 @@ export default class MyTeams extends React.Component {
     };
 
     filterTeams(input) {
-        return this.state.teams.filter((team) =>
-            team.name.toLowerCase().includes(input) || team.description.toLowerCase().includes(input)
-        )
+        return this.state.teams.filter(team =>
+        team.name.toLowerCase().includes(input) || team.description.toLowerCase().includes(input));
     }
 
-    sort = (column, teams) => (e) => {
+    sort = (column, teams) => e => {
         stop(e);
         if (column.sortFunction === undefined) {
             return;
@@ -77,10 +78,10 @@ export default class MyTeams extends React.Component {
                 sortedTeams = sortedTeams.reverse();
             }
         }
-        this.setState({sortedTeams: sortedTeams, sorted: {name: column.sort, order: newOrder}})
+        this.setState({sortedTeams: sortedTeams, sorted: {name: column.sort, order: newOrder}});
     };
 
-    sortByAttribute = (name) => (a, b) => a[name].localeCompare(b[name]);
+    sortByAttribute = name => (a, b) => a[name].localeCompare(b[name]);
 
     iconClassName(column) {
         const sorted = this.state.sorted.name === column.sort ? (this.state.sorted.order + " active") : "down";
@@ -88,8 +89,7 @@ export default class MyTeams extends React.Component {
     }
 
     renderTeamsTable() {
-        const {router} = this.context;
-        let columns = [
+        const columns = [
             {title: I18n.t("teams.name"), sort: "name", sortFunction: this.sortByAttribute("name")},
             {
                 title: I18n.t("teams.description"),
@@ -110,7 +110,7 @@ export default class MyTeams extends React.Component {
                 <table>
                     <thead>
                     <tr>
-                        {columns.map((column) =>
+                        {columns.map(column =>
                             <th key={column.title} onClick={this.sort(column, filteredTeams)}>
                             <span>{column.title}
                                 {column.sortFunction && <i className={this.iconClassName(column)}></i>}
@@ -119,7 +119,7 @@ export default class MyTeams extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {filteredTeams.map((team) =>
+                    {filteredTeams.map(team =>
                         <tr key={team.urn} onClick={this.showTeam(team)}>
                             <td>{team.name}</td>
                             <td>{team.description}</td>
@@ -130,10 +130,10 @@ export default class MyTeams extends React.Component {
                     )}
 
                     </tbody>
-                </table>)
-        } else {
-            return <div><em>{I18n.t("teams.no_found")}</em></div>
+                </table>
+            );
         }
+        return <div><em>{I18n.t("teams.no_found")}</em></div>;
     }
 
     renderUserDropDown() {
@@ -167,3 +167,8 @@ export default class MyTeams extends React.Component {
         );
     }
 }
+
+MyTeams.propTypes = {
+    history: PropTypes.object.required
+};
+

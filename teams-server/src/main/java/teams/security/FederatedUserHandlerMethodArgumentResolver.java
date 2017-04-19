@@ -9,7 +9,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import teams.domain.FederatedUser;
 
 public class FederatedUserHandlerMethodArgumentResolver implements
-    HandlerMethodArgumentResolver {
+        HandlerMethodArgumentResolver {
 
     public boolean supportsParameter(MethodParameter methodParameter) {
         return methodParameter.getParameterType().equals(FederatedUser.class);
@@ -19,6 +19,6 @@ public class FederatedUserHandlerMethodArgumentResolver implements
                                          ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
                                          WebDataBinderFactory binderFactory) throws Exception {
         return FederatedUser.class.cast(PreAuthenticatedAuthenticationToken.class.cast(webRequest.getUserPrincipal())
-            .getPrincipal());
+                .getPrincipal());
     }
 }

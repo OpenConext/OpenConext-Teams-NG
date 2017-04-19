@@ -9,11 +9,7 @@ import teams.domain.ExternalTeam;
 
 import java.util.List;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static java.nio.charset.Charset.defaultCharset;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -22,7 +18,7 @@ public class VootClientTest {
 
     private String personUrn = "urn:collab:person:example.org:admin";
     private VootClient client = new VootClient("http://localhost:8889/oauth/token",
-        "surf-teams", "secret", "groups", "http://localhost:8889");
+            "surf-teams", "secret", "groups", "http://localhost:8889");
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(8889);

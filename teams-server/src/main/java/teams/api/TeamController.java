@@ -1,27 +1,11 @@
 package teams.api;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import teams.api.validations.TeamValidator;
-import teams.domain.ExternalTeam;
-import teams.domain.FederatedUser;
-import teams.domain.Membership;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
-import teams.domain.TeamAutocomplete;
-import teams.domain.TeamProperties;
-import teams.domain.TeamSummary;
+import teams.domain.*;
 import teams.exception.IllegalSearchParamException;
 
 import java.util.List;
@@ -45,10 +29,10 @@ public class TeamController extends ApiController implements TeamValidator {
     @GetMapping("api/teams/my-teams")
     public List<TeamSummary> myTeams(FederatedUser federatedUser) {
         return teamRepository
-            .findByMembershipsUrnPersonOrderByNameAsc(federatedUser.getUrn())
-            .stream()
-            .map(team -> new TeamSummary(team, federatedUser))
-            .collect(toList());
+                .findByMembershipsUrnPersonOrderByNameAsc(federatedUser.getUrn())
+                .stream()
+                .map(team -> new TeamSummary(team, federatedUser))
+                .collect(toList());
     }
 
     @GetMapping("api/teams/teams/{id}")
@@ -65,10 +49,10 @@ public class TeamController extends ApiController implements TeamValidator {
         }
         Long id = federatedUser.getPerson().getId();
         List<TeamAutocomplete> autoCompletes = teamRepository.autocomplete(id, ("%" + query + "%").toUpperCase(), id)
-            .stream()
-            .map(arr -> new TeamAutocomplete(arr[0].toString(), arr[1].toString(), (arr.length == 3 && arr[2] != null) ? arr[2].toString() : null))
-            .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), query.toLowerCase()))
-            .collect(toList());
+                .stream()
+                .map(arr -> new TeamAutocomplete(arr[0].toString(), arr[1].toString(), (arr.length == 3 && arr[2] != null) ? arr[2].toString() : null))
+                .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), query.toLowerCase()))
+                .collect(toList());
         return autoCompletes.subList(0, Math.max(0, Math.min(autoCompletes.size(), 15)));
     }
 
@@ -111,6 +95,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
         team.setDescription(teamProperties.getDescription());
         team.setViewable(teamProperties.isViewable());
+        team.setPersonalNote(teamProperties.getPersonalNote());
 
         LOG.info("Team {} updated by {}", team.getUrn(), federatedUserUrn);
 

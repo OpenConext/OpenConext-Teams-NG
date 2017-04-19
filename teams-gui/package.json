@@ -6,7 +6,8 @@
   "scripts": {
     "webpack": "webpack -p --config webpack.config.js",
     "webpack-dev-server": "webpack-dev-server -d --host 0.0.0.0",
-    "lint": "eslint --ext .js --ext .jsx --ignore-pattern '**/node_modules/**' --ignore-pattern '**/dist/**/*.js' '*.js' '**/*.js' '*.jsx' '**/*.jsx'"
+    "lint": "eslint --ext .js --ext .jsx --ignore-pattern '**/node_modules/**' --ignore-pattern '**/dist/**/*.js' .",
+    "test": "jest"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -36,6 +37,7 @@
     "node-sass": "3.10.1",
     "qs": "6.2.1",
     "react": "15.5.4",
+    "react-copy-to-clipboard": "^4.3.0",
     "react-dom": "15.5.4",
     "react-router-dom": "4.1.1",
     "sass-loader": "4.0.2",
@@ -43,7 +45,11 @@
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "1.13.2",
-    "webpack-dev-server": "1.16.1",
-    "react-copy-to-clipboard": "^4.3.0"
+    "webpack-dev-server": "1.16.1"
+  },
+  "dependencies": {
+    "babel-jest": "^19.0.0",
+    "prop-types": "^15.5.8",
+    "react-test-renderer": "^15.5.4"
   }
 }

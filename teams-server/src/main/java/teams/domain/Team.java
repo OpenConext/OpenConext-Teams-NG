@@ -8,17 +8,7 @@ import org.hibernate.annotations.Formula;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.Instant;
@@ -83,7 +73,7 @@ public class Team {
 
     public Optional<Membership> member(String urn) {
         return memberships.stream().filter(membership -> membership.getUrnPerson().equals(urn))
-            .findAny();
+                .findAny();
     }
 
     @JsonIgnore

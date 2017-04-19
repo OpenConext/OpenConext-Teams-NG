@@ -1,5 +1,6 @@
 import React from "react";
 import I18n from "i18n-js";
+import PropTypes from "prop-types";
 
 export default class InlineEditable extends React.Component {
 
@@ -8,17 +9,16 @@ export default class InlineEditable extends React.Component {
         this.state = {editable: false, newValue: props.value};
     }
 
-    onChangeInternal = (e) => {
-        this.setState({newValue: e.target.value});
-    };
+    onChangeInternal = e => this.setState({newValue: e.target.value});
 
-    onKeyUp = (e) => {
+    onKeyUp = e => {
         if (e.keyCode === 13) {//enter
             return this.save();
         }
         if (e.keyCode === 27) {//esc
             return this.cancel();
         }
+        return true;
     };
 
     save = () => {
@@ -36,19 +36,18 @@ export default class InlineEditable extends React.Component {
                 <label htmlFor={name}>{I18n.t(name)}</label>
                 <input ref={ref => this.input = ref} type="text" name={name} id={name} value={value}
                        onChange={this.onChangeInternal} onKeyUp={this.onKeyUp} onBlur={this.save}/>
-            </div>
-        );
+            </div>);
     }
 
-    toggleEditable = (e) => {
+    toggleEditable = () => {
         this.setState({editable: !this.state.editable});
-        setTimeout(()=>this.input.focus(), 250);
+        setTimeout(() => this.input.focus(), 250);
     };
 
     renderNonEditable(name, value, mayEdit) {
         const span = mayEdit ?
             <span onClick={this.toggleEditable}>{value}<i className="fa fa-pencil"></i></span> :
-            <span>{value}</span>
+            <span>{value}</span>;
         return (
             <div className="inline-editable">
                 <label>{I18n.t(name)}</label>
@@ -65,3 +64,11 @@ export default class InlineEditable extends React.Component {
     }
 
 }
+
+InlineEditable.propTypes = {
+    name: PropTypes.string.required,
+    value: PropTypes.string.required,
+    mayEdit: PropTypes.boolean,
+    onChange: PropTypes.func.required
+};
+

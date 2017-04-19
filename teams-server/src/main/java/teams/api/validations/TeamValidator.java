@@ -24,8 +24,8 @@ public interface TeamValidator {
 
         if (roleOfLoggedInPerson.isLessImportant(Role.ADMIN)) {
             throw new IllegalMembershipException(String.format(
-                "Only ADMIN can %s team. Person %s is %s in team %s",
-                action, federatedUserUrn, roleOfLoggedInPerson, team.getUrn()));
+                    "Only ADMIN can %s team. Person %s is %s in team %s",
+                    action, federatedUserUrn, roleOfLoggedInPerson, team.getUrn()));
         }
         return federatedUserUrn;
     }
@@ -36,7 +36,7 @@ public interface TeamValidator {
             return new TeamDetailsSummary(team, user);
         }
         team.getInvitations().forEach(
-            invitation -> invitation.getInvitationMessages().forEach(message -> message.getMessage()));
+                invitation -> invitation.getInvitationMessages().forEach(message -> message.getMessage()));
         team.getJoinRequests().forEach(joinRequest -> joinRequest.getPerson().isValid());
         team.getExternalTeams().forEach(externalTeam -> externalTeam.getIdentifier());
         return team;

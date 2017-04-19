@@ -25,7 +25,7 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
     public void before() throws Exception {
         personRepository = mock(PersonRepository.class);
         subject = new ShibbolethPreAuthenticatedProcessingFilter(mock(AuthenticationManager.class), personRepository,
-            "urn:collab:org:surf.nl");
+                "urn:collab:org:surf.nl");
     }
 
     @Test

@@ -9,18 +9,12 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import teams.AbstractApplicationTest;
-import teams.domain.Invitation;
-import teams.domain.JoinRequest;
-import teams.domain.Language;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
+import teams.domain.*;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.util.Collections;
 
 import static com.icegreen.greenmail.util.GreenMailUtil.getBody;
 import static java.util.Collections.singletonList;
@@ -69,7 +63,7 @@ public class MailBoxTest extends AbstractApplicationTest {
         assertTrue(body.contains(String.format("\"%s\"", joinRequest.getTeam().getHtmlDescription())));
         assertTrue(body.contains(String.format("\"%s\"", joinRequest.getHtmlMessage())));
         assertTrue(body.contains(String.format("<a href=\"mailto:%s\">%s</a> would like to join team",
-            EMAIL, joinRequest.getPerson().getName())));
+                EMAIL, joinRequest.getPerson().getName())));
     }
 
     @Test

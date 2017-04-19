@@ -5,28 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import teams.exception.ResourceNotFoundException;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
-import java.util.Base64;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
@@ -105,8 +90,8 @@ public class Invitation {
     @JsonIgnore
     public InvitationMessage getLatestInvitationMessage() {
         return invitationMessages.stream().max(Comparator.comparingLong(InvitationMessage::getTimestamp))
-            .orElseThrow(() -> new ResourceNotFoundException(
-                String.format("Invitation for team %s and person %s has no invitation message", team.getUrn(), email)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Invitation for team %s and person %s has no invitation message", team.getUrn(), email)));
     }
 
     public void accepted(boolean accepted) {

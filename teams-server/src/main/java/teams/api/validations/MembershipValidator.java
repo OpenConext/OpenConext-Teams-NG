@@ -22,19 +22,19 @@ public interface MembershipValidator {
     default void oneAdminIsRequired(Team team, Person person, Role futureRole) {
         if (!futureRole.equals(Role.ADMIN)) {
             team.getMemberships().stream()
-                .filter(membership -> !membership.getUrnPerson().equals(person.getUrn()))
-                .filter(membership -> membership.getRole().equals(Role.ADMIN))
-                .findAny()
-                .orElseThrow(() ->
-                    new IllegalMembershipException(String.format("Not allowed to remove the only admin %s", person.getUrn())));
+                    .filter(membership -> !membership.getUrnPerson().equals(person.getUrn()))
+                    .filter(membership -> membership.getRole().equals(Role.ADMIN))
+                    .findAny()
+                    .orElseThrow(() ->
+                            new IllegalMembershipException(String.format("Not allowed to remove the only admin %s", person.getUrn())));
         }
     }
 
     default void canNotUpgradeToMoreImportantThenYourself(Role roleOfLoggedInPerson, Role futureRole) {
         if (futureRole.isMoreImportant(roleOfLoggedInPerson)) {
             throw new IllegalMembershipException(String.format(
-                "Not allowed to upgrade someone more import then yourself: your role is %s and future role is %s",
-                roleOfLoggedInPerson, futureRole));
+                    "Not allowed to upgrade someone more import then yourself: your role is %s and future role is %s",
+                    roleOfLoggedInPerson, futureRole));
         }
     }
 
@@ -58,9 +58,9 @@ public interface MembershipValidator {
 
     default List<String> admins(Team team) {
         List<String> admins = team.getMemberships().stream()
-            .filter(membership -> membership.getRole().equals(Role.ADMIN))
-            .map(membership -> membership.getPerson().getEmail())
-            .collect(toList());
+                .filter(membership -> membership.getRole().equals(Role.ADMIN))
+                .map(membership -> membership.getPerson().getEmail())
+                .collect(toList());
         if (admins.isEmpty()) {
             throw new IllegalJoinRequestException(String.format("Team %s does not have an ADMIN user", team.getUrn()));
         }

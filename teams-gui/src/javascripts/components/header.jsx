@@ -1,5 +1,6 @@
 import React from "react";
 import I18n from "i18n-js";
+import PropTypes from "prop-types";
 import {render, unmountComponentAtNode} from "react-dom";
 import {Link} from "react-router-dom";
 import logo from "../../images/logo.jpg";
@@ -20,7 +21,7 @@ export default class Header extends React.Component {
         const currentUser = this.props.currentUser;
         return (
             <div className="mod-header">
-                <Link to="/" className="logo"><img src={logo} /></Link>
+                <Link to="/" className="logo"><img src={logo}/></Link>
                 <ul className="links">
                     <li>
                         {this.renderProfileLink(currentUser)}
@@ -57,7 +58,8 @@ export default class Header extends React.Component {
 
     renderExitLogout() {
         return (
-            <li className="border-left"><a href="#" onClick={this.stop.bind(this)}>{I18n.t("header.links.logout")}</a></li>
+            <li className="border-left"><a href="#" onClick={this.stop.bind(this)}>{I18n.t("header.links.logout")}</a>
+            </li>
         );
     }
 
@@ -74,3 +76,7 @@ export default class Header extends React.Component {
         this.setState({dropDownActive: !this.state.dropDownActive});
     }
 }
+
+Header.propTypes = {
+    currentUser: PropTypes.object.required
+};

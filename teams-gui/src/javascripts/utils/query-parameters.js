@@ -1,53 +1,53 @@
 const QueryParameter = {
 
-  //shameless refactor of https://gist.githubusercontent.com/pduey/2764606/raw/e8b9d6099f1e4161f7dd9f81d71c2c7a1fecbd5b/querystring.js
+    //shameless refactor of https://gist.githubusercontent.com/pduey/2764606/raw/e8b9d6099f1e4161f7dd9f81d71c2c7a1fecbd5b/querystring.js
 
-  searchToHash: function() {
-    const h = {};
-    if (window.location.search === undefined || window.location.search.length < 1) {
-      return h;
-    }
-    const q = window.location.search.slice(1).split("&");
-    for (let i = 0; i < q.length; i++) {
-      const keyVal = q[i].split("=");
-      // replace '+' (alt space) char explicitly since decode does not
-      const hkey = decodeURIComponent(keyVal[0]).replace(/\+/g, " ");
-      const hval = decodeURIComponent(keyVal[1]).replace(/\+/g, " ");
-      if (h[hkey] === undefined) {
-        h[hkey] = [];
-      }
-      h[hkey].push(hval);
-    }
-    return h;
-  },
-
-
-  hashToSearch: function(newSearchHash) {
-    let search = "?";
-    for (let key in newSearchHash) {
-      if (newSearchHash.hasOwnProperty(key)) {
-        for (let i = 0; i < newSearchHash[key].length; i++) {
-          search += search === "?" ? "" : "&";
-          search += encodeURIComponent(key) + "=" + encodeURIComponent(newSearchHash[key][i]);
+    searchToHash: function () {
+        const h = {};
+        if (window.location.search === undefined || window.location.search.length < 1) {
+            return h;
         }
-      }
+        const q = window.location.search.slice(1).split("&");
+        for (let i = 0; i < q.length; i++) {
+            const keyVal = q[i].split("=");
+            // replace '+' (alt space) char explicitly since decode does not
+            const hkey = decodeURIComponent(keyVal[0]).replace(/\+/g, " ");
+            const hval = decodeURIComponent(keyVal[1]).replace(/\+/g, " ");
+            if (h[hkey] === undefined) {
+                h[hkey] = [];
+            }
+            h[hkey].push(hval);
+        }
+        return h;
+    },
+
+
+    hashToSearch: function (newSearchHash) {
+        let search = "?";
+        for (const key in newSearchHash) {
+            if (newSearchHash.hasOwnProperty(key)) {
+                for (let i = 0; i < newSearchHash[key].length; i++) {
+                    search += search === "?" ? "" : "&";
+                    search += encodeURIComponent(key) + "=" + encodeURIComponent(newSearchHash[key][i]);
+                }
+            }
+        }
+        return search;
+    },
+
+    replaceQueryParameter: function (name, value) {
+        const newSearchHash = this.searchToHash();
+        delete newSearchHash[name];
+        newSearchHash[decodeURIComponent(name)] = [decodeURIComponent(value)];
+        return this.hashToSearch(newSearchHash);
+    },
+
+    getParameterByName: function (name) {
+        const replacedName = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        const regex = new RegExp("[\\?&]" + replacedName + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
-    return search;
-  },
-
-  replaceQueryParameter: function(name, value) {
-    const newSearchHash = this.searchToHash();
-    delete newSearchHash[name];
-    newSearchHash[decodeURIComponent(name)] = [decodeURIComponent(value)];
-    return this.hashToSearch(newSearchHash);
-  },
-
-  getParameterByName: function(name) {
-    const replacedName = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    const regex = new RegExp("[\\?&]" + replacedName + "=([^&#]*)"),
-      results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-  }
 };
 
 export default QueryParameter;

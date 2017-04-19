@@ -11,12 +11,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import teams.repository.ExternalTeamRepository;
-import teams.repository.InvitationRepository;
-import teams.repository.JoinRequestRepository;
-import teams.repository.MembershipRepository;
-import teams.repository.PersonRepository;
-import teams.repository.TeamRepository;
+import teams.repository.*;
 
 import static org.springframework.test.context.jdbc.SqlConfig.ErrorMode.FAIL_ON_ERROR;
 import static org.springframework.test.context.jdbc.SqlConfig.TransactionMode.ISOLATED;
@@ -26,7 +21,7 @@ import static org.springframework.test.context.jdbc.SqlConfig.TransactionMode.IS
 @ActiveProfiles("dev")
 @Transactional
 @Sql(scripts = {"classpath:sql/clear.sql", "classpath:sql/seed.sql"},
-    config = @SqlConfig(errorMode = FAIL_ON_ERROR, transactionMode = ISOLATED))
+        config = @SqlConfig(errorMode = FAIL_ON_ERROR, transactionMode = ISOLATED))
 public abstract class AbstractApplicationTest implements Seed {
 
     @Autowired

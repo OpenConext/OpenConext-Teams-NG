@@ -9,9 +9,7 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class JoinRequestControllerTest extends AbstractApplicationTest {
@@ -19,7 +17,7 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
     @Test
     public void join() throws Exception {
         JoinRequest joinRequest = doJoin(new ClientJoinRequest(
-            1L, "Join request\n"));
+                1L, "Join request\n"));
 
         assertTrue(joinRequest.isContainsMessage());
         assertEquals("Join request<br/>", joinRequest.getHtmlMessage());
@@ -31,7 +29,7 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
     @Test
     public void joinEmptyMessage() throws Exception {
         JoinRequest joinRequest = doJoin(new ClientJoinRequest(
-            1L, null));
+                1L, null));
 
         assertFalse(joinRequest.isContainsMessage());
         assertEquals("", joinRequest.getHtmlMessage());
@@ -39,13 +37,13 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
 
     private JoinRequest doJoin(ClientJoinRequest clientJoinRequest) {
         given()
-            .header(CONTENT_TYPE, "application/json")
-            .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
-            .body(clientJoinRequest)
-            .when()
-            .post("api/teams/join")
-            .then()
-            .statusCode(SC_OK);
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
+                .body(clientJoinRequest)
+                .when()
+                .post("api/teams/join")
+                .then()
+                .statusCode(SC_OK);
 
         List<JoinRequest> joinRequests = joinRequestRepository.findByPerson(personRepository.findByUrn("urn:collab:person:surfnet.nl:tdoe").get());
         assertEquals(1, joinRequests.size());

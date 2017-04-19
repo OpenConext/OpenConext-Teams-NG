@@ -91,10 +91,10 @@ export function saveTeam(team) {
 }
 
 export function leaveTeam(membershipId) {
-    return fetchDelete("membership/"+ membershipId);
+    return fetchDelete("membership/" + membershipId);
 }
 
 export function teamExistsByName(name) {
-    return fetchJson("team-exists-by-name?query=" + encodeURIComponent(name), callback);
+    return fetchJson("team-exists-by-name?query=" + encodeURIComponent(name));
 }
 

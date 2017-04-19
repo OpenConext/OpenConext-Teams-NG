@@ -3,7 +3,8 @@ package teams.security;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CsrfProtectionMatcherTest {
 
@@ -11,7 +12,7 @@ public class CsrfProtectionMatcherTest {
 
     @Test
     public void noMatchGet() throws Exception {
-        assertFalse(subject.matches(mockRequest("GET","/api/teams/user")));
+        assertFalse(subject.matches(mockRequest("GET", "/api/teams/user")));
     }
 
     @Test

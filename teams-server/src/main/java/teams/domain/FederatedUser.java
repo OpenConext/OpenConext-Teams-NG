@@ -14,8 +14,8 @@ public class FederatedUser extends User {
 
     public FederatedUser(Person person) {
         super(person.getName(), "N/A", person.isGuest() ?
-            singletonList(new SimpleGrantedAuthority("ROLE_USER")) :
-            asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")));
+                singletonList(new SimpleGrantedAuthority("ROLE_USER")) :
+                asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")));
         this.person = person;
     }
 

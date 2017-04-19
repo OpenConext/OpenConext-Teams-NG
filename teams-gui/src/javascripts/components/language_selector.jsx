@@ -29,13 +29,11 @@ export default class LanguageSelector extends React.Component {
         );
     }
 
-    handleChooseLocale = (locale) => {
-        return function (e) {
-            stop(e);
-            Cookies.set("lang", locale, {expires: 356, secure: document.location.protocol.endsWith("https")});
-            I18n.locale = locale;
-            moment.locale(locale);
-            window.location.search = QueryParameter.replaceQueryParameter("lang", locale);
-        };
-    }
+    handleChooseLocale = locale => e => {
+        stop(e);
+        Cookies.set("lang", locale, {expires: 356, secure: document.location.protocol.endsWith("https")});
+        I18n.locale = locale;
+        moment.locale(locale);
+        window.location.search = QueryParameter.replaceQueryParameter("lang", locale);
+    };
 }

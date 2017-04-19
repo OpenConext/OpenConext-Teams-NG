@@ -56,14 +56,14 @@ public abstract class ApiController {
 
     protected Membership membershipByUrns(String teamUrn, String personUrn) {
         return membershipRepository.findByUrnTeamAndUrnPerson(teamUrn, personUrn)
-            .orElseThrow(() -> new ResourceNotFoundException(
-                format("Membership for team %s and person %s does not exist", teamUrn, personUrn)));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        format("Membership for team %s and person %s does not exist", teamUrn, personUrn)));
     }
 
     protected Membership membership(Team team, String urn) {
         return team.member(urn)
-            .orElseThrow(() -> new NotAllowedException(format
-                ("Member %s is not a member of team %s.", urn, team.getUrn())));
+                .orElseThrow(() -> new NotAllowedException(format
+                        ("Member %s is not a member of team %s.", urn, team.getUrn())));
     }
 
     protected Language resolveLanguage(HttpServletRequest request) {

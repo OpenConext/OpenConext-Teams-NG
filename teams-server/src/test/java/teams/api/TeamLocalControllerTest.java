@@ -33,27 +33,27 @@ public class TeamLocalControllerTest implements Seed {
     public void testSearchWithNonViewableTeam() throws Exception {
         List<Object[]> seed = seed();
         when(teamRepository.autocomplete(anyLong(), anyString(), anyLong()))
-            .thenReturn(seed);
+                .thenReturn(seed);
 
         List<TeamAutocomplete> teamAutocompletes = teamController.
-            teamSearch("test", new FederatedUser(person()));
+                teamSearch("test", new FederatedUser(person()));
         assertEquals(seed.size(), teamAutocompletes.size());
 
         IntStream.range(0, seed.size())
-            .forEachOrdered(i -> assertEquals(i, Integer.valueOf(teamAutocompletes.get(i).getUrn()).intValue()));
+                .forEachOrdered(i -> assertEquals(i, Integer.valueOf(teamAutocompletes.get(i).getUrn()).intValue()));
 
     }
 
     private List<Object[]> seed() {
         //second 'urn' is the sorted position in the autoCompletes List
         return Arrays.asList(
-            new String[]{"ContainingLaterTest", "6"},
-            new String[]{"ContainingTest", "5"},
-            new String[]{"Second test", "2", "ADMIN"},
-            new String[]{"Test first", "0"},
-            new String[]{"1 2 3 test", "3", "MEMBER"},
-            new String[]{"1_2_3_4_ test", "4"},
-            new String[]{"testtesttest", "1"}
+                new String[]{"ContainingLaterTest", "6"},
+                new String[]{"ContainingTest", "5"},
+                new String[]{"Second test", "2", "ADMIN"},
+                new String[]{"Test first", "0"},
+                new String[]{"1 2 3 test", "3", "MEMBER"},
+                new String[]{"1_2_3_4_ test", "4"},
+                new String[]{"testtesttest", "1"}
         );
     }
 

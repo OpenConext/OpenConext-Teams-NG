@@ -48,13 +48,13 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .antMatcher("/api/voot/**")
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable()
-                .addFilterBefore(new BasicAuthenticationFilter(authenticationManager()), BasicAuthenticationFilter.class)
-                .authorizeRequests()
-                .antMatchers("/**").hasRole("USER");
+                    .antMatcher("/api/voot/**")
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                    .csrf().disable()
+                    .addFilterBefore(new BasicAuthenticationFilter(authenticationManager()), BasicAuthenticationFilter.class)
+                    .authorizeRequests()
+                    .antMatchers("/**").hasRole("USER");
         }
     }
 
@@ -80,18 +80,18 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             ShibbolethPreAuthenticatedProcessingFilter filter =
-                new ShibbolethPreAuthenticatedProcessingFilter(authenticationManager(), personRepository, nonGuestsMemberOf);
+                    new ShibbolethPreAuthenticatedProcessingFilter(authenticationManager(), personRepository, nonGuestsMemberOf);
 
             http
-                .antMatcher("/api/teams/**")
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .and()
-                .csrf()
-                .requireCsrfProtectionMatcher(new CsrfProtectionMatcher()).and()
-                .addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class)
-                .addFilterBefore(filter, AbstractPreAuthenticatedProcessingFilter.class)
-                .authorizeRequests()
-                .antMatchers("/**").hasRole("USER");
+                    .antMatcher("/api/teams/**")
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .and()
+                    .csrf()
+                    .requireCsrfProtectionMatcher(new CsrfProtectionMatcher()).and()
+                    .addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class)
+                    .addFilterBefore(filter, AbstractPreAuthenticatedProcessingFilter.class)
+                    .authorizeRequests()
+                    .antMatchers("/**").hasRole("USER");
 
             if (environment.acceptsProfiles("dev")) {
                 http.addFilterBefore(new MockShibbolethFilter(environment.acceptsProfiles("test")), ShibbolethPreAuthenticatedProcessingFilter.class);

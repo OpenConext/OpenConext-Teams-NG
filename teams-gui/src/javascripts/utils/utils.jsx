@@ -12,10 +12,10 @@ export function isEmpty(obj) {
     if (Array.isArray(obj)) {
         return obj.length === 0;
     }
-    if (typeof obj === 'string') {
+    if (typeof obj === "string") {
         return obj.trim().length === 0;
     }
-    if (typeof obj === 'object') {
+    if (typeof obj === "object") {
         return Object.keys(obj).length === 0;
     }
     return false;

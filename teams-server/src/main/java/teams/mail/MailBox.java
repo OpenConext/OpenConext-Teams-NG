@@ -35,8 +35,8 @@ public class MailBox {
     public void sendInviteMail(Invitation invitation) throws MessagingException, IOException {
         String languageCode = invitation.getLanguage().getLanguageCode();
         String title = String.format("%s %s ",
-            languageCode.equals(Language.Dutch.getLanguageCode()) ? "Uitnodiging voor" : "Invitation for",
-            invitation.getTeam().getName());
+                languageCode.equals(Language.Dutch.getLanguageCode()) ? "Uitnodiging voor" : "Invitation for",
+                invitation.getTeam().getName());
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("title", title);
@@ -44,10 +44,10 @@ public class MailBox {
         variables.put("invitationMessage", invitation.getLatestInvitationMessage());
         variables.put("baseUrl", baseUrl);
         sendMail(
-            String.format("mail_templates/invitation_%s.html", languageCode),
-            title,
-            variables,
-            invitation.getEmail());
+                String.format("mail_templates/invitation_%s.html", languageCode),
+                title,
+                variables,
+                invitation.getEmail());
     }
 
     public void sendJoinRequestMail(JoinRequest joinRequest, List<String> admins) throws MessagingException, IOException {
@@ -55,10 +55,10 @@ public class MailBox {
         variables.put("title", teamsWhiteLabel);
         variables.put("joinRequest", joinRequest);
         sendMail(
-            "mail_templates/join_request.html",
-            String.format("Membership request for %s", joinRequest.getTeamName()),
-            variables,
-            admins.toArray(new String[admins.size()]));
+                "mail_templates/join_request.html",
+                String.format("Membership request for %s", joinRequest.getTeamName()),
+                variables,
+                admins.toArray(new String[admins.size()]));
     }
 
     public void sendJoinRequestAccepted(JoinRequest joinRequest) throws IOException, MessagingException {
@@ -74,13 +74,13 @@ public class MailBox {
         variables.put("title", teamsWhiteLabel);
         variables.put("joinRequest", joinRequest);
         sendMail(
-            String.format("mail_templates/%s", emailTemplate),
-            subject,
-            variables,
-            joinRequest.getPerson().getEmail());
+                String.format("mail_templates/%s", emailTemplate),
+                subject,
+                variables,
+                joinRequest.getPerson().getEmail());
     }
 
-    private void sendMail(String templateName, String subject, Map<String, Object> variables, String... to ) throws MessagingException, IOException {
+    private void sendMail(String templateName, String subject, Map<String, Object> variables, String... to) throws MessagingException, IOException {
         String html = this.mailTemplate(templateName, variables);
 
         MimeMessage message = mailSender.createMimeMessage();

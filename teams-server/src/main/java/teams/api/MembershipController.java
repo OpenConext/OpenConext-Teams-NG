@@ -1,17 +1,9 @@
 package teams.api;
 
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import teams.api.validations.MembershipValidator;
-import teams.domain.FederatedUser;
-import teams.domain.Membership;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
+import teams.domain.*;
 
 
 @RestController
@@ -31,13 +23,13 @@ public class MembershipController extends ApiController implements MembershipVal
         oneAdminIsRequired(team, person, futureRole);
 
         LOG.info("Changing current {} membership of {} in team {} to {} by {}",
-            membership.getRole(), person.getUrn(), team.getUrn(), futureRole, federatedUser.getUrn());
+                membership.getRole(), person.getUrn(), team.getUrn(), futureRole, federatedUser.getUrn());
 
         membership.setRole(futureRole);
         membershipRepository.save(membership);
 
         LOG.info("Changed membership for team {} and person {} from {} to {}",
-            team.getUrn(), person.getUrn(), membership.getRole(), futureRole);
+                team.getUrn(), person.getUrn(), membership.getRole(), futureRole);
     }
 
 
@@ -60,6 +52,6 @@ public class MembershipController extends ApiController implements MembershipVal
         membershipRepository.delete(membership);
 
         LOG.info("Deleted current {} membership of {} in team {} by {}",
-            membership.getRole(), person.getUrn(), team.getUrn(), federatedUser.getUrn());
+                membership.getRole(), person.getUrn(), team.getUrn(), federatedUser.getUrn());
     }
 }
