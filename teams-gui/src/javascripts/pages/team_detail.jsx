@@ -154,14 +154,14 @@ export default class TeamDetail extends React.Component {
         setTimeout(() => this.setState({copiedToClipboard: false}), 1500);
     };
 
-    teamDetailAttributes(team, role) {
+    teamDetailAttributes(team, role, currentUser) {
         const isAdmin = role === "ADMIN";
         const copiedToClipBoardClassName = this.state.copiedToClipboard ? "copied" : "";
         return (
             <section className="team-attributes">
                 <div className="inline-editable">
                     <label>{I18n.t(name)}</label>
-                    <CopyToClipboard text={team.urn}
+                    <CopyToClipboard text={`${currentUser.groupNameContext}${team.urn}`}
                                      onCopy={this.copiedToClipboard}>
                         <span>{team.urn}<i className={`fa fa-copy ${copiedToClipBoardClassName}`}></i></span>
                     </CopyToClipboard>
@@ -234,7 +234,7 @@ export default class TeamDetail extends React.Component {
         return (
             <div className="team-detail">
                 {this.teamDetailHeader(team, role, currentUser)}
-                {this.teamDetailAttributes(team, role)}
+                {this.teamDetailAttributes(team, role, currentUser)}
                 <h2>{`${I18n.t("team_detail.team_members")} (${team.memberships.length + team.joinRequests.length})`}</h2>
                 <section className="team-detail-controls">
                     <SortDropDown items={sortAttributes} sortBy={this.sort}/>
