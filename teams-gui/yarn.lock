@@ -2509,9 +2509,9 @@ https-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.0.tgz#b3ffdfe734b2a3d4a9efd58e8654c91fce86eafd"
 
-"i18n-js@http://github.com/fnando/i18n-js/archive/v3.0.0.rc12.tar.gz":
+"i18n-js@http://github.com/fnando/i18n-js/archive/v3.0.0.tar.gz":
   version "0.0.0"
-  resolved "http://github.com/fnando/i18n-js/archive/v3.0.0.rc12.tar.gz#05cc030241eaaafb29318bc6651fc464b8b5f5ac"
+  resolved "http://github.com/fnando/i18n-js/archive/v3.0.0.tar.gz#15901af4a5d07527c804106a0971c01d2f181068"
 
 iconv-lite@0.4.13:
   version "0.4.13"

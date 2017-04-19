@@ -149,10 +149,8 @@ export default class TeamDetail extends React.Component {
             viewable: team.viewable
         };
         saveTeam({...teamProperties, ...changedAttribute}).then(team => {
-            debugger;
-            this.stateTeam(team)
-            //setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_deleted")}));
-            setFlash("Boeoeoe")
+            this.stateTeam(team);
+            setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_updated")}));
         });
     };
 
