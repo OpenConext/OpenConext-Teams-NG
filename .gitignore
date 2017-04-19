@@ -17,10 +17,10 @@ logs/
 target/
 
 *.log
-pdp-gui/json
 npm-debug.log
-dist
-node_modules
-build
+dist/
+node_modules/
+build/
+coverage/
 
 TODO.txt

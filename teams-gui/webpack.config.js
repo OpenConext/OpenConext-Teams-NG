@@ -36,15 +36,7 @@ module.exports = {
             {test: /\.(png|jpg|ico)$/, loader: "file"},
             {test: /\.((woff2?|svg)(\?v=[0-9]\.[0-9]\.[0-9]))|(woff2?|svg)$/, loader: "url?limit=10000"},
             {test: /\.((ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9]))|(ttf|eot)$/, loader: "file"},
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                loader: "babel",
-                query: {
-                    presets: ["es2015", "stage-0", "react"],
-                    plugins: ["transform-object-rest-spread"]
-                },
-            },
+            {test: /\.jsx?$/, exclude: /node_modules/, loader: "babel"},
         ]
     },
 
