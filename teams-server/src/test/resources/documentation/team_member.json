@@ -1,0 +1,55 @@
+{
+  "id": 3,
+  "name": "gliders",
+  "urn": "nl:surfnet:diensten:gliders",
+  "membershipCount": 3,
+  "description": "we are gliders",
+  "role": "MEMBER",
+  "memberShips": [
+    {
+      "id": 3,
+      "role": "MEMBER",
+      "created": 1492548176.000000000,
+      "person": {
+        "id": 1,
+        "urn": "urn:collab:person:surfnet.nl:jdoe",
+        "name": "John Doe",
+        "email": "john.doe@example.org",
+        "created": 1492548176.000000000,
+        "guest": false
+      },
+      "urnPerson": "urn:collab:person:surfnet.nl:jdoe",
+      "urnTeam": "nl:surfnet:diensten:gliders"
+    },
+    {
+      "id": 8,
+      "role": "ADMIN",
+      "created": 1492548176.000000000,
+      "person": {
+        "id": 5,
+        "urn": "urn:collab:person:surfnet.nl:rdoe",
+        "name": "Ronald Doe",
+        "email": "ronald.doe@example.org",
+        "created": 1492548176.000000000,
+        "guest": false
+      },
+      "urnPerson": "urn:collab:person:surfnet.nl:rdoe",
+      "urnTeam": "nl:surfnet:diensten:gliders"
+    },
+    {
+      "id": 7,
+      "role": "ADMIN",
+      "created": 1492548176.000000000,
+      "person": {
+        "id": 4,
+        "urn": "urn:collab:person:surfnet.nl:tdoe",
+        "name": "Tracey Doe",
+        "email": "tracey.doe@example.org",
+        "created": 1492548176.000000000,
+        "guest": true
+      },
+      "urnPerson": "urn:collab:person:surfnet.nl:tdoe",
+      "urnTeam": "nl:surfnet:diensten:gliders"
+    }
+  ]
+}

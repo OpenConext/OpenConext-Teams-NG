@@ -3,7 +3,6 @@ package teams.api.validations;
 import org.junit.Test;
 import teams.Seed;
 import teams.api.TeamController;
-import teams.api.validations.TeamValidator;
 import teams.domain.FederatedUser;
 import teams.domain.Membership;
 import teams.domain.Role;
@@ -52,6 +51,6 @@ public class TeamValidatorTest implements Seed {
         new Membership(Role.ADMIN, team, person("test"));
         TeamDetailsSummary summary = TeamDetailsSummary.class.cast(subject.lazyLoadTeam(team, Role.MEMBER, new FederatedUser(person())));
         assertEquals(team.getName(), summary.getName());
-        assertEquals("test", summary.getMemberShips().iterator().next().getPerson().getUrn());
+        assertEquals("test", summary.getMemberships().iterator().next().getPerson().getUrn());
     }
 }

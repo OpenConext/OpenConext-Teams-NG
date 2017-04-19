@@ -22,13 +22,13 @@ const QueryParameter = {
   },
 
 
-  hashToSearch: function(h) {
+  hashToSearch: function(newSearchHash) {
     let search = "?";
-    for (const k in h) {
-      if (k.hasOwnProperty(h)) {
-        for (let i = 0; i < h[k].length; i++) {
+    for (let key in newSearchHash) {
+      if (newSearchHash.hasOwnProperty(key)) {
+        for (let i = 0; i < newSearchHash[key].length; i++) {
           search += search === "?" ? "" : "&";
-          search += encodeURIComponent(k) + "=" + encodeURIComponent(h[k][i]);
+          search += encodeURIComponent(key) + "=" + encodeURIComponent(newSearchHash[key][i]);
         }
       }
     }
@@ -39,26 +39,6 @@ const QueryParameter = {
     const newSearchHash = this.searchToHash();
     delete newSearchHash[name];
     newSearchHash[decodeURIComponent(name)] = [decodeURIComponent(value)];
-    return this.hashToSearch(newSearchHash);
-  },
-
-  addQueryParameter: function(name, value) {
-    const newSearchHash = this.searchToHash();
-    if (!(decodeURIComponent(name) in newSearchHash)) {
-      newSearchHash[decodeURIComponent(name)] = [];
-    }
-    newSearchHash[decodeURIComponent(name)].push(decodeURIComponent(value));
-    return this.hashToSearch(newSearchHash);
-  },
-
-  removeQueryParameter: function(name, value) {
-    const newSearchHash = this.searchToHash();
-    if (newSearchHash[name] && newSearchHash[name].indexOf(value) > -1) {
-      newSearchHash[name].splice(newSearchHash[name].indexOf(value), 1);
-      if (newSearchHash[name].length === 0) {
-        delete newSearchHash[name];
-      }
-    }
     return this.hashToSearch(newSearchHash);
   },
 

@@ -8,12 +8,13 @@ import React from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import I18n from "i18n-js";
-
+import Cookies from "js-cookie";
 import {getUser} from "./api";
 import QueryParameter from "./utils/query-parameters";
 import {isEmpty} from "./utils/utils";
 
 import NotFound from "./pages/not_found";
+import ServerError from "./pages/server_error";
 import Footer from "./components/footer";
 import Header from "./components/header";
 import Navigation from "./components/navigation";
@@ -55,7 +56,13 @@ function determineLanguage() {
     let parameterByName = QueryParameter.getParameterByName("lang");
 
     if (isEmpty(parameterByName)) {
-        parameterByName = navigator.language.startsWith("en") ? "en" : "nl";
+        let lang = navigator.language.toLowerCase();
+        parameterByName = lang.startsWith("en") ? "en" : lang.startsWith("nl") ? "nl" : undefined;
+    }
+
+    if (isEmpty(parameterByName)) {
+        parameterByName = Cookies.get("lang");
+        parameterByName = isEmpty(parameterByName) ? "en" : parameterByName;
     }
 
     I18n.locale = parameterByName;
@@ -64,11 +71,11 @@ function determineLanguage() {
 determineLanguage();
 
 getUser().catch(e => {
-    render(<NotFound />, document.getElementById("app"));
+    render(<ServerError />, document.getElementById("app"));
     throw e;
 }).then(currentUser => {
     if (!currentUser) {
-        render(<NotFound />, document.getElementById("app"));
+        render(<ServerError />, document.getElementById("app"));
     } else {
         render(<App currentUser={currentUser}/>, document.getElementById("app"));
     }

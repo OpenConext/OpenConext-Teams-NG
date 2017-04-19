@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import I18n from "i18n-js";
-import CopyToClipboard from 'react-copy-to-clipboard';
+import CopyToClipboard from "react-copy-to-clipboard";
 import {deleteTeam, getTeamDetail, leaveTeam} from "../api";
 import {setFlash} from "../utils/flash";
 import {stop} from "../utils/utils";
@@ -28,17 +28,19 @@ export default class TeamDetail extends React.Component {
                 personalNote: false
             },
             loaded: false,
-            copiedToClipboard: true
+            copiedToClipboard: false
         };
+        moment.locale(I18n.locale);
     }
 
     fetchTeam() {
         getTeamDetail(this.props.match.params.id).then(team => {
+            const joinRequests = team.joinRequests || [];
             this.setState({
                 team: team,
-                filteredMembers: team.memberships.concat(team.joinRequests).sort(this.sortByStatus),
+                filteredMembers: team.memberships.concat(joinRequests).sort(this.sortByStatus),
                 loaded: true
-            });
+            })
         });
     }
 
@@ -49,7 +51,7 @@ export default class TeamDetail extends React.Component {
             (!isJoinRequestMember && !isJoinRequestOtherMember)) {
             return member.created > otherMember.created ? 1 : member.created === otherMember.created ? 0 : -1
         }
-        return isJoinRequestMember ? 1 : -1;
+        return isJoinRequestMember ? -1 : 1;
     };
 
     componentWillMount = () => this.fetchTeam();
@@ -63,14 +65,16 @@ export default class TeamDetail extends React.Component {
         const {router} = this.context;
         stop(e);
         if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
-            deleteTeam(team.id).then(() => router.transitionTo("my-teams"));
-            setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_deleted")}));
+            deleteTeam(team.id).then(() => {
+                this.props.history.replace("/my-teams");
+                setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_deleted")}));
+            });
+
         }
     };
 
-    handleLeaveTeam = (team) => (e) => {
-
-    };
+    handleLeaveTeam = (myMembershipId) => (e) =>
+        leaveTeam(myMembershipId).then(() => this.props.history.replace("/my-teams"));
 
     search = (e) => {
         let input = e.target.value;
@@ -99,7 +103,9 @@ export default class TeamDetail extends React.Component {
 
     sortByAttribute = (name) => (a, b) => a[name].localeCompare(b[name]);
 
-    teamDetailHeader(team, role) {
+    teamDetailHeader(team, role, currentUser) {
+        const myMembershipId =
+            team.memberships.filter(membership => membership.urnPerson === currentUser.urn).map(membership => membership.id)[0];
         return (
             <section className="team-header">
                 <Link className="back" to="/my-teams"><i className="fa fa-arrow-left"></i>
@@ -108,7 +114,7 @@ export default class TeamDetail extends React.Component {
                 <div className="actions">
                     <h2>{team.name}</h2>
                     <a className="button" href="#"
-                       onClick={this.handleLeaveTeam(team)}>{I18n.t("team_detail.leave")}
+                       onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
                         <i className="fa fa-sign-out"></i>
                     </a>
                     {role === "ADMIN" && <a className="button" href="#"
@@ -120,28 +126,37 @@ export default class TeamDetail extends React.Component {
         );
     }
 
+    changePersonalNote = (description) => {
+
+    };
+
     changeDescription = (description) => {
-        debugger;
     };
 
     changeViewable = e => {
 
     };
 
+    copiedToClipboard = () => {
+        this.setState({copiedToClipboard: true});
+        setTimeout(() => this.setState({copiedToClipboard: false}), 1500);
+    };
+
     teamDetailAttributes(team, role) {
         const isAdmin = role === "ADMIN";
+        const copiedToClipBoardClassName = this.state.copiedToClipboard ? "copied" : "";
         return (
             <section className="team-attributes">
                 <div className="inline-editable">
                     <label>{I18n.t(name)}</label>
                     <CopyToClipboard text={team.urn}
-                                     onCopy={() => this.setState({copiedToClipboard: true})}>
-                        <span>{team.urn}<i className="fa fa-copy"></i></span>
+                                     onCopy={this.copiedToClipboard}>
+                        <span>{team.urn}<i className={`fa fa-copy ${copiedToClipBoardClassName}`}></i></span>
                     </CopyToClipboard>
 
                 </div>
-                {isAdmin && <InlineEditable name="team_detail.description" value={team.urn} onChange={this.changeDescription}/>}
-                {isAdmin && <InlineEditable name="team_detail.personalNote" value={team.personalNote} onChange={this.changeDescription}/>}
+                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description} onChange={this.changeDescription}/>
+                {isAdmin && <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote} onChange={this.changeDescription}/>}
                 <div className="team-viewable">
                     <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
                     <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>
@@ -155,7 +170,7 @@ export default class TeamDetail extends React.Component {
 
     currentUserRoleInTeam = (team, currentUser) => team.memberships.filter(membership => membership.urnPerson === currentUser.urn)[0].role;
 
-    statusOfMembership = (member) => member.role ? moment(member.created).format('LLLL') :
+    statusOfMembership = (member) => member.role ? moment(member.created).format("LLL") :
         <span className="status-pending"><i className="fa fa-clock-o"></i>{I18n.t("team_detail.pending")}</span>;
 
     roleOfMembership = (member) => member.role ?
@@ -181,7 +196,7 @@ export default class TeamDetail extends React.Component {
                         <td>{member.person.email}</td>
                         <td>{this.statusOfMembership(member)}</td>
                         <td>{this.roleOfMembership(member)}</td>
-                        <td className="actions">...</td>
+                        <td className="actions"><i className="fa fa-ellipsis-h"></i></td>
                     </tr>
                 )}
 
@@ -202,7 +217,7 @@ export default class TeamDetail extends React.Component {
 
         return (
             <div className="team-detail">
-                {this.teamDetailHeader(team, role)}
+                {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role)}
                 <h2>{`${I18n.t("team_detail.team_members")} (${team.memberships.length + team.joinRequests.length})`}</h2>
                 <section className="team-detail-controls">
