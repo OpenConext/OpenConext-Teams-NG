@@ -29,7 +29,7 @@
     "glob": "7.1.0",
     "history": "4.3.0",
     "html-webpack-plugin": "2.22.0",
-    "i18n-js": "http://github.com/fnando/i18n-js/archive/v3.0.0.rc12.tar.gz",
+    "i18n-js": "http://github.com/fnando/i18n-js/archive/v3.0.0.tar.gz",
     "import-glob-loader": "1.1.0",
     "isomorphic-fetch": "2.2.1",
     "jquery": "3.1.1",

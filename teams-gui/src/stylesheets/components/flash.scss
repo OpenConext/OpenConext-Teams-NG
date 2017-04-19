@@ -1,0 +1,28 @@
+div.flash {
+  padding-top: 10px;
+  text-align: center;
+  color: white;
+  font-size: large;
+  position: relative;
+
+  &.error {
+    background-color: $red;
+  }
+
+  a {
+    text-decoration: none;
+    position: absolute;
+    right: 0;
+    top: 6px;
+    color: white;
+    font-size: x-large;
+    padding: 6px;
+  }
+
+  p {
+    background-color: $green;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+}

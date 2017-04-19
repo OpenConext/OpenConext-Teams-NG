@@ -63,7 +63,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/teams")
-    public Team createTeam(@Validated @RequestBody Team teamProperties, FederatedUser federatedUser) {
+    public Object createTeam(@Validated @RequestBody Team teamProperties, FederatedUser federatedUser) {
         String name = teamProperties.getName();
         String urn = constructUrn(name);
         Optional<Team> teamOptional = teamRepository.findByUrn(urn);
@@ -72,11 +72,11 @@ public class TeamController extends ApiController implements TeamValidator {
 
         Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable());
         Person person = federatedUser.getPerson();
-        new Membership(Role.ADMIN, team, person);
+        Membership membership = new Membership(Role.ADMIN, team, person);
 
         LOG.info("Team {} created by {}", urn, federatedUser.getUrn());
 
-        return teamRepository.save(team);
+        return lazyLoadTeam(teamRepository.save(team), membership.getRole(), federatedUser);
     }
 
     private String constructUrn(String name) {
@@ -86,7 +86,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("api/teams/teams")
-    public Team updateTeam(@Validated @RequestBody TeamProperties teamProperties, FederatedUser federatedUser) {
+    public Object updateTeam(@Validated @RequestBody TeamProperties teamProperties, FederatedUser federatedUser) {
         Team team = teamById(teamProperties.getId());
 
         String federatedUserUrn = federatedUser.getUrn();
@@ -99,7 +99,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
         LOG.info("Team {} updated by {}", team.getUrn(), federatedUserUrn);
 
-        return teamRepository.save(team);
+        return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

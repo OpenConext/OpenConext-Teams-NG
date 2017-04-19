@@ -17,6 +17,7 @@ import NotFound from "./pages/not_found";
 import ServerError from "./pages/server_error";
 import Footer from "./components/footer";
 import Header from "./components/header";
+import Flash from "./components/flash";
 import Navigation from "./components/navigation";
 import MyTeams from "./pages/my_teams";
 import TeamDetail from "./pages/team_detail";
@@ -36,6 +37,7 @@ class App extends React.Component {
                     <div className="header">
                         <Header currentUser={currentUser}/>
                         <Navigation currentUser={currentUser}/>
+                        <Flash/>
                     </div>
                     <Switch>
                         <Route exact path="/" render={() => {

@@ -58,7 +58,7 @@ function fetchJson(path, options = {}) {
 
 function postPutJson(path, body, options = {}) {
     const method = body.id === undefined ? "post" : "put";
-    return validFetch(path, Object.assign({}, {method: method, body: JSON.stringify(body)}, options));
+    return fetchJson(path, Object.assign({}, {method: method, body: JSON.stringify(body)}, options));
 }
 
 function fetchDelete(path) {

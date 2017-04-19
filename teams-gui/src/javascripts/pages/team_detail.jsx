@@ -9,6 +9,7 @@ import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
 import SortDropDown from "../components/sort_drop_down";
 import InlineEditable from "../components/inline_editable";
+import MembershipsValidator from "../validations/memberships";
 
 export default class TeamDetail extends React.Component {
 
@@ -106,6 +107,7 @@ export default class TeamDetail extends React.Component {
     teamDetailHeader(team, role, currentUser) {
         const myMembershipId =
             team.memberships.filter(membership => membership.urnPerson === currentUser.urn).map(membership => membership.id)[0];
+        const allowedToLeave = MembershipsValidator.allowedToLeave(team, currentUser);
         return (
             <section className="team-header">
                 <Link className="back" to="/my-teams"><i className="fa fa-arrow-left"></i>
@@ -113,10 +115,10 @@ export default class TeamDetail extends React.Component {
                 </Link>
                 <div className="actions">
                     <h2>{team.name}</h2>
-                    <a className="button" href="#"
-                       onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
+                    {allowedToLeave && <a className="button" href="#"
+                                          onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
                         <i className="fa fa-sign-out"></i>
-                    </a>
+                    </a>}
                     {role === "ADMIN" && <a className="button" href="#"
                                             onClick={this.handleDeleteTeam(team)}>{I18n.t("team_detail.delete")}
                         <i className="fa fa-trash"></i>
@@ -146,7 +148,12 @@ export default class TeamDetail extends React.Component {
             personalNote: team.personalNote,
             viewable: team.viewable
         };
-        saveTeam(...teamProperties, ...changedAttribute).then(team => this.stateTeam(team));
+        saveTeam({...teamProperties, ...changedAttribute}).then(team => {
+            debugger;
+            this.stateTeam(team)
+            //setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_deleted")}));
+            setFlash("Boeoeoe")
+        });
     };
 
     copiedToClipboard = () => {
@@ -167,9 +174,9 @@ export default class TeamDetail extends React.Component {
                     </CopyToClipboard>
 
                 </div>
-                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description}
+                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description || ""}
                                 onChange={this.changeDescription}/>
-                {isAdmin && <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote}
+                {isAdmin && <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
                                             onChange={this.changePersonalNote}/>}
                 <div className="team-viewable">
                     <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
@@ -206,8 +213,8 @@ export default class TeamDetail extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.filteredMembers.map(member =>
-                        <tr key={member.urnPerson}>
+                    {this.state.filteredMembers.map((member, index) =>
+                        <tr key={`${member.urnPerson}-${index}`}>
                             <td>{member.person.name}</td>
                             <td>{member.person.email}</td>
                             <td>{this.statusOfMembership(member)}</td>
@@ -230,12 +237,13 @@ export default class TeamDetail extends React.Component {
             return null;
         }
         const role = this.currentUserRoleInTeam(team, currentUser);
+        const joinRequests = team.joinRequests || [];
 
         return (
             <div className="team-detail">
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role, currentUser)}
-                <h2>{`${I18n.t("team_detail.team_members")} (${team.memberships.length + team.joinRequests.length})`}</h2>
+                <h2>{`${I18n.t("team_detail.team_members")} (${team.memberships.length + joinRequests.length})`}</h2>
                 <section className="team-detail-controls">
                     <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                     <div className="search">

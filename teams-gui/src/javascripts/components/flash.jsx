@@ -2,7 +2,7 @@ import React from "react";
 
 import {emitter, getFlash} from "../utils/flash";
 
-class Flash extends React.Component {
+export default class Flash extends React.Component {
     constructor() {
         super();
 
@@ -43,5 +43,3 @@ class Flash extends React.Component {
         return null;
     }
 }
-
-export default Flash;

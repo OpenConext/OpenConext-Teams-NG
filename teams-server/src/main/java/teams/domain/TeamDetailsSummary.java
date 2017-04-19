@@ -14,6 +14,7 @@ public class TeamDetailsSummary extends TeamSummary {
 
     public TeamDetailsSummary(Team team, FederatedUser user) {
         super(team, user);
+        team.getMemberships().forEach(membership -> membership.getPerson().isValid());
         this.memberships = team.getMemberships();
     }
 }
