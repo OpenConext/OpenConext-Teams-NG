@@ -55,10 +55,8 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-    currentUser: PropTypes.object.required
+    currentUser: PropTypes.object.isRequired
 };
-
-
 
 function determineLanguage() {
     let parameterByName = QueryParameter.getParameterByName("lang");

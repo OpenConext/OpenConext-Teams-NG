@@ -78,5 +78,5 @@ export default class Header extends React.Component {
 }
 
 Header.propTypes = {
-    currentUser: PropTypes.object.required
+    currentUser: PropTypes.object.isRequired
 };

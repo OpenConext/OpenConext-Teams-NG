@@ -17,7 +17,7 @@ export default function UserProfile({currentUser}) {
 }
 
 UserProfile.propTypes = {
-    currentUser: PropTypes.object.required
+    currentUser: PropTypes.object.isRequired
 };
 
 

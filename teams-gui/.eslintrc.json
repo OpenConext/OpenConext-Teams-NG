@@ -52,7 +52,6 @@
       "error",
       "always"
     ],
-    "react/forbid-prop-types": "error",
     "react/jsx-uses-vars": [2],
     "no-else-return": "error",
     "prefer-arrow-callback": "error",

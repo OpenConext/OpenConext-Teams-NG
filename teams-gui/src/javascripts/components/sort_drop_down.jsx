@@ -52,6 +52,6 @@ export default class SortDropDown extends React.Component {
 }
 
 SortDropDown.propTypes = {
-    items: PropTypes.array.required,
-    sortBy: PropTypes.func.required
+    items: PropTypes.array.isRequired,
+    sortBy: PropTypes.func.isRequired
 };

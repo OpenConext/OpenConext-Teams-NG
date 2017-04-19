@@ -169,6 +169,6 @@ export default class MyTeams extends React.Component {
 }
 
 MyTeams.propTypes = {
-    history: PropTypes.object.required
+    history: PropTypes.object.isRequired
 };
 

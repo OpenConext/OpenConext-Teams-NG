@@ -66,9 +66,9 @@ export default class InlineEditable extends React.Component {
 }
 
 InlineEditable.propTypes = {
-    name: PropTypes.string.required,
-    value: PropTypes.string.required,
-    mayEdit: PropTypes.boolean,
-    onChange: PropTypes.func.required
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    mayEdit: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired
 };
 

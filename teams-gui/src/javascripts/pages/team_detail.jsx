@@ -252,7 +252,7 @@ export default class TeamDetail extends React.Component {
 }
 
 TeamDetail.propTypes = {
-    match: PropTypes.object.required,
-    history: PropTypes.object.required,
-    currentUser: PropTypes.object.required
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired
 };
