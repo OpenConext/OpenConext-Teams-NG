@@ -66,27 +66,27 @@ public class MembershipValidatorTest implements Seed {
 
     @Test
     public void membersCanNotRemoveOthersButAdminCan() {
-        subject.onlyAdminsCanRemoveOthers(Role.ADMIN, person("urn"), new FederatedUser(person("diff")));
+        subject.onlyAdminsCanRemoveOthers(Role.ADMIN, person("urn"), federatedUser("diff"));
     }
 
     @Test
     public void membersCanNotRemoveOthersButThemselves() {
-        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), new FederatedUser(person("urn")));
+        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), federatedUser("urn"));
     }
 
     @Test
     public void managersCanNotRemoveOthersButThemselves() {
-        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), new FederatedUser(person("urn")));
+        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("urn"));
     }
 
     @Test(expected = IllegalMembershipException.class)
     public void membersCanNotRemoveOthers() {
-        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), new FederatedUser(person("diff")));
+        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), federatedUser("diff"));
     }
 
     @Test(expected = IllegalMembershipException.class)
     public void managersCanNotRemoveOthers() {
-        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), new FederatedUser(person("diff")));
+        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("diff"));
     }
 
     @Test(expected = IllegalJoinRequestException.class)

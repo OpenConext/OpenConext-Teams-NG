@@ -1,6 +1,7 @@
 package teams.api;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Value;
 import teams.AbstractApplicationTest;
 
 import static io.restassured.RestAssured.given;
@@ -10,6 +11,10 @@ import static org.hamcrest.Matchers.hasItems;
 
 public class UserControllerTest extends AbstractApplicationTest {
 
+    @Value("${teams.group-name-context}")
+    private String groupNameContext;
+
+
     @Test
     public void currentUser() throws Exception {
         given()
@@ -17,7 +22,8 @@ public class UserControllerTest extends AbstractApplicationTest {
                 .get("api/teams/users/me")
                 .then()
                 .statusCode(SC_OK)
-                .body("authorities.authority", hasItems("ROLE_ADMIN", "ROLE_USER"));
+                .body("authorities.authority", hasItems("ROLE_ADMIN", "ROLE_USER"))
+                .body("groupNameContext", equalTo(groupNameContext));
 
         given()
                 .header("name-id", "not-provisioned")

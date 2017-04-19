@@ -12,12 +12,12 @@ cache:
 before_install:
   - pip install --user codecov
 install:
-  - cd teams-gui && yarn install && cd ..
+  - cd teams-gui && npm install && cd ..
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 before_script:
   - mysql -e "create database IF NOT EXISTS teams_ng; grant all on teams_ng.* to 'root';SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;" -uroot
 script:
   - mvn test
-  - cd teams-gui && yarn install && yarn run lint
+  - cd teams-gui && npm install && npm run lint
 after_success:
   - codecov

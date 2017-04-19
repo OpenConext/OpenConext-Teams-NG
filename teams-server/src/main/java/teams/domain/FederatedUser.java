@@ -1,6 +1,7 @@
 package teams.domain;
 
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -10,13 +11,15 @@ import static java.util.Collections.singletonList;
 @Getter
 public class FederatedUser extends User {
 
+    private String groupNameContext;
     private Person person;
 
-    public FederatedUser(Person person) {
+    public FederatedUser(Person person, String groupNameContext) {
         super(person.getName(), "N/A", person.isGuest() ?
                 singletonList(new SimpleGrantedAuthority("ROLE_USER")) :
                 asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")));
         this.person = person;
+        this.groupNameContext = groupNameContext;
     }
 
     public String getUrn() {

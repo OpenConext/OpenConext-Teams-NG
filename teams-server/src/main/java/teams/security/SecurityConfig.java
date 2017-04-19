@@ -70,10 +70,13 @@ public class SecurityConfig {
         @Value("${teams.non-guest-member-of}")
         private String nonGuestsMemberOf;
 
+        @Value("${teams.group-name-context}")
+        private String groupNameContext;
+
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             PreAuthenticatedAuthenticationProvider authenticationProvider = new PreAuthenticatedAuthenticationProvider();
-            authenticationProvider.setPreAuthenticatedUserDetailsService(new ShibbolethUserDetailService());
+            authenticationProvider.setPreAuthenticatedUserDetailsService(new ShibbolethUserDetailService(groupNameContext));
             auth.authenticationProvider(authenticationProvider);
         }
 

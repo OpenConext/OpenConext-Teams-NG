@@ -27,25 +27,25 @@ public class TeamValidatorTest implements Seed {
 
     @Test
     public void onlyAdminAllowed() throws Exception {
-        subject.onlyAdminAllowed(Role.ADMIN, new FederatedUser(person()), team(), "test");
+        subject.onlyAdminAllowed(Role.ADMIN, federatedUser(), team(), "test");
     }
 
     @Test(expected = IllegalMembershipException.class)
     public void onlyAdminAllowedException() throws Exception {
-        subject.onlyAdminAllowed(Role.MANAGER, new FederatedUser(person()), team(), "test");
+        subject.onlyAdminAllowed(Role.MANAGER, federatedUser(), team(), "test");
     }
 
     @Test
     public void lazyLoadTeam() throws Exception {
         Team team = team();
-        assertEquals(team, subject.lazyLoadTeam(team, Role.ADMIN, new FederatedUser(person())));
+        assertEquals(team, subject.lazyLoadTeam(team, Role.ADMIN, federatedUser()));
     }
 
     @Test
     public void lazyLoadTeamMember() throws Exception {
         Team team = team();
         new Membership(Role.ADMIN, team, person("test"));
-        TeamDetailsSummary summary = TeamDetailsSummary.class.cast(subject.lazyLoadTeam(team, Role.MEMBER, new FederatedUser(person())));
+        TeamDetailsSummary summary = TeamDetailsSummary.class.cast(subject.lazyLoadTeam(team, Role.MEMBER, federatedUser()));
         assertEquals(team.getName(), summary.getName());
         assertEquals("test", summary.getMemberships().iterator().next().getPerson().getUrn());
     }

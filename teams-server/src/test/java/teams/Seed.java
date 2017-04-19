@@ -1,9 +1,6 @@
 package teams;
 
-import teams.domain.Membership;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
+import teams.domain.*;
 
 public interface Seed {
 
@@ -29,5 +26,14 @@ public interface Seed {
 
     default Membership membership(Role role, Team team, Person person) {
         return new Membership(role, team, person);
+    }
+
+    default FederatedUser federatedUser(String urn) {
+        return new FederatedUser(person(urn), "urn:collab:group:dev.surfteams.nl:");
+    }
+
+
+    default FederatedUser federatedUser() {
+        return new FederatedUser(person(), "urn:collab:group:dev.surfteams.nl:");
     }
 }
