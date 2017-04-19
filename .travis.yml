@@ -2,7 +2,7 @@ language: java
 jdk:
   - oraclejdk8
 node_js:
-  - 6
+  - "7"
 services:
   - mysql
 cache:
@@ -11,6 +11,9 @@ cache:
     - node_modules
 before_install:
   - pip install --user codecov
+  - nvm install 7
+  - npm install -g yarn
+  - yarn install
 install:
   - cd teams-gui && npm install && cd ..
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
