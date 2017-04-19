@@ -78,7 +78,9 @@ I18n.translations.en = {
         invite: "Invite",
         link_to_institution_team: "Link to institution team",
         search_members_placeholder: "Search members",
-        no_found: "No members found"
+        no_found: "No members found",
+        copy: "Copy to clipboard",
+        copied: "Copied",
     },
 
     sort: {

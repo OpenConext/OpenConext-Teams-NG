@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
+import ReactTooltip from "react-tooltip";
 import I18n from "i18n-js";
 import CopyToClipboard from "react-copy-to-clipboard";
 import {deleteTeam, getTeamDetail, leaveTeam, saveTeam} from "../api";
@@ -9,7 +10,7 @@ import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
 import SortDropDown from "../components/sort_drop_down";
 import InlineEditable from "../components/inline_editable";
-import {allowedToLeave, roleOfMembership, currentUserRoleInTeam} from "../validations/memberships";
+import {allowedToLeave, currentUserRoleInTeam, roleOfMembership} from "../validations/memberships";
 
 export default class TeamDetail extends React.Component {
 
@@ -131,7 +132,7 @@ export default class TeamDetail extends React.Component {
 
     copiedToClipboard = () => {
         this.setState({copiedToClipboard: true});
-        setTimeout(() => this.setState({copiedToClipboard: false}), 1500);
+        setTimeout(() => this.setState({copiedToClipboard: false}), 1000);
     };
 
     teamDetailHeader(team, role, currentUser) {
@@ -146,7 +147,7 @@ export default class TeamDetail extends React.Component {
                 <div className="actions">
                     <h2>{team.name}</h2>
                     {mayLeave && <a className="button" href="#"
-                                          onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
+                                    onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
                         <i className="fa fa-sign-out"></i>
                     </a>}
                     {role === "ADMIN" && <a className="button" href="#"
@@ -160,21 +161,30 @@ export default class TeamDetail extends React.Component {
 
     teamDetailAttributes(team, role, currentUser) {
         const isAdmin = role === "ADMIN";
-        const copiedToClipBoardClassName = this.state.copiedToClipboard ? "copied" : "";
+        const copiedToClipBoardClassName =  this.state.copiedToClipboard ? "copied" : "";
+        const universalUrn = `${currentUser.groupNameContext}${team.urn}`;
+
         return (
             <section className="team-attributes">
-                <div className="inline-editable">
-                    <label>{I18n.t(name)}</label>
-                    <CopyToClipboard text={`${currentUser.groupNameContext}${team.urn}`}
+                <div className="team-attribute">
+                    <label>{I18n.t("team_detail.urn")}</label>
+                    <CopyToClipboard text={universalUrn}
                                      onCopy={this.copiedToClipboard}>
-                        <span>{team.urn}<i className={`fa fa-copy ${copiedToClipBoardClassName}`}></i></span>
+                        <span>{universalUrn}
+                            <a data-for="copy-to-clipboard" data-tip>
+                                <i className={`fa fa-copy ${copiedToClipBoardClassName}`}></i>
+                            </a>
+                            <ReactTooltip id="copy-to-clipboard"
+                                          getContent={[() => I18n.t(this.state.copiedToClipboard ? "team_detail.copied" : "team_detail.copy"), 500]}/>
+                        </span>
                     </CopyToClipboard>
 
                 </div>
                 <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description || ""}
                                 onChange={this.changeDescription}/>
-                {isAdmin && <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
-                                            onChange={this.changePersonalNote}/>}
+                {isAdmin &&
+                <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
+                                onChange={this.changePersonalNote}/>}
                 <div className="team-viewable">
                     <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
                     <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>

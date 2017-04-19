@@ -1,62 +1,58 @@
 .team-attributes {
-    margin-top: 20px;
+  margin-top: 20px;
 
-    .team-attribute, .inline-editable {
-        label {
-            display: block;
-            color: $medium-grey;
-            font-size: 16px;
-            text-transform: uppercase;
-            font-weight: bold;
-            margin: 5px 0;
+  .team-attribute, .inline-editable {
+    label {
+      display: block;
+      color: $medium-grey;
+      font-size: 16px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin: 5px 0;
 
-            &.info-after {
-                margin-bottom: 0;
-            }
-        }
-        em {
-            font-size: 11px;
-            color: $medium-grey;
-        }
-
-        span {
-            position: relative;
-            border-bottom: 1px solid $light-grey;
-            border-top-left-radius: $br;
-            border-top-right-radius: $br;
-            background-color: $light-grey;
-            width: 100%;
-            padding: 1px 8px;
-            input {
-                width: 100%;
-                border: none;
-            }
-
-            i {
-                color: $blue;
-                position: absolute;
-                top: 2px;
-                right: 3px;
-            }
-
-        }
-
-        i.copied {
-            animation: pulse 1s;
-            animation-iteration-count: 1;
-            border-radius: 50%;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 white;
-            }
-            70% {
-                box-shadow: 0 0 10px 8px lighten($blue, 15%);
-            }
-            100% {
-                box-shadow: 0 0 0 0 white;
-            }
-        }
+      &.info-after {
+        margin-bottom: 0;
+      }
     }
+    em {
+      font-size: 11px;
+      color: $medium-grey;
+    }
+
+    span {
+      display: block;
+      border-bottom: 1px solid $light-grey;
+      border-top-left-radius: $br;
+      border-top-right-radius: $br;
+      background-color: $light-grey;
+      padding: 10px 10px;
+      font-size: larger;
+
+      i {
+        color: $blue;
+        margin-left: 10px;
+        font-size: larger;
+      }
+
+    }
+
+    i.copied {
+      animation: pulse 1s;
+      animation-iteration-count: 1;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 white;
+      }
+      70% {
+        box-shadow: 0 0 10px 8px lighten($blue, 15%);
+      }
+      100% {
+        box-shadow: 0 0 0 0 white;
+      }
+    }
+  }
 }
