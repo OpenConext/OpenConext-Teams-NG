@@ -9,7 +9,7 @@ import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
 import SortDropDown from "../components/sort_drop_down";
 import InlineEditable from "../components/inline_editable";
-import MembershipsValidator from "../validations/memberships";
+import {allowedToLeave, roleOfMembership} from "../validations/memberships";
 
 export default class TeamDetail extends React.Component {
 
@@ -69,7 +69,6 @@ export default class TeamDetail extends React.Component {
                 this.props.history.replace("/my-teams");
                 setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_deleted")}));
             });
-
         }
     };
 
@@ -104,30 +103,6 @@ export default class TeamDetail extends React.Component {
 
     sortByAttribute = name => (a, b) => a[name].localeCompare(b[name]);
 
-    teamDetailHeader(team, role, currentUser) {
-        const myMembershipId =
-            team.memberships.filter(membership => membership.urnPerson === currentUser.urn).map(membership => membership.id)[0];
-        const allowedToLeave = MembershipsValidator.allowedToLeave(team, currentUser);
-        return (
-            <section className="team-header">
-                <Link className="back" to="/my-teams"><i className="fa fa-arrow-left"></i>
-                    {I18n.t("team_detail.back")}
-                </Link>
-                <div className="actions">
-                    <h2>{team.name}</h2>
-                    {allowedToLeave && <a className="button" href="#"
-                                          onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
-                        <i className="fa fa-sign-out"></i>
-                    </a>}
-                    {role === "ADMIN" && <a className="button" href="#"
-                                            onClick={this.handleDeleteTeam(team)}>{I18n.t("team_detail.delete")}
-                        <i className="fa fa-trash"></i>
-                    </a>}
-                </div>
-            </section>
-        );
-    }
-
     changePersonalNote = personalNote => {
         this.saveTeamProperties({personalNote: personalNote});
     };
@@ -159,6 +134,30 @@ export default class TeamDetail extends React.Component {
         setTimeout(() => this.setState({copiedToClipboard: false}), 1500);
     };
 
+    teamDetailHeader(team, role, currentUser) {
+        const myMembershipId =
+            team.memberships.filter(membership => membership.urnPerson === currentUser.urn).map(membership => membership.id)[0];
+        const mayLeave = allowedToLeave(team, currentUser);
+        return (
+            <section className="team-header">
+                <Link className="back" to="/my-teams"><i className="fa fa-arrow-left"></i>
+                    {I18n.t("team_detail.back")}
+                </Link>
+                <div className="actions">
+                    <h2>{team.name}</h2>
+                    {mayLeave && <a className="button" href="#"
+                                          onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
+                        <i className="fa fa-sign-out"></i>
+                    </a>}
+                    {role === "ADMIN" && <a className="button" href="#"
+                                            onClick={this.handleDeleteTeam(team)}>{I18n.t("team_detail.delete")}
+                        <i className="fa fa-trash"></i>
+                    </a>}
+                </div>
+            </section>
+        );
+    }
+
     teamDetailAttributes(team, role, currentUser) {
         const isAdmin = role === "ADMIN";
         const copiedToClipBoardClassName = this.state.copiedToClipboard ? "copied" : "";
@@ -188,14 +187,8 @@ export default class TeamDetail extends React.Component {
         );
     }
 
-    currentUserRoleInTeam =
-        (team, currentUser) => team.memberships.filter(membership => membership.urnPerson === currentUser.urn)[0].role;
-
     statusOfMembership = member => member.role ? moment(member.created).format("LLL") :
         <span className="status-pending"><i className="fa fa-clock-o"></i>{I18n.t("team_detail.pending")}</span>;
-
-    roleOfMembership = member =>
-        member.role ? member.role.substring(0, 1) + member.role.substring(1).toLowerCase() : "Member";
 
     renderMembersTable() {
         if (this.state.filteredMembers.length !== 0) {
@@ -216,7 +209,7 @@ export default class TeamDetail extends React.Component {
                             <td>{member.person.name}</td>
                             <td>{member.person.email}</td>
                             <td>{this.statusOfMembership(member)}</td>
-                            <td>{this.roleOfMembership(member)}</td>
+                            <td>{roleOfMembership(member)}</td>
                             <td className="actions"><i className="fa fa-ellipsis-h"></i></td>
                         </tr>
                     )}
