@@ -9,7 +9,7 @@ import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
 import SortDropDown from "../components/sort_drop_down";
 import InlineEditable from "../components/inline_editable";
-import {allowedToLeave, roleOfMembership} from "../validations/memberships";
+import {allowedToLeave, roleOfMembership, currentUserRoleInTeam} from "../validations/memberships";
 
 export default class TeamDetail extends React.Component {
 
@@ -227,7 +227,7 @@ export default class TeamDetail extends React.Component {
         if (!loaded) {
             return null;
         }
-        const role = this.currentUserRoleInTeam(team, currentUser);
+        const role = currentUserRoleInTeam(team, currentUser);
         const joinRequests = team.joinRequests || [];
 
         return (
