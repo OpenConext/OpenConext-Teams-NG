@@ -23,7 +23,6 @@ public class UserControllerTest extends AbstractApplicationTest {
                 .get("api/teams/users/me")
                 .then()
                 .statusCode(SC_OK)
-                .body(isEmptyOrNullString())
                 .body("authorities.authority", hasItems("ROLE_ADMIN", "ROLE_USER"))
                 .body("groupNameContext", equalTo(groupNameContext))
                 .body("externalTeams.size()", equalTo(10));
