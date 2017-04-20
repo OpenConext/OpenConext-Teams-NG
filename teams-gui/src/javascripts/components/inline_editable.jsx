@@ -32,7 +32,7 @@ export default class InlineEditable extends React.Component {
 
     renderEditable(name, value) {
         return (
-            <div className="inline-editable-edit">
+            <div className="inline-editable">
                 <label htmlFor={name}>{I18n.t(name)}</label>
                 <input ref={ref => this.input = ref} type="text" name={name} id={name} value={value}
                        onChange={this.onChangeInternal} onKeyUp={this.onKeyUp} onBlur={this.save}/>

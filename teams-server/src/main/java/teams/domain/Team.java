@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class Team {
     @OneToMany(mappedBy = "team", orphanRemoval = true)
     private Set<JoinRequest> joinRequests = new HashSet<>();
 
-    @ManyToMany(mappedBy = "teams")
+    @ManyToMany(mappedBy = "teams", cascade = ALL)
     private Set<ExternalTeam> externalTeams = new HashSet<>();
 
     public Team(String urn, String name, String description, boolean viewable) {
@@ -84,5 +85,18 @@ public class Team {
     @JsonIgnore
     public String getHtmlDescription() {
         return isContainsDescription() ? HtmlUtils.htmlEscape(description).replaceAll("\n", "<br/>") : "";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return Objects.equals(id, team.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

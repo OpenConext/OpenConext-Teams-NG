@@ -1,82 +1,92 @@
 .team-detail {
-    max-width: $medium;
-    margin: 0 auto;
+  max-width: $medium;
+  margin: 0 auto;
 
-    .team-header {
-        padding: 35px 0 15px 0;
-        border-bottom: 1px solid $lighter-grey;
+  .team-header {
+    padding: 35px 0 15px 0;
+    border-bottom: 1px solid $lighter-grey;
 
-        a.back {
-            font-weight: bold;
-            font-size: 18px;
-            text-decoration: none;
-            color: $blue;
-            &:hover, &:visited {
-                text-decoration: none
-            }
-            i {
-                margin-right: 10px;
-            }
-        }
-
-        .actions {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-            h2 {
-                font-size: 30px;
-                margin-right: auto;
-                text-transform: capitalize;
-            }
-        }
+    a.back {
+      font-weight: bold;
+      font-size: 18px;
+      text-decoration: none;
+      color: $blue;
+      &:hover, &:visited {
+        text-decoration: none
+      }
+      i {
+        margin-right: 10px;
+      }
     }
 
-    .search {
+    .actions {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      h2 {
+        font-size: 30px;
+        margin-right: auto;
+        text-transform: capitalize;
+      }
+    }
+  }
+
+  h2.members {
+    font-size: x-large;
+    padding: 25px 0 20px 0;
+    border-bottom: 1px solid $lighter-grey;
+  }
+
+  .team-detail-controls {
+    display: flex;
+    margin: 20px 0;
+    align-items: center;
+
+  }
+
+  .search {
+    position: relative;
+
+    input {
+      padding: 10px;
+      border: 2px solid $light-grey;
+      border-radius: 2px;
+      font-size: medium;
+      width: 100%;
+    }
+
+    i {
+      color: lighten($blue, 5);
+      position: absolute;
+      right: 10px;
+      top: 6px;
+      font-size: 24px;
+    }
+  }
+
+  table {
+    width: 100%;
+    border: 1px solid $light-grey;
+    thead {
+
+      background-color: $light-grey;
+
+      span {
         position: relative;
-
-        input {
-            margin: 25px 0 15px 0;
-            padding: 10px;
-            border: 2px solid $light-grey;
-            border-radius: 2px;
-            font-size: medium;
-            width: 100%;
-        }
-
-        i {
-            color: lighten($blue, 5);
-            position: absolute;
-            right: 10px;
-            top: 32px;
-            font-size: 24px;
-        }
-    }
-
-    table {
+        display: inline-block;
         width: 100%;
-        border: 1px solid $light-grey;
-        thead {
-
-            background-color: $light-grey;
-
-
-            span {
-                position: relative;
-                display: inline-block;
-                width: 100%;
-                text-transform: uppercase;
-                font-weight: bold;
-                font-size: larger;
-                color: $medium-grey;
-                padding: 7px 2px 7px 0px;
-            }
-        }
-        tbody {
-            td.membership-count {
-                text-align: right;
-            }
-
-
-        }
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: larger;
+        color: $medium-grey;
+        padding: 7px 2px 7px 0px;
+      }
     }
+    tbody {
+      td.membership-count {
+        text-align: right;
+      }
+
+    }
+  }
 }

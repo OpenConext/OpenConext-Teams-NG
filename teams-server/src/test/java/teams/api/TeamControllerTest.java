@@ -2,15 +2,13 @@ package teams.api;
 
 import org.junit.Test;
 import teams.AbstractApplicationTest;
-import teams.domain.Membership;
-import teams.domain.Role;
-import teams.domain.Team;
-import teams.domain.TeamProperties;
+import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
 import teams.exception.IllegalSearchParamException;
 import teams.exception.NotAllowedException;
 
+import java.util.List;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
@@ -244,6 +242,5 @@ public class TeamControllerTest extends AbstractApplicationTest {
 
         assertFalse(teamRepository.findByUrn("nl:surfnet:diensten:riders").isPresent());
     }
-
 
 }

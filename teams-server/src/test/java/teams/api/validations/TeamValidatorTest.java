@@ -1,10 +1,12 @@
 package teams.api.validations;
 
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 import teams.Seed;
 import teams.api.TeamController;
 import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
+import teams.exception.IllegalLinkExternalTeamException;
 import teams.exception.IllegalMembershipException;
 
 import java.util.Optional;
@@ -49,4 +51,5 @@ public class TeamValidatorTest implements Seed {
         assertEquals(team.getName(), summary.getName());
         assertEquals("test", summary.getMemberships().iterator().next().getPerson().getUrn());
     }
+
 }

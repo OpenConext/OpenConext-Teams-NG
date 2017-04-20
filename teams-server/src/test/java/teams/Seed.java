@@ -16,6 +16,10 @@ public interface Seed {
         return new Team("urn", "name", "description", viewable);
     }
 
+    default ExternalTeam externalTeam(String identifier) {
+        return new ExternalTeam("description", "groupProvider", identifier, "name");
+    }
+
     default Person person() {
         return person("urn");
     }
@@ -31,8 +35,6 @@ public interface Seed {
     default FederatedUser federatedUser(String urn) {
         return new FederatedUser(person(urn), "urn:collab:group:dev.surfteams.nl:");
     }
-
-
     default FederatedUser federatedUser() {
         return new FederatedUser(person(), "urn:collab:group:dev.surfteams.nl:");
     }

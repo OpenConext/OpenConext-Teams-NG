@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+import teams.domain.ExternalTeam;
 import teams.domain.Language;
 import teams.domain.Membership;
 import teams.domain.Team;
@@ -48,10 +49,14 @@ public abstract class ApiController {
 
     protected Team teamById(Long id) {
         Team team = teamRepository.findOne(id);
-        if (team == null) {
-            throw new ResourceNotFoundException(format("Team %s does not exist", id));
-        }
+        assertNotNull("Team", team, id);
         return team;
+    }
+
+    protected ExternalTeam externalTeamById(Long id) {
+        ExternalTeam externalTeam = externalTeamRepository.findOne(id);
+        assertNotNull("ExternalTeam", externalTeam, id);
+        return externalTeam;
     }
 
     protected Membership membershipByUrns(String teamUrn, String personUrn) {

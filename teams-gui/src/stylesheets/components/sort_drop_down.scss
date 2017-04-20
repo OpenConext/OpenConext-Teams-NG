@@ -1,0 +1,22 @@
+section.sort-drop-down {
+
+  position: relative;
+  border: 1px solid $lighter-grey;
+  border-radius: $br;
+  padding: 8px;
+  margin-right: auto;
+
+  .sort-name {
+    text-transform: uppercase;
+    color: $blue;
+    margin: 0 15px;
+  }
+
+  i {
+    color: $blue;
+  }
+
+  ul.drop-down {
+    position: absolute;
+  }
+}

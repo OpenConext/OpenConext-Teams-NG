@@ -1,10 +1,8 @@
 package teams.api.validations;
 
-import teams.domain.FederatedUser;
-import teams.domain.Role;
-import teams.domain.Team;
-import teams.domain.TeamDetailsSummary;
+import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
+import teams.exception.IllegalLinkExternalTeamException;
 import teams.exception.IllegalMembershipException;
 
 import java.util.Optional;

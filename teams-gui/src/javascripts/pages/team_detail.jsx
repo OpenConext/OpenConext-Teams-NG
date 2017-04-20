@@ -10,6 +10,7 @@ import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
 import SortDropDown from "../components/sort_drop_down";
 import InlineEditable from "../components/inline_editable";
+import CheckBox from "../components/checkbox";
 import {allowedToLeave, currentUserRoleInTeam, roleOfMembership} from "../validations/memberships";
 
 export default class TeamDetail extends React.Component {
@@ -76,6 +77,10 @@ export default class TeamDetail extends React.Component {
     handleLeaveTeam = myMembershipId => () =>
         leaveTeam(myMembershipId).then(() => this.props.history.replace("/my-teams"));
 
+    handleInvite = () => this.props.history.invite(`/invite/${this.state.team.id}`);
+
+    handleLinkExternalTeam = () => this.props.history.invite(`/external/${this.state.team.id}`);
+
     search = e => {
         const input = e.target.value;
         if (isEmpty(input)) {
@@ -132,7 +137,7 @@ export default class TeamDetail extends React.Component {
 
     copiedToClipboard = () => {
         this.setState({copiedToClipboard: true});
-        setTimeout(() => this.setState({copiedToClipboard: false}), 1000);
+        setTimeout(() => this.setState({copiedToClipboard: false}), 5000);
     };
 
     teamDetailHeader(team, role, currentUser) {
@@ -161,21 +166,22 @@ export default class TeamDetail extends React.Component {
 
     teamDetailAttributes(team, role, currentUser) {
         const isAdmin = role === "ADMIN";
-        const copiedToClipBoardClassName =  this.state.copiedToClipboard ? "copied" : "";
+        const {copiedToClipboard} = this.state;
+        const copiedToClipBoardClassName =  copiedToClipboard ? "copied" : "";
+        const tooltip = I18n.t(copiedToClipboard ? "team_detail.copied" : "team_detail.copy");
+
         const universalUrn = `${currentUser.groupNameContext}${team.urn}`;
 
         return (
             <section className="team-attributes">
                 <div className="team-attribute">
                     <label>{I18n.t("team_detail.urn")}</label>
-                    <CopyToClipboard text={universalUrn}
-                                     onCopy={this.copiedToClipboard}>
+                    <CopyToClipboard text={universalUrn} onCopy={this.copiedToClipboard}>
                         <span>{universalUrn}
                             <a data-for="copy-to-clipboard" data-tip>
                                 <i className={`fa fa-copy ${copiedToClipBoardClassName}`}></i>
                             </a>
-                            <ReactTooltip id="copy-to-clipboard"
-                                          getContent={[() => I18n.t(this.state.copiedToClipboard ? "team_detail.copied" : "team_detail.copy"), 500]}/>
+                            <ReactTooltip id="copy-to-clipboard" getContent={[() => tooltip, 500]}/>
                         </span>
                     </CopyToClipboard>
 
@@ -185,14 +191,11 @@ export default class TeamDetail extends React.Component {
                 {isAdmin &&
                 <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
                                 onChange={this.changePersonalNote}/>}
-                <div className="team-viewable">
+                <div className="team-attribute">
                     <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
                     <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>
-                    <input type="checkbox" id="viewable" name="viewable" checked={team.viewable}
-                           onChange={this.changeViewable}/>
-                    <label className="checkbox-label" htmlFor="viewable"><span className="checkbox-labe"><i
-                        className="fa fa-check"></i></span></label>
                 </div>
+                <CheckBox value={team.viewable} onChange={this.changeViewable}/>
             </section>
         );
     }
@@ -239,12 +242,14 @@ export default class TeamDetail extends React.Component {
         }
         const role = currentUserRoleInTeam(team, currentUser);
         const joinRequests = team.joinRequests || [];
+        const hasExternalTeams = isEmpty(team.externalTeams);
+        const mayInvite = role !== "MEMBER";
 
         return (
             <div className="team-detail">
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role, currentUser)}
-                <h2>{`${I18n.t("team_detail.team_members")} (${team.memberships.length + joinRequests.length})`}</h2>
+                <h2 className="members">{`${I18n.t("team_detail.team_members")} (${team.memberships.length + joinRequests.length})`}</h2>
                 <section className="team-detail-controls">
                     <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                     <div className="search">
@@ -252,7 +257,14 @@ export default class TeamDetail extends React.Component {
                                onChange={this.search}/>
                         <i className="fa fa-search"></i>
                     </div>
-
+                    {mayInvite && <a className="button-blue" href="#"
+                                    onClick={this.handleInvite}>{I18n.t("team_detail.invite")}
+                        <i className="fa fa-user-o"></i>
+                    </a>}
+                    {hasExternalTeams && <a className="button-blue" href="#"
+                                     onClick={this.handleInvite}>{I18n.t("team_detail.invite")}
+                        <i className="fa fa-user-o"></i>
+                    </a>}
                 </section>
                 {this.renderMembersTable()}
             </div>

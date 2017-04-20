@@ -31,14 +31,14 @@ function parseJson(res) {
     return res.json();
 }
 
-function validFetch(path, options) {
+function validFetch(path, options, headers = {}) {
     const contentHeaders = {
         "Accept": "application/json",
         "Content-Type": "application/json",
         "X-CSRF-TOKEN": csrfToken
     };
 
-    const fetchOptions = Object.assign({}, {headers: {...contentHeaders}}, options, {
+    const fetchOptions = Object.assign({}, {headers: {...contentHeaders, ...headers}}, options, {
         credentials: "same-origin"
     });
 
@@ -51,14 +51,14 @@ function validFetch(path, options) {
         .then(validateResponse);
 }
 
-function fetchJson(path, options = {}) {
-    return validFetch(path, options)
+function fetchJson(path, options = {}, headers = {}) {
+    return validFetch(path, options, headers)
         .then(parseJson);
 }
 
-function postPutJson(path, body, options = {}) {
+function postPutJson(path, body, options = {}, headers = {}) {
     const method = body.id === undefined ? "post" : "put";
-    return fetchJson(path, Object.assign({}, {method: method, body: JSON.stringify(body)}, options));
+    return fetchJson(path, Object.assign({}, {method: method, body: JSON.stringify(body)}, options, headers));
 }
 
 function fetchDelete(path) {
@@ -96,5 +96,13 @@ export function leaveTeam(membershipId) {
 
 export function teamExistsByName(name) {
     return fetchJson("team-exists-by-name?query=" + encodeURIComponent(name));
+}
+
+export function invite(invitation, lang) {
+    return postPutJson("invitations", invitation, {}, {"Accept-Language": lang});
+}
+
+export function linkExternalTeam(teamId, externalTeamId) {
+    return postPutJson("teams/external", {teamId: teamId, externalTeamId: externalTeamId});
 }
 

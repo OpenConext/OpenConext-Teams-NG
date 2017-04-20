@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
+import teams.Mocks;
 import teams.domain.ExternalTeam;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import static java.nio.charset.Charset.defaultCharset;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class VootClientTest {
+public class VootClientTest implements Mocks {
 
     private String personUrn = "urn:collab:person:example.org:admin";
     private VootClient client = new VootClient("http://localhost:8889/oauth/token",
@@ -25,8 +26,8 @@ public class VootClientTest {
 
     @Test
     public void testGroups() throws Exception {
-        String groupsJson = IOUtils.toString(new ClassPathResource("mocks/oauth-client-credentials.json").getInputStream(), defaultCharset());
-        String oauthJson = IOUtils.toString(new ClassPathResource("mocks/voot-groups.json").getInputStream(), defaultCharset());
+        String groupsJson = fromMocks("oauth-client-credentials.json");
+        String oauthJson = fromMocks("voot-groups.json");
 
         stubFor(post(urlEqualTo("/oauth/token")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(groupsJson)));
         stubFor(get(urlEqualTo("/internal/external-groups/" + personUrn)).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(oauthJson)));

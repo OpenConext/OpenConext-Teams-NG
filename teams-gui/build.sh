@@ -1,4 +1,4 @@
 #!/bin/bash
 rm -Rf dist/*
 rm -Rf target/*
-yarn lint && yarn test && yarn install && yarn run webpack
+yarn install && yarn lint && yarn test && yarn run webpack
