@@ -55,7 +55,7 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
     }
 
     @Test
-    public void delinkTeamFromExternalTeam() throws Exception {
+    public void delinkTeamFromExternalTeamOrphanExternalTeam() throws Exception {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
@@ -66,6 +66,20 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
                 .body("externalTeams.size()", equalTo(0));
 
         assertEquals(0, externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:giants").size());
+    }
+
+    @Test
+    public void delinkTeamFromExternalTeam() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+                .when()
+                .delete(String.format("api/teams/external/%s/%s", 1, 1))
+                .then()
+                .statusCode(SC_OK)
+                .body("externalTeams.size()", equalTo(1));
+
+        assertEquals(1, externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:riders").size());
     }
 
     private void assertExternalTeam(ExternalTeam externalTeam, int expectedTeamSize) {
