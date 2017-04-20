@@ -11,6 +11,7 @@ import teams.domain.TeamAutocomplete;
 import teams.repository.TeamRepository;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -36,7 +37,8 @@ public class TeamLocalControllerTest implements Seed {
                 .thenReturn(seed);
 
         List<TeamAutocomplete> teamAutocompletes = teamController.
-                teamSearch("test", new FederatedUser(person(), "urn:collab:group:dev.surfteams.nl:"));
+                teamSearch("test",
+                        new FederatedUser(person(), "urn:collab:group:dev.surfteams.nl:", Collections.emptyList()));
         assertEquals(seed.size(), teamAutocompletes.size());
 
         IntStream.range(0, seed.size())

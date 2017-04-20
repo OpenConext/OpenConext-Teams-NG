@@ -8,6 +8,7 @@ import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
 
 public class UserControllerTest extends AbstractApplicationTest {
 
@@ -22,8 +23,10 @@ public class UserControllerTest extends AbstractApplicationTest {
                 .get("api/teams/users/me")
                 .then()
                 .statusCode(SC_OK)
+                .body(isEmptyOrNullString())
                 .body("authorities.authority", hasItems("ROLE_ADMIN", "ROLE_USER"))
-                .body("groupNameContext", equalTo(groupNameContext));
+                .body("groupNameContext", equalTo(groupNameContext))
+                .body("externalTeams.size()", equalTo(10));
 
         given()
                 .header("name-id", "not-provisioned")

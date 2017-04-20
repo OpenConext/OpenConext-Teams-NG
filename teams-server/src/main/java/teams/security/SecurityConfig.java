@@ -22,6 +22,7 @@ import teams.repository.PersonRepository;
 import teams.shibboleth.ShibbolethPreAuthenticatedProcessingFilter;
 import teams.shibboleth.ShibbolethUserDetailService;
 import teams.shibboleth.mock.MockShibbolethFilter;
+import teams.voot.VootClient;
 
 import java.util.List;
 
@@ -65,6 +66,9 @@ public class SecurityConfig {
         private PersonRepository personRepository;
 
         @Autowired
+        private VootClient vootClient;
+
+        @Autowired
         private Environment environment;
 
         @Value("${teams.non-guest-member-of}")
@@ -76,7 +80,7 @@ public class SecurityConfig {
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             PreAuthenticatedAuthenticationProvider authenticationProvider = new PreAuthenticatedAuthenticationProvider();
-            authenticationProvider.setPreAuthenticatedUserDetailsService(new ShibbolethUserDetailService(groupNameContext));
+            authenticationProvider.setPreAuthenticatedUserDetailsService(new ShibbolethUserDetailService(groupNameContext, vootClient));
             auth.authenticationProvider(authenticationProvider);
         }
 

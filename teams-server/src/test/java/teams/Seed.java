@@ -2,6 +2,8 @@ package teams;
 
 import teams.domain.*;
 
+import java.util.Collections;
+
 public interface Seed {
 
     default Team team() {
@@ -33,9 +35,9 @@ public interface Seed {
     }
 
     default FederatedUser federatedUser(String urn) {
-        return new FederatedUser(person(urn), "urn:collab:group:dev.surfteams.nl:");
+        return new FederatedUser(person(urn), "urn:collab:group:dev.surfteams.nl:", Collections.emptyList());
     }
     default FederatedUser federatedUser() {
-        return new FederatedUser(person(), "urn:collab:group:dev.surfteams.nl:");
+        return federatedUser("urn");
     }
 }

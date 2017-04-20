@@ -8,6 +8,7 @@ import teams.domain.*;
 import teams.exception.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
@@ -60,13 +61,15 @@ public class InvitationValidatorTest implements Seed {
     public void mustBeTeamAdminOrManagerNoMember() throws UnsupportedEncodingException {
         Invitation invitation = invitation(false, false);
         invitation.addInvitationMessage(person("urn"), "Please join");
-        subject.mustBeTeamAdminOrManager(invitation, new FederatedUser(person("urn"), "urn:collab:group:dev.surfteams.nl:"));
+        subject.mustBeTeamAdminOrManager(invitation,
+                new FederatedUser(person("urn"), "urn:collab:group:dev.surfteams.nl:", Collections.emptyList()));
     }
 
     @Test(expected = NotAllowedException.class)
     public void mustBeTeamAdminOrManager() throws UnsupportedEncodingException {
         Invitation invitation = invitation(false, false);
-        FederatedUser federatedUser = new FederatedUser(person("urn"), "urn:collab:group:dev.surfteams.nl:");
+        FederatedUser federatedUser =
+                new FederatedUser(person("urn"), "urn:collab:group:dev.surfteams.nl:", Collections.emptyList());
         membership(Role.MEMBER, invitation.getTeam(), federatedUser.getPerson());
         invitation.addInvitationMessage(person("urn"), "Please join");
 

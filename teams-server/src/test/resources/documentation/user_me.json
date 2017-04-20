@@ -13,14 +13,86 @@
   "accountNonLocked": true,
   "credentialsNonExpired": true,
   "enabled": true,
+  "groupNameContext": "urn:collab:group:dev.surfteams.nl:",
   "person": {
-    "id": 1,
-    "urn": "urn:collab:person:surfnet.nl:jdoe",
+    "id": 6,
+    "urn": "urn:collab:person:example.com:john.doe",
     "name": "John Doe",
     "email": "john.doe@example.org",
-    "created": 1492498956.000000000,
-    "guest": false,
-    "joinRequests": null
+    "created": 1492707330.000000000,
+    "guest": false
   },
-  "urn": "urn:collab:person:surfnet.nl:jdoe"
+  "externalTeams": [
+    {
+      "id": null,
+      "description": "description 1",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name1",
+      "name": "name_1"
+    },
+    {
+      "id": null,
+      "description": "description 2",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name2",
+      "name": "name_2"
+    },
+    {
+      "id": null,
+      "description": "description 3",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name3",
+      "name": "name_3"
+    },
+    {
+      "id": null,
+      "description": "description 4",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name4",
+      "name": "name_4"
+    },
+    {
+      "id": null,
+      "description": "description 5",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name5",
+      "name": "name_5"
+    },
+    {
+      "id": null,
+      "description": "description 6",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name6",
+      "name": "name_6"
+    },
+    {
+      "id": null,
+      "description": "description 7",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name7",
+      "name": "name_7"
+    },
+    {
+      "id": null,
+      "description": "description 8",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name8",
+      "name": "name_8"
+    },
+    {
+      "id": null,
+      "description": "description 9",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name9",
+      "name": "name_9"
+    },
+    {
+      "id": null,
+      "description": "description 10",
+      "groupProvider": "mock-group-provider",
+      "identifier": "urn:collab:group:example.org:name10",
+      "name": "name_10"
+    }
+  ],
+  "urn": "urn:collab:person:example.com:john.doe"
 }

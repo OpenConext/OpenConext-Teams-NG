@@ -77,9 +77,9 @@ export default class TeamDetail extends React.Component {
     handleLeaveTeam = myMembershipId => () =>
         leaveTeam(myMembershipId).then(() => this.props.history.replace("/my-teams"));
 
-    handleInvite = () => this.props.history.invite(`/invite/${this.state.team.id}`);
+    handleInvite = () => this.props.history.replace(`/invite/${this.state.team.id}`);
 
-    handleLinkExternalTeam = () => this.props.history.invite(`/external/${this.state.team.id}`);
+    handleLinkExternalTeam = () => this.props.history.replace(`/external/${this.state.team.id}`);
 
     search = e => {
         const input = e.target.value;
@@ -242,7 +242,7 @@ export default class TeamDetail extends React.Component {
         }
         const role = currentUserRoleInTeam(team, currentUser);
         const joinRequests = team.joinRequests || [];
-        const hasExternalTeams = isEmpty(team.externalTeams);
+        const hasExternalTeams = !isEmpty(currentUser.externalTeams);
         const mayInvite = role !== "MEMBER";
 
         return (
@@ -257,13 +257,13 @@ export default class TeamDetail extends React.Component {
                                onChange={this.search}/>
                         <i className="fa fa-search"></i>
                     </div>
-                    {mayInvite && <a className="button-blue" href="#"
+                    {mayInvite && <a className="button blue" href="#"
                                     onClick={this.handleInvite}>{I18n.t("team_detail.invite")}
                         <i className="fa fa-user-o"></i>
                     </a>}
-                    {hasExternalTeams && <a className="button-blue" href="#"
-                                     onClick={this.handleInvite}>{I18n.t("team_detail.invite")}
-                        <i className="fa fa-user-o"></i>
+                    {hasExternalTeams && <a className="button blue" href="#"
+                                     onClick={this.handleLinkExternalTeam}>{I18n.t("team_detail.link_to_institution_team")}
+                        <i className="fa fa-users"></i>
                     </a>}
                 </section>
                 {this.renderMembersTable()}
