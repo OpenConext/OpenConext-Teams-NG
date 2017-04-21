@@ -29,7 +29,7 @@ export default class Flash extends React.Component {
     render() {
         const {flash} = this.state;
 
-        if (flash) {
+        if (flash && flash.message) {
             return (
                 <div className="flash">
                     <p className={flash.type} dangerouslySetInnerHTML={{__html: flash.message}}></p>

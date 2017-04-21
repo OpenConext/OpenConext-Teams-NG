@@ -16,3 +16,9 @@ export function setFlash(message, type) {
     flash = {message, type: type || "info"};
     emitter.emit("flash", flash);
 }
+
+export function clearFlash() {
+    clearTimeout(timeout);
+    emitter.emit("flash", {});
+}
+

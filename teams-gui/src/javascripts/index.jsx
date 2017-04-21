@@ -40,9 +40,7 @@ class App extends React.Component {
                         <Flash/>
                     </div>
                     <Switch>
-                        <Route exact path="/" render={() => {
-                            return <Redirect to="/my-teams"/>;
-                        }}/>
+                        <Route exact path="/" render={() => <Redirect to="/my-teams"/>}/>
                         <Route path="/my-teams" component={MyTeams}/>
                         <Route path="/teams/:id"
                                render={props => <TeamDetail currentUser={currentUser} {...props}/>}/>

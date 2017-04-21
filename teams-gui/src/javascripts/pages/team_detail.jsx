@@ -129,10 +129,19 @@ export default class TeamDetail extends React.Component {
             personalNote: team.personalNote,
             viewable: team.viewable
         };
-        saveTeam({...teamProperties, ...changedAttribute}).then(team => {
-            this.stateTeam(team);
-            setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_updated")}));
-        });
+        saveTeam({...teamProperties, ...changedAttribute})
+            .then(team => {
+                this.stateTeam(team);
+                setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_updated")}));
+            })
+            .catch(err => {
+                err.response.json().then(this.handleError);
+            });
+    };
+
+    handleError = json => {
+        //console.log(json);
+        return json ? true : false;
     };
 
     copiedToClipboard = () => {
@@ -167,7 +176,7 @@ export default class TeamDetail extends React.Component {
     teamDetailAttributes(team, role, currentUser) {
         const isAdmin = role === "ADMIN";
         const {copiedToClipboard} = this.state;
-        const copiedToClipBoardClassName =  copiedToClipboard ? "copied" : "";
+        const copiedToClipBoardClassName = copiedToClipboard ? "copied" : "";
         const tooltip = I18n.t(copiedToClipboard ? "team_detail.copied" : "team_detail.copy");
 
         const universalUrn = `${currentUser.groupNameContext}${team.urn}`;
@@ -195,7 +204,7 @@ export default class TeamDetail extends React.Component {
                     <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
                     <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>
                 </div>
-                <CheckBox value={team.viewable} onChange={this.changeViewable}/>
+                <CheckBox value={team.viewable || false} readOnly={!isAdmin} onChange={this.changeViewable}/>
             </section>
         );
     }
@@ -258,11 +267,11 @@ export default class TeamDetail extends React.Component {
                         <i className="fa fa-search"></i>
                     </div>
                     {mayInvite && <a className="button blue" href="#"
-                                    onClick={this.handleInvite}>{I18n.t("team_detail.invite")}
+                                     onClick={this.handleInvite}>{I18n.t("team_detail.invite")}
                         <i className="fa fa-user-o"></i>
                     </a>}
                     {hasExternalTeams && <a className="button blue" href="#"
-                                     onClick={this.handleLinkExternalTeam}>{I18n.t("team_detail.link_to_institution_team")}
+                                            onClick={this.handleLinkExternalTeam}>{I18n.t("team_detail.link_to_institution_team")}
                         <i className="fa fa-users"></i>
                     </a>}
                 </section>

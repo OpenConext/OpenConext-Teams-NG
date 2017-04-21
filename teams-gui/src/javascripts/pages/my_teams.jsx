@@ -3,7 +3,7 @@ import I18n from "i18n-js";
 import PropTypes from "prop-types";
 
 import {deleteTeam, getMyTeams} from "../api";
-import {setFlash} from "../utils/flash";
+import {setFlash, clearFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 
 export default class MyTeams extends React.Component {
@@ -18,6 +18,7 @@ export default class MyTeams extends React.Component {
     }
 
     fetchMyTeams() {
+        clearFlash();
         getMyTeams().then(myTeams => {
             const teams = myTeams.sort((team, otherTeam) => team.name.localeCompare(otherTeam.name));
             this.setState({teams: teams, filteredTeams: teams});

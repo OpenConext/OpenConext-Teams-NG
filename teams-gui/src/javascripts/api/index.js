@@ -27,10 +27,6 @@ function validateResponse(res) {
     return res;
 }
 
-function parseJson(res) {
-    return res.json();
-}
-
 function validFetch(path, options, headers = {}) {
     const contentHeaders = {
         "Accept": "application/json",
@@ -53,7 +49,7 @@ function validFetch(path, options, headers = {}) {
 
 function fetchJson(path, options = {}, headers = {}) {
     return validFetch(path, options, headers)
-        .then(parseJson);
+        .then(res => res.json());
 }
 
 function postPutJson(path, body, options = {}, headers = {}) {
