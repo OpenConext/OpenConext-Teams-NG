@@ -15,6 +15,7 @@ See the NOTICE file
 
 - Java 8
 - Maven 3
+- MySQL
 - yarn
 
 ## Building and running
@@ -42,9 +43,9 @@ the active profile to dev otherwise the application uses the real VOOT client on
 
 
 
-### The pdp-gui
+### The teams-gui
 
-    cd pdp-gui
+    cd teams-gui
 
 Initial setup if you do:
 

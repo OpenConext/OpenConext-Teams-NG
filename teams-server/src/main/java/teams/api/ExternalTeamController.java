@@ -1,28 +1,18 @@
 package teams.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.ExternalTeamValidator;
-import teams.api.validations.TeamValidator;
 import teams.domain.*;
-import teams.exception.IllegalSearchParamException;
-import teams.voot.VootClient;
 
 import java.util.List;
-import java.util.Optional;
 
-import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 
 @RestController
 public class ExternalTeamController extends ApiController implements ExternalTeamValidator {
-
-    @Autowired
-    private VootClient vootClient;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("api/teams/external")
@@ -35,7 +25,7 @@ public class ExternalTeamController extends ApiController implements ExternalTea
         String federatedUserUrn = federatedUser.getUrn();
         Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
 
-        List<ExternalTeam> teams = vootClient.teams(federatedUserUrn);
+        List<ExternalTeam> teams = federatedUser.getExternalTeams();
         externalTeamsMembership(teams, externalTeams, federatedUserUrn);
 
         //replace all external teams that are already provisioned
