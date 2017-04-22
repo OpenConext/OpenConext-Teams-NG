@@ -49,7 +49,8 @@ I18n.translations.en = {
         flash_deleted: "deleted",
         confirmation: "Are your sure you want to remove team {{teamName}}?",
         edit: "Edit",
-        delete: "Delete"
+        delete: "Delete",
+        add: "Add team"
     },
 
     team_detail: {
@@ -84,7 +85,13 @@ I18n.translations.en = {
     },
 
     sort: {
-        label: "SORT BY"
+        label: "SORT BY",
+        name: "Name",
+        status: "Status",
+        email: "Email",
+        role: "Role",
+        description: "Description",
+        members: "Members"
     },
 
     profile: {

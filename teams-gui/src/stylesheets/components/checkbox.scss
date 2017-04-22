@@ -23,7 +23,8 @@ div.checkbox {
   }
 
   input[type="checkbox"]:disabled + label span {
-    border: 1px solid $dark-grey;
+    border: 1px solid darken($medium-grey, 5%);
+    background-color: $medium-grey;
   }
 
   input[type="checkbox"]:checked + label span {
@@ -40,10 +41,10 @@ div.checkbox {
   }
 
   input[type="checkbox"]:checked:disabled + label span {
-    border: 3px solid $dark-grey;
+    border: 3px solid $medium-grey;
     cursor: default;
     i {
-      background-color: $dark-grey;
+      background-color: $medium-grey;
     }
   }
 }

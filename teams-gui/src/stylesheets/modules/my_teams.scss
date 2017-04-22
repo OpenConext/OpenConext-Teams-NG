@@ -1,63 +1,70 @@
 .my_teams {
-    max-width: $medium;
-    margin: 0 auto;
+  max-width: $medium;
+  margin: 0 auto;
 
-    .search {
+  .search {
+    position: relative;
+
+    input {
+      margin: 25px 0 15px 0;
+      padding: 10px;
+      border: 2px solid $light-grey;
+      border-radius: 2px;
+      font-size: medium;
+      width: 100%;
+    }
+
+    i {
+      color: lighten($blue, 5);
+      position: absolute;
+      right: 10px;
+      top: 32px;
+      font-size: 24px;
+    }
+  }
+
+  .options {
+    display: flex;
+    align-content: space-between;
+    margin-bottom: 25px;
+  }
+
+  table {
+    width: 100%;
+    border: 1px solid $light-grey;
+    thead {
+
+      background-color: $light-grey;
+
+      span {
         position: relative;
-
-        input {
-            margin: 25px 0 15px 0;
-            padding: 10px;
-            border: 2px solid $light-grey;
-            border-radius: 2px;
-            font-size: medium;
-            width: 100%;
-        }
+        display: inline-block;
+        width: 100%;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: larger;
+        color: $medium-grey;
+        padding: 7px 2px 7px 0px;
 
         i {
-            color: lighten($blue, 5);
-            position: absolute;
-            right: 10px;
-            top: 32px;
-            font-size: 24px;
+          position: absolute;
+          right: 5px;
+          top: 2px;
+          color: $medium-grey;
+          &.active {
+            color: darken($blue, 15);
+          }
         }
+      }
     }
+    tbody {
+      tr {
+        cursor: pointer;
+      }
+      td.membership-count {
+        text-align: right;
+      }
 
-    table {
-        width: 100%;
-        border: 1px solid $light-grey;
-        thead {
-
-            background-color: $light-grey;
-
-
-            span {
-                position: relative;
-                display: inline-block;
-                width: 100%;
-                text-transform: uppercase;
-                font-weight: bold;
-                font-size: larger;
-                color: $medium-grey;
-                padding: 7px 2px 7px 0px;
-
-                i {
-                    position: absolute;
-                    right: 5px;
-                    top: 2px;
-                    color: $medium-grey;
-                    &.active {
-                        color: darken($blue, 15);
-                    }
-                }
-            }
-        }
-        tbody {
-            td.membership-count {
-                text-align: right;
-            }
-
-
-        }
     }
+  }
 }

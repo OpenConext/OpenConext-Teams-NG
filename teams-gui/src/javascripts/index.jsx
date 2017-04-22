@@ -41,7 +41,8 @@ class App extends React.Component {
                     </div>
                     <Switch>
                         <Route exact path="/" render={() => <Redirect to="/my-teams"/>}/>
-                        <Route path="/my-teams" component={MyTeams}/>
+                        <Route path="/my-teams"
+                               render={props => <MyTeams currentUser={currentUser} {...props}/>}/>
                         <Route path="/teams/:id"
                                render={props => <TeamDetail currentUser={currentUser} {...props}/>}/>
                         <Route component={NotFound}/>

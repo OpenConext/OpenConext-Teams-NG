@@ -24,7 +24,7 @@
       align-items: center;
       margin-top: 20px;
       h2 {
-        font-size: 30px;
+        font-size: 26px;
         margin-right: auto;
         text-transform: capitalize;
       }
@@ -32,7 +32,7 @@
   }
 
   h2.members {
-    font-size: x-large;
+    font-size: 26px;
     padding: 25px 0 20px 0;
     border-bottom: 1px solid $lighter-grey;
   }
@@ -85,6 +85,10 @@
       }
     }
     tbody {
+      tr {
+        cursor: hand;
+      }
+
       td.membership-count {
         text-align: right;
       }

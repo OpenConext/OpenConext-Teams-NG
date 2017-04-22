@@ -9,27 +9,23 @@ export default class SortDropDown extends React.Component {
         this.state = {dropDownActive: false};
     }
 
-    renderDropDownItem(item, sortBy) {
-        return (
-            <li key={item.name} onClick={sortBy(item)}>
-                <span>{I18n.t(item.name)}</span>
-                <span><i className={`fa fa-caret-${item.order}`}/></span>
-            </li>
-        );
-    }
+    itemOrder = item => item.current && item.order === "down" ? "up" : "down"
 
-    renderDropDown(items, sortBy) {
-        if (!this.state.dropDownActive) {
-            return null;
-        }
-        return (
+    sort = (sortBy, item) => () => {
+        this.setState({dropDownActive: false});
+        sortBy(item);
+    };
+
+    renderDropDownItem = (item, sortBy) =>
+            <li key={item.name} onClick={this.sort(sortBy, item)} className={item.current ? "current" : ""}>
+                <span>{I18n.t(`sort.${item.name}`)}</span>
+                <span><i className={`fa fa-caret-${this.itemOrder(item)}`}/></span>
+            </li>;
+
+    renderDropDown = (items, sortBy) =>
             <ul className="drop-down">
                 {items.map(item => this.renderDropDownItem(item, sortBy))}
-            </ul>
-        );
-
-
-    }
+            </ul>;
 
 
     render() {
@@ -39,7 +35,7 @@ export default class SortDropDown extends React.Component {
 
         return (
             <section className="sort-drop-down">
-                <div>
+                <div onClick={() => this.setState({dropDownActive: !dropDownActive})}>
                     <span className="sort-label">{I18n.t("sort.label")}</span>
                     <span className="sort-label-divider">:</span>
                     <span className="sort-name">{currentItem.name}</span>

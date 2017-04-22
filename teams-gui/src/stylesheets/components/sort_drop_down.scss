@@ -10,13 +10,44 @@ section.sort-drop-down {
     text-transform: uppercase;
     color: $blue;
     margin: 0 15px;
+    cursor: pointer;
   }
 
   i {
+    cursor: pointer;
     color: $blue;
   }
 
   ul.drop-down {
     position: absolute;
+    z-index: 99;
+    top: 41px;
+    right: 0px;
+    padding: 10px 15px;
+    background-color: white;
+    box-shadow: 1px 4px 12px 1px $medium-grey;
+    border-radius: $br;
+
+    li {
+      cursor: pointer;
+      text-transform: uppercase;
+
+      &.current {
+        color: $blue;
+      }
+      span {
+        display: inline-block;
+
+        &:first-child {
+          padding: 2px;
+        }
+
+        &:last-child {
+          float: right;
+          margin-left: 20px;
+        }
+      }
+
+    }
   }
 }

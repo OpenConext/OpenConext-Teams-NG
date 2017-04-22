@@ -268,7 +268,7 @@ export default class TeamDetail extends React.Component {
                     </div>
                     {mayInvite && <a className="button blue" href="#"
                                      onClick={this.handleInvite}>{I18n.t("team_detail.invite")}
-                        <i className="fa fa-user-o"></i>
+                        <i className="fa fa-user"></i>
                     </a>}
                     {hasExternalTeams && <a className="button blue" href="#"
                                             onClick={this.handleLinkExternalTeam}>{I18n.t("team_detail.link_to_institution_team")}
