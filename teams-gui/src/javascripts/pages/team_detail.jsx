@@ -21,10 +21,10 @@ export default class TeamDetail extends React.Component {
             team: {},
             filteredMembers: [],
             sortAttributes: [
-                {name: "status", order: "down", current: true},
-                {name: "name", order: "down", current: false},
-                {name: "email", order: "down", current: false},
-                {name: "role", order: "down", current: false}
+                    {name: "status", order: "down", current: true},
+                    {name: "name", order: "down", current: false},
+                    {name: "email", order: "down", current: false},
+                    {name: "role", order: "down", current: false}
             ],
             editableTeamAttributes: {
                 description: false,

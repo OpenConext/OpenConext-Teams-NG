@@ -83,12 +83,12 @@ export default class MyTeams extends React.Component {
     }
 
     sort = item => {
-        debugger;
-        const {teams} = this.state;
-        let sortedTeams = teams.sort(this.sortByAttribute(item.name));
+        return item;
+        // const {teams} = this.state;
+        // let sortedTeams = teams.sort(this.sortByAttribute(item.name));
         //TODO sort an update the sortedAttributes state object
-        let newOrder = "down";
-        this.setState({sortedTeams: sortedTeams, sorted: {name: column.sort, order: newOrder}});
+//        let newOrder = "down";
+        //     this.setState({sortedTeams: sortedTeams, sorted: {name: column.sort, order: newOrder}});
     };
 
     sortByAttribute = name => (a, b) => a[name].localeCompare(b[name]);
@@ -96,7 +96,7 @@ export default class MyTeams extends React.Component {
     handleClickAction = (actions, team) => e => {
         stop(e);
         const show = actions.id === team.id ? !actions.show : true;
-        this.setState({actions: {show: show, id: team.id}})
+        this.setState({actions: {show: show, id: team.id}});
     };
 
     addTeam = e => {
@@ -151,7 +151,7 @@ export default class MyTeams extends React.Component {
                 <div className="options">
                     <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                     {!currentUser.person.guest && <a className="button blue" href="#"
-                                     onClick={this.addTeam}>{I18n.t("teams.add")}
+                                                     onClick={this.addTeam}>{I18n.t("teams.add")}
                         <i className="fa fa-user"></i>
                     </a>}
 
