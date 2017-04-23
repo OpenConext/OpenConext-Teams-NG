@@ -10,7 +10,7 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom
 import I18n from "i18n-js";
 import Cookies from "js-cookie";
 import {getUser} from "./api";
-import QueryParameter from "./utils/query-parameters";
+import {getParameterByName} from "./utils/query-parameters";
 import {isEmpty} from "./utils/utils";
 
 import NotFound from "./pages/not_found";
@@ -60,7 +60,7 @@ App.propTypes = {
 };
 
 function determineLanguage() {
-    let parameterByName = QueryParameter.getParameterByName("lang");
+    let parameterByName = getParameterByName("lang", window.location.search);
 
     if (isEmpty(parameterByName)) {
         const lang = navigator.language.toLowerCase();
