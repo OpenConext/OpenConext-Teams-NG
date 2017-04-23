@@ -29,7 +29,7 @@ export default class Navigation extends React.Component {
                     width: 2, // The line thickness
                     radius: 8, // The radius of the inner circle
                     color: "#4DB3CF", // #rgb or #rrggbb or array of colors
-                    top: "20%"
+                    top: "25%"
                 }).spin(this.spinnerNode);
             }
         } else {
