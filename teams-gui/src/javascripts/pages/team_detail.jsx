@@ -69,7 +69,7 @@ export default class TeamDetail extends React.Component {
         if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
             deleteTeam(team.id).then(() => {
                 this.props.history.replace("/my-teams");
-                setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_deleted")}));
+                setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_deleted")}));
             });
         }
     };

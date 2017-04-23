@@ -50,7 +50,7 @@ public class TeamController extends ApiController implements TeamValidator {
         Long id = federatedUser.getPerson().getId();
         List<TeamAutocomplete> autoCompletes = teamRepository.autocomplete(id, ("%" + query + "%").toUpperCase(), id)
                 .stream()
-                .map(arr -> new TeamAutocomplete(arr[0].toString(), arr[1].toString(), (arr.length == 3 && arr[2] != null) ? arr[2].toString() : null))
+                .map(arr -> new TeamAutocomplete(arr[0].toString(), Long.valueOf(arr[1].toString()), (arr.length == 3 && arr[2] != null) ? arr[2].toString() : null))
                 .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), query.toLowerCase()))
                 .collect(toList());
         return autoCompletes.subList(0, Math.max(0, Math.min(autoCompletes.size(), 15)));

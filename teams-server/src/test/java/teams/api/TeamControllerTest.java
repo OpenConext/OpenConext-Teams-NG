@@ -98,7 +98,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_OK)
                 .body("size()", is(2))
-                .body("urn", hasItems("nl:surfnet:diensten:riders", "nl:surfnet:diensten:gliders"))
+                .body("id", hasItems(1, 3))
                 .body("name", hasItems("riders", "gliders"))
                 .body("role", hasItems("ADMIN", null));
     }

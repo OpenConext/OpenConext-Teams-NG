@@ -8,7 +8,7 @@ import lombok.Getter;
 public class TeamAutocomplete {
 
     private String name;
-    private String urn;
+    private Long id;
     private String role;
 
 

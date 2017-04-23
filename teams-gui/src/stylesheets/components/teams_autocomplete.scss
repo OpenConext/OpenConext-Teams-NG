@@ -1,0 +1,39 @@
+section.teams-autocomplete {
+
+  position: absolute;
+  z-index: 100;
+  top: 70px;
+  width: 100%;
+  border-radius: $br;
+  background-color: white;
+  box-shadow: 1px 4px 12px 1px $medium-grey;
+
+  div.no-results {
+    padding: 10px 15px;
+    font-style: italic;
+  }
+
+  ul {
+
+    li {
+      cursor: pointer;
+      padding: 10px 15px;
+      border-bottom: 1px solid $light-grey;
+
+      &:hover, &.active {
+        background-color: $light-grey;
+      }
+
+      span {
+        &.matched {
+          font-weight: bold;
+        }
+
+        &.role {
+          float: right;
+        }
+      }
+
+    }
+  }
+}

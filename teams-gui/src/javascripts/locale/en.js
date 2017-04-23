@@ -43,11 +43,11 @@ I18n.translations.en = {
         role: "Role",
         membershipCount: "Members",
         actions: "",
-        flash: "Team '{{teamName}}' was successfully {{action}}",
+        flash: "Team '{{name}}' was successfully {{action}}",
         flash_updated: "updated",
         flash_created: "created",
         flash_deleted: "deleted",
-        confirmation: "Are your sure you want to remove team {{teamName}}?",
+        confirmation: "Are your sure you want to remove team {{name}}?",
         edit: "Edit",
         delete: "Delete",
         add: "Add team"
@@ -95,8 +95,14 @@ I18n.translations.en = {
     },
 
     profile: {
+        email: "Email",
+        role: "Role",
         true: "SURFconext Guest",
         false: "SURFconext Member"
+    },
+
+    auto_complete: {
+        no_results: "No results"
     },
 
     not_found: {

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
@@ -42,20 +43,20 @@ public class TeamLocalControllerTest implements Seed {
         assertEquals(seed.size(), teamAutocompletes.size());
 
         IntStream.range(0, seed.size())
-                .forEachOrdered(i -> assertEquals(i, Integer.valueOf(teamAutocompletes.get(i).getUrn()).intValue()));
+                .forEachOrdered(i -> assertEquals(i, teamAutocompletes.get(i).getId().intValue()));
 
     }
 
     private List<Object[]> seed() {
-        //second 'urn' is the sorted position in the autoCompletes List
+        //second 'id' is the sorted position in the autoCompletes List
         return Arrays.asList(
-                new String[]{"ContainingLaterTest", "6"},
-                new String[]{"ContainingTest", "5"},
-                new String[]{"Second test", "2", "ADMIN"},
-                new String[]{"Test first", "0"},
-                new String[]{"1 2 3 test", "3", "MEMBER"},
-                new String[]{"1_2_3_4_ test", "4"},
-                new String[]{"testtesttest", "1"}
+                new Object[]{"ContainingLaterTest", 6},
+                new Object[]{"ContainingTest", 5},
+                new Object[]{"Second test", 2, "ADMIN"},
+                new Object[]{"Test first", 0},
+                new Object[]{"1 2 3 test", 3, "MEMBER"},
+                new Object[]{"1_2_3_4_ test", 4},
+                new Object[]{"testtesttest", 1}
         );
     }
 

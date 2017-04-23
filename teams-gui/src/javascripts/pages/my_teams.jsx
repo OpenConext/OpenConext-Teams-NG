@@ -3,7 +3,8 @@ import I18n from "i18n-js";
 import PropTypes from "prop-types";
 
 import SortDropDown from "../components/sort_drop_down";
-import {deleteTeam, getMyTeams} from "../api";
+import TeamAutocomplete from "../components/team_autocomplete";
+import {autoComplete, deleteTeam, getMyTeams} from "../api";
 import {clearFlash, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 
@@ -13,7 +14,6 @@ export default class MyTeams extends React.Component {
         super(props);
         this.state = {
             teams: [],
-            filteredTeams: [],
             sorted: {name: "name", order: "down"},
             actions: {show: false, id: 0},
             sortAttributes: [
@@ -22,6 +22,9 @@ export default class MyTeams extends React.Component {
                 {name: "role", order: "down", current: false},
                 {name: "members", order: "down", current: false}
             ],
+            selectedTeam: -1,
+            suggestions: [],
+            query: ""
 
         };
     }
@@ -30,7 +33,7 @@ export default class MyTeams extends React.Component {
         clearFlash();
         getMyTeams().then(myTeams => {
             const teams = myTeams.sort((team, otherTeam) => team.name.localeCompare(otherTeam.name));
-            this.setState({teams: teams, filteredTeams: teams});
+            this.setState({teams: teams});
         });
     }
 
@@ -38,9 +41,7 @@ export default class MyTeams extends React.Component {
 
     componentDidUpdate = () => document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-    showTeam = team => e => {
-        stop(e);
-        //http://stackoverflow.com/questions/42123261/programmatically-navigate-using-react-router-v4
+    showTeam = team => () => {
         this.props.history.push("/teams/" + team.id);
     };
 
@@ -48,7 +49,7 @@ export default class MyTeams extends React.Component {
         stop(e);
         if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
             deleteTeam(team.id).then(() => this.fetchMyTeams());
-            setFlash(I18n.t("teams.flash", {policyName: team.name, action: I18n.t("teams.flash_deleted")}));
+            setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_deleted")}));
         }
     };
 
@@ -68,19 +69,35 @@ export default class MyTeams extends React.Component {
             );
     };
 
-    search = e => {
-        const input = e.target.value;
-        if (isEmpty(input)) {
-            this.setState({filteredTeams: this.state.teams});
-        } else {
-            this.setState({filteredTeams: this.filterTeams(input.toLowerCase())});
+    onSearchKeyDown = e => {
+        const {suggestions, selectedTeam} = this.state;
+        if (e.keyCode === 40 && selectedTeam < (suggestions.length - 1)) {
+            stop(e);
+            this.setState({selectedTeam: (selectedTeam + 1)});
         }
+        if (e.keyCode === 38 && selectedTeam >= 0) {
+            stop(e);
+            this.setState({selectedTeam: (selectedTeam - 1)});
+        }
+        if (e.keyCode === 13 && selectedTeam >= 0) {
+            stop(e);
+            this.setState({selectedTeam: -1}, () => this.itemSelected(suggestions[selectedTeam]));
+        }
+        if (e.keyCode === 27) {
+            stop(e);
+            this.setState({selectedTeam: -1, query: "", suggestions: []});
+        }
+
     };
 
-    filterTeams(input) {
-        return this.state.teams.filter(team =>
-        team.name.toLowerCase().includes(input) || team.description.toLowerCase().includes(input));
-    }
+    search = e => {
+        const input = e.target.value;
+        if (isEmpty(input) || input.length < 3) {
+            this.setState({query: input, suggestions: [], selectedTeam: -1});
+        } else {
+            autoComplete(input).then(results => this.setState({query: input, suggestions: results}));
+        }
+    };
 
     sort = item => {
         return item;
@@ -92,6 +109,10 @@ export default class MyTeams extends React.Component {
     };
 
     sortByAttribute = name => (a, b) => a[name].localeCompare(b[name]);
+
+    itemSelected = team => {
+        this.showTeam(team)();
+    };
 
     handleClickAction = (actions, team) => e => {
         stop(e);
@@ -105,9 +126,9 @@ export default class MyTeams extends React.Component {
     };
 
     renderTeamsTable() {
-        const {filteredTeams, actions} = this.state;
+        const {teams, actions} = this.state;
 
-        if (filteredTeams.length !== 0) {
+        if (teams.length !== 0) {
             return (
                 <table>
                     <thead>
@@ -119,7 +140,7 @@ export default class MyTeams extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {filteredTeams.map(team =>
+                    {teams.map(team =>
                         <tr key={team.urn} onClick={this.showTeam(team)}>
                             <td>{team.name}</td>
                             <td>{team.description}</td>
@@ -141,12 +162,22 @@ export default class MyTeams extends React.Component {
 
     render() {
         const {currentUser} = this.props;
-        const {sortAttributes} = this.state;
+        const {sortAttributes, selectedTeam, suggestions, query} = this.state;
+        const showAutocompletes = query.length > 2;
         return (
             <div className="my_teams">
                 <div className="search">
-                    <input placeholder={I18n.t("teams.searchPlaceHolder")} type="text" onChange={this.search}/>
+                    <input ref={self => this.searchInput = self}
+                           placeholder={I18n.t("teams.searchPlaceHolder")}
+                           type="text"
+                           onChange={this.search}
+                           value={query}
+                           onKeyDown={this.onSearchKeyDown}/>
                     <i className="fa fa-search"></i>
+                    {showAutocompletes && <TeamAutocomplete suggestions={suggestions}
+                                                            query={query}
+                                                            selectedTeam={selectedTeam}
+                                                            itemSelected={this.itemSelected}/>}
                 </div>
                 <div className="options">
                     <SortDropDown items={sortAttributes} sortBy={this.sort}/>
