@@ -5,6 +5,7 @@ section.sort-drop-down {
   border-radius: $br;
   padding: 10px;
   margin-right: auto;
+  min-width: 200px;
 
   .sort-name {
     text-transform: uppercase;
@@ -22,7 +23,7 @@ section.sort-drop-down {
     position: absolute;
     z-index: 99;
     top: 40px;
-    right: 0;
+    right: -20px;
     padding: 10px 15px;
     background-color: white;
     box-shadow: 1px 4px 12px 1px $medium-grey;

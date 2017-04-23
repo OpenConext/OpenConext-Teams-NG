@@ -5,11 +5,7 @@ import {emitter, getFlash} from "../utils/flash";
 export default class Flash extends React.Component {
     constructor() {
         super();
-
-        this.state = {
-            flash: null
-        };
-
+        this.state = {flash: null};
         this.callback = flash => this.setState({flash: flash});
     }
 
@@ -22,9 +18,9 @@ export default class Flash extends React.Component {
         emitter.removeListener("flash", this.callback);
     }
 
-    closeFlash() {
+    closeFlash = () => {
         this.setState({flash: null});
-    }
+    };
 
     render() {
         const {flash} = this.state;
@@ -33,7 +29,7 @@ export default class Flash extends React.Component {
             return (
                 <div className="flash">
                     <p className={flash.type} dangerouslySetInnerHTML={{__html: flash.message}}></p>
-                    <a className="close" href="#" onClick={() => this.closeFlash()}>
+                    <a className="close" href="#" onClick={this.closeFlash}>
                         <i className="fa fa-remove"></i>
                     </a>
                 </div>

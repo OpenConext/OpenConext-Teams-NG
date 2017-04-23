@@ -132,7 +132,7 @@ export default class TeamDetail extends React.Component {
         saveTeam({...teamProperties, ...changedAttribute})
             .then(team => {
                 this.stateTeam(team);
-                setFlash(I18n.t("teams.flash", {teamName: team.name, action: I18n.t("teams.flash_updated")}));
+                setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_updated")}));
             })
             .catch(err => {
                 err.response.json().then(this.handleError);
@@ -190,7 +190,7 @@ export default class TeamDetail extends React.Component {
                             <a data-for="copy-to-clipboard" data-tip>
                                 <i className={`fa fa-copy ${copiedToClipBoardClassName}`}></i>
                             </a>
-                            <ReactTooltip id="copy-to-clipboard" getContent={[() => tooltip, 500]}/>
+                            <ReactTooltip id="copy-to-clipboard" place="right" getContent={[() => tooltip, 500]}/>
                         </span>
                     </CopyToClipboard>
 
