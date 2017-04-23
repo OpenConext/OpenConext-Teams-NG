@@ -1,12 +1,13 @@
 import React from "react";
 import I18n from "i18n-js";
 import PropTypes from "prop-types";
+import debounce from "lodash/debounce";
 
 import SortDropDown from "../components/sort_drop_down";
 import TeamAutocomplete from "../components/team_autocomplete";
 import {autoComplete, deleteTeam, getMyTeams} from "../api";
 import {clearFlash, setFlash} from "../utils/flash";
-import {isEmpty, stop} from "../utils/utils";
+import {stop} from "../utils/utils";
 
 export default class MyTeams extends React.Component {
 
@@ -91,13 +92,13 @@ export default class MyTeams extends React.Component {
     };
 
     search = e => {
-        const input = e.target.value;
-        if (isEmpty(input) || input.length < 3) {
-            this.setState({query: input, suggestions: [], selectedTeam: -1});
-        } else {
-            autoComplete(input).then(results => this.setState({query: input, suggestions: results}));
-        }
+        const query = e.target.value;
+        this.setState({query: query, selectedTeam: -1});
+        this.delayedAutocomplete();
     };
+
+    delayedAutocomplete = debounce(() =>
+        autoComplete(this.state.query).then(results => this.setState({suggestions: results})), 200);
 
     sort = item => {
         return item;

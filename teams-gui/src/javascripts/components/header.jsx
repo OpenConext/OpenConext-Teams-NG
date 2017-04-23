@@ -20,7 +20,7 @@ export default class Header extends React.Component {
     render() {
         const currentUser = this.props.currentUser;
         return (
-            <div className="mod-header">
+            <div className="header">
                 <Link to="/" className="logo"><img src={logo}/></Link>
                 <ul className="links">
                     <li>

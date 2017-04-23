@@ -1,4 +1,5 @@
 import spinner from "../lib/spin";
+import {isEmpty} from "../utils/utils";
 
 const apiPath = "/api/teams/";
 let csrfToken = null;
@@ -75,7 +76,7 @@ export function getUser() {
 }
 
 export function autoComplete(query) {
-    return fetchJson("teams?query=" + encodeURIComponent(query));
+    return isEmpty(query) || query.length < 3 ? Promise.resolve([]) : fetchJson("teams?query=" + encodeURIComponent(query));
 }
 
 export function deleteTeam(id) {
