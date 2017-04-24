@@ -2,7 +2,7 @@ section.teams-autocomplete {
 
   position: absolute;
   z-index: 100;
-  top: 70px;
+  top: 50px;
   width: 100%;
   border-radius: $br;
   background-color: white;
@@ -13,24 +13,71 @@ section.teams-autocomplete {
     font-style: italic;
   }
 
-  ul {
+  table.result {
+    width: 100%;
 
-    li {
+    thead th {
+      color: $medium-grey;
+      font-size: larger;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 10px;
+
+      &.name {
+        width: 20%;
+      }
+      &.description {
+        width: 55%;
+      }
+      &.role {
+        width: 25%;
+      }
+
+    }
+    tbody tr {
+      border-top: 1px solid $light-grey;
       cursor: pointer;
-      padding: 10px 15px;
-      border-bottom: 1px solid $light-grey;
 
-      &:hover, &.active {
+      &.active, &:hover {
         background-color: $light-grey;
+        td.role {
+          span  {
+            background-color: $blue;
+            color: white;
+            z-index: 99;
+            &.join {
+              background-color: $green;
+            }
+          }
+        }
+      }
+      td {
+        padding: 5px 10px;
+        &.role {
+          padding: 10px;
+          text-align: right;
+
+          span {
+            border: 1px solid $light-grey;
+            padding: 5px 15px;
+            display: inline-block;
+            min-width: 95px;
+            text-align: center;
+            &.join {
+              background-color: $light-grey;
+            }
+
+          }
+        }
       }
 
       span {
+        i.fa-info-circle {
+          color: $blue;
+          padding: 3px;
+        }
         &.matched {
           font-weight: bold;
-        }
-
-        &.role {
-          float: right;
         }
       }
 

@@ -14,4 +14,6 @@ public interface JoinRequestRepository extends CrudRepository<JoinRequest, Long>
     List<JoinRequest> findByPerson(Person person);
 
     List<JoinRequest> findByTeam(Team team);
+
+    List<JoinRequest> findByTeamIdIn(List<Long> ids);
 }

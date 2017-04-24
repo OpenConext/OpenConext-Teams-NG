@@ -6,6 +6,7 @@ import teams.domain.Invitation;
 import teams.domain.Person;
 import teams.domain.Team;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -36,4 +37,9 @@ public class InvitationRepositoryTest extends AbstractApplicationTest {
         assertEquals("secret", invitation.getInvitationHash());
     }
 
+    @Test
+    public void findByEmail() throws Exception {
+        List<Invitation> invitations = invitationRepository.findByEmail("test@example.com");
+        assertEquals(1, invitations.size());
+    }
 }

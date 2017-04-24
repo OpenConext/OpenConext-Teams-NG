@@ -1,11 +1,12 @@
 section.sort-drop-down {
 
   position: relative;
-  border: 1px solid $lighter-grey;
+  background-color: $light-grey;
   border-radius: $br;
   padding: 10px;
   margin-right: auto;
   min-width: 200px;
+  font-weight: bold;
 
   .sort-name {
     text-transform: uppercase;

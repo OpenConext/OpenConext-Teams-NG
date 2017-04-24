@@ -1,6 +1,9 @@
 import React from "react";
 import I18n from "i18n-js";
 import PropTypes from "prop-types";
+import ReactTooltip from "react-tooltip";
+
+import {isEmpty} from "../utils/utils";
 
 const itemName = (item, query) => {
     const name = item.name;
@@ -13,6 +16,25 @@ const itemName = (item, query) => {
     );
 };
 
+const itemDescription = item => {
+    const description = item.description;
+    if (isEmpty(description)) {
+        return "";
+    }
+    if (description.length > 45) {
+        return (
+            <span data-for="description" data-tip>
+                {`${description.substring(0, description.substring(40).indexOf(" ") + 40)}...`}
+                <i className="fa fa-info-circle"></i>
+                <ReactTooltip id="description" type="light">
+                    <span>{description}</span>
+                </ReactTooltip>
+            </span>
+        );
+    }
+    return description;
+};
+
 export default function TeamAutocomplete({suggestions, query, selectedTeam, itemSelected}) {
 
     return (
@@ -20,19 +42,30 @@ export default function TeamAutocomplete({suggestions, query, selectedTeam, item
             {(!suggestions || suggestions.length === 0) &&
             <div className="no-results">{I18n.t("auto_complete.no_results")}</div>
             }
-            <ul>
+            <table className="result">
+                <thead>
+                <tr>
+                    <th className="name">{I18n.t("teams.name")}</th>
+                    <th className="description">{I18n.t("teams.description")}</th>
+                    <th className="role"></th>
+                </tr>
+                </thead>
+                <tbody>
                 {suggestions
                     .filter(item => item.name.toLowerCase().indexOf(query.toLowerCase()) > -1)
                     .map((item, index) => (
-                        <li key={index}
-                            className={selectedTeam === index ? "active" : ""}
-                            onClick={() => itemSelected(item)}>
-                            {itemName(item, query)}
-                            {item.role && <span className="role">{item.role}</span>}
-                        </li>
-                    )
-                )}
-            </ul>
+                            <tr key={index}
+                                className={selectedTeam === index ? "active" : ""}
+                                onClick={() => itemSelected(item)}>
+                                <td>{itemName(item, query)}</td>
+                                <td>{itemDescription(item)}</td>
+                                <td className="role">{item.role ? <span>{item.role}</span> :
+                                    <span className="join">{I18n.t("teams.join")}</span>}</td>
+                            </tr>
+                        )
+                    )}
+                </tbody>
+            </table>
         </section>
     );
 

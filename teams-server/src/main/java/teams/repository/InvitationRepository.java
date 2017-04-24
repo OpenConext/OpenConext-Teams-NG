@@ -3,6 +3,7 @@ package teams.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import teams.domain.Invitation;
+import teams.domain.JoinRequest;
 import teams.domain.Person;
 import teams.domain.Team;
 
@@ -15,6 +16,8 @@ public interface InvitationRepository extends CrudRepository<Invitation, Long> {
     List<Invitation> findByInvitationMessagesPerson(Person person);
 
     List<Invitation> findByTeam(Team team);
+
+    List<Invitation> findByEmail(String email);
 
     Optional<Invitation> findFirstByInvitationHash(String invitationHash);
 }

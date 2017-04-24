@@ -9,6 +9,7 @@ public class TeamAutocomplete {
 
     private String name;
     private Long id;
+    private String description;
     private String role;
 
 

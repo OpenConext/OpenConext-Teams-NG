@@ -43,11 +43,9 @@ public class InvitationControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_OK);
 
-        List<Invitation> collect = StreamSupport.stream(invitationRepository.findAll().spliterator(), false).collect(toList());
         Invitation invitation = StreamSupport.stream(invitationRepository.findAll().spliterator(), false)
-                .filter(i -> i.getTeam().getId().equals(clientInvitation.getTeamId())).findFirst().get();
-
-        assertTrue(invitation.getInvitationHash().length() > 150);
+                .filter(i -> i.getTeam().getId().equals(clientInvitation.getTeamId()) && i.getInvitationHash().length() > 150 )
+                .findFirst().get();
 
         Set<InvitationMessage> invitationMessages = invitation.getInvitationMessages();
         assertEquals(1, invitationMessages.size());

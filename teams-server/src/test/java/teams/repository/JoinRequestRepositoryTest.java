@@ -7,6 +7,7 @@ import teams.domain.JoinRequest;
 import teams.domain.Person;
 import teams.domain.Team;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -28,6 +29,12 @@ public class JoinRequestRepositoryTest extends AbstractApplicationTest {
         Team team = teamRepository.findByUrn("nl:surfnet:diensten:riders").get();
         List<JoinRequest> joinRequests = joinRequestRepository.findByTeam(team);
         assertEquals(1, joinRequests.size());
+    }
+
+    @Test
+    public void findByTeamIdIn() throws Exception {
+        List<JoinRequest> joinRequests = joinRequestRepository.findByTeamIdIn(Arrays.asList(1L, 2L, 3L));
+        assertEquals(1 ,joinRequests.size());
     }
 
 }

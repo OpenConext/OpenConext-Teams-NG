@@ -1,21 +1,22 @@
 body {
-    font-family: "Roboto", Sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    color: $dark-grey;
-    -webkit-font-smoothing: antialiased;
+  font-family: "Roboto", Sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: $dark-grey;
+  -webkit-font-smoothing: antialiased;
+  background-color: $background;
 }
 
 *, *:before, *:after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 ::-webkit-input-placeholder {
-    color: $medium-grey;
+  color: $medium-grey;
 }
 
 ::-moz-placeholder {
-    color: $medium-grey;
-    opacity: 1;
+  color: $medium-grey;
+  opacity: 1;
 }

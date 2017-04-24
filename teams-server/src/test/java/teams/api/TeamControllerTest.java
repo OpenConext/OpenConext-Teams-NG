@@ -28,8 +28,11 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .get("api/teams/my-teams")
                 .then()
                 .statusCode(SC_OK)
-                .body("name", hasItems("giants", "gliders", "riders"))
-                .body("role", hasItems("MANAGER", "MEMBER", "ADMIN"));
+                .body("joinRequests.teamIdentifier", hasItems(1))
+                .body("invitationsSend.email", hasItems("john.doe@example.org"))
+                .body("invitationsReceived.id", hasItems(2))
+                .body("teamSummaries.name", hasItems("giants", "gliders", "riders"))
+                .body("teamSummaries.role", hasItems("MANAGER", "MEMBER", "ADMIN"));
     }
 
     @Test

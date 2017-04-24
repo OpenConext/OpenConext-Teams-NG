@@ -5,17 +5,14 @@ import PropTypes from "prop-types";
 export default function UserProfile({currentUser}) {
     return (
         <ul className="user-profile">
-            <li className="label">
-                {I18n.t("profile.email")}
+            <li>
+                <span>{`${I18n.t("profile.email")}:`}</span>
+                <span className="value">{currentUser.person.email}</span>
             </li>
             <li>
-                {currentUser.person.email}
-            </li>
-            <li className="label">
-                {I18n.t("profile.role")}
-            </li>
-            <li>
-                {I18n.t("profile." + currentUser.person.guest)}
+                <span>{`${I18n.t("profile.role")}:`}</span>
+                <span  className="value">{I18n.t("profile." + currentUser.person.guest)}</span>
+
             </li>
         </ul>);
 

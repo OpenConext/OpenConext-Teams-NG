@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
@@ -50,13 +49,13 @@ public class TeamLocalControllerTest implements Seed {
     private List<Object[]> seed() {
         //second 'id' is the sorted position in the autoCompletes List
         return Arrays.asList(
-                new Object[]{"ContainingLaterTest", 6},
-                new Object[]{"ContainingTest", 5},
-                new Object[]{"Second test", 2, "ADMIN"},
-                new Object[]{"Test first", 0},
-                new Object[]{"1 2 3 test", 3, "MEMBER"},
-                new Object[]{"1_2_3_4_ test", 4},
-                new Object[]{"testtesttest", 1}
+                new Object[]{"ContainingLaterTest", 6, ""},
+                new Object[]{"ContainingTest", 5, ""},
+                new Object[]{"Second test", 2, "", "ADMIN"},
+                new Object[]{"Test first", 0, ""},
+                new Object[]{"1 2 3 test", 3, "", "MEMBER"},
+                new Object[]{"1_2_3_4_ test", 4, ""},
+                new Object[]{"testtesttest", 1, ""}
         );
     }
 

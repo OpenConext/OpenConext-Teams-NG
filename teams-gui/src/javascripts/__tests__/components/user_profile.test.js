@@ -12,7 +12,6 @@ test("UserProfile with email", () => {
         <UserProfile currentUser={currentUser} />
     );
 
-    expect(userProfile.contains(<li>test@org.net</li>)).toBe(true);
-    expect(userProfile.contains(<li>SURFconext Guest</li>)).toBe(true);
+    expect(userProfile.contains(<span>Email:</span>)).toBe(true);
 
 });

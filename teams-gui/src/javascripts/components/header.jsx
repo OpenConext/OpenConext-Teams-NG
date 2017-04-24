@@ -17,31 +17,11 @@ export default class Header extends React.Component {
         };
     }
 
-    render() {
-        const currentUser = this.props.currentUser;
-        return (
-            <div className="header">
-                <Link to="/" className="logo"><img src={logo}/></Link>
-                <ul className="links">
-                    <li>
-                        {this.renderProfileLink(currentUser)}
-                        {this.renderDropDown(currentUser)}
-                    </li>
-                    <li dangerouslySetInnerHTML={{__html: I18n.t("header.links.help_html")}}></li>
-                    {this.renderExitLogout()}
-                    <li>
-                        <LanguageSelector />
-                    </li>
-                </ul>
-            </div>
-        );
-    }
-
     renderProfileLink(currentUser) {
-        const welcome = I18n.t("header.welcome") + " " + currentUser.username;
         return (
             <a href="#" className="welcome-link" onClick={this.handleToggle.bind(this)}>
-                {welcome}
+                <i className="fa fa-user-circle-o"></i>
+                {currentUser.username}
                 {this.renderDropDownIndicator()}
             </a>
         );
@@ -75,6 +55,29 @@ export default class Header extends React.Component {
         e.stopPropagation();
         this.setState({dropDownActive: !this.state.dropDownActive});
     }
+
+    render() {
+        const currentUser = this.props.currentUser;
+        return (
+            <div className="header-container">
+                <div className="header">
+                    <Link to="/" className="logo"><img src={logo}/></Link>
+                    <ul className="links">
+                        <li>
+                            {this.renderProfileLink(currentUser)}
+                            {this.renderDropDown(currentUser)}
+                        </li>
+                        <li dangerouslySetInnerHTML={{__html: I18n.t("header.links.help_html")}}></li>
+                        {this.renderExitLogout()}
+                        <li>
+                            <LanguageSelector />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        );
+    }
+
 }
 
 Header.propTypes = {

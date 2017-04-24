@@ -31,4 +31,16 @@
       color: white;
     }
   }
+  &.green {
+    background-color: $green;
+    color: white;
+    border: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    i {
+      color: white;
+      margin:0;
+      font-size: larger;
+    }
+  }
 }

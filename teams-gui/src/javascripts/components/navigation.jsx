@@ -37,18 +37,6 @@ export default class Navigation extends React.Component {
         }
     }
 
-    render() {
-        return (
-            <div className="navigation">
-                {this.renderItem("/my-teams", "my_teams")}
-                {this.renderItem("/public-teams", "public_teams")}
-                {this.renderItem("/external-teams", "external_teams")}
-
-                {this.renderSpinner()}
-            </div>
-        );
-    }
-
     renderItem(href, value) {
         return (
             <NavLink activeClassName="active" to={href}>{I18n.t("navigation." + value)}</NavLink>
@@ -59,4 +47,17 @@ export default class Navigation extends React.Component {
         return this.state.loading ? <div className="spinner" ref={spinner => this.spinnerNode = spinner}/> : null;
     }
 
+    render() {
+        return (
+            <div className="navigation-container">
+                <div className="navigation">
+                    {this.renderItem("/my-teams", "my_teams")}
+                    {this.renderItem("/public-teams", "public_teams")}
+                    {this.renderItem("/external-teams", "external_teams")}
+
+                    {this.renderSpinner()}
+                </div>
+            </div>
+        );
+    }
 }

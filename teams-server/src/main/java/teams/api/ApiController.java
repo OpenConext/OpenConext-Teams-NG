@@ -10,10 +10,7 @@ import teams.domain.Membership;
 import teams.domain.Team;
 import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
-import teams.repository.ExternalTeamRepository;
-import teams.repository.InvitationRepository;
-import teams.repository.MembershipRepository;
-import teams.repository.TeamRepository;
+import teams.repository.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
@@ -37,6 +34,9 @@ public abstract class ApiController {
 
     @Autowired
     protected InvitationRepository invitationRepository;
+
+    @Autowired
+    protected JoinRequestRepository joinRequestRepository;
 
     private AcceptHeaderLocaleResolver localeResolver;
 

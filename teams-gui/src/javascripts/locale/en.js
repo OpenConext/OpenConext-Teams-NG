@@ -21,7 +21,6 @@ I18n.translations.en = {
 
     header: {
         title: "Teams",
-        welcome: "Welcome ",
         links: {
             help_html: "<a href=\"https://github.com/OpenConext/OpenConext-teams-NG\" target=\"_blank\">Help</a>",
             logout: "Logout",
@@ -31,15 +30,19 @@ I18n.translations.en = {
     },
 
     navigation: {
-        my_teams: "My Teams",
+        my_teams: "SURFconext Teams",
         public_teams: "Public Teams",
         external_teams: "Institution Teams"
     },
 
     teams: {
+        title: "My teams",
+        member_requests: "Join requests",
+        invitations_received: "Invitations received",
+        invitations_send: "Invitations send",
         name: "Name",
         description: "Description",
-        searchPlaceHolder: "Search / join teams...",
+        searchPlaceHolder: "SEARCH / JOIN TEAMS...",
         role: "Role",
         membershipCount: "Members",
         actions: "",
@@ -50,7 +53,8 @@ I18n.translations.en = {
         confirmation: "Are your sure you want to remove team {{name}}?",
         edit: "Edit",
         delete: "Delete",
-        add: "Add team"
+        add: "Add team",
+        join: "JOIN"
     },
 
     team_detail: {

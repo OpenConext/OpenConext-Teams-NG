@@ -2,6 +2,8 @@ package teams.domain;
 
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class TeamSummary {
 
@@ -30,4 +32,5 @@ public class TeamSummary {
                 .map(Membership::getRole)
                 .orElse(null);
     }
+
 }

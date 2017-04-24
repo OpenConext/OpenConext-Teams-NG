@@ -15,6 +15,9 @@ export default class MyTeams extends React.Component {
         super(props);
         this.state = {
             teams: [],
+            joinRequests: [],
+            invitationsSend: [],
+            invitationsReceived: [],
             sorted: {name: "name", order: "down"},
             actions: {show: false, id: 0},
             sortAttributes: [
@@ -33,8 +36,13 @@ export default class MyTeams extends React.Component {
     fetchMyTeams() {
         clearFlash();
         getMyTeams().then(myTeams => {
-            const teams = myTeams.sort((team, otherTeam) => team.name.localeCompare(otherTeam.name));
-            this.setState({teams: teams});
+            const teams = myTeams.teamSummaries.sort((team, otherTeam) => team.name.localeCompare(otherTeam.name));
+            this.setState({
+                teams: teams,
+                joinRequests: myTeams.joinRequests,
+                invitationsSend: myTeams.invitationsSend,
+                invitationsReceived: myTeams.invitationsReceived
+            });
         });
     }
 
@@ -126,12 +134,10 @@ export default class MyTeams extends React.Component {
         this.props.history.replace("/add-team");
     };
 
-    renderTeamsTable() {
-        const {teams, actions} = this.state;
-
+    renderTeamsTable(teams, actions) {
         if (teams.length !== 0) {
             return (
-                <table>
+                <table className="teams">
                     <thead>
                     <tr>
                         <th>{I18n.t("teams.name")}</th>
@@ -163,32 +169,45 @@ export default class MyTeams extends React.Component {
 
     render() {
         const {currentUser} = this.props;
-        const {sortAttributes, selectedTeam, suggestions, query} = this.state;
+        const {
+            teams, joinRequests, invitationsSend, invitationsReceived, actions, sortAttributes,
+            selectedTeam, suggestions, query
+        } = this.state;
         const showAutocompletes = query.length > 2;
         return (
             <div className="my_teams">
-                <div className="search">
-                    <input ref={self => this.searchInput = self}
-                           placeholder={I18n.t("teams.searchPlaceHolder")}
-                           type="text"
-                           onChange={this.search}
-                           value={query}
-                           onKeyDown={this.onSearchKeyDown}/>
-                    <i className="fa fa-search"></i>
-                    {showAutocompletes && <TeamAutocomplete suggestions={suggestions}
-                                                            query={query}
-                                                            selectedTeam={selectedTeam}
-                                                            itemSelected={this.itemSelected}/>}
+                <div className="operations">
+                    <h2>{I18n.t("teams.title")}</h2>
+                    <span className="first">{I18n.t("teams.member_requests")}<span
+                        className="number">{joinRequests.length}</span></span>
+                    <span>{I18n.t("teams.invitations_send")}<span
+                        className="number">{invitationsSend.length}</span></span>
+                    <span>{I18n.t("teams.invitations_received")}<span
+                        className="number">{invitationsReceived.length}</span></span>
                 </div>
-                <div className="options">
-                    <SortDropDown items={sortAttributes} sortBy={this.sort}/>
-                    {!currentUser.person.guest && <a className="button blue" href="#"
-                                                     onClick={this.addTeam}>{I18n.t("teams.add")}
-                        <i className="fa fa-user"></i>
-                    </a>}
-
+                <div className="card">
+                    <div className="options">
+                        <SortDropDown items={sortAttributes} sortBy={this.sort}/>
+                        <div className="search">
+                            <input ref={self => this.searchInput = self}
+                                   placeholder={I18n.t("teams.searchPlaceHolder")}
+                                   type="text"
+                                   onChange={this.search}
+                                   value={query}
+                                   onKeyDown={this.onSearchKeyDown}/>
+                            <i className="fa fa-search"></i>
+                            {showAutocompletes && <TeamAutocomplete suggestions={suggestions}
+                                                                    query={query}
+                                                                    selectedTeam={selectedTeam}
+                                                                    itemSelected={this.itemSelected}/>}
+                        </div>
+                        {!currentUser.person.guest &&
+                        <a className="button green" href="#" onClick={this.addTeam}>
+                            <i className="fa fa-plus"></i>
+                        </a>}
+                    </div>
+                    {this.renderTeamsTable(teams, actions)}
                 </div>
-                {this.renderTeamsTable()}
             </div>
         );
     }

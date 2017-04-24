@@ -56,7 +56,7 @@ public class JoinRequest {
         return team.getName();
     }
 
-    public String getTeamUrn() {
-        return team.getUrn();
+    public Long getTeamIdentifier() {
+        return team.getId();
     }
 }

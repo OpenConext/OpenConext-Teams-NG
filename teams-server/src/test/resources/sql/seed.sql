@@ -47,9 +47,16 @@ INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUE
 INSERT INTO `invitations` (`id`, `mailaddress`, `timestamp`, `invitation_uiid`, `denied`, `accepted`, `intended_role`, `language`, `team_id`)
 VALUES
   (1,'test@example.com', 2491484828910, 'secret', 0, 0, 'MANAGER', 'Dutch', 1);
+INSERT INTO `invitations` (`id`, `mailaddress`, `timestamp`, `invitation_uiid`, `denied`, `accepted`, `intended_role`, `language`, `team_id`)
+VALUES
+  (2,'john.doe@example.org', 2491484828910, 'secret2', 0, 0, 'ADMIN', 'Dutch', 2);
+
 INSERT INTO `invitation_message` (`id`, `message`, `timestamp`, `invitation_id`, `person_id`)
 VALUES
   (1, 'Please join', 2491484828910, 1, 5);
+INSERT INTO `invitation_message` (`id`, `message`, `timestamp`, `invitation_id`, `person_id`)
+VALUES
+  (2, 'Please join now', 2491484828910, 2, 1);
 
 INSERT INTO `requests` (`id`, `message`, `team_id`, `person_id`)
 VALUES

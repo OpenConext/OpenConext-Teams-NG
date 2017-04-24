@@ -40,5 +40,9 @@ public interface TeamValidator {
         return team;
     }
 
+    default boolean isAllowedToAcceptJoinRequest(TeamSummary teamSummary) {
+        return Role.ADMIN.equals(teamSummary.getRole()) || Role.MEMBER.equals(teamSummary.getRole());
+    }
+
 
 }

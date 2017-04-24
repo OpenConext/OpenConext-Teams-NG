@@ -18,9 +18,6 @@ import java.util.List;
 public class JoinRequestController extends ApiController implements MembershipValidator {
 
     @Autowired
-    private JoinRequestRepository joinRequestRepository;
-
-    @Autowired
     private MailBox mailBox;
 
     @PostMapping("api/teams/join")
