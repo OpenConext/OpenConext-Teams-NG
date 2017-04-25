@@ -14,9 +14,11 @@ body {
 
 ::-webkit-input-placeholder {
   color: $medium-grey;
+  font-weight: bold;
 }
 
 ::-moz-placeholder {
   color: $medium-grey;
+  font-weight: bold;
   opacity: 1;
 }

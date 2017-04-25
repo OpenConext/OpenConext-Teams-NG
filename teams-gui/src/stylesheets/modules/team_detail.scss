@@ -93,7 +93,16 @@
       td.membership-count {
         text-align: right;
       }
-
+      td.actions {
+        text-align: right;
+        cursor: pointer;
+        &:hover i {
+          color: $blue;
+        }
+        i {
+          font-size: 18px;
+        }
+      }
     }
   }
 }

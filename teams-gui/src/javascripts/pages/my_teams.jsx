@@ -37,7 +37,10 @@ export default class MyTeams extends React.Component {
     fetchMyTeams() {
         clearFlash();
         getMyTeams().then(myTeams => {
-            const teams = myTeams.teamSummaries.sort(this.sortByAttribute("name"));
+            const joinRequests = myTeams.joinRequests.map(joinRequest => {
+                return {name: joinRequest.teamName, description: joinRequest.teamDescription, role: "PENDING", isJoinRequest: true, membershipCount: "N/A"}
+            });
+            const teams = myTeams.teamSummaries.concat(joinRequests).sort(this.sortByAttribute("name"));
             this.setState({
                 teams: teams,
                 joinRequests: myTeams.joinRequests,
@@ -61,22 +64,6 @@ export default class MyTeams extends React.Component {
             deleteTeam(team.id).then(() => this.fetchMyTeams());
             setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_deleted")}));
         }
-    };
-
-    renderActions = (actions, team) => e => {
-        stop(e);
-        const showActions = (actions.show && actions.id === team.id);
-        return showActions &&
-            (
-                <div className="actions">
-                    <a href="#" onClick={this.showTeam(team)}>
-                        <i className="fa fa-edit"></i>
-                    </a>
-                    <a href="#" onClick={this.handleDeleteTeam(team)}>
-                        <i className="fa fa-remove"></i>
-                    </a>
-                </div>
-            );
     };
 
     onSearchKeyDown = e => {
@@ -131,12 +118,6 @@ export default class MyTeams extends React.Component {
         this.showTeam(team)();
     };
 
-    handleClickAction = (actions, team) => e => {
-        stop(e);
-        const show = actions.id === team.id ? !actions.show : true;
-        this.setState({actions: {show: show, id: team.id}});
-    };
-
     addTeam = e => {
         stop(e);
         this.props.history.replace("/add-team");
@@ -169,11 +150,11 @@ export default class MyTeams extends React.Component {
         );
     };
 
-    renderTeamsTable(teams, actions) {
+    renderTeamsTable(teams) {
         const currentSorted = this.state.sortAttributes.filter(attr => attr.current)[0];
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
-        const userIconClassName = team => team.role === "PENDING" ? "fa fa-clock-o" : `fa fa-user ${team.role.toLowerCase()}`;
-        const columns = ["name", "description", "role", "membershipCount", "actions"];
+        const userIconClassName = team => team.isJoinRequest ? "fa fa-clock-o" : `fa fa-user ${team.role.toLowerCase()}`;
+        const columns = ["name", "description", "role", "membershipCount"];
         const th = index => (
             <th key={index} className={columns[index]}>
                 <span className={sortColumnClassName(columns[index])}>{I18n.t(`teams.${columns[index]}`)}</span>
@@ -189,17 +170,12 @@ export default class MyTeams extends React.Component {
                     <tbody>
                     {teams.map(team =>
                         <tr key={team.urn} onClick={this.showTeam(team)}>
-                            <td className="name"><i className={userIconClassName(team)}></i>{team.name}</td>
+                            <td className={team.isJoinRequest ? "name pending" : "name"}><i className={userIconClassName(team)}></i>{team.name}</td>
                             <td className="description">{team.description}</td>
                             <td className={`role ${team.role.toLowerCase()}`}>{team.role.substring(0, 1) + team.role.substring(1).toLowerCase()}</td>
                             {this.membershipCountCell(team)}
-                            <td className="actions" onClick={this.handleClickAction(actions, team)}>
-                                <i className="fa fa-ellipsis-h"></i>
-                                <div className="actionsHolder">{this.renderActions(actions, team)}</div>
-                            </td>
                         </tr>
                     )}
-
                     </tbody>
                 </table>
             );

@@ -56,6 +56,10 @@ public class JoinRequest {
         return team.getName();
     }
 
+    public String getTeamDescription() {
+        return team.getName();
+    }
+
     public Long getTeamIdentifier() {
         return team.getId();
     }

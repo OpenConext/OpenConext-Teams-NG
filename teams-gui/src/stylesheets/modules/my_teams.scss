@@ -63,6 +63,19 @@
       border-bottom: 1px solid $light-grey;
     }
     thead {
+      th.name {
+        width: 25%;
+      }
+      th.description {
+        width: 45%;
+      }
+      th.role {
+        width: 15%;
+      }
+      th.membershipCount {
+        text-align: right;
+        width: 15%;
+      }
       span {
         position: relative;
         display: inline-block;
@@ -93,7 +106,7 @@
         font-weight: bold;
 
         &.pending {
-          color: $medium-grey;
+          color: $green;
         }
 
         i {
@@ -108,6 +121,14 @@
           &.member {
             color: rgba(223, 182, 103, 1);
           }
+          &.fa-clock-o {
+            color: $green;
+          }
+        }
+      }
+      td.role {
+        &.pending {
+          color: $green;
         }
       }
       td.membership-count {
@@ -122,18 +143,18 @@
         }
 
         span {
-          font-weight: bold;
 
           &.membership-count {
             padding: 15px 10px;
-            color: $blue;
             z-index: 99;
           }
           &.join-requests-count {
             color: $green;
+            font-weight: bold;
           }
           &.invitations-count {
-            color: $orange;
+            color: $blue;
+            font-weight: bold;
           }
           &.count-divider {
             color: $medium-grey;
@@ -143,13 +164,6 @@
           @include tool-tip;
         }
       }
-      td.actions {
-        text-align: right;
-        i {
-          font-size: 18px;
-        }
-      }
-
     }
   }
 }
