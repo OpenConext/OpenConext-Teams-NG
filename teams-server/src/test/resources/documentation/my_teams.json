@@ -3,10 +3,10 @@
     {
       "id": 1,
       "person": null,
-      "created": 1493030222.000000000,
+      "created": 1493051974.000000000,
       "message": "Please let me join",
-      "teamName": "riders",
-      "teamIdentifier": 1
+      "teamIdentifier": 1,
+      "teamName": "riders"
     }
   ],
   "invitationsSend": [
@@ -25,7 +25,8 @@
         }
       ],
       "intendedRole": "ADMIN",
-      "language": "Dutch"
+      "language": "Dutch",
+      "teamIdentifier": 2
     }
   ],
   "invitationsReceived": [
@@ -44,7 +45,8 @@
         }
       ],
       "intendedRole": "ADMIN",
-      "language": "Dutch"
+      "language": "Dutch",
+      "teamIdentifier": 2
     }
   ],
   "teamSummaries": [

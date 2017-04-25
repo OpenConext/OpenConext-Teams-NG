@@ -16,17 +16,18 @@ const itemName = (item, query) => {
     );
 };
 
-const itemDescription = item => {
+const itemDescription = (item, index) => {
     const description = item.description;
     if (isEmpty(description)) {
         return "";
     }
     if (description.length > 45) {
+        const id = `description${index}`;
         return (
-            <span data-for="description" data-tip>
-                {`${description.substring(0, description.substring(40).indexOf(" ") + 40)}...`}
+            <span data-for={id} data-tip>
+                {`${description.substring(0, Math.min(description.substring(30).indexOf(" ") + 30, 40))}...`}
                 <i className="fa fa-info-circle"></i>
-                <ReactTooltip id="description" type="light">
+                <ReactTooltip id={id} type="light" class="tool-tip" effect="solid">
                     <span>{description}</span>
                 </ReactTooltip>
             </span>
@@ -36,13 +37,13 @@ const itemDescription = item => {
 };
 
 export default function TeamAutocomplete({suggestions, query, selectedTeam, itemSelected}) {
-
+    const showSuggestions = (suggestions && suggestions.length > 0);
     return (
         <section className="teams-autocomplete">
-            {(!suggestions || suggestions.length === 0) &&
+            {!showSuggestions &&
             <div className="no-results">{I18n.t("auto_complete.no_results")}</div>
             }
-            <table className="result">
+            {showSuggestions && <table className="result">
                 <thead>
                 <tr>
                     <th className="name">{I18n.t("teams.name")}</th>
@@ -58,14 +59,14 @@ export default function TeamAutocomplete({suggestions, query, selectedTeam, item
                                 className={selectedTeam === index ? "active" : ""}
                                 onClick={() => itemSelected(item)}>
                                 <td>{itemName(item, query)}</td>
-                                <td>{itemDescription(item)}</td>
+                                <td>{itemDescription(item, index)}</td>
                                 <td className="role">{item.role ? <span>{item.role}</span> :
                                     <span className="join">{I18n.t("teams.join")}</span>}</td>
                             </tr>
                         )
                     )}
                 </tbody>
-            </table>
+            </table>}
         </section>
     );
 

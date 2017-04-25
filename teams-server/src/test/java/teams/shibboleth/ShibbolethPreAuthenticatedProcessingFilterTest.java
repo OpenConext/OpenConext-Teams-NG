@@ -74,7 +74,7 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
     private MockHttpServletRequest populateServletRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("name-id", "urn");
-        request.addHeader("uid", "Name");
+        request.addHeader("displayName", "Name");
         request.addHeader("Shib-InetOrgPerson-mail", "mail");
         request.addHeader("is-member-of", "urn:collab:org:surf.nl");
         return request;

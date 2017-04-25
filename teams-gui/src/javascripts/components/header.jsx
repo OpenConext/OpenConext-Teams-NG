@@ -3,7 +3,7 @@ import I18n from "i18n-js";
 import PropTypes from "prop-types";
 import {render, unmountComponentAtNode} from "react-dom";
 import {Link} from "react-router-dom";
-import logo from "../../images/logo.jpg";
+import logo from "../../images/logo@2x.png";
 import LanguageSelector from "./language_selector";
 import UserProfile from "./user_profile";
 import Logout from "../pages/logout";
@@ -63,7 +63,8 @@ export default class Header extends React.Component {
                 <div className="header">
                     <Link to="/" className="logo"><img src={logo}/></Link>
                     <ul className="links">
-                        <li>
+                        <li className="title"><span>Teams</span></li>
+                        <li className="profile">
                             {this.renderProfileLink(currentUser)}
                             {this.renderDropDown(currentUser)}
                         </li>

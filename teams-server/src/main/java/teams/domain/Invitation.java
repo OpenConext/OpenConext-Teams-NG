@@ -79,6 +79,10 @@ public class Invitation {
         return invitationHash;
     }
 
+    public Long getTeamIdentifier() {
+        return team.getId();
+    }
+
     private String generateInvitationHash() throws UnsupportedEncodingException {
         Random secureRandom = new SecureRandom();
         byte[] aesKey = new byte[128];

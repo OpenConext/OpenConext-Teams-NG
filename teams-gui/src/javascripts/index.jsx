@@ -27,6 +27,8 @@ import "./locale/nl";
 import PropTypes from "prop-types";
 polyfill();
 
+const S4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+
 class App extends React.Component {
 
     render() {
@@ -78,7 +80,13 @@ function determineLanguage() {
 determineLanguage();
 
 getUser().catch(e => {
-    render(<ServerError />, document.getElementById("app"));
+    if (document.location.href.indexOf("guid") > -1) {
+        render(<ServerError />, document.getElementById("app"));
+        throw e;
+    }
+    //302 redirects from Shib are cached by the browser. We force a one-time reload
+    const guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+    document.location = document.location + "?guid=" + guid;
     throw e;
 }).then(currentUser => {
     if (!currentUser) {

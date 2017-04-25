@@ -30,8 +30,7 @@ I18n.translations.en = {
     },
 
     navigation: {
-        my_teams: "SURFconext Teams",
-        public_teams: "Public Teams",
+        my_teams: "My Teams",
         external_teams: "Institution Teams"
     },
 
@@ -40,10 +39,10 @@ I18n.translations.en = {
         member_requests: "Join requests",
         invitations_received: "Invitations received",
         invitations_send: "Invitations send",
-        name: "Name",
+        name: "Team name",
         description: "Description",
-        searchPlaceHolder: "SEARCH / JOIN TEAMS...",
-        role: "Role",
+        searchPlaceHolder: "SEARCH / JOIN ALL PUBLIC TEAMS...",
+        role: "My role",
         membershipCount: "Members",
         actions: "",
         flash: "Team '{{name}}' was successfully {{action}}",
@@ -54,7 +53,10 @@ I18n.translations.en = {
         edit: "Edit",
         delete: "Delete",
         add: "Add team",
-        join: "JOIN"
+        join: "JOIN",
+        outstanding_join_request: "{{count}} outstanding join request(s)",
+        outstanding_invitations: "{{count}} outstanding invite(s)",
+        no_found: "You are not a member of a team",
     },
 
     team_detail: {
@@ -95,7 +97,7 @@ I18n.translations.en = {
         email: "Email",
         role: "Role",
         description: "Description",
-        members: "Members"
+        membershipCount: "Members"
     },
 
     profile: {

@@ -1,38 +1,55 @@
 section.sort-drop-down {
 
   position: relative;
+
   background-color: $light-grey;
   border-radius: $br;
   padding: 10px;
   margin-right: auto;
-  min-width: 200px;
+  min-width: 215px;
+  display: inline-block;
   font-weight: bold;
 
-  .sort-name {
-    text-transform: uppercase;
-    color: $blue;
-    margin: 0 15px;
-    cursor: pointer;
-  }
+  .selected {
+    display: flex;
 
-  i {
-    cursor: pointer;
-    color: $blue;
+    .sort-label, .sort-label-divider {
+      color: $medium-grey;
+    }
+
+    .sort-name {
+      text-transform: uppercase;
+      color: $blue;
+      margin: 0 15px;
+      cursor: pointer;
+    }
+
+    span:last-child {
+      margin-left: auto;
+    }
+
+    i {
+      cursor: pointer;
+      color: $blue;
+    }
   }
 
   ul.drop-down {
     position: absolute;
     z-index: 99;
     top: 40px;
-    right: -20px;
-    padding: 10px 15px;
+    right: 0;
+    padding: 10px;
     background-color: white;
-    box-shadow: 1px 4px 12px 1px $medium-grey;
+    box-shadow: 1px 2px 6px 1px $medium-grey;
+    min-width: 144px;
     border-radius: $br;
 
     li {
       cursor: pointer;
       text-transform: uppercase;
+      display: flex;
+      color: $medium-grey;
 
       &.current {
         color: $blue;
@@ -45,8 +62,7 @@ section.sort-drop-down {
         }
 
         &:last-child {
-          float: right;
-          margin-left: 20px;
+          margin-left: auto;
         }
       }
 

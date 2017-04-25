@@ -57,14 +57,12 @@
     }
   }
 
-
   table.teams {
     width: 100%;
-    border: 1px solid $light-grey;
+    tr {
+      border-bottom: 1px solid $light-grey;
+    }
     thead {
-
-      background-color: $light-grey;
-
       span {
         position: relative;
         display: inline-block;
@@ -73,25 +71,83 @@
         font-weight: bold;
         font-size: larger;
         color: $medium-grey;
-        padding: 7px 2px 7px 0px;
+        padding: 7px 2px 7px 0;
 
-        i {
-          position: absolute;
-          right: 5px;
-          top: 2px;
-          color: $medium-grey;
-          &.active {
-            color: darken($blue, 15);
-          }
+        &.sorted {
+          color: $blue;
         }
       }
     }
     tbody {
       tr {
         cursor: pointer;
+        &:hover {
+          background-color: #F9FCFD;
+          td.actions i {
+            color: $blue;
+          }
+        }
+      }
+      td.name {
+        color: $blue;
+        font-weight: bold;
+
+        &.pending {
+          color: $medium-grey;
+        }
+
+        i {
+          padding: 15px 15px 15px 0;
+          font-size: 16px;
+          &.admin {
+            color: rgba(242, 215, 50, 1);
+          }
+          &.manager {
+            color: rgba(160, 160, 160, 1);
+          }
+          &.member {
+            color: rgba(223, 182, 103, 1);
+          }
+        }
       }
       td.membership-count {
+        position: relative;
         text-align: right;
+
+        i.fa-info-circle {
+          color: $blue;
+          position: absolute;
+          top: 1px;
+          right: 1px;
+        }
+
+        span {
+          font-weight: bold;
+
+          &.membership-count {
+            padding: 15px 10px;
+            color: $blue;
+            z-index: 99;
+          }
+          &.join-requests-count {
+            color: $green;
+          }
+          &.invitations-count {
+            color: $orange;
+          }
+          &.count-divider {
+            color: $medium-grey;
+          }
+        }
+        div.tool-tip {
+          @include tool-tip;
+        }
+      }
+      td.actions {
+        text-align: right;
+        i {
+          font-size: 18px;
+        }
       }
 
     }

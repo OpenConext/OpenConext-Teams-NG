@@ -41,7 +41,7 @@ section.teams-autocomplete {
       &.active, &:hover {
         background-color: $light-grey;
         td.role {
-          span  {
+          span {
             background-color: $blue;
             color: white;
             z-index: 99;
@@ -79,6 +79,10 @@ section.teams-autocomplete {
         &.matched {
           font-weight: bold;
         }
+      }
+
+      div.tool-tip {
+        @include tool-tip;
       }
 
     }

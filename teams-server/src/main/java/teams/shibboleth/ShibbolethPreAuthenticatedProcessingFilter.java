@@ -29,12 +29,13 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
     @Override
     protected Object getPreAuthenticatedPrincipal(final HttpServletRequest request) {
         String nameId = request.getHeader("name-id");
-        String name = request.getHeader("uid");
+        String name = request.getHeader("displayName");
         String email = request.getHeader("Shib-InetOrgPerson-mail");
         String memberOf = request.getHeader("is-member-of");
 
         Person person = new Person(nameId, name, email, !nonGuestsMemberOf.equals(memberOf));
 
+        LOG.info("Person {} is attempting authentication", person);
         //this is the Spring security contract. Returning null results in AuthenticationException 403
         return person.isValid() ? provision(person) : null;
     }

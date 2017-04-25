@@ -35,10 +35,10 @@ export default class SortDropDown extends React.Component {
 
         return (
             <section className="sort-drop-down">
-                <div onClick={() => this.setState({dropDownActive: !dropDownActive})}>
+                <div className="selected" onClick={() => this.setState({dropDownActive: !dropDownActive})}>
                     <span className="sort-label">{I18n.t("sort.label")}</span>
                     <span className="sort-label-divider">:</span>
-                    <span className="sort-name">{currentItem.name}</span>
+                    <span className="sort-name">{I18n.t(`sort.${currentItem.name}`)}</span>
                     <span><i className={`fa fa-caret-${currentItem.order}`}/></span>
                 </div>
                 {dropDownActive && this.renderDropDown(items, sortBy)}
