@@ -27,7 +27,7 @@ public class TeamTest implements Seed {
 
     @Test
     public void invalidName() throws Exception {
-        List<ConstraintViolation<Team>> violations = teamViolations("^");
+        List<ConstraintViolation<Team>> violations = teamViolations("^ ");
         assertEquals(1, violations.size());
         assertEquals("must match \"[\\w \\-']{1,255}\"", violations.get(0).getMessage());
     }

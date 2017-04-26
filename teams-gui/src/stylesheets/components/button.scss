@@ -9,6 +9,7 @@
   font-size: larger;
   text-decoration: none;
   font-weight: bold;
+  text-align: center;
 
   &:hover, &:visited {
     text-decoration: none
@@ -30,6 +31,11 @@
     i {
       color: white;
     }
+  }
+  &.grey {
+    background-color: $lighter-grey;
+    color: white;
+    border: none;
   }
   &.green {
     background-color: $green;

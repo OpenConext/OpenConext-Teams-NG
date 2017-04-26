@@ -2,12 +2,17 @@ package teams.api;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.TeamValidator;
 import teams.domain.*;
 import teams.exception.IllegalSearchParamException;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,7 +79,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/teams")
-    public Object createTeam(@Validated @RequestBody Team teamProperties, FederatedUser federatedUser) {
+    public Object createTeam(HttpServletRequest request, @Validated @RequestBody NewTeamProperties teamProperties, FederatedUser federatedUser) throws IOException, MessagingException {
         String name = teamProperties.getName();
         String urn = constructUrn(name);
         Optional<Team> teamOptional = teamRepository.findByUrn(urn);
@@ -85,9 +90,21 @@ public class TeamController extends ApiController implements TeamValidator {
         Person person = federatedUser.getPerson();
         Membership membership = new Membership(Role.ADMIN, team, person);
 
+        Object result = lazyLoadTeam(teamRepository.save(team), membership.getRole(), federatedUser);
+
         LOG.info("Team {} created by {}", urn, federatedUser.getUrn());
 
-        return lazyLoadTeam(teamRepository.save(team), membership.getRole(), federatedUser);
+        if (StringUtils.hasText(teamProperties.getEmail())) {
+            Invitation invitation = new Invitation(
+                    team,
+                    teamProperties.getEmail(),
+                    Role.ADMIN,
+                    resolveLanguage(request));
+            invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
+            saveAndSendInvitation(invitation, team, person);
+        }
+
+        return result;
     }
 
     private String constructUrn(String name) {

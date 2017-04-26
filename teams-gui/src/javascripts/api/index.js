@@ -83,8 +83,8 @@ export function deleteTeam(id) {
     return fetchDelete("teams/" + id);
 }
 
-export function saveTeam(team) {
-    return postPutJson("teams", team);
+export function saveTeam(team, lang = "en") {
+    return postPutJson("teams", team, {}, {"Accept-Language": lang});
 }
 
 export function leaveTeam(membershipId) {
@@ -92,10 +92,10 @@ export function leaveTeam(membershipId) {
 }
 
 export function teamExistsByName(name) {
-    return fetchJson("team-exists-by-name?query=" + encodeURIComponent(name));
+    return fetchJson("team-exists-by-name?name=" + encodeURIComponent(name));
 }
 
-export function invite(invitation, lang) {
+export function invite(invitation, lang = "en") {
     return postPutJson("invitations", invitation, {}, {"Accept-Language": lang});
 }
 

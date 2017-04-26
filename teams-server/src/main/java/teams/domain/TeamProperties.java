@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class TeamProperties {
 
-    @NotNull
     private Long id;
     private String description;
     private String personalNote;

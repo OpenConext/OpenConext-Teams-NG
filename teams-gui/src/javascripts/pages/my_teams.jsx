@@ -38,7 +38,10 @@ export default class MyTeams extends React.Component {
         clearFlash();
         getMyTeams().then(myTeams => {
             const joinRequests = myTeams.joinRequests.map(joinRequest => {
-                return {name: joinRequest.teamName, description: joinRequest.teamDescription, role: "PENDING", isJoinRequest: true, membershipCount: "N/A"}
+                return {
+                    name: joinRequest.teamName, description: joinRequest.teamDescription,
+                    role: "PENDING", isJoinRequest: true, membershipCount: "N/A"
+                };
             });
             const teams = myTeams.teamSummaries.concat(joinRequests).sort(this.sortByAttribute("name"));
             this.setState({
@@ -120,7 +123,7 @@ export default class MyTeams extends React.Component {
 
     addTeam = e => {
         stop(e);
-        this.props.history.replace("/add-team");
+        this.props.history.replace("/new-team");
     };
 
     membershipCountCell = team => {
@@ -153,7 +156,7 @@ export default class MyTeams extends React.Component {
     renderTeamsTable(teams) {
         const currentSorted = this.state.sortAttributes.filter(attr => attr.current)[0];
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
-        const userIconClassName = team => team.isJoinRequest ? "fa fa-clock-o" : `fa fa-user ${team.role.toLowerCase()}`;
+        const userIconClassName = team => team.isJoinRequest ? "fa fa-clock-o" : `fa fa-user-o ${team.role.toLowerCase()}`;
         const columns = ["name", "description", "role", "membershipCount"];
         const th = index => (
             <th key={index} className={columns[index]}>
@@ -168,9 +171,11 @@ export default class MyTeams extends React.Component {
                     <tr>{columns.map((column, index) => th(index))}</tr>
                     </thead>
                     <tbody>
-                    {teams.map(team =>
-                        <tr key={team.urn} onClick={this.showTeam(team)}>
-                            <td className={team.isJoinRequest ? "name pending" : "name"}><i className={userIconClassName(team)}></i>{team.name}</td>
+                    {teams.map((team, index) =>
+                        <tr key={`${team.urn}_${index}`} onClick={this.showTeam(team)}
+                            className={team.isJoinRequest ? "pending" : ""}>
+                            <td className={team.isJoinRequest ? "pending name" : "name"}><i
+                                className={userIconClassName(team)}></i>{team.name}</td>
                             <td className="description">{team.description}</td>
                             <td className={`role ${team.role.toLowerCase()}`}>{team.role.substring(0, 1) + team.role.substring(1).toLowerCase()}</td>
                             {this.membershipCountCell(team)}

@@ -17,9 +17,6 @@ import java.util.List;
 @RestController
 public class JoinRequestController extends ApiController implements MembershipValidator {
 
-    @Autowired
-    private MailBox mailBox;
-
     @PostMapping("api/teams/join")
     public JoinRequest join(@Validated @RequestBody ClientJoinRequest clientJoinRequest, FederatedUser federatedUser) throws MessagingException, IOException {
         Team team = teamById(clientJoinRequest.getTeamId());

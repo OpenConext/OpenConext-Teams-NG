@@ -4,15 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
-import teams.domain.ExternalTeam;
-import teams.domain.Language;
-import teams.domain.Membership;
-import teams.domain.Team;
+import teams.domain.*;
 import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
+import teams.mail.MailBox;
 import teams.repository.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Locale;
 
 import static java.lang.String.format;
@@ -37,6 +37,9 @@ public abstract class ApiController {
 
     @Autowired
     protected JoinRequestRepository joinRequestRepository;
+
+    @Autowired
+    protected MailBox mailBox;
 
     private AcceptHeaderLocaleResolver localeResolver;
 
@@ -80,6 +83,15 @@ public abstract class ApiController {
         if (entity == null) {
             throw new ResourceNotFoundException(String.format("%s %s does not exist", entityName, id));
         }
+    }
+
+    protected void saveAndSendInvitation(Invitation invitation, Team team, Person person) throws IOException, MessagingException {
+        invitationRepository.save(invitation);
+
+        LOG.info("Created invitation for team {} and person {}", team.getUrn(), person.getUrn());
+
+        mailBox.sendInviteMail(invitation);
+
     }
 
 

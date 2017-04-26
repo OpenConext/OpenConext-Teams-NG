@@ -100,6 +100,31 @@ I18n.translations.en = {
         membershipCount: "Members"
     },
 
+    new_team: {
+        title: "New team",
+        name: "Team name",
+        name_info: "The name of the team cannot be changed once the team has been created.",
+        format_error: "The allowed characters for a team name are words, spaces, minuses and the ' separator",
+        already_exists_error: "There is already a team with this name",
+        required: "The name is required",
+        description: "Description",
+        description_info: "The description of the team is visible for everyone if you make this a public team. Otherwise only members can view the description.",
+        viewable_info: "List this team in the public teams index so people can see team information and request membership for this team.",
+        personal_note: "Personal note",
+        personal_note_info: "This is ony visible for yourself and other administrators of the team. It is recommended to express here what you want to do with the team, if you can.",
+        admins: "admins",
+        admins_info: "It is highly recommended to invite another administrator.",
+        admins_email_placeholder: "Enter email address for another admin...",
+        invitation_message: "Message",
+        invitation_message_info: "Your personal invitation message for the fellow admin of this team",
+        current_user: "{{name}} (It's you)",
+        share_info: "Share this information with the applications used by this team.",
+        approval_required: "You need to approve that the information may be shared",
+        submit: "CREATE",
+        cancel: "CANCEL",
+        cancel_confirmation: "Are you sure you want to leave this page?"
+    },
+
     profile: {
         email: "Email",
         role: "Role",

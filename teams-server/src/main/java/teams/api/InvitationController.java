@@ -17,9 +17,6 @@ import java.io.IOException;
 @RestController
 public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator {
 
-    @Autowired
-    private MailBox mailBox;
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/invitations")
     public void invitation(HttpServletRequest request,
@@ -29,7 +26,6 @@ public class InvitationController extends ApiController implements MembershipVal
         Person person = federatedUser.getPerson();
 
         membershipRequired(team, person);
-        privateTeamDoesNotAllowMembers(team, person);
         Role role = determineFutureRole(team, person, clientInvitation.getIntendedRole());
 
         Invitation invitation = new Invitation(
@@ -39,11 +35,7 @@ public class InvitationController extends ApiController implements MembershipVal
                 resolveLanguage(request));
         invitation.addInvitationMessage(person, clientInvitation.getMessage());
 
-        invitationRepository.save(invitation);
-
-        LOG.info("Created invitation for team {} and person {}", team.getUrn(), person.getUrn());
-
-        mailBox.sendInviteMail(invitation);
+        saveAndSendInvitation(invitation, team, person);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

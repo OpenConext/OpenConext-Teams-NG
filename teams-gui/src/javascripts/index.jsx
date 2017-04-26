@@ -21,6 +21,8 @@ import Flash from "./components/flash";
 import Navigation from "./components/navigation";
 import MyTeams from "./pages/my_teams";
 import TeamDetail from "./pages/team_detail";
+import NewTeam from "./pages/new_team";
+import ProtectedRoute from "./components/protected_route";
 
 import "./locale/en";
 import "./locale/nl";
@@ -47,6 +49,9 @@ class App extends React.Component {
                                render={props => <MyTeams currentUser={currentUser} {...props}/>}/>
                         <Route path="/teams/:id"
                                render={props => <TeamDetail currentUser={currentUser} {...props}/>}/>
+                        <ProtectedRoute path="/new-team"
+                                        guest={currentUser.person.guest}
+                                        render={props => <NewTeam currentUser={currentUser} {...props}/>}/>
                         <Route component={NotFound}/>
                     </Switch>
                     <Footer />

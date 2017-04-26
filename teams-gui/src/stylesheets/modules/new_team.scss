@@ -1,0 +1,84 @@
+.new-team {
+
+  @include page;
+
+  h2 {
+    margin: 35px 0 20px 0;
+    font-size: 22px;
+  }
+
+  .card {
+    @include card;
+    padding: 25px;
+
+    section.form-divider {
+      border-bottom: 1px solid $lighter-grey;
+      padding-bottom: 25px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: larger;
+      color: $medium-grey;
+      display: block;
+    }
+    em {
+      display: block;
+      font-size: smaller;
+      font-style: italic;
+      &.error {
+        color: $red;
+      }
+    }
+    .validity-input-wrapper {
+      position: relative;
+
+      i {
+        position: absolute;
+        right: 5px;
+        top: 6px;
+        font-size: large;
+
+        &.fa-check {
+          color: $green;
+        }
+        &.fa-exclamation {
+          color: $red;
+        }
+      }
+    }
+
+    input[type=text], textarea {
+      display: block;
+      width: 100%;
+      border: 1px solid $lighter-grey;
+      padding: 5px;
+      border-radius: $br;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    div.checkbox {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+      em {
+        margin-left: 8px;
+      }
+    }
+
+    p.current-user-name {
+      margin: 5px 0;
+      padding: 5px;
+      background-color: $light-grey;
+      width: 100%;
+    }
+    .button {
+      min-width: 200px;
+    }
+
+  }
+
+}

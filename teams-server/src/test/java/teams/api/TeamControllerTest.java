@@ -120,9 +120,10 @@ public class TeamControllerTest extends AbstractApplicationTest {
 
     @Test
     public void createTeam() throws Exception {
-        String urn = "nl:surfnet:diensten:team_champions";
+        String urn = "nl:surfnet:diensten:new_team_name";
         given()
-                .body(new Team("urn", "Team champions ", null, true))
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true,
+                        null, null))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")
@@ -136,6 +137,34 @@ public class TeamControllerTest extends AbstractApplicationTest {
         Membership membership = memberships.iterator().next();
         assertEquals(Role.ADMIN, membership.getRole());
         assertEquals("urn:collab:person:example.com:john.doe", membership.getUrnPerson());
+    }
+
+    @Test
+    public void createTeamWithAdminInvitation() throws Exception {
+        String urn = "nl:surfnet:diensten:new_team_name";
+        String email = "second_admin@test.org";
+        String invitationMessage = "Please join";
+
+        given()
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true,
+                        email, invitationMessage))
+                .header(CONTENT_TYPE, "application/json")
+                .header("Accept-Language", "en")
+                .when()
+                .post("api/teams/teams")
+                .then()
+                .statusCode(SC_OK)
+                .body("urn", equalTo(urn));
+
+        List<Invitation> invitations = invitationRepository.findByEmail(email);
+        assertEquals(1, invitations.size());
+
+        Invitation invitation = invitations.get(0);
+        assertEquals(email, invitation.getEmail());
+        assertEquals(Role.ADMIN, invitation.getIntendedRole());
+        assertEquals(Language.English, invitation.getLanguage());
+
+        assertEquals(invitationMessage, invitation.getLatestInvitationMessage().getMessage());
     }
 
     @Test

@@ -204,7 +204,7 @@ export default class TeamDetail extends React.Component {
                     <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
                     <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>
                 </div>
-                <CheckBox value={team.viewable || false} readOnly={!isAdmin} onChange={this.changeViewable}/>
+                <CheckBox name="viewable" value={team.viewable || false} readOnly={!isAdmin} onChange={this.changeViewable}/>
             </section>
         );
     }

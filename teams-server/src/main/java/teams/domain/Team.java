@@ -31,7 +31,6 @@ public class Team {
     private Long id;
 
     @Column
-    @NotNull
     private String urn;
 
     @Column

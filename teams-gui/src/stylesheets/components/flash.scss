@@ -1,5 +1,4 @@
 div.flash {
-  padding-top: 10px;
   text-align: center;
   color: white;
   font-size: large;
@@ -20,9 +19,11 @@ div.flash {
   }
 
   p {
-    background-color: $green;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 20px;
+
+    &.info {
+      background-color: darken($green, 15%);
+    }
   }
 
 }
