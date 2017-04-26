@@ -216,22 +216,30 @@ export default class TeamDetail extends React.Component {
         <span className="status-pending"><i className="fa fa-clock-o"></i>{I18n.t("team_detail.pending")}</span>;
 
     renderMembersTable() {
+        const currentSorted = this.state.sortAttributes.filter(attr => attr.current)[0];
+        const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
+        const userIconClassName = member => member.role ? `fa fa-user-o ${member.role.toLowerCase()}` : "fa fa-clock-o";
+        const columns = ["name", "email", "status", "role", "actions"];
+        const th = index => (
+            <th key={index} className={columns[index]}>
+                <span
+                    className={sortColumnClassName(columns[index])}>{I18n.t(`team_detail.membership.${columns[index]}`)}</span>
+            </th>
+        );
+
         if (this.state.filteredMembers.length !== 0) {
             return (
-                <table>
+                <table className="members">
                     <thead>
-                    <tr>
-                        <th>{I18n.t("team_detail.membership.name")}</th>
-                        <th>{I18n.t("team_detail.membership.email")}</th>
-                        <th>{I18n.t("team_detail.membership.status")}</th>
-                        <th>{I18n.t("team_detail.membership.role")}</th>
-                        <th></th>
-                    </tr>
+                    <tr>{columns.map((column, index) => th(index))}</tr>
                     </thead>
                     <tbody>
                     {this.state.filteredMembers.map((member, index) =>
                         <tr key={`${member.urnPerson}-${index}`}>
-                            <td>{member.person.name}</td>
+                            <td>
+                                <i className={userIconClassName(member)}></i>
+                                {member.person.name}
+                            </td>
                             <td>{member.person.email}</td>
                             <td>{this.statusOfMembership(member)}</td>
                             <td>{roleOfMembership(member)}</td>

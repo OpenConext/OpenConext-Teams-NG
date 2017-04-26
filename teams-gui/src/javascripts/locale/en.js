@@ -76,7 +76,8 @@ I18n.translations.en = {
             name: "name",
             email: "email",
             status: "status",
-            role: "role"
+            role: "role",
+            actions: ""
         },
         pending: "PENDING",
         resend_invitation: "Resend invitation",

@@ -70,13 +70,25 @@
     }
   }
 
-  table {
+  table.members {
     width: 100%;
-    border: 1px solid $light-grey;
+    tr {
+      border-bottom: 1px solid $light-grey;
+    }
     thead {
-
-      background-color: $light-grey;
-
+      th.name {
+        width: 25%;
+      }
+      th.description {
+        width: 45%;
+      }
+      th.role {
+        width: 15%;
+      }
+      th.membershipCount {
+        text-align: right;
+        width: 15%;
+      }
       span {
         position: relative;
         display: inline-block;
@@ -85,25 +97,86 @@
         font-weight: bold;
         font-size: larger;
         color: $medium-grey;
-        padding: 7px 2px 7px 0px;
+        padding: 7px 2px 7px 0;
+
+        &.sorted {
+          color: $blue;
+        }
       }
     }
     tbody {
       tr {
-        cursor: hand;
-      }
-
-      td.membership-count {
-        text-align: right;
-      }
-      td.actions {
-        text-align: right;
         cursor: pointer;
-        &:hover i {
-          color: $blue;
+        &:hover {
+          background-color: #F9FCFD;
+          td.actions i {
+            color: $blue;
+          }
         }
+        &.pending {
+          color: $green;
+        }
+      }
+      td.name {
+        color: $blue;
+        font-weight: bold;
+        &.pending {
+          color: $green;
+        }
+
         i {
-          font-size: 18px;
+          padding: 15px 15px 15px 0;
+          font-size: 16px;
+          &.admin {
+            color: rgba(242, 215, 50, 1);
+          }
+          &.manager {
+            color: rgba(160, 160, 160, 1);
+          }
+          &.member {
+            color: rgba(223, 182, 103, 1);
+          }
+          &.fa-clock-o {
+            color: $green;
+          }
+        }
+      }
+      td.role {
+        &.pending {
+          color: $green;
+        }
+      }
+      td.membership-count {
+        position: relative;
+        text-align: right;
+
+        i.fa-info-circle {
+          color: $blue;
+          position: absolute;
+          top: 1px;
+          right: 1px;
+        }
+
+        span {
+
+          &.membership-count {
+            padding: 15px 10px;
+            z-index: 99;
+          }
+          &.join-requests-count {
+            color: $green;
+            font-weight: bold;
+          }
+          &.invitations-count {
+            color: $blue;
+            font-weight: bold;
+          }
+          &.count-divider {
+            color: $medium-grey;
+          }
+        }
+        div.tool-tip {
+          @include tool-tip;
         }
       }
     }
