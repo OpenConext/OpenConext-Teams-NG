@@ -88,6 +88,7 @@ I18n.translations.en = {
         no_found: "No members found",
         copy: "Copy to clipboard",
         copied: "Copied",
+        one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team."
     },
 
     sort: {
@@ -115,6 +116,7 @@ I18n.translations.en = {
         admins: "admins",
         admins_info: "It is highly recommended to invite another administrator.",
         admins_email_placeholder: "Enter email address for another admin...",
+        invalid_email: "Invalid email",
         invitation_message: "Message",
         invitation_message_info: "Your personal invitation message for the fellow admin of this team",
         current_user: "{{name}} (It's you)",

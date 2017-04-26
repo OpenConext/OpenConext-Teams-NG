@@ -9,6 +9,7 @@ import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 
 const validNameRegExp = /^[\w \-']{1,255}$/;
+const validEmailRegExp = /^\S+@\S+$/;
 
 export default class NewTeam extends React.Component {
 
@@ -24,7 +25,8 @@ export default class NewTeam extends React.Component {
             initial: true,
             format: true,
             exists: false,
-            approval: true
+            approval: true,
+            validEmail: true
         };
     }
 
@@ -62,7 +64,7 @@ export default class NewTeam extends React.Component {
         stop(e);
         if (this.isValid()) {
             const teamProperties = {...this.state};
-            ["initial", "format","exists","approval"].forEach(attr => delete teamProperties[attr]);
+            ["initial", "format", "exists", "approval", "validEmail"].forEach(attr => delete teamProperties[attr]);
 
             saveTeam(teamProperties)
                 .then(team => {
@@ -75,7 +77,14 @@ export default class NewTeam extends React.Component {
         }
     };
 
-    isValid = () => this.state.format && !this.state.exists && this.state.approval && !isEmpty(this.state.name);
+    isValid = () => this.state.format && !this.state.exists && this.state.approval &&
+    !isEmpty(this.state.name) && this.state.validEmail;
+
+    validateEmail = (e) => {
+        stop(e);
+        const email = e.target.value;
+        this.setState({validEmail: isEmpty(email) || validEmailRegExp.test(email)})
+    };
 
     handleError = json => {
         //console.log(json);
@@ -86,7 +95,7 @@ export default class NewTeam extends React.Component {
         const {currentUser} = this.props;
         const {
             name, description, personalNote, viewable, initial, format, exists,
-            invitationMessage, email, approval
+            invitationMessage, email, approval, validEmail
         } = this.state;
         const validName = format && !exists;
 
@@ -100,7 +109,8 @@ export default class NewTeam extends React.Component {
                         <div className="validity-input-wrapper">
                             <input ref={ref => this.nameInput = ref}
                                    type="text" id="name" name="name" value={name}
-                                   onChange={this.changeTeamName}/>
+                                   onChange={this.changeTeamName}
+                                   onBlur={this.changeTeamName}/>
                             {(validName && !initial) && <i className="fa fa-check"></i>}
                             {(!validName && !initial) && <i className="fa fa-exclamation"></i>}
                         </div>
@@ -138,8 +148,11 @@ export default class NewTeam extends React.Component {
                         <p className="current-user-name">{I18n.t("new_team.current_user", {name: currentUser.username})}</p>
                         <input type="text" id="email" name="email" value={email}
                                placeholder={I18n.t("new_team.admins_email_placeholder")}
-                               onChange={this.handleInputChange("email")}/>
-                        <label htmlFor="invitationMessage">{I18n.t("new_team.invitation_message")}</label>
+                               onChange={this.handleInputChange("email")}
+                               onBlur={this.validateEmail}/>
+                        {!validEmail && <em className="error">{I18n.t("new_team.invalid_email")}</em>}
+
+                        <label className="invitation-message" htmlFor="invitationMessage">{I18n.t("new_team.invitation_message")}</label>
                         <em>{I18n.t("new_team.invitation_message_info")}</em>
                         <textarea id="invitationMessage" name="invitationMessage" value={invitationMessage}
                                   rows={3}
@@ -149,8 +162,9 @@ export default class NewTeam extends React.Component {
                     </section>
                     <CheckBox name="approval" value={approval}
                               onChange={this.handleInputChange("approval")}
-                              info={I18n.t("new_team.share_info")}/>
-                    {!approval && <em className="error">{I18n.t("new_team.approval_required")}</em>}
+                              info={I18n.t("new_team.share_info")}
+                              className={approval ? "checkbox" : "checkbox with-error"}  />
+                    {!approval && <em className="error with-checkbox">{I18n.t("new_team.approval_required")}</em>}
 
                     <a className="button grey" href="#" onClick={this.cancel}>
                         {I18n.t("new_team.cancel")}

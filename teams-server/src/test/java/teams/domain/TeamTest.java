@@ -34,7 +34,7 @@ public class TeamTest implements Seed {
 
     @Test
     public void containsMessage() {
-        Team team = new Team("urn", "name", " ", true);
+        Team team = new Team("urn", "name", " ", true, null);
         assertEquals("", team.getHtmlDescription());
 
         team.setDescription("Nice\n");
@@ -57,7 +57,7 @@ public class TeamTest implements Seed {
     }
 
     private List<ConstraintViolation<Team>> teamViolations(String name) {
-        return new ArrayList<>(this.validator.validate(new Team("urn", name, "Description", true)));
+        return new ArrayList<>(this.validator.validate(new Team("urn", name, "Description", true, null)));
     }
 
 }

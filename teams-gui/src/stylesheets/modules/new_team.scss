@@ -30,6 +30,9 @@
       font-style: italic;
       &.error {
         color: $red;
+        &.with-checkbox {
+          margin-bottom: 15px;
+        }
       }
     }
     .validity-input-wrapper {
@@ -64,6 +67,9 @@
       display: flex;
       align-items: center;
       margin: 15px 0;
+      &.with-error {
+        margin-bottom: 0;
+      }
       em {
         margin-left: 8px;
       }
@@ -75,6 +81,11 @@
       background-color: $light-grey;
       width: 100%;
     }
+
+    label.invitation-message {
+      margin-top: 20px;
+    }
+
     .button {
       min-width: 200px;
     }

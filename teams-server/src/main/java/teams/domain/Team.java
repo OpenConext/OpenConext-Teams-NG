@@ -64,11 +64,12 @@ public class Team {
     @ManyToMany(mappedBy = "teams", cascade = ALL)
     private Set<ExternalTeam> externalTeams = new HashSet<>();
 
-    public Team(String urn, String name, String description, boolean viewable) {
+    public Team(String urn, String name, String description, boolean viewable, String personalNote) {
         this.urn = urn;
         this.name = name;
         this.description = StringUtils.hasText(description) ? description : null;
         this.viewable = viewable;
+        this.personalNote = personalNote;
     }
 
     public Optional<Membership> member(String urn) {

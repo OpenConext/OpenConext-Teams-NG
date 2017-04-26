@@ -170,7 +170,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     @Test
     public void createTeamInvalidTeamName() throws Exception {
         given()
-                .body(new Team("urn", "invalid $", null, true))
+                .body(new Team("urn", "invalid $", null, true, null))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")
@@ -182,7 +182,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     @Test
     public void createTeamDuplicateTeamName() throws Exception {
         given()
-                .body(new Team("urn", "riders", null, true))
+                .body(new Team("urn", "riders", null, true, null))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")
@@ -194,7 +194,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     @Test
     public void createTeamAsGuest() throws Exception {
         given()
-                .body(new Team("urn", "valid", null, true))
+                .body(new Team("urn", "valid", null, true, null))
                 .header(CONTENT_TYPE, "application/json")
                 .header("is-member-of", "guest-org")
                 .when()

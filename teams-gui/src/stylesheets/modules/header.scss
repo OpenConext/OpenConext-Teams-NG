@@ -107,13 +107,14 @@
         box-shadow: 1px 1px $br rgba(black, .3);
 
         li {
-          font-weight: 300;
-          font-size: medium;
+          font-style: italic;
+          font-size: 13px;
           margin-bottom: 5px;
           display: block;
 
           span {
             &.value {
+              font-style: normal;
               float: right;
             }
           }

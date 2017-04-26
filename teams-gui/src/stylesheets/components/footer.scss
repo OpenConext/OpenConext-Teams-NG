@@ -1,0 +1,10 @@
+div.footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 15px;
+  border: 1px solid white;
+
+  a {
+    color: darken($blue, 10%);
+  }
+}

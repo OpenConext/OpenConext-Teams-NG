@@ -1,5 +1,7 @@
 .team-attributes {
-  margin-top: 20px;
+
+  @include card;
+  padding: 15px;
 
   .team-attribute, .inline-editable {
     label {
@@ -18,30 +20,30 @@
       font-size: 11px;
     }
 
-    input[type=text] {
-      display: block;
-      width: 100%;
-      padding: 5px 0 5px 10px;
-      font-size: 14px;
-      background-color: $light-grey;
-    }
-
     span {
       display: block;
-      border-bottom: 1px solid $light-grey;
+      border-bottom: 1px solid $lighter-grey;
       border-top-left-radius: $br;
       border-top-right-radius: $br;
-      background-color: $light-grey;
       padding: 5px 0 5px 10px;
 
       i {
         color: $blue;
-        margin-left: 10px;
+        margin-right: 10px;
         font-size: larger;
+        cursor: pointer;
+        float: right;
+
+        &.fa-pencil {
+          text-decoration: underline;
+        }
       }
 
     }
 
+  }
+
+  .team-attribute {
     i.copied {
       animation: pulse 1s;
       animation-iteration-count: 1;
@@ -60,5 +62,20 @@
         box-shadow: 0 0 0 0 white;
       }
     }
+  }
+
+  .inline-editable {
+    span {
+      background-color: $light-blue;
+    }
+
+    input[type=text] {
+      display: block;
+      width: 100%;
+      padding: 5px 0 5px 10px;
+      font-size: 14px;
+      background-color: $light-grey;
+    }
+
   }
 }

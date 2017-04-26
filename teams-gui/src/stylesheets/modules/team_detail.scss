@@ -4,8 +4,7 @@
   padding: 0 15px;
 
   .team-header {
-    padding: 35px 0 15px 0;
-    border-bottom: 1px solid $lighter-grey;
+    padding: 30px 0 15px 0;
 
     a.back {
       font-weight: bold;
@@ -23,7 +22,7 @@
     .actions {
       display: flex;
       align-items: center;
-      margin-top: 20px;
+      margin-top: 15px;
       h2 {
         font-size: 26px;
         margin-right: auto;
@@ -35,7 +34,11 @@
   h2.members {
     font-size: 26px;
     padding: 25px 0 20px 0;
-    border-bottom: 1px solid $lighter-grey;
+  }
+
+  section.card {
+    @include card;
+    padding: 15px;
   }
 
   .team-detail-controls {

@@ -7,6 +7,7 @@ import teams.exception.ResourceNotFoundException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -34,7 +35,7 @@ public class Invitation {
     private Team team;
 
     @Column(name = "mailaddress", nullable = false)
-    @NotNull
+    @Pattern(regexp = "\\S+@\\S+")
     private String email;
 
     @Column(nullable = false)

@@ -21,10 +21,10 @@ export default class TeamDetail extends React.Component {
             team: {},
             filteredMembers: [],
             sortAttributes: [
-                    {name: "status", order: "down", current: true},
-                    {name: "name", order: "down", current: false},
-                    {name: "email", order: "down", current: false},
-                    {name: "role", order: "down", current: false}
+                {name: "status", order: "down", current: true},
+                {name: "name", order: "down", current: false},
+                {name: "email", order: "down", current: false},
+                {name: "role", order: "down", current: false}
             ],
             editableTeamAttributes: {
                 description: false,
@@ -36,7 +36,7 @@ export default class TeamDetail extends React.Component {
         moment.locale(I18n.locale);
     }
 
-    fetchTeam = () => getTeamDetail(this.props.match.params.id).then(team => this.stateTeam(team));
+    componentWillMount = () => getTeamDetail(this.props.match.params.id).then(team => this.stateTeam(team));
 
     stateTeam(team) {
         const joinRequests = team.joinRequests || [];
@@ -45,6 +45,10 @@ export default class TeamDetail extends React.Component {
             filteredMembers: team.memberships.concat(joinRequests).sort(this.sortByStatus),
             loaded: true
         });
+        if (!allowedToLeave(team, this.props.currentUser)) {
+            setFlash(I18n.t("team_detail.one_admin_warning"), "warning");
+        }
+
     }
 
     sortByStatus = (member, otherMember) => {
@@ -56,8 +60,6 @@ export default class TeamDetail extends React.Component {
         }
         return isJoinRequestMember ? -1 : 1;
     };
-
-    componentWillMount = () => this.fetchTeam();
 
     handleAcceptJoinRequest = team => e => {
         stop(e);
@@ -204,7 +206,8 @@ export default class TeamDetail extends React.Component {
                     <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
                     <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>
                 </div>
-                <CheckBox name="viewable" value={team.viewable || false} readOnly={!isAdmin} onChange={this.changeViewable}/>
+                <CheckBox name="viewable" value={team.viewable || false} readOnly={!isAdmin}
+                          onChange={this.changeViewable}/>
             </section>
         );
     }
@@ -259,23 +262,25 @@ export default class TeamDetail extends React.Component {
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role, currentUser)}
                 <h2 className="members">{`${I18n.t("team_detail.team_members")} (${team.memberships.length + joinRequests.length})`}</h2>
-                <section className="team-detail-controls">
-                    <SortDropDown items={sortAttributes} sortBy={this.sort}/>
-                    <div className="search">
-                        <input placeholder={I18n.t("team_detail.search_members_placeholder")} type="text"
-                               onChange={this.search}/>
-                        <i className="fa fa-search"></i>
-                    </div>
-                    {mayInvite && <a className="button blue" href="#"
-                                     onClick={this.handleInvite}>{I18n.t("team_detail.invite")}
-                        <i className="fa fa-user"></i>
-                    </a>}
-                    {hasExternalTeams && <a className="button blue" href="#"
-                                            onClick={this.handleLinkExternalTeam}>{I18n.t("team_detail.link_to_institution_team")}
-                        <i className="fa fa-users"></i>
-                    </a>}
+                <section className="card">
+                    <section className="team-detail-controls">
+                        <SortDropDown items={sortAttributes} sortBy={this.sort}/>
+                        <div className="search">
+                            <input placeholder={I18n.t("team_detail.search_members_placeholder")} type="text"
+                                   onChange={this.search}/>
+                            <i className="fa fa-search"></i>
+                        </div>
+                        {mayInvite && <a className="button blue" href="#"
+                                         onClick={this.handleInvite}>{I18n.t("team_detail.invite")}
+                            <i className="fa fa-user"></i>
+                        </a>}
+                        {hasExternalTeams && <a className="button blue" href="#"
+                                                onClick={this.handleLinkExternalTeam}>{I18n.t("team_detail.link_to_institution_team")}
+                            <i className="fa fa-users"></i>
+                        </a>}
+                    </section>
+                    {this.renderMembersTable()}
                 </section>
-                {this.renderMembersTable()}
             </div>
         );
     }

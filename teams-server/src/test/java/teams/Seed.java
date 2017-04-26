@@ -11,11 +11,11 @@ public interface Seed {
     }
 
     default Team team(String urn) {
-        return new Team(urn, "name", "description", true);
+        return new Team(urn, "name", "description", true, "personal note");
     }
 
     default Team team(boolean viewable) {
-        return new Team("urn", "name", "description", viewable);
+        return new Team("urn", "name", "description", viewable, "personal note");
     }
 
     default ExternalTeam externalTeam(String identifier) {

@@ -86,7 +86,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
         teamNameDuplicated(name, teamOptional);
 
-        Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable());
+        Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable(), teamProperties.getPersonalNote());
         Person person = federatedUser.getPerson();
         Membership membership = new Membership(Role.ADMIN, team, person);
 
