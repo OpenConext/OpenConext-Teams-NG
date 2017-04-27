@@ -20,9 +20,6 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
     @EntityGraph(value = "Team.memberships", type = EntityGraph.EntityGraphType.LOAD)
     List<Team> findByMembershipsUrnPersonOrderByNameAsc(String personUrn);
 
-    @EntityGraph(value = "Team.memberships", type = EntityGraph.EntityGraphType.LOAD)
-    Page<Team> findByNameContainingIgnoreCaseAndMembershipsUrnPersonOrderByNameAsc(String name, String personUrn, Pageable pageable);
-
     @Query(value = "select distinct(teams.name), teams.id, teams.description, (select memberships.role from memberships " +
             "where memberships.person_id = ?1 and memberships.team_id = teams.id) as role " +
             "from teams as teams left outer join memberships on memberships.team_id = teams.id " +

@@ -28,13 +28,6 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void findByNameContainingIgnoreCaseAndMembershipsPersonUrnOrderByNameAsc() throws Exception {
-        List<Team> teams = teamRepository.findByNameContainingIgnoreCaseAndMembershipsUrnPersonOrderByNameAsc(
-                "ERS", "urn:collab:person:surfnet.nl:jdoe", new PageRequest(0, 10)).getContent();
-        assertEquals(2, teams.size());
-    }
-
-    @Test
     public void autoComplete() {
         List<Object[]> result = teamRepository.autocomplete(4L, "%ERS%", 4L);
         assertEquals(2, result.size());
