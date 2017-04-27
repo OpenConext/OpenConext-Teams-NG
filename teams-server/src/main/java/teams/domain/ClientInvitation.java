@@ -20,5 +20,8 @@ public class ClientInvitation {
 
     private String message;
 
+    @NotNull
+    private Language language;
+
 
 }

@@ -5,8 +5,12 @@ import {emitter, getFlash} from "../utils/flash";
 export default class Flash extends React.Component {
     constructor() {
         super();
-        this.state = {flash: null};
-        this.callback = flash => this.setState({flash: flash});
+        this.state = {flash: null, className: ""};
+        this.callback = flash => {
+            this.setState({flash: flash, className: ""});
+            setTimeout(() => this.setState({className: "hide"}),
+                this.state.flash && this.state.flash.type === "info" ? 3500 : 5500);
+        };
     }
 
     componentWillMount() {
@@ -19,15 +23,15 @@ export default class Flash extends React.Component {
     }
 
     closeFlash = () => {
-        this.setState({flash: null});
+        this.setState({flash: null, className: ""});
     };
 
     render() {
-        const {flash} = this.state;
+        const {flash, className} = this.state;
 
         if (flash && flash.message) {
             return (
-                <div className="flash">
+                <div className={`flash ${className}`}>
                     <p className={flash.type} dangerouslySetInnerHTML={{__html: flash.message}}></p>
                     <a className="close" href="#" onClick={this.closeFlash}>
                         <i className="fa fa-remove"></i>

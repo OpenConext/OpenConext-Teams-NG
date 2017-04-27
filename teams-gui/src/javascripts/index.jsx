@@ -33,7 +33,24 @@ const S4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
 
 class App extends React.Component {
 
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            loading: true
+        };
+    }
+
+    componentDidMount() {
+        this.setState({loading: false});
+    }
+
     render() {
+        const {loading} = this.state;
+
+        if (loading) {
+            return null; // render null when app is not ready yet
+        }
+
         const {currentUser} = this.props;
         return (
             <Router>
@@ -66,7 +83,8 @@ App.propTypes = {
     currentUser: PropTypes.object.isRequired
 };
 
-function determineLanguage() {
+(() => {
+    // DetermineLanguage based on parameter, navigator and finally cookie
     let parameterByName = getParameterByName("lang", window.location.search);
 
     if (isEmpty(parameterByName)) {
@@ -80,9 +98,7 @@ function determineLanguage() {
     }
 
     I18n.locale = parameterByName;
-}
-
-determineLanguage();
+})();
 
 getUser().catch(e => {
     if (document.location.href.indexOf("guid") > -1) {

@@ -22,21 +22,20 @@ public class InvitationControllerTest extends AbstractApplicationTest {
 
     @Test
     public void invitationNl() throws Exception {
-        doInvitation("nl");
+        doInvitation(Language.Dutch);
     }
 
     @Test
     public void invitationEn() throws Exception {
-        doInvitation("en");
+        doInvitation(Language.English);
     }
 
-    private void doInvitation(String languageCode) throws UnsupportedEncodingException {
+    private void doInvitation(Language language) throws UnsupportedEncodingException {
         ClientInvitation clientInvitation = new ClientInvitation(
-                2L, Role.ADMIN, "test@test.org", "Please join");
+                2L, Role.ADMIN, "test@test.org", "Please join", language);
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
-                .header("accept-language", languageCode)
                 .body(clientInvitation)
                 .when()
                 .post("api/teams/invitations")
@@ -46,6 +45,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
         Invitation invitation = StreamSupport.stream(invitationRepository.findAll().spliterator(), false)
                 .filter(i -> i.getTeam().getId().equals(clientInvitation.getTeamId()) && i.getInvitationHash().length() > 150 )
                 .findFirst().get();
+        assertEquals(language, invitation.getLanguage());
 
         Set<InvitationMessage> invitationMessages = invitation.getInvitationMessages();
         assertEquals(1, invitationMessages.size());
@@ -60,7 +60,6 @@ public class InvitationControllerTest extends AbstractApplicationTest {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
-                .header("accept-language", "nl")
                 .body(resendInvitation)
                 .when()
                 .put("api/teams/invitations")

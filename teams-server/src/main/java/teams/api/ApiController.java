@@ -41,15 +41,6 @@ public abstract class ApiController {
     @Autowired
     protected MailBox mailBox;
 
-    private AcceptHeaderLocaleResolver localeResolver;
-
-    public ApiController() {
-        localeResolver = new AcceptHeaderLocaleResolver();
-        Locale nl = Locale.forLanguageTag("nl");
-        localeResolver.setDefaultLocale(nl);
-        localeResolver.getSupportedLocales().addAll(asList(Locale.ENGLISH, nl));
-    }
-
     protected Team teamById(Long id) {
         Team team = teamRepository.findOne(id);
         assertNotNull("Team", team, id);
@@ -72,11 +63,6 @@ public abstract class ApiController {
         return team.member(urn)
                 .orElseThrow(() -> new NotAllowedException(format
                         ("Member %s is not a member of team %s.", urn, team.getUrn())));
-    }
-
-    protected Language resolveLanguage(HttpServletRequest request) {
-        Locale locale = localeResolver.resolveLocale(request);
-        return locale.getLanguage().equalsIgnoreCase("nl") ? Language.Dutch : Language.English;
     }
 
     protected void assertNotNull(String entityName, Object entity, Long id) {

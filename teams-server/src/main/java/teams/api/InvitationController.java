@@ -32,7 +32,7 @@ public class InvitationController extends ApiController implements MembershipVal
                 team,
                 clientInvitation.getEmail(),
                 role,
-                resolveLanguage(request));
+                clientInvitation.getLanguage());
         invitation.addInvitationMessage(person, clientInvitation.getMessage());
 
         saveAndSendInvitation(invitation, team, person);

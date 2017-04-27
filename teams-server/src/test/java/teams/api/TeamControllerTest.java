@@ -123,7 +123,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         String urn = "nl:surfnet:diensten:new_team_name";
         given()
                 .body(new NewTeamProperties("new team name", "Team champions ", null, true,
-                        null, null))
+                        null, null, Language.Dutch))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")
@@ -147,9 +147,8 @@ public class TeamControllerTest extends AbstractApplicationTest {
 
         given()
                 .body(new NewTeamProperties("new team name", "Team champions ", null, true,
-                        email, invitationMessage))
+                        email, invitationMessage, Language.Dutch))
                 .header(CONTENT_TYPE, "application/json")
-                .header("Accept-Language", "en")
                 .when()
                 .post("api/teams/teams")
                 .then()
@@ -162,7 +161,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         Invitation invitation = invitations.get(0);
         assertEquals(email, invitation.getEmail());
         assertEquals(Role.ADMIN, invitation.getIntendedRole());
-        assertEquals(Language.English, invitation.getLanguage());
+        assertEquals(Language.Dutch, invitation.getLanguage());
 
         assertEquals(invitationMessage, invitation.getLatestInvitationMessage().getMessage());
     }

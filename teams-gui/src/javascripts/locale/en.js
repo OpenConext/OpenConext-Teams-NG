@@ -120,6 +120,7 @@ I18n.translations.en = {
         invalid_email: "Invalid email",
         invitation_message: "Message",
         invitation_message_info: "Your personal invitation message for the fellow admin of this team",
+        invitation_language: "Invitation language",
         current_user: "{{name}} (It's you)",
         share_info: "Share this information with the applications used by this team.",
         approval_required: "You need to approve that the information may be shared",

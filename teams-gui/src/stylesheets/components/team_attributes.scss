@@ -67,6 +67,7 @@
   .inline-editable {
     span {
       background-color: $light-blue;
+      min-height: 28px;
     }
 
     input[type=text] {

@@ -21,6 +21,7 @@ CheckBox.propTypes = {
     readOnly: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     info: PropTypes.string,
+    className: PropTypes.string
 };
 
 

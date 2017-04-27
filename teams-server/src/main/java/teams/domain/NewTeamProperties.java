@@ -17,4 +17,5 @@ public class NewTeamProperties {
 
     private String email;
     private String invitationMessage;
+    private Language language;
 }

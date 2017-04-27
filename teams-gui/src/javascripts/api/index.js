@@ -32,13 +32,13 @@ function validFetch(path, options, headers = {}) {
     const contentHeaders = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfToken
+        "X-CSRF-TOKEN": csrfToken,
+        ...headers
     };
 
-    const fetchOptions = Object.assign({}, {headers: {...contentHeaders, ...headers}}, options, {
+    const fetchOptions = Object.assign({}, {headers: contentHeaders}, options, {
         credentials: "same-origin"
     });
-
     spinner.start();
     return fetch(apiUrl(path), fetchOptions)
         .catch(err => {
@@ -53,9 +53,9 @@ function fetchJson(path, options = {}, headers = {}) {
         .then(res => res.json());
 }
 
-function postPutJson(path, body, options = {}, headers = {}) {
+function postPutJson(path, body) {
     const method = body.id === undefined ? "post" : "put";
-    return fetchJson(path, Object.assign({}, {method: method, body: JSON.stringify(body)}, options, headers));
+    return fetchJson(path, {method: method, body: JSON.stringify(body)});
 }
 
 function fetchDelete(path) {
@@ -83,8 +83,8 @@ export function deleteTeam(id) {
     return fetchDelete("teams/" + id);
 }
 
-export function saveTeam(team, lang = "en") {
-    return postPutJson("teams", team, {}, {"Accept-Language": lang});
+export function saveTeam(teamProperties) {
+    return postPutJson("teams", teamProperties);
 }
 
 export function leaveTeam(membershipId) {
@@ -95,8 +95,8 @@ export function teamExistsByName(name) {
     return fetchJson("team-exists-by-name?name=" + encodeURIComponent(name));
 }
 
-export function invite(invitation, lang = "en") {
-    return postPutJson("invitations", invitation, {}, {"Accept-Language": lang});
+export function invite(invitation) {
+    return postPutJson("invitations", invitation);
 }
 
 export function linkExternalTeam(teamId, externalTeamId) {

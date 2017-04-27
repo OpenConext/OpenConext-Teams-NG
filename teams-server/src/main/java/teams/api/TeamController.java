@@ -99,7 +99,7 @@ public class TeamController extends ApiController implements TeamValidator {
                     team,
                     teamProperties.getEmail(),
                     Role.ADMIN,
-                    resolveLanguage(request));
+                    teamProperties.getLanguage());
             invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
             saveAndSendInvitation(invitation, team, person);
         }

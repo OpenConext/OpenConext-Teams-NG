@@ -4,6 +4,17 @@ div.flash {
   font-size: large;
   position: relative;
 
+  transition: 0.3s;
+  opacity: 1;
+  visibility: visible;
+  height: auto;
+
+  &.hide {
+    transition: 1.0s;
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+  }
 
   a.close {
     text-decoration: none;
@@ -16,7 +27,7 @@ div.flash {
   }
 
   p {
-    padding: 20px;
+    padding: 20px 40px;
 
     &.info {
       background-color: darken($green, 15%);

@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import I18n from "i18n-js";
+
 import debounce from "lodash/debounce";
 
+import SelectLanguage from "../components/select_language";
 import CheckBox from "../components/checkbox";
 import {saveTeam, teamExistsByName} from "../api";
 import {setFlash} from "../utils/flash";
@@ -26,7 +28,8 @@ export default class NewTeam extends React.Component {
             format: true,
             exists: false,
             approval: true,
-            validEmail: true
+            validEmail: true,
+            language: "English"
         };
     }
 
@@ -48,8 +51,13 @@ export default class NewTeam extends React.Component {
             .then(exists => this.setState({exists: exists})), 350);
 
     handleInputChange = attributeName => e => {
-        const target = e.target;
-        const value = target.type === "checkbox" ? target.checked : target.value;
+        let value;
+        if (isEmpty(e.target) && !isEmpty(e.value)) {
+            value = e.value;
+        } else {
+            const target = e.target;
+            value = target.type === "checkbox" ? target.checked : target.value;
+        }
         this.setState({[attributeName]: value});
     };
 
@@ -65,7 +73,6 @@ export default class NewTeam extends React.Component {
         if (this.isValid()) {
             const teamProperties = {...this.state};
             ["initial", "format", "exists", "approval", "validEmail"].forEach(attr => delete teamProperties[attr]);
-
             saveTeam(teamProperties)
                 .then(team => {
                     this.props.history.push(`/teams/${team.id}`);
@@ -80,10 +87,10 @@ export default class NewTeam extends React.Component {
     isValid = () => this.state.format && !this.state.exists && this.state.approval &&
     !isEmpty(this.state.name) && this.state.validEmail;
 
-    validateEmail = (e) => {
+    validateEmail = e => {
         stop(e);
         const email = e.target.value;
-        this.setState({validEmail: isEmpty(email) || validEmailRegExp.test(email)})
+        this.setState({validEmail: isEmpty(email) || validEmailRegExp.test(email)});
     };
 
     handleError = json => {
@@ -95,7 +102,7 @@ export default class NewTeam extends React.Component {
         const {currentUser} = this.props;
         const {
             name, description, personalNote, viewable, initial, format, exists,
-            invitationMessage, email, approval, validEmail
+            invitationMessage, email, approval, validEmail, language
         } = this.state;
         const validName = format && !exists;
 
@@ -157,8 +164,8 @@ export default class NewTeam extends React.Component {
                         <textarea id="invitationMessage" name="invitationMessage" value={invitationMessage}
                                   rows={3}
                                   onChange={this.handleInputChange("invitationMessage")}/>
-
-
+                        <label className="invitation-language" htmlFor="invitationLanguage">{I18n.t("new_team.invitation_language")}</label>
+                        <SelectLanguage onChange={this.handleInputChange("language")} language={language}/>
                     </section>
                     <CheckBox name="approval" value={approval}
                               onChange={this.handleInputChange("approval")}
