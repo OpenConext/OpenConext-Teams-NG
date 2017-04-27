@@ -1,11 +1,26 @@
 div.footer {
   display: flex;
-  justify-content: space-around;
+  align-items: flex-end;
   padding: 15px;
-  border-top: 1px solid white;
+  border-top: 3px solid white;
   margin-top: 25px;
+
+  span {
+    border-right: 1px solid $lighter-grey;
+    &:first-child {
+      margin-left: auto;
+    }
+    &:last-child {
+      border-right: none;
+    }
+  }
 
   a {
     color: darken($blue, 10%);
+    &:visited, &:hover {
+      text-decoration: none;
+    }
+    text-decoration: none;
+    padding: 0 15px;
   }
 }

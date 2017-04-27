@@ -42,6 +42,7 @@ public class Invitation {
     private long timestamp;
 
     @Column(name = "invitation_uiid", nullable = false)
+    @JsonIgnore
     private String invitationHash;
 
     @Column(name = "denied")

@@ -49,7 +49,7 @@ I18n.translations.en = {
         flash_updated: "updated",
         flash_created: "created",
         flash_deleted: "deleted",
-        confirmation: "Are your sure you want to remove team {{name}}?",
+        confirmation: "Are your sure you want to delete team {{name}}?",
         edit: "Edit",
         delete: "Delete",
         add: "Add team",
@@ -70,6 +70,8 @@ I18n.translations.en = {
         actions: "...",
         confirmation: "Are you sure you want to delete team {{name}}?",
         deleted: "Successfully deleted team {{name}}",
+        leave_confirmation: "Are you sure you want to leave team {{name}}",
+        left: "Successfully left team {{name}}",
         leave: "Leave",
         team_members: "Team members",
         membership: {

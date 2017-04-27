@@ -19,17 +19,14 @@ export default class TeamDetail extends React.Component {
         super(props, context);
         this.state = {
             team: {},
+            members: [],
             filteredMembers: [],
             sortAttributes: [
-                {name: "status", order: "down", current: true},
                 {name: "name", order: "down", current: false},
                 {name: "email", order: "down", current: false},
+                {name: "status", order: "down", current: true},
                 {name: "role", order: "down", current: false}
             ],
-            editableTeamAttributes: {
-                description: false,
-                personalNote: false
-            },
             loaded: false,
             copiedToClipboard: false
         };
@@ -39,15 +36,21 @@ export default class TeamDetail extends React.Component {
     componentWillMount = () => getTeamDetail(this.props.match.params.id).then(team => this.stateTeam(team));
 
     stateTeam(team) {
+        //TODO add invites pending
         const joinRequests = team.joinRequests || [];
-        this.setState({
-            team: team,
-            filteredMembers: team.memberships.concat(joinRequests).sort(this.sortByStatus),
-            loaded: true
-        });
-        if (!allowedToLeave(team, this.props.currentUser)) {
+        const members = team.memberships.concat(joinRequests);
+        if (!this.state.loaded && !allowedToLeave(team, this.props.currentUser)) {
             setFlash(I18n.t("team_detail.one_admin_warning"), "warning");
         }
+        const currentSorted = this.currentSorted();
+        const sortedMembers = [...members].sort(this.sortByAttribute(currentSorted.name, currentSorted.order === "up"));
+
+        this.setState({
+            team: team,
+            members: members,
+            filteredMembers:  sortedMembers,
+            loaded: true
+        });
 
     }
 
@@ -68,16 +71,24 @@ export default class TeamDetail extends React.Component {
 
     handleDeleteTeam = team => e => {
         stop(e);
-        if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
+        if (confirm(I18n.t("team_detail.confirmation", {name: team.name}))) {
             deleteTeam(team.id).then(() => {
                 this.props.history.replace("/my-teams");
-                setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_deleted")}));
+                setFlash(I18n.t("team_detail.deleted", {name: team.name}));
             });
         }
     };
 
-    handleLeaveTeam = myMembershipId => () =>
-        leaveTeam(myMembershipId).then(() => this.props.history.replace("/my-teams"));
+    handleLeaveTeam = myMembershipId => e => {
+        stop(e);
+        const i18nHash = {name: this.state.team.name};
+        if (confirm(I18n.t("team_detail.leave_confirmation", i18nHash))) {
+            leaveTeam(myMembershipId).then(() => {
+                this.props.history.replace("/my-teams");
+                setFlash(I18n.t("team_detail.left", i18nHash));
+            });
+        }
+    };
 
     handleInvite = () => this.props.history.replace(`/invite/${this.state.team.id}`);
 
@@ -86,30 +97,47 @@ export default class TeamDetail extends React.Component {
     search = e => {
         const input = e.target.value;
         if (isEmpty(input)) {
-            this.setState({filteredTeams: this.state.teams});
+            this.setState({filteredMembers: this.state.members});
         } else {
-            this.setState({filteredTeams: this.filterTeams(input.toLowerCase())});
+            this.setState({filteredMembers: this.filterMembers(input.toLowerCase())});
         }
     };
 
-    sort = item => e => {
-        stop(e);
-        return item;
-        // if (column.sortFunction === undefined) {
-        //     return;
-        // }
-        // let sortedTeams = teams.sort(column.sortFunction);
-        // let newOrder = "down";
-        // if (this.state.sorted.name === column.sort) {
-        //     newOrder = this.state.sorted.order === "down" ? "up" : "down";
-        //     if (newOrder === "up") {
-        //         sortedTeams = sortedTeams.reverse();
-        //     }
-        // }
-        // this.setState({sortedTeams: sortedTeams, sorted: {name: column.sort, order: newOrder}})
+    filterMembers = input => this.state.members.filter(member =>
+            member.person.name.toLowerCase().indexOf(input) > -1 ||
+            member.person.email.toLowerCase().indexOf(input) > -1);
+
+    sort = item => {
+        const {filteredMembers, sortAttributes} = this.state;
+        const sortedMembers = filteredMembers.sort(this.sortByAttribute(item.name, item.current && item.order === "down"));
+        const newSortAttributes = [...sortAttributes];
+        newSortAttributes.forEach(attr => {
+            if (attr.name === item.name) {
+                attr.order = item.current ? (item.order === "down" ? "up" : "down") : "down";
+                attr.current = true;
+            } else {
+                attr.order = "down";
+                attr.current = false;
+            }
+        });
+        this.setState({filteredMembers: sortedMembers, sortAttributes: newSortAttributes});
     };
 
-    sortByAttribute = name => (a, b) => a[name].localeCompare(b[name]);
+    sortByAttribute = (name, reverse = false) => (a, b) => {
+        if (name === "status") {
+            return this.sortByStatus(a, b) * (reverse ? -1 : 1);
+        }
+        if (name === "role") {
+            return roleOfMembership(a).localeCompare(roleOfMembership(b)) * (reverse ? -1 : 1);
+        }
+        if (a[name]) {
+            return a[name].toString().localeCompare(b[name].toString()) * (reverse ? -1 : 1);
+        }
+        if (a["person"][name]) {
+            return a["person"][name].toString().localeCompare(b["person"][name].toString()) * (reverse ? -1 : 1);
+        }
+        return a.toString().localeCompare(b.toString()) * (reverse ? -1 : 1);
+    };
 
     changePersonalNote = personalNote => {
         this.saveTeamProperties({personalNote: personalNote});
@@ -212,13 +240,16 @@ export default class TeamDetail extends React.Component {
         );
     }
 
+    currentSorted = () => this.state.sortAttributes.filter(attr => attr.current)[0];
+
     statusOfMembership = member => member.role ? moment(member.created).format("LLL") :
         <span className="status-pending"><i className="fa fa-clock-o"></i>{I18n.t("team_detail.pending")}</span>;
 
-    renderMembersTable() {
-        const currentSorted = this.state.sortAttributes.filter(attr => attr.current)[0];
+    renderMembersTable(currentUser) {
+        const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
-        const userIconClassName = member => member.role ? `fa fa-user-o ${member.role.toLowerCase()}` : "fa fa-clock-o";
+        const userIconClassName = member => member.role ? (member.person.id !== currentUser.person.id ? `fa fa-user-o ${member.role.toLowerCase()}` : `fa fa-user ${member.role.toLowerCase()}`)
+            : "fa fa-clock-o";
         const columns = ["name", "email", "status", "role", "actions"];
         const th = index => (
             <th key={index} className={columns[index]}>
@@ -235,14 +266,15 @@ export default class TeamDetail extends React.Component {
                     </thead>
                     <tbody>
                     {this.state.filteredMembers.map((member, index) =>
-                        <tr key={`${member.urnPerson}-${index}`}>
-                            <td>
+                        <tr key={`${member.urnPerson}-${index}`}
+                            className={member.role ? "" : "pending"}>
+                            <td className={member.role ? "name" : "name pending"}>
                                 <i className={userIconClassName(member)}></i>
                                 {member.person.name}
                             </td>
-                            <td>{member.person.email}</td>
-                            <td>{this.statusOfMembership(member)}</td>
-                            <td>{roleOfMembership(member)}</td>
+                            <td className="email">{member.person.email}</td>
+                            <td className="status">{this.statusOfMembership(member)}</td>
+                            <td className="role">{roleOfMembership(member)}</td>
                             <td className="actions"><i className="fa fa-ellipsis-h"></i></td>
                         </tr>
                     )}
@@ -287,7 +319,7 @@ export default class TeamDetail extends React.Component {
                             <i className="fa fa-users"></i>
                         </a>}
                     </section>
-                    {this.renderMembersTable()}
+                    {this.renderMembersTable(currentUser)}
                 </section>
             </div>
         );

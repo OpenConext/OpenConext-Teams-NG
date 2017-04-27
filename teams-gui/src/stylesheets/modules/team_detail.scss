@@ -79,15 +79,18 @@
       th.name {
         width: 25%;
       }
-      th.description {
-        width: 45%;
+      th.email {
+        width: 30%;
+      }
+      th.status {
+        width: 30%;
       }
       th.role {
-        width: 15%;
+        width: 10%;
       }
-      th.membershipCount {
+      th.actions {
         text-align: right;
-        width: 15%;
+        width: 5%;
       }
       span {
         position: relative;
@@ -106,11 +109,11 @@
     }
     tbody {
       tr {
-        cursor: pointer;
         &:hover {
           background-color: #F9FCFD;
           td.actions i {
             color: $blue;
+            font-size: 26px;
           }
         }
         &.pending {
@@ -141,42 +144,14 @@
           }
         }
       }
-      td.role {
-        &.pending {
-          color: $green;
-        }
-      }
-      td.membership-count {
-        position: relative;
+      td.actions {
+        cursor: pointer;
         text-align: right;
-
-        i.fa-info-circle {
-          color: $blue;
-          position: absolute;
-          top: 1px;
-          right: 1px;
-        }
-
-        span {
-
-          &.membership-count {
-            padding: 15px 10px;
-            z-index: 99;
-          }
-          &.join-requests-count {
-            color: $green;
-            font-weight: bold;
-          }
-          &.invitations-count {
-            color: $blue;
-            font-weight: bold;
-          }
-          &.count-divider {
-            color: $medium-grey;
-          }
-        }
-        div.tool-tip {
-          @include tool-tip;
+        font-size: 18px;
+      }
+      td.status {
+        i {
+          padding: 15px 15px 15px 0;
         }
       }
     }
