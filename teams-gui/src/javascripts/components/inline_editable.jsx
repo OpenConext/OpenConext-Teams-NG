@@ -1,6 +1,7 @@
 import React from "react";
 import I18n from "i18n-js";
 import PropTypes from "prop-types";
+import ReactTooltip from "react-tooltip";
 
 export default class InlineEditable extends React.Component {
 
@@ -45,8 +46,11 @@ export default class InlineEditable extends React.Component {
     };
 
     renderNonEditable(name, value, mayEdit) {
+        const toolTipId = `edit-${name}`;
         const span = mayEdit ?
-            <span onClick={this.toggleEditable}>{value}<i className="fa fa-pencil"></i></span> :
+            <span onClick={this.toggleEditable}>{value}<i className="fa fa-pencil" data-for={toolTipId} data-tip></i>
+                <ReactTooltip id={toolTipId} place="top">{I18n.t("team_detail.edit")}</ReactTooltip>
+            </span> :
             <span>{value}</span>;
         return (
             <div className="inline-editable">
