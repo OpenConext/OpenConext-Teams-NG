@@ -49,6 +49,7 @@
     "react-test-renderer": "^15.5.4",
     "react-tooltip": "^3.3.0",
     "sass-loader": "4.0.2",
+    "scroll-into-view": "^1.8.0",
     "spin.js": "2.3.2",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",

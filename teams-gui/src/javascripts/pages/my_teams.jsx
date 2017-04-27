@@ -55,8 +55,6 @@ export default class MyTeams extends React.Component {
 
     componentWillMount = () => this.fetchMyTeams();
 
-    componentDidUpdate = () => document.body.scrollTop = document.documentElement.scrollTop = 0;
-
     showTeam = team => () => {
         this.props.history.push("/teams/" + team.id);
     };
@@ -194,7 +192,7 @@ export default class MyTeams extends React.Component {
             teams, joinRequests, invitationsSend, invitationsReceived, actions, sortAttributes,
             selectedTeam, suggestions, query
         } = this.state;
-        const showAutocompletes = query.length > 2;
+        const showAutoCompletes = query.length > 2;
         return (
             <div className="my_teams">
                 <div className="operations">
@@ -217,10 +215,11 @@ export default class MyTeams extends React.Component {
                                    value={query}
                                    onKeyDown={this.onSearchKeyDown}/>
                             <i className="fa fa-search"></i>
-                            {showAutocompletes && <TeamAutocomplete suggestions={suggestions}
+                            {showAutoCompletes && <TeamAutocomplete suggestions={suggestions}
                                                                     query={query}
                                                                     selectedTeam={selectedTeam}
-                                                                    itemSelected={this.itemSelected}/>}
+                                                                    itemSelected={this.itemSelected}
+                                                                    />}
                         </div>
                         {!currentUser.person.guest &&
                         <a className="button green" href="#" onClick={this.addTeam}>
