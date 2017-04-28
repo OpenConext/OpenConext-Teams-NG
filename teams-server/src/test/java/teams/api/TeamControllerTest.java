@@ -44,7 +44,8 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_OK)
                 .body("myJoinRequests.size()", equalTo(1))
-                .body("myJoinRequests.teamName", hasItems("riders"));
+                .body("myJoinRequests.teamName", hasItems("riders"))
+                .body("myJoinRequests.teamDescription", hasItems("we are riders"));
     }
     @Test
     public void teamById() throws Exception {
