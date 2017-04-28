@@ -34,9 +34,10 @@ export default class MyTeams extends React.Component {
     }
 
     fetchMyTeams() {
+        debugger;
         clearFlash();
         getMyTeams().then(myTeams => {
-            const joinRequests = myTeams.joinRequests.map(joinRequest => {
+            const joinRequests = myTeams.myJoinRequests.map(joinRequest => {
                 return {
                     name: joinRequest.teamName, description: joinRequest.teamDescription,
                     role: "PENDING", isJoinRequest: true, membershipCount: "N/A"
@@ -45,8 +46,7 @@ export default class MyTeams extends React.Component {
             const teams = myTeams.teamSummaries.concat(joinRequests).sort(this.sortByAttribute("name"));
             this.setState({
                 teams: teams,
-                joinRequests: myTeams.joinRequests,
-                invitationsSend: myTeams.invitationsSend
+                joinRequests: joinRequests
             });
         });
     }
@@ -123,8 +123,8 @@ export default class MyTeams extends React.Component {
     };
 
     membershipCountCell = team => {
-        const joinRequestsCount = this.state.joinRequests.filter(joinRequest => joinRequest.teamIdentifier === team.id).length;
-        const invitationsCount = this.state.invitationsSend.filter(invitation => invitation.teamIdentifier === team.id).length;
+        const joinRequestsCount = team.joinRequestsCount;
+        const invitationsCount = team.invitationsCount;
         const tooltip = joinRequestsCount > 0 || invitationsCount > 0;
         const toolTipId = `team_tooltip_${team.id}`;
         return (
