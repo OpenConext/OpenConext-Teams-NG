@@ -32,7 +32,9 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .body("teamSummaries.joinRequestsCount", hasItems(2, 0, 0))
                 .body("teamSummaries.invitationsCount", hasItems(1, 1, 0))
                 .body("teamSummaries.role", hasItems("MANAGER", "MEMBER", "ADMIN"))
-                .body("myJoinRequests.size()", equalTo(0));
+                .body("myJoinRequests.size()", equalTo(1))
+                .body("myJoinRequests.teamName", hasItems("masters"))
+                .body("myJoinRequests.teamDescription", hasItems("we are masters"));
     }
 
     @Test
@@ -112,10 +114,10 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .get("api/teams/teams")
                 .then()
                 .statusCode(SC_OK)
-                .body("size()", is(2))
-                .body("id", hasItems(1, 3))
-                .body("name", hasItems("riders", "gliders"))
-                .body("role", hasItems("ADMIN", null));
+                .body("size()", is(3))
+                .body("id", hasItems(1, 3, 4))
+                .body("name", hasItems("riders", "gliders", "masters"))
+                .body("role", hasItems("ADMIN", null, "ADMIN"));
     }
 
     @Test

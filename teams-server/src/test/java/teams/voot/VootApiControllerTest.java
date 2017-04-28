@@ -61,8 +61,8 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     @Test
     public void getAllGroups() throws Exception {
         start("groups")
-                .body("size()", equalTo(3))
-                .body("displayName", hasItems("riders", "giants", "gliders"));
+                .body("size()", equalTo(4))
+                .body("displayName", hasItems("riders", "giants", "gliders", "masters"));
     }
 
     @Test
