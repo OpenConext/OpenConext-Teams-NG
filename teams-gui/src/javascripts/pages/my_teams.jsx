@@ -34,8 +34,7 @@ export default class MyTeams extends React.Component {
     }
 
     fetchMyTeams() {
-        debugger;
-        clearFlash();
+            clearFlash();
         getMyTeams().then(myTeams => {
             const joinRequests = myTeams.myJoinRequests.map(joinRequest => {
                 return {
