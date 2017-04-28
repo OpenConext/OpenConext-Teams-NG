@@ -1,78 +1,35 @@
 {
-  "joinRequests": [
-    {
-      "id": 1,
-      "person": null,
-      "created": 1493051974.000000000,
-      "message": "Please let me join",
-      "teamIdentifier": 1,
-      "teamName": "riders"
-    }
-  ],
-  "invitationsSend": [
-    {
-      "id": 2,
-      "email": "john.doe@example.org",
-      "timestamp": 2491484828910,
-      "invitationHash": "secret2",
-      "declined": false,
-      "accepted": false,
-      "invitationMessages": [
-        {
-          "id": 2,
-          "message": "Please join now",
-          "timestamp": 2491484828910
-        }
-      ],
-      "intendedRole": "ADMIN",
-      "language": "Dutch",
-      "teamIdentifier": 2
-    }
-  ],
-  "invitationsReceived": [
-    {
-      "id": 2,
-      "email": "john.doe@example.org",
-      "timestamp": 2491484828910,
-      "invitationHash": "secret2",
-      "declined": false,
-      "accepted": false,
-      "invitationMessages": [
-        {
-          "id": 2,
-          "message": "Please join now",
-          "timestamp": 2491484828910
-        }
-      ],
-      "intendedRole": "ADMIN",
-      "language": "Dutch",
-      "teamIdentifier": 2
-    }
-  ],
+  "myJoinRequests": [],
   "teamSummaries": [
-    {
-      "id": 2,
-      "name": "giants",
-      "urn": "nl:surfnet:diensten:giants",
-      "membershipCount": 4,
-      "description": "we are giants",
-      "role": "MANAGER"
-    },
-    {
-      "id": 3,
-      "name": "gliders",
-      "urn": "nl:surfnet:diensten:gliders",
-      "membershipCount": 3,
-      "description": "we are gliders",
-      "role": "MEMBER"
-    },
     {
       "id": 1,
       "name": "riders",
       "urn": "nl:surfnet:diensten:riders",
       "membershipCount": 1,
       "description": "we are riders",
-      "role": "ADMIN"
+      "role": "ADMIN",
+      "joinRequestsCount": 1,
+      "invitationsCount": 1
+    },
+    {
+      "id": 2,
+      "name": "giants",
+      "urn": "nl:surfnet:diensten:giants",
+      "membershipCount": 1,
+      "description": "we are giants",
+      "role": "MANAGER",
+      "joinRequestsCount": 0,
+      "invitationsCount": 1
+    },
+    {
+      "id": 3,
+      "name": "gliders",
+      "urn": "nl:surfnet:diensten:gliders",
+      "membershipCount": 1,
+      "description": "we are gliders",
+      "role": "MEMBER",
+      "joinRequestsCount": 0,
+      "invitationsCount": 0
     }
   ]
 }

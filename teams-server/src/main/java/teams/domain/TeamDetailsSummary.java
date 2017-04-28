@@ -9,8 +9,6 @@ import java.util.Set;
 public class TeamDetailsSummary extends TeamSummary {
 
     private Set<Membership> memberships;
-    private Set<JoinRequest> joinRequests = new HashSet<>();
-    private Set<Invitation> invitations = new HashSet<>();
 
     public TeamDetailsSummary(Team team, FederatedUser user) {
         super(team, user);

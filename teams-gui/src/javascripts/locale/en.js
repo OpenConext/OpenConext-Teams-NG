@@ -37,7 +37,6 @@ I18n.translations.en = {
     teams: {
         title: "My teams",
         member_requests: "Join requests",
-        invitations_received: "Invitations received",
         invitations_send: "Invitations send",
         name: "Team name",
         description: "Description",

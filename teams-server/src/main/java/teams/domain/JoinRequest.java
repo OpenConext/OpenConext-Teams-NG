@@ -28,6 +28,7 @@ public class JoinRequest {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
+    @JsonIgnore
     private Person person;
 
     @Column
@@ -52,15 +53,4 @@ public class JoinRequest {
         return isContainsMessage() ? HtmlUtils.htmlEscape(message).replaceAll("\n", "<br/>") : "";
     }
 
-    public String getTeamName() {
-        return team.getName();
-    }
-
-    public String getTeamDescription() {
-        return team.getDescription();
-    }
-
-    public Long getTeamIdentifier() {
-        return team.getId();
-    }
 }

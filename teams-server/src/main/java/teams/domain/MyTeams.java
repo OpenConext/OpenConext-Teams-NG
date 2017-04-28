@@ -9,11 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MyTeams {
 
-    private List<JoinRequest> joinRequests;
-
-    private List<Invitation> invitationsSend;
-
-    private List<Invitation> invitationsReceived;
+    private List<PendingJoinRequest> myJoinRequests;
 
     private List<TeamSummary> teamSummaries;
 

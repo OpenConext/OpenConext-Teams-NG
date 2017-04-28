@@ -56,7 +56,7 @@ public class MailBox {
         variables.put("joinRequest", joinRequest);
         sendMail(
                 "mail_templates/join_request.html",
-                String.format("Membership request for %s", joinRequest.getTeamName()),
+                String.format("Membership request for %s", joinRequest.getTeam().getName()),
                 variables,
                 admins.toArray(new String[admins.size()]));
     }

@@ -1,7 +1,6 @@
 package teams.repository;
 
 import org.junit.Test;
-import org.springframework.data.domain.PageRequest;
 import teams.AbstractApplicationTest;
 import teams.domain.Team;
 
@@ -22,7 +21,7 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByMembershipsPersonUrn() throws Exception {
-        List<Team> teams = teamRepository.findByMembershipsUrnPersonOrderByNameAsc(
+        List<Team> teams = teamRepository.findByMembershipsUrnPerson(
                 "urn:collab:person:surfnet.nl:jdoe");
         assertEquals(3, teams.size());
     }
@@ -36,6 +35,12 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
         assertEquals(2, teamNames.size());
         assertTrue(teamNames.contains("riders"));
         assertTrue(teamNames.contains("gliders"));
+    }
+
+    @Test
+    public void existsByUrn() throws Exception {
+        List<Object> urns = teamRepository.existsByUrn("nl:surfnet:diensten:giants");
+        assertEquals(1, urns.size());
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface InvitationValidator {
 
     default void validateInvitation(Invitation invitation, Person person) {
-        if (invitation.hasExpired()) {
+        if (invitation.expired()) {
             throw new InvitationExpiredException();
         }
         if (invitation.isAccepted() || invitation.getTeam().member(person.getUrn()).isPresent()) {

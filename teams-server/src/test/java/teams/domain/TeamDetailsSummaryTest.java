@@ -14,14 +14,4 @@ public class TeamDetailsSummaryTest implements Seed{
         assertEquals(0, summary.getMemberships().size());
     }
 
-    @Test
-    public void getJoinRequests() throws Exception {
-        assertEquals(0, summary.getJoinRequests().size());
-    }
-
-    @Test
-    public void getInvitations() throws Exception {
-        assertEquals(0, summary.getInvitations().size());
-    }
-
 }

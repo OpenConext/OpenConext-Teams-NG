@@ -2,17 +2,17 @@ package teams.api.validations;
 
 import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
-import teams.exception.IllegalLinkExternalTeamException;
 import teams.exception.IllegalMembershipException;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.function.BiConsumer;
 
 import static java.lang.String.format;
 
 public interface TeamValidator {
 
-    default void teamNameDuplicated(String name, Optional<Team> teamOptional) {
-        if (teamOptional.isPresent()) {
+    default void teamNameDuplicated(String name, List<Object> urns) {
+        if (!urns.isEmpty()) {
             throw new DuplicateTeamNameException(format("Team with name %s already exists", name));
         }
     }
@@ -41,8 +41,20 @@ public interface TeamValidator {
     }
 
     default boolean isAllowedToAcceptJoinRequest(TeamSummary teamSummary) {
-        return Role.ADMIN.equals(teamSummary.getRole()) || Role.MEMBER.equals(teamSummary.getRole());
+        return Role.ADMIN.equals(teamSummary.getRole()) || Role.MANAGER.equals(teamSummary.getRole());
     }
 
+    default void invitationsCountFromQuery(List<Object[]> counts, List<TeamSummary> summaries) {
+        consumeTeamSummaryById(counts, summaries, (teamSummary, integer) -> teamSummary.invitationsCount(integer));
+    }
+
+    default void joinRequestsCountFromQuery(List<Object[]> counts, List<TeamSummary> summaries) {
+        consumeTeamSummaryById(counts, summaries, (teamSummary, integer) -> teamSummary.joinRequestsCount(integer));
+    }
+
+    default void consumeTeamSummaryById(List<Object[]> counts, List<TeamSummary> summaries, BiConsumer<TeamSummary, Integer> biConsumer) {
+        counts.forEach(objects -> summaries.stream().filter(teamSummary -> teamSummary.getId().equals(Long.class.cast(objects[0])))
+                .findFirst().ifPresent(teamSummary -> biConsumer.accept(teamSummary, Number.class.cast(objects[1]).intValue())));
+    }
 
 }

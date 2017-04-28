@@ -1,6 +1,7 @@
 package teams.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +21,6 @@ import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 
 @Entity(name = "teams")
-@NamedEntityGraph(name = "Team.memberships", attributeNodes = @NamedAttributeNode("memberships"))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -48,9 +48,6 @@ public class Team {
 
     @Column
     private Instant created;
-
-    @Formula("(select count(*) from memberships m where m.team_id = id)")
-    private int membershipCount;
 
     @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = ALL)
     private Set<Membership> memberships = new HashSet<>();
@@ -86,6 +83,12 @@ public class Team {
     public String getHtmlDescription() {
         return isContainsDescription() ? HtmlUtils.htmlEscape(description).replaceAll("\n", "<br/>") : "";
     }
+
+    @JsonProperty(value = "membershipCount", access = JsonProperty.Access.READ_ONLY)
+    public int membershipCount() {
+        return this.memberships.size();
+    }
+
 
     @Override
     public boolean equals(Object o) {

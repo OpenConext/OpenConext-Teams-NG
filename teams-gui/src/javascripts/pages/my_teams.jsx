@@ -18,7 +18,6 @@ export default class MyTeams extends React.Component {
             teams: [],
             joinRequests: [],
             invitationsSend: [],
-            invitationsReceived: [],
             sorted: {name: "name", order: "down"},
             actions: {show: false, id: 0},
             sortAttributes: [
@@ -47,8 +46,7 @@ export default class MyTeams extends React.Component {
             this.setState({
                 teams: teams,
                 joinRequests: myTeams.joinRequests,
-                invitationsSend: myTeams.invitationsSend,
-                invitationsReceived: myTeams.invitationsReceived
+                invitationsSend: myTeams.invitationsSend
             });
         });
     }
@@ -189,7 +187,7 @@ export default class MyTeams extends React.Component {
     render() {
         const {currentUser} = this.props;
         const {
-            teams, joinRequests, invitationsSend, invitationsReceived, actions, sortAttributes,
+            teams, joinRequests, invitationsSend, actions, sortAttributes,
             selectedTeam, suggestions, query
         } = this.state;
         const showAutoCompletes = query.length > 2;
@@ -201,8 +199,6 @@ export default class MyTeams extends React.Component {
                         className="number">{joinRequests.length}</span></span>
                     <span>{I18n.t("teams.invitations_send")}<span
                         className="number">{invitationsSend.length}</span></span>
-                    <span>{I18n.t("teams.invitations_received")}<span
-                        className="number">{invitationsReceived.length}</span></span>
                 </div>
                 <div className="card">
                     <div className="options">

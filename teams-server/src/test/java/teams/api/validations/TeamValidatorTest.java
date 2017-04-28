@@ -1,17 +1,19 @@
 package teams.api.validations;
 
 import org.junit.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 import teams.Seed;
 import teams.api.TeamController;
 import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
-import teams.exception.IllegalLinkExternalTeamException;
 import teams.exception.IllegalMembershipException;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class TeamValidatorTest implements Seed {
 
@@ -19,12 +21,12 @@ public class TeamValidatorTest implements Seed {
 
     @Test
     public void teamNameDuplicated() throws Exception {
-        subject.teamNameDuplicated("name", Optional.empty());
+        subject.teamNameDuplicated("name", Collections.emptyList());
     }
 
     @Test(expected = DuplicateTeamNameException.class)
     public void teamNameDuplicatedException() throws Exception {
-        subject.teamNameDuplicated("name", Optional.of(team()));
+        subject.teamNameDuplicated("name", singletonList("urn"));
     }
 
     @Test
@@ -50,6 +52,22 @@ public class TeamValidatorTest implements Seed {
         TeamDetailsSummary summary = TeamDetailsSummary.class.cast(subject.lazyLoadTeam(team, Role.MEMBER, federatedUser()));
         assertEquals(team.getName(), summary.getName());
         assertEquals("test", summary.getMemberships().iterator().next().getPerson().getUrn());
+    }
+
+    @Test
+    public void isAllowedToAcceptJoinRequestAdmin() throws Exception {
+        doIsAllowedToAcceptJoinRequest(Role.MEMBER, false);
+        doIsAllowedToAcceptJoinRequest(Role.MANAGER, true);
+        doIsAllowedToAcceptJoinRequest(Role.ADMIN, true);
+
+        assertEquals(false, subject.isAllowedToAcceptJoinRequest(new TeamSummary(team(), federatedUser())));
+    }
+
+    public void doIsAllowedToAcceptJoinRequest(Role role, boolean expected) {
+        Team team = team();
+        FederatedUser federatedUser = federatedUser("urn");
+        membership(role, team, federatedUser.getPerson());
+        assertEquals(expected, subject.isAllowedToAcceptJoinRequest(new TeamSummary(team, federatedUser)));
     }
 
 }

@@ -12,7 +12,6 @@ import teams.exception.IllegalSearchParamException;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,24 +33,32 @@ public class TeamController extends ApiController implements TeamValidator {
     @GetMapping("api/teams/my-teams")
     public MyTeams myTeams(FederatedUser federatedUser) {
         List<TeamSummary> teamSummaries = teamRepository
-                .findByMembershipsUrnPersonOrderByNameAsc(federatedUser.getUrn())
+                .findByMembershipsUrnPerson(federatedUser.getUrn())
                 .stream()
                 .map(team -> new TeamSummary(team, federatedUser))
                 .collect(toList());
         List<Long> teamIds = teamSummaries.stream().filter(teamSummary -> isAllowedToAcceptJoinRequest(teamSummary))
                 .map(TeamSummary::getId).collect(toList());
-        List<JoinRequest> joinRequests = joinRequestRepository.findByTeamIdIn(teamIds);
-        List<Invitation> invitationsReceived = invitationRepository.findByEmail(federatedUser.getPerson().getEmail());
-        List<Invitation> invitationsSend = invitationRepository.findByInvitationMessagesPerson(federatedUser.getPerson());
-        return new MyTeams(joinRequests,invitationsSend,invitationsReceived, teamSummaries);
+
+        List<JoinRequest> myJoinRequests = joinRequestRepository.findByPerson(federatedUser.getPerson());
+
+        invitationsCountFromQuery(invitationRepository.countInvitationsByTeamId(teamIds), teamSummaries);
+        joinRequestsCountFromQuery(joinRequestRepository.countJoinRequestsByTeamId(teamIds), teamSummaries);
+
+        List<PendingJoinRequest> pendingJoinRequests = myJoinRequests.stream()
+                .map(joinRequest -> new PendingJoinRequest(joinRequest))
+                .collect(toList());
+
+        return new MyTeams(pendingJoinRequests, teamSummaries);
 
     }
 
     @GetMapping("api/teams/teams/{id}")
     public Object teamById(@PathVariable("id") Long id, FederatedUser federatedUser) {
         Team team = teamById(id);
-        Optional<Membership> membership = team.member(federatedUser.getUrn());
-        return membership.isPresent() ? lazyLoadTeam(team, membership.get().getRole(), federatedUser) : new TeamSummary(team, federatedUser);
+        Optional<Membership> membershipOptional = team.member(federatedUser.getUrn());
+        return membershipOptional.map(membership -> lazyLoadTeam(team, membership.getRole(), federatedUser))
+                .orElse(new TeamSummary(team, federatedUser));
     }
 
     @GetMapping("api/teams/teams")
@@ -74,7 +81,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @GetMapping("api/teams/team-exists-by-name")
     public boolean teamExistsByName(@RequestParam("name") String name) {
-        return teamRepository.findByUrn(constructUrn(name)).isPresent();
+        return !teamRepository.existsByUrn(constructUrn(name)).isEmpty();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -82,15 +89,15 @@ public class TeamController extends ApiController implements TeamValidator {
     public Object createTeam(HttpServletRequest request, @Validated @RequestBody NewTeamProperties teamProperties, FederatedUser federatedUser) throws IOException, MessagingException {
         String name = teamProperties.getName();
         String urn = constructUrn(name);
-        Optional<Team> teamOptional = teamRepository.findByUrn(urn);
+        List<Object> urns = teamRepository.existsByUrn(urn);
 
-        teamNameDuplicated(name, teamOptional);
+        teamNameDuplicated(name, urns);
 
         Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable(), teamProperties.getPersonalNote());
         Person person = federatedUser.getPerson();
         Membership membership = new Membership(Role.ADMIN, team, person);
 
-        Object result = lazyLoadTeam(teamRepository.save(team), membership.getRole(), federatedUser);
+        Team savedTeam = teamRepository.save(team);
 
         LOG.info("Team {} created by {}", urn, federatedUser.getUrn());
 
@@ -101,10 +108,11 @@ public class TeamController extends ApiController implements TeamValidator {
                     Role.ADMIN,
                     teamProperties.getLanguage());
             invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
-            saveAndSendInvitation(invitation, team, person);
+            Invitation saved = saveAndSendInvitation(invitation, team, person);
+            savedTeam.getInvitations().add(saved);
         }
 
-        return result;
+        return lazyLoadTeam(savedTeam, membership.getRole(), federatedUser);
     }
 
     private String constructUrn(String name) {
@@ -133,8 +141,7 @@ public class TeamController extends ApiController implements TeamValidator {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("api/teams/teams/{id}")
     public void deleteTeam(@PathVariable("id") Long id, FederatedUser federatedUser) {
-        Team team = teamRepository.findOne(id);
-        assertNotNull(Team.class.getSimpleName(), team, id);
+        Team team = teamById(id);
 
         String federatedUserUrn = federatedUser.getUrn();
         Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();

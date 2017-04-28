@@ -62,3 +62,7 @@ INSERT INTO `requests` (`id`, `message`, `team_id`, `person_id`)
 VALUES
   (1, 'Please let me join', 1, 6);
 
+INSERT INTO `requests` (`id`, `message`, `team_id`, `person_id`)
+VALUES
+  (2, 'Please let me join too', 1, 2);
+

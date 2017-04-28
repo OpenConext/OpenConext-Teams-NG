@@ -28,13 +28,24 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .get("api/teams/my-teams")
                 .then()
                 .statusCode(SC_OK)
-                .body("joinRequests.teamIdentifier", hasItems(1))
-                .body("invitationsSend.email", hasItems("john.doe@example.org"))
-                .body("invitationsReceived.id", hasItems(2))
                 .body("teamSummaries.name", hasItems("giants", "gliders", "riders"))
-                .body("teamSummaries.role", hasItems("MANAGER", "MEMBER", "ADMIN"));
+                .body("teamSummaries.joinRequestsCount", hasItems(2, 0, 0))
+                .body("teamSummaries.invitationsCount", hasItems(1, 1, 0))
+                .body("teamSummaries.role", hasItems("MANAGER", "MEMBER", "ADMIN"))
+                .body("myJoinRequests.size()", equalTo(0));
     }
 
+    @Test
+    public void myTeamsWithJoinRequest() throws Exception {
+        given()
+                .header("name-id", "urn:collab:person:surfnet.nl:mdoe")
+                .when()
+                .get("api/teams/my-teams")
+                .then()
+                .statusCode(SC_OK)
+                .body("myJoinRequests.size()", equalTo(1))
+                .body("myJoinRequests.teamName", hasItems("riders"));
+    }
     @Test
     public void teamById() throws Exception {
         given()
@@ -145,7 +156,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         String email = "second_admin@test.org";
         String invitationMessage = "Please join";
 
-        given()
+        Team team = given()
                 .body(new NewTeamProperties("new team name", "Team champions ", null, true,
                         email, invitationMessage, Language.Dutch))
                 .header(CONTENT_TYPE, "application/json")
@@ -153,12 +164,14 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .post("api/teams/teams")
                 .then()
                 .statusCode(SC_OK)
-                .body("urn", equalTo(urn));
+                .body("urn", equalTo(urn))
+                .extract()
+                .as(Team.class);
 
-        List<Invitation> invitations = invitationRepository.findByEmail(email);
+        Set<Invitation> invitations = team.getInvitations();
         assertEquals(1, invitations.size());
 
-        Invitation invitation = invitations.get(0);
+        Invitation invitation = invitations.iterator().next();
         assertEquals(email, invitation.getEmail());
         assertEquals(Role.ADMIN, invitation.getIntendedRole());
         assertEquals(Language.Dutch, invitation.getLanguage());

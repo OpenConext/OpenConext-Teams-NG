@@ -19,8 +19,7 @@ public class InvitationController extends ApiController implements MembershipVal
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/invitations")
-    public void invitation(HttpServletRequest request,
-                           @Validated @RequestBody ClientInvitation clientInvitation,
+    public Invitation invitation(@Validated @RequestBody ClientInvitation clientInvitation,
                            FederatedUser federatedUser) throws IOException, MessagingException {
         Team team = teamById(clientInvitation.getTeamId());
         Person person = federatedUser.getPerson();
@@ -35,7 +34,7 @@ public class InvitationController extends ApiController implements MembershipVal
                 clientInvitation.getLanguage());
         invitation.addInvitationMessage(person, clientInvitation.getMessage());
 
-        saveAndSendInvitation(invitation, team, person);
+        return saveAndSendInvitation(invitation, team, person);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -1,6 +1,8 @@
 package teams.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import teams.exception.ResourceNotFoundException;
@@ -51,7 +53,7 @@ public class Invitation {
     @Column(name = "accepted")
     private boolean accepted;
 
-    @OneToMany(cascade = ALL, fetch = EAGER, mappedBy = "invitation")
+    @OneToMany(cascade = ALL, orphanRemoval = true, mappedBy = "invitation", fetch = EAGER)
     @NotNull
     @Size(min = 1)
     private Set<InvitationMessage> invitationMessages = new HashSet<>();
@@ -73,16 +75,9 @@ public class Invitation {
         this.intendedRole = intendedRole;
     }
 
-    public boolean hasExpired() {
+    @JsonProperty(value = "expired", access = JsonProperty.Access.READ_ONLY)
+    public boolean expired() {
         return (timestamp + TWO_WEEKS) < System.currentTimeMillis();
-    }
-
-    public String getInvitationHash() {
-        return invitationHash;
-    }
-
-    public Long getTeamIdentifier() {
-        return team.getId();
     }
 
     private String generateInvitationHash() throws UnsupportedEncodingException {

@@ -33,7 +33,7 @@ public class VootApiController {
 
     @GetMapping("api/voot/group/{localGroupId}")
     public Group findByLocalGroupId(@PathVariable("localGroupId") String localGroupId) {
-        Team team = resolveOptionalOrThrow(teamRepository.findByUrn(localGroupId), localGroupId);
+        Team team = resolveOptionalOrThrow(teamRepository.findByUrnOrderById(localGroupId), localGroupId);
         return convertTeamToGroup(team);
     }
 
@@ -68,7 +68,7 @@ public class VootApiController {
 
     @GetMapping("api/voot/user/{uid}/groups")
     public List<Group> getGroupsForMember(@PathVariable("uid") String uid) {
-        return teamRepository.findByMembershipsUrnPersonOrderByNameAsc(uid)
+        return teamRepository.findByMembershipsUrnPersonOrderById(uid)
                 .stream()
                 .map(this::convertTeamToGroup)
                 .collect(toList());

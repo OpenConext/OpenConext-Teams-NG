@@ -42,7 +42,7 @@ public abstract class ApiController {
     protected MailBox mailBox;
 
     protected Team teamById(Long id) {
-        Team team = teamRepository.findOne(id);
+        Team team = teamRepository.findById(id);
         assertNotNull("Team", team, id);
         return team;
     }
@@ -71,13 +71,14 @@ public abstract class ApiController {
         }
     }
 
-    protected void saveAndSendInvitation(Invitation invitation, Team team, Person person) throws IOException, MessagingException {
-        invitationRepository.save(invitation);
+    protected Invitation saveAndSendInvitation(Invitation invitation, Team team, Person person) throws IOException, MessagingException {
+        Invitation saved = invitationRepository.save(invitation);
 
         LOG.info("Created invitation for team {} and person {}", team.getUrn(), person.getUrn());
 
         mailBox.sendInviteMail(invitation);
 
+        return saved;
     }
 
 

@@ -25,16 +25,12 @@ public class JoinRequestRepositoryTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void findByTeam() throws Exception {
-        Team team = teamRepository.findByUrn("nl:surfnet:diensten:riders").get();
-        List<JoinRequest> joinRequests = joinRequestRepository.findByTeam(team);
-        assertEquals(1, joinRequests.size());
-    }
+    public void countInvitationsByTeamId() throws Exception {
+        List<Object[]> results = joinRequestRepository.countJoinRequestsByTeamId(Arrays.asList(1L, 2L, 3L));
 
-    @Test
-    public void findByTeamIdIn() throws Exception {
-        List<JoinRequest> joinRequests = joinRequestRepository.findByTeamIdIn(Arrays.asList(1L, 2L, 3L));
-        assertEquals(1 ,joinRequests.size());
+        Object[] r1 = results.get(0);
+        assertEquals(1L, Long.class.cast(r1[0]).longValue());
+        assertEquals(2L, Long.class.cast(r1[1]).longValue());
     }
 
 }
