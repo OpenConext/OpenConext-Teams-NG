@@ -34,7 +34,7 @@ export default class MyTeams extends React.Component {
     }
 
     fetchMyTeams() {
-            clearFlash();
+        clearFlash();
         getMyTeams().then(myTeams => {
             const joinRequests = myTeams.myJoinRequests.map(joinRequest => {
                 return {
@@ -214,7 +214,7 @@ export default class MyTeams extends React.Component {
                                                                     query={query}
                                                                     selectedTeam={selectedTeam}
                                                                     itemSelected={this.itemSelected}
-                                                                    />}
+                            />}
                         </div>
                         {!currentUser.person.guest &&
                         <a className="button green" href="#" onClick={this.addTeam}>
