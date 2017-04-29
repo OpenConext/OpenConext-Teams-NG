@@ -53,8 +53,10 @@ I18n.translations.en = {
         delete: "Delete",
         add: "Add team",
         join: "JOIN",
-        outstanding_join_request: "{{count}} outstanding join request(s)",
-        outstanding_invitations: "{{count}} outstanding invite(s)",
+        received_join_request: "1 received join request",
+        received_join_requests: "{{count}} received join requests",
+        pending_invitation: "1 pending invitation",
+        pending_invitations: "{{count}} pending invitations",
         no_found: "You are not a member of a team",
     },
 

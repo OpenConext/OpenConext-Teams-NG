@@ -3,10 +3,6 @@ package teams.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @Getter
 public class TeamSummary {
 
@@ -26,11 +22,11 @@ public class TeamSummary {
 
     private int invitationsCount;
 
-        public TeamSummary(Team team, FederatedUser user) {
+    public TeamSummary(Team team, FederatedUser user) {
         this.id = team.getId();
         this.urn = team.getUrn();
         this.name = team.getName();
-        this.membershipCount = team.membershipCount();
+        this.membershipCount = team.getMembershipCount();
         this.description = team.getDescription();
         this.role = team.getMemberships()
                 .stream()

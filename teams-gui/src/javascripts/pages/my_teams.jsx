@@ -138,9 +138,11 @@ export default class MyTeams extends React.Component {
                     <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
                         <ul>
                             {joinRequestsCount > 0 &&
-                            <li>{I18n.t("teams.outstanding_join_request", {count: joinRequestsCount})}</li>}
+                            <li>{joinRequestsCount === 1 ? I18n.t("received_join_request") :
+                                I18n.t("teams.received_join_requests", {count: joinRequestsCount})}</li>}
                             {invitationsCount > 0 &&
-                            <li>{I18n.t("teams.outstanding_invitations", {count: invitationsCount})}</li>}
+                            <li>{invitationsCount === 1 ? I18n.t("teams.pending_invitation") :
+                                I18n.t("teams.pending_invitations", {count: invitationsCount})}</li>}
                         </ul>
                     </ReactTooltip>}
              </span>
@@ -185,19 +187,12 @@ export default class MyTeams extends React.Component {
 
     render() {
         const {currentUser} = this.props;
-        const {
-            teams, joinRequests, invitationsSend, actions, sortAttributes,
-            selectedTeam, suggestions, query
-        } = this.state;
+        const {teams, actions, sortAttributes, selectedTeam, suggestions, query} = this.state;
         const showAutoCompletes = query.length > 2;
         return (
             <div className="my_teams">
                 <div className="operations">
                     <h2>{I18n.t("teams.title")}</h2>
-                    <span className="first">{I18n.t("teams.member_requests")}<span
-                        className="number">{joinRequests.length}</span></span>
-                    <span>{I18n.t("teams.invitations_send")}<span
-                        className="number">{invitationsSend.length}</span></span>
                 </div>
                 <div className="card">
                     <div className="options">

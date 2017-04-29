@@ -28,7 +28,6 @@ public class JoinRequest {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
-    @JsonIgnore
     private Person person;
 
     @Column
