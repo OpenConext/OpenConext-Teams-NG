@@ -2,6 +2,7 @@ package teams.api.validations;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 import teams.domain.*;
 import teams.exception.*;
 
@@ -19,7 +20,7 @@ public interface InvitationValidator {
 
     default void validateClientInvitation(ClientInvitation clientInvitation) {
         List<String> emails = clientInvitation.getEmails();
-        if (CollectionUtils.isEmpty(emails) && clientInvitation.getFile() == null) {
+        if (CollectionUtils.isEmpty(emails) && StringUtils.isEmpty(clientInvitation.getCsvEmails())) {
             throw  new IllegalInviteException("Either emails or file with emails is required");
         }
     }
@@ -75,7 +76,7 @@ public interface InvitationValidator {
     default List<String> emails(ClientInvitation clientInvitation) throws IOException {
         validateClientInvitation(clientInvitation);
         return CollectionUtils.isEmpty(clientInvitation.getEmails()) ?
-                Arrays.stream(StreamUtils.copyToString(clientInvitation.getFile().getInputStream(), Charset.defaultCharset()).split(",")).map(String::trim).collect(toList())
+                Arrays.stream(clientInvitation.getCsvEmails().split(",")).map(String::trim).collect(toList())
                 : clientInvitation.getEmails();
 
     }

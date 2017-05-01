@@ -44,7 +44,9 @@
       border-radius: $br;
       font-size: 14px;
       margin-top: 5px;
+      position: relative;
     }
+
     .validity-input-wrapper {
 
       i {
@@ -59,6 +61,23 @@
           color: $red;
         }
       }
+    }
+
+    span.cancel-file {
+      background-color: $blue;
+      top: 6px;
+      padding: 0;
+      font-size: 18px;
+      height: 20px;
+      width: 20px;
+      position: absolute;
+      line-height: .9;
+      right: 5px;
+      color: white;
+      display: inline-block;
+      align-items: center;
+      text-align: center;
+      border-radius: 50%;
     }
 
     div.react-datepicker__input-container {

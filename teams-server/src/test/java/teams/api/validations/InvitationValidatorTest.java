@@ -111,8 +111,7 @@ public class InvitationValidatorTest implements Seed {
 
     @Test
     public void validateClientInvitationFile() throws Exception {
-        MultipartFile file = new MockMultipartFile("emails.csv", "test@org , test2@org".getBytes());
-        subject.validateClientInvitation(clientInvitation(Collections.emptyList(), file));
+        subject.validateClientInvitation(clientInvitation(Collections.emptyList(), "test@org , test2@org"));
     }
 
     @Test
@@ -123,8 +122,7 @@ public class InvitationValidatorTest implements Seed {
 
     @Test
     public void emailsFile() throws Exception {
-        MultipartFile file = new MockMultipartFile("emails.csv", "test@org , test2@org".getBytes());
-        List<String> emails = subject.emails(clientInvitation(Collections.emptyList(), file));
+        List<String> emails = subject.emails(clientInvitation(Collections.emptyList(), "test@org , test2@org"));
         assertEquals(emails.size(), 2);
     }
 

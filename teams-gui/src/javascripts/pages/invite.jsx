@@ -25,7 +25,10 @@ export default class Invite extends React.Component {
             initial: true,
             emails: [],
             email: "",
-            file: undefined,
+            csvEmails: undefined,
+            fileTypeError: false,
+            fileName: "",
+            fileInputKey: new Date().getMilliseconds(),
             intendedRole: "MEMBER",
             language: "English",
             expiryDate: undefined,
@@ -53,7 +56,22 @@ export default class Invite extends React.Component {
     };
 
     handleFile = e => {
-        this.setState({file: e.target.files[0]});
+        const files  = e.target.files;
+
+        if (!isEmpty(files)) {
+            const file = files[0];
+            if (file.name.endsWith("csv")) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const csvEmails = reader.result;
+                    this.setState({fileName: file.name,fileTypeError: false, csvEmails: csvEmails});
+                };
+                reader.readAsText(file);
+            } else {
+                this.setState({fileTypeError: true});
+            }
+        }
+
     };
 
     cancel = e => {
@@ -66,25 +84,26 @@ export default class Invite extends React.Component {
     submit = e => {
         stop(e);
         if (this.isValid()) {
-            const {intendedRole, emails, expiryDate, message, file, language} = this.state;
+            const {intendedRole, emails, expiryDate, message, csvEmails, language} = this.state;
+            const teamId = this.props.match.params.teamId;
             invite({
-                teamId: this.props.match.params.id,
+                teamId,
                 intendedRole,
                 emails,
                 expiryDate: expiryDate || null,
                 message,
-                file,
+                csvEmails,
                 language
             })
                 .then(() => {
-                    this.props.history.push(`/teams/${this.props.match.params.id}`);
+                    this.props.history.push(`/teams/${teamId}`);
                     setFlash(I18n.t("invite.flash"));
                 })
                 .catch(err => handleServerError(err));
         }
     };
 
-    isValid = () => !isEmpty(this.state.emails);
+    isValid = () => !isEmpty(this.state.emails) || !isEmpty(this.state.csvEmails);
 
     validateEmail = e => {
         stop(e);
@@ -134,17 +153,12 @@ export default class Invite extends React.Component {
 
     };
 
-    handleError = json => {
-        //console.log(json);
-        return json ? true : false;
-    };
-
     render() {
         const {
-            initial, emails, email, file, intendedRole, language, expiryDate, message, suggestions, selectedPerson
+            initial, emails, email, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message, suggestions, selectedPerson
         } = this.state;
         const invalidEmailFormat = !initial && !isEmpty(email) && !validEmailRegExp.test(email);
-        const inValidEmail = !initial && emails.length === 0 && isEmpty(file) && isEmpty(email);
+        const inValidEmail = !initial && emails.length === 0 && isEmpty(csvEmails) && isEmpty(email);
         const showAutoCompletes = email.length > 2;
 
         return (
@@ -181,11 +195,15 @@ export default class Invite extends React.Component {
                         </section>
                         <section className="form-divider">
                             <label className="email-files">{I18n.t("invite.file_import")}</label>
-                            <input type="file" id="emailFiles" name="emailFiles" accept="text/csv"
+                            <input key={this.state.fileInputKey} type="file" id="emailFiles" name="emailFiles" accept="text/csv"
                                    style={{display: "none"}}
                                    onChange={this.handleFile}/>
-                            <label className="email-files-placeholder"
-                                   htmlFor="emailFiles">{I18n.t("invite.file_placeholder")}</label>
+                            <div className="validity-input-wrapper">
+                                <label className="email-files-placeholder"
+                                    htmlFor="emailFiles">{fileName || I18n.t("invite.file_placeholder")}</label>
+                                {(!isEmpty(fileName) || fileTypeError) && <i className="fa fa-times"></i>}
+                            </div>
+                            {fileTypeError && <em className="error">{I18n.t("invite.file_extension_error")}</em>}
                         </section>
                         <section className="form-divider">
                             <label className="invitation-role" htmlFor="invitationRole">{I18n.t("invite.role")}</label>

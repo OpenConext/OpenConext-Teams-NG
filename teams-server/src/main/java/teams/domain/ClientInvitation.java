@@ -25,7 +25,7 @@ public class ClientInvitation {
 
     private String message;
 
-    private MultipartFile file;
+    private String csvEmails;
 
     @NotNull
     private Language language;

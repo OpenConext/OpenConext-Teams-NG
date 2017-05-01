@@ -51,8 +51,8 @@ public interface Seed {
                 new Invitation(team(), "email", ADMIN, Dutch, null), person("urn"), message);
     }
 
-    default ClientInvitation clientInvitation(List<String> emails, MultipartFile file) {
-        return new ClientInvitation(1L, Role.MANAGER, emails,null,"Message", file, Language.Dutch);
+    default ClientInvitation clientInvitation(List<String> emails, String csvEmails) {
+        return new ClientInvitation(1L, Role.MANAGER, emails,null,"Message", csvEmails, Language.Dutch);
     }
 
 

@@ -137,6 +137,7 @@ I18n.translations.en = {
         email_invalid: "Email format is invalid.",
         file_import: "Add members by file import",
         file_placeholder: "Select csv or txt file...",
+        file_extension_error: "Only csv extension files are allowed",
         role: "Role within the team",
         invitation_language: "Invitation language",
         expiry_date: "Expiry date",
