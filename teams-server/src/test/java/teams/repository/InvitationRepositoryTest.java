@@ -33,7 +33,7 @@ public class InvitationRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void deleteOlderThenExpiryDays() throws Exception {
-        Invitation invitation = new Invitation(teamRepository.findOne(1L), "test@test.org", Role.ADMIN, Language.Dutch);
+        Invitation invitation = new Invitation(teamRepository.findOne(1L), "test@test.org", Role.ADMIN, Language.Dutch, null);
         invitation.addInvitationMessage(personRepository.findOne(1L), "Please join");
         invitationRepository.save(invitation);
 

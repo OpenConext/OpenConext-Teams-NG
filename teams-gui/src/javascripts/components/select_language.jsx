@@ -26,6 +26,7 @@ export default class SelectLanguage extends React.Component {
                        optionRenderer={this.renderOption}
                        options={languageOptions}
                        value={this.props.language}
+                       searchable={false}
                        valueRenderer={this.renderOption}/>;
     }
 

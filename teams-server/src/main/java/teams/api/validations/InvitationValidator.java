@@ -1,11 +1,28 @@
 package teams.api.validations;
 
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StreamUtils;
 import teams.domain.*;
 import teams.exception.*;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public interface InvitationValidator {
+
+
+    default void validateClientInvitation(ClientInvitation clientInvitation) {
+        List<String> emails = clientInvitation.getEmails();
+        if (CollectionUtils.isEmpty(emails) && clientInvitation.getFile() == null) {
+            throw  new IllegalInviteException("Either emails or file with emails is required");
+        }
+    }
 
     default void validateInvitation(Invitation invitation, Person person) {
         if (invitation.expired()) {
@@ -53,6 +70,14 @@ public interface InvitationValidator {
             default:
                 throw new IllegalInviteException("Only ADMIN and MANAGER can invite members");
         }
+    }
+
+    default List<String> emails(ClientInvitation clientInvitation) throws IOException {
+        validateClientInvitation(clientInvitation);
+        return CollectionUtils.isEmpty(clientInvitation.getEmails()) ?
+                Arrays.stream(StreamUtils.copyToString(clientInvitation.getFile().getInputStream(), Charset.defaultCharset()).split(",")).map(String::trim).collect(toList())
+                : clientInvitation.getEmails();
+
     }
 
 

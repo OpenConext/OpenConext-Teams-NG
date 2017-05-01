@@ -5,7 +5,7 @@ import ReactTooltip from "react-tooltip";
 import I18n from "i18n-js";
 import CopyToClipboard from "react-copy-to-clipboard";
 import {deleteTeam, getTeamDetail, leaveTeam, saveTeam} from "../api";
-import {setFlash} from "../utils/flash";
+import {setFlash, handleServerError} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
 import SortDropDown from "../components/sort_drop_down";
@@ -48,7 +48,7 @@ export default class TeamDetail extends React.Component {
         this.setState({
             team: team,
             members: members,
-            filteredMembers:  sortedMembers,
+            filteredMembers: sortedMembers,
             loaded: true
         });
 
@@ -104,8 +104,8 @@ export default class TeamDetail extends React.Component {
     };
 
     filterMembers = input => this.state.members.filter(member =>
-            member.person.name.toLowerCase().indexOf(input) > -1 ||
-            member.person.email.toLowerCase().indexOf(input) > -1);
+    member.person.name.toLowerCase().indexOf(input) > -1 ||
+    member.person.email.toLowerCase().indexOf(input) > -1);
 
     sort = item => {
         const {filteredMembers, sortAttributes} = this.state;
@@ -164,9 +164,7 @@ export default class TeamDetail extends React.Component {
                 this.stateTeam(team);
                 setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_updated")}));
             })
-            .catch(err => {
-                err.response.json().then(this.handleError);
-            });
+            .catch(err => handleServerError(err));
     };
 
     handleError = json => {

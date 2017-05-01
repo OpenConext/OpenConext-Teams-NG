@@ -5,6 +5,10 @@ import teams.AbstractApplicationTest;
 import teams.domain.*;
 
 import java.io.UnsupportedEncodingException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.StreamSupport;
@@ -32,7 +36,8 @@ public class InvitationControllerTest extends AbstractApplicationTest {
 
     private void doInvitation(Language language) throws UnsupportedEncodingException {
         ClientInvitation clientInvitation = new ClientInvitation(
-                2L, Role.ADMIN, "test@test.org", "Please join", language);
+                2L, Role.ADMIN, Arrays.asList("test@test.org", "test2@test.org"),
+                Instant.now().plus(365, ChronoUnit.DAYS), "Please join", null, language);
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
@@ -42,9 +47,12 @@ public class InvitationControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_OK);
 
-        Invitation invitation = StreamSupport.stream(invitationRepository.findAll().spliterator(), false)
-                .filter(i -> i.getTeam().getId().equals(clientInvitation.getTeamId()) && i.getInvitationHash().length() > 150 )
-                .findFirst().get();
+        List<Invitation> invitations = StreamSupport.stream(invitationRepository.findAll().spliterator(), false)
+                .filter(i -> i.getTeam().getId().equals(clientInvitation.getTeamId()) && i.getInvitationHash().length() > 150)
+                .collect(toList());
+        assertEquals(2, invitations.size());
+
+        Invitation invitation = invitations.get(0);
         assertEquals(language, invitation.getLanguage());
 
         Set<InvitationMessage> invitationMessages = invitation.getInvitationMessages();

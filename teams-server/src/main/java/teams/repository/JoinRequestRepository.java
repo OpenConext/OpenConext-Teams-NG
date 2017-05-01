@@ -14,7 +14,8 @@ import java.util.List;
 @Repository
 public interface JoinRequestRepository extends CrudRepository<JoinRequest, Long> {
 
-    @EntityGraph(value = "findByPerson", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "team")
+    @EntityGraph(value = "findByPerson", type = EntityGraph.EntityGraphType.LOAD,
+            attributePaths = "team")
     List<JoinRequest> findByPerson(Person person);
 
     @Query(value = "select i.team.id, count(i.id) from teams.domain.JoinRequest i where i.team.id in :teamIds group by i.team")

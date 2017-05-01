@@ -79,6 +79,7 @@ section.teams-autocomplete {
         }
         &.matched {
           font-weight: bold;
+          text-decoration: underline;
         }
       }
 

@@ -36,7 +36,8 @@ public class UserController {
         if (query.trim().length() < 3) {
             throw new IllegalSearchParamException("Minimal query length is 3");
         }
-        return personRepository.findFirst10ByNameStartingWithOrEmailStartingWithAllIgnoreCase(query, query).stream()
+        List<Person> persons = personRepository.findFirst10ByNameStartingWithOrEmailStartingWithAllIgnoreCase(query, query);
+        return persons.stream()
                 .map(person -> new PersonAutocomplete(person.getName(), person.getEmail()))
                 .collect(toList());
     }

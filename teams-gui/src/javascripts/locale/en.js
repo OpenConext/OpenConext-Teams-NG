@@ -36,8 +36,6 @@ I18n.translations.en = {
 
     teams: {
         title: "My teams",
-        member_requests: "Join requests",
-        invitations_send: "Invitations send",
         name: "Team name",
         description: "Description",
         searchPlaceHolder: "SEARCH / JOIN ALL PUBLIC TEAMS...",
@@ -130,6 +128,27 @@ I18n.translations.en = {
         submit: "CREATE",
         cancel: "CANCEL",
         cancel_confirmation: "Are you sure you want to leave this page?"
+    },
+    invite: {
+        title: "Invite member",
+        email: "Add members by email address",
+        emails_placeholder: "Enter one or more email address...",
+        email_required: "Email is required - either add an email or select a file containing comma separated emails",
+        email_invalid: "Email format is invalid.",
+        file_import: "Add members by file import",
+        file_placeholder: "Select csv or txt file...",
+        role: "Role within the team",
+        invitation_language: "Invitation language",
+        expiry_date: "Expiry date",
+        expiry_date_placeholder: "Expiry date for membership",
+        expiry_date_none: "None",
+        message: "Message",
+        message_info: "Your personal invitation message",
+        submit: "Invite members",
+        cancel: "Cancel",
+        flash: "Invitation has been sent",
+        message_placeholder: "Personal message to be included in the invitation email"
+
     },
 
     profile: {

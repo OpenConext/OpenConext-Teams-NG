@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
@@ -66,13 +67,17 @@ public class Invitation {
     @Enumerated(EnumType.STRING)
     private Language language;
 
-    public Invitation(Team team, String email, Role intendedRole, Language language) throws UnsupportedEncodingException {
+    @Column
+    private Instant expiryDate;
+
+    public Invitation(Team team, String email, Role intendedRole, Language language, Instant expiryDate)  {
         this.team = team;
         this.email = email;
         this.invitationHash = generateInvitationHash();
         this.timestamp = new Date().getTime();
         this.language = language;
         this.intendedRole = intendedRole;
+        this.expiryDate = expiryDate;
     }
 
     @JsonProperty(value = "expired", access = JsonProperty.Access.READ_ONLY)
@@ -80,12 +85,16 @@ public class Invitation {
         return (timestamp + TWO_WEEKS) < System.currentTimeMillis();
     }
 
-    private String generateInvitationHash() throws UnsupportedEncodingException {
+    private String generateInvitationHash()  {
         Random secureRandom = new SecureRandom();
         byte[] aesKey = new byte[128];
         secureRandom.nextBytes(aesKey);
         String base64 = Base64.getEncoder().encodeToString(aesKey);
-        return URLEncoder.encode(base64, "UTF-8").replaceAll("%", "");
+        try {
+            return URLEncoder.encode(base64, "UTF-8").replaceAll("%", "");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @JsonIgnore
@@ -100,10 +109,10 @@ public class Invitation {
         this.declined = !accepted;
     }
 
-    public InvitationMessage addInvitationMessage(Person person, String message) {
+    public Invitation addInvitationMessage(Person person, String message) {
         InvitationMessage invitationMessage = new InvitationMessage(this, person, message);
         this.invitationMessages.add(invitationMessage);
-        return invitationMessage;
+        return this;
     }
 
 }

@@ -6,7 +6,7 @@ import debounce from "lodash/debounce";
 
 import SortDropDown from "../components/sort_drop_down";
 import TeamAutocomplete from "../components/team_autocomplete";
-import {autoComplete, deleteTeam, getMyTeams} from "../api";
+import {autoCompleteTeam, deleteTeam, getMyTeams} from "../api";
 import {clearFlash, setFlash} from "../utils/flash";
 import {stop} from "../utils/utils";
 
@@ -92,7 +92,7 @@ export default class MyTeams extends React.Component {
     };
 
     delayedAutocomplete = debounce(() =>
-        autoComplete(this.state.query).then(results => this.setState({suggestions: results})), 200);
+        autoCompleteTeam(this.state.query).then(results => this.setState({suggestions: results})), 200);
 
     sort = item => {
         const {teams, sortAttributes} = this.state;

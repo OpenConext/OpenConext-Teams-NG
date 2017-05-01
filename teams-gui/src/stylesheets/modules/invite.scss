@@ -1,0 +1,73 @@
+.invite {
+
+  @include page;
+
+  h2 {
+    margin: 35px 0 20px 0;
+    font-size: 22px;
+  }
+
+  .card {
+    @include card;
+    @import "../excludes/forms.scss";
+
+    padding: 50px 25px 25px;
+
+    section.form-divider {
+      margin-bottom: 25px;
+
+    }
+
+    section.screen-divider {
+      display: inline-block;
+      width: 50%;
+      margin-bottom: 0;
+
+      &.invitation-expiry-date {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+      }
+
+      @include phone {
+        width: 100%;
+      }
+    }
+
+    label.email-files-placeholder {
+      text-transform: none;
+      font-weight: normal;
+      color: $blue;
+      display: block;
+      border: 1px solid $lighter-grey;
+      padding: 5px;
+      border-radius: $br;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .validity-input-wrapper {
+
+      i {
+
+        &.fa-search {
+          color: $blue;
+        }
+        &.fa-check {
+          color: $green;
+        }
+        &.fa-exclamation {
+          color: $red;
+        }
+      }
+    }
+
+    div.react-datepicker__input-container {
+      input[type=text] {
+        padding: 8px;
+        width: 200px;
+      }
+    }
+
+  }
+
+}

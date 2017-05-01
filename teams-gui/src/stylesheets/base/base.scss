@@ -13,12 +13,10 @@ body {
 }
 
 ::-webkit-input-placeholder {
-  color: $lighter-blue;
-  font-weight: bold;
+  color: $blue;
 }
 
 ::-moz-placeholder {
-  color: $lighter-blue;
-  font-weight: bold;
+  color: $blue;
   opacity: 1;
 }

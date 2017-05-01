@@ -12,6 +12,10 @@ $lighter-grey: #d9d9d8;
 $medium-grey: #90a4ae;
 $dark-grey: #565656;
 
+$admin: rgba(242, 215, 50, 1);
+$manager: rgba(160, 160, 160, 1);
+$member: rgba(223, 182, 103, 1);
+
 // borders
 $border: rgba(black,.1);
 $border-light: rgba(white, .2);
@@ -21,3 +25,6 @@ $br: 3px;
 
 // Screen
 $medium: 1080px;
+
+$minDesktop: 1024px;
+$minTablet: 768px;

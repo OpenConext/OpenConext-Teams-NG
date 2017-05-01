@@ -46,7 +46,14 @@ public class Membership {
     @NotNull
     private String urnTeam;
 
+    @Column
+    private Instant expiryDate;
+
     public Membership(Role role, Team team, Person person) {
+        this(role, team, person, null);
+    }
+
+    public Membership(Role role, Team team, Person person, Instant expiryDate) {
         Assert.notNull(team.getUrn(), "Urn team required");
         Assert.notNull(person.getUrn(), "Urn person required");
         this.role = role;
@@ -55,6 +62,6 @@ public class Membership {
         this.urnTeam = team.getUrn();
         this.person = person;
         this.urnPerson = person.getUrn();
+        this.expiryDate = expiryDate;
     }
-
 }

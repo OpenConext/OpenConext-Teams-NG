@@ -22,3 +22,10 @@ export function clearFlash() {
     emitter.emit("flash", {});
 }
 
+export function handleServerError(err) {
+    err.response.json().then(json => {
+        setFlash(JSON.stringify(json, null, 4), "error");
+        window.scrollTo(0, 0);
+    });
+}
+

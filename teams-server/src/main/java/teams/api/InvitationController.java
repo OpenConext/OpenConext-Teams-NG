@@ -2,39 +2,53 @@ package teams.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.InvitationValidator;
 import teams.api.validations.MembershipValidator;
 import teams.domain.*;
+import teams.exception.IllegalInviteException;
 import teams.exception.ResourceNotFoundException;
 import teams.mail.MailBox;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/invitations")
-    public Invitation invitation(@Validated @RequestBody ClientInvitation clientInvitation,
-                           FederatedUser federatedUser) throws IOException, MessagingException {
+    public List<Invitation> invitation(@Validated @RequestBody ClientInvitation clientInvitation,
+                                       FederatedUser federatedUser) throws IOException, MessagingException {
         Team team = teamById(clientInvitation.getTeamId());
         Person person = federatedUser.getPerson();
 
         membershipRequired(team, person);
         Role role = determineFutureRole(team, person, clientInvitation.getIntendedRole());
 
-        Invitation invitation = new Invitation(
-                team,
-                clientInvitation.getEmail(),
-                role,
-                clientInvitation.getLanguage());
-        invitation.addInvitationMessage(person, clientInvitation.getMessage());
+        validateClientInvitation(clientInvitation);
 
-        return saveAndSendInvitation(invitation, team, person);
+        List<String> emails = emails(clientInvitation);
+        List<Invitation> invitations = emails.stream().map(email -> new Invitation(
+                team,
+                email,
+                role,
+                clientInvitation.getLanguage(),
+                clientInvitation.getExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
+                .collect(toList());
+
+        return saveAndSendInvitation(invitations, team, person);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -79,7 +93,7 @@ public class InvitationController extends ApiController implements MembershipVal
         Invitation invitation = doAcceptOrDeny(key, true, person);
         Team team = invitation.getTeam();
         Role role = person.isGuest() ? Role.MEMBER : invitation.getIntendedRole();
-        new Membership(role, team, person);
+        new Membership(role, team, person, invitation.getExpiryDate());
 
         return teamRepository.save(team);
     }

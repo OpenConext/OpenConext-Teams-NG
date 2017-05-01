@@ -1,7 +1,9 @@
 package teams.api.validations;
 
 import org.junit.Test;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.multipart.MultipartFile;
 import teams.Seed;
 import teams.api.InvitationController;
 import teams.domain.*;
@@ -9,6 +11,7 @@ import teams.exception.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -96,6 +99,35 @@ public class InvitationValidatorTest implements Seed {
         doDetermineFutureRole(Role.MEMBER, Role.ADMIN);
     }
 
+    @Test(expected = IllegalInviteException.class)
+    public void validateClientInvitationException() throws Exception {
+        subject.validateClientInvitation(clientInvitation(Collections.emptyList(), null));
+    }
+
+    @Test
+    public void validateClientInvitationEmails() throws Exception {
+        subject.validateClientInvitation(clientInvitation(Collections.singletonList("test@org"), null));
+    }
+
+    @Test
+    public void validateClientInvitationFile() throws Exception {
+        MultipartFile file = new MockMultipartFile("emails.csv", "test@org , test2@org".getBytes());
+        subject.validateClientInvitation(clientInvitation(Collections.emptyList(), file));
+    }
+
+    @Test
+    public void emailsEmails() throws Exception {
+        List<String> emails = subject.emails(clientInvitation(Collections.singletonList("test@org"), null));
+        assertEquals(emails.size(), 1);
+    }
+
+    @Test
+    public void emailsFile() throws Exception {
+        MultipartFile file = new MockMultipartFile("emails.csv", "test@org , test2@org".getBytes());
+        List<String> emails = subject.emails(clientInvitation(Collections.emptyList(), file));
+        assertEquals(emails.size(), 2);
+    }
+
     private void doDetermineFutureRole(Role role, Role intendedRole) {
         Team team = team();
         Person person = person();
@@ -104,7 +136,7 @@ public class InvitationValidatorTest implements Seed {
     }
 
     private Invitation invitation(boolean accepted, boolean declined) throws UnsupportedEncodingException {
-        Invitation invitation = new Invitation(team(), "jdoe@example.com", Role.ADMIN, Language.Dutch);
+        Invitation invitation = new Invitation(team(), "jdoe@example.com", Role.ADMIN, Language.Dutch, null);
         ReflectionTestUtils.setField(invitation, "accepted", accepted);
         ReflectionTestUtils.setField(invitation, "declined", declined);
         return invitation;

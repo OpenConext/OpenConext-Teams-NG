@@ -11,8 +11,7 @@ public class InvitationMessageTest implements Seed {
 
     @Test
     public void isContainsMessage() throws Exception {
-        InvitationMessage invitationMessage = new InvitationMessage(
-                new Invitation(team(), "email", ADMIN, Dutch), person("urn"), "  ");
+        InvitationMessage invitationMessage = invitationMessage("  ");
 
         assertFalse(invitationMessage.isContainsMessage());
         assertEquals("", invitationMessage.getHtmlMessage());
@@ -20,8 +19,7 @@ public class InvitationMessageTest implements Seed {
 
     @Test
     public void getHtmlMessage() throws Exception {
-        InvitationMessage invitationMessage = new InvitationMessage(
-                new Invitation(team(), "email", ADMIN, Dutch), person("urn"), "hoi\nnewLine");
+        InvitationMessage invitationMessage = invitationMessage("hoi\nnewLine");
 
         assertTrue(invitationMessage.isContainsMessage());
         assertEquals("hoi<br/>newLine", invitationMessage.getHtmlMessage());

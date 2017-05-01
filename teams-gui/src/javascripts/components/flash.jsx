@@ -8,8 +8,10 @@ export default class Flash extends React.Component {
         this.state = {flash: null, className: ""};
         this.callback = flash => {
             this.setState({flash: flash, className: ""});
-            setTimeout(() => this.setState({className: "hide"}),
-                this.state.flash && this.state.flash.type === "info" ? 3500 : 5500);
+            if (flash && (!flash.type || flash.type !== "error")) {
+                setTimeout(() => this.setState({className: "hide"}),
+                    flash.type === "info" ? 3500 : 5500);
+            }
         };
     }
 

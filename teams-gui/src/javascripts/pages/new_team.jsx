@@ -7,7 +7,7 @@ import debounce from "lodash/debounce";
 import SelectLanguage from "../components/select_language";
 import CheckBox from "../components/checkbox";
 import {saveTeam, teamExistsByName} from "../api";
-import {setFlash} from "../utils/flash";
+import {setFlash, handleServerError} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 
 const validNameRegExp = /^[\w \-']{1,255}$/;
@@ -78,9 +78,7 @@ export default class NewTeam extends React.Component {
                     this.props.history.push(`/teams/${team.id}`);
                     setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_created")}));
                 })
-                .catch(err => {
-                    err.response.json().then(this.handleError);
-                });
+                .catch(err => handleServerError(err));
         }
     };
 
@@ -91,11 +89,6 @@ export default class NewTeam extends React.Component {
         stop(e);
         const email = e.target.value;
         this.setState({validEmail: isEmpty(email) || validEmailRegExp.test(email)});
-    };
-
-    handleError = json => {
-        //console.log(json);
-        return json ? true : false;
     };
 
     render() {

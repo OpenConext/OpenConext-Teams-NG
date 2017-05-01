@@ -131,13 +131,13 @@
           padding: 15px 15px 15px 0;
           font-size: 16px;
           &.admin {
-            color: rgba(242, 215, 50, 1);
+            color: $admin;
           }
           &.manager {
-            color: rgba(160, 160, 160, 1);
+            color: $manager;
           }
           &.member {
-            color: rgba(223, 182, 103, 1);
+            color: $member;
           }
           &.fa-clock-o {
             color: $green;

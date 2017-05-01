@@ -5,7 +5,8 @@
       "teamDescription": "we are masters",
       "joinRequest": {
         "id": 3,
-        "created": 1493392685.000000000,
+        "person": null,
+        "created": 1493537226.000000000,
         "message": "Please, please let me join"
       }
     }
@@ -25,7 +26,7 @@
       "id": 2,
       "name": "giants",
       "urn": "nl:surfnet:diensten:giants",
-      "membershipCount": 1,
+      "membershipCount": 4,
       "description": "we are giants",
       "role": "MANAGER",
       "joinRequestsCount": 0,
@@ -35,7 +36,7 @@
       "id": 3,
       "name": "gliders",
       "urn": "nl:surfnet:diensten:gliders",
-      "membershipCount": 1,
+      "membershipCount": 3,
       "description": "we are gliders",
       "role": "MEMBER",
       "joinRequestsCount": 0,

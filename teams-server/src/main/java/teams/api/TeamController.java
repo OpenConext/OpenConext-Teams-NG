@@ -12,6 +12,7 @@ import teams.exception.IllegalSearchParamException;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,9 +108,10 @@ public class TeamController extends ApiController implements TeamValidator {
                     team,
                     teamProperties.getEmail(),
                     Role.ADMIN,
-                    teamProperties.getLanguage());
+                    teamProperties.getLanguage(),
+                    null);
             invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
-            Invitation saved = saveAndSendInvitation(invitation, team, person);
+            Invitation saved = saveAndSendInvitation(Collections.singletonList(invitation), team, person).get(0);
             savedTeam.getInvitations().add(saved);
         }
 

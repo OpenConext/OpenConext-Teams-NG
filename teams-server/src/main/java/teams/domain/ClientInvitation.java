@@ -2,8 +2,12 @@ package teams.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.Instant;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -15,10 +19,13 @@ public class ClientInvitation {
     @NotNull
     private Role intendedRole;
 
-    @NotNull
-    private String email;
+    private List<String> emails;
+
+    private Instant expiryDate;
 
     private String message;
+
+    private MultipartFile file;
 
     @NotNull
     private Language language;

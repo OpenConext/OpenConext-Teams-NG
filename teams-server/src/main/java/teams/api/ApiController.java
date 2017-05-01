@@ -13,10 +13,13 @@ import teams.repository.*;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.StreamSupport;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 
 
 public abstract class ApiController {
@@ -71,14 +74,20 @@ public abstract class ApiController {
         }
     }
 
-    protected Invitation saveAndSendInvitation(Invitation invitation, Team team, Person person) throws IOException, MessagingException {
-        Invitation saved = invitationRepository.save(invitation);
+    protected List<Invitation> saveAndSendInvitation(List<Invitation> invitations, Team team, Person person) throws IOException, MessagingException {
+        Iterable<Invitation> saved = invitationRepository.save(invitations);
 
         LOG.info("Created invitation for team {} and person {}", team.getUrn(), person.getUrn());
 
-        mailBox.sendInviteMail(invitation);
+        saved.forEach(invitation -> {
+            try {
+                mailBox.sendInviteMail(invitation);
+            } catch (MessagingException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
-        return saved;
+        return StreamSupport.stream(saved.spliterator(),false).collect(toList());
     }
 
 

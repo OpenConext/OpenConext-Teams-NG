@@ -43,7 +43,7 @@ public class MailBoxTest extends AbstractApplicationTest {
         Team team = new Team("urn", "Champions", "description", true, null);
         Person person = new Person("urn", "John Doe", EMAIL, false);
 
-        Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.Dutch);
+        Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.Dutch, null);
         invitation.addInvitationMessage(person, "Please join");
 
         mailBox.sendInviteMail(invitation);

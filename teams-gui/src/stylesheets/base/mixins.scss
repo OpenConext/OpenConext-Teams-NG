@@ -23,3 +23,31 @@
   }
   max-width: 410px;
 }
+
+@mixin select-dropdown {
+  span.Select-clear-zone {
+    display: none;
+  }
+
+  div.Select-control {
+    border-radius: $br;
+    border: 1px solid $lighter-grey;
+    margin-top: 5px;
+    display: table;
+    border-spacing: 0;
+    border-collapse: separate;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+  }
+
+  span.Select-arrow-zone {
+    padding: 0 12px;
+    background-color: $light-grey;
+  }
+
+  span.select-option {
+    display: flex;
+    align-items: center;
+  }
+}
