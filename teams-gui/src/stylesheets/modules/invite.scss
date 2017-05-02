@@ -34,23 +34,43 @@
       }
     }
 
-    label.email-files-placeholder {
-      text-transform: none;
-      font-weight: normal;
-      color: $blue;
-      display: block;
+    div.email-files-container {
       border: 1px solid $lighter-grey;
-      padding: 5px;
       border-radius: $br;
-      font-size: 14px;
       margin-top: 5px;
-      position: relative;
+
+      label {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        text-transform: none;
+        font-weight: normal;
+        color: $blue;
+        font-size: 14px;
+        cursor: pointer;
+        width: 100%;
+        span {
+          &.file-name {
+            flex-grow: 5;
+            padding: 6px;
+          }
+          &.remove {
+            padding: 6px 14px;
+            background-color: $light-grey;
+            cursor: pointer;
+            font-size: larger;
+            color: $dark-grey;
+          }
+        }
+      }
+    }
+
+    label.email-files-placeholder {
     }
 
     .validity-input-wrapper {
 
       i {
-
         &.fa-search {
           color: $blue;
         }
@@ -59,6 +79,33 @@
         }
         &.fa-exclamation {
           color: $red;
+        }
+      }
+    }
+    section.email_tags {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+
+      div.email_tag {
+        border: 1px solid $lighter-grey;
+        border-radius: $br;
+        margin: 10px 10px 0 0;
+        display: flex;
+        align-content: center;
+        align-items: center;
+
+        span {
+          &:first-child {
+            padding-left: 6px;
+            padding-right: 24px;
+          }
+          &:last-child {
+            padding: 6px 14px;
+            background-color: $light-grey;
+            cursor: pointer;
+            font-size: larger;
+          }
         }
       }
     }
