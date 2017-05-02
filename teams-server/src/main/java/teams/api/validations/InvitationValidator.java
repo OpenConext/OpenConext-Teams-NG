@@ -1,27 +1,28 @@
 package teams.api.validations;
 
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import teams.domain.*;
 import teams.exception.*;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
 public interface InvitationValidator {
 
+    Pattern emailPattern = Pattern.compile("\\S+@\\S+");
 
     default void validateClientInvitation(ClientInvitation clientInvitation) {
         List<String> emails = clientInvitation.getEmails();
         if (CollectionUtils.isEmpty(emails) && StringUtils.isEmpty(clientInvitation.getCsvEmails())) {
-            throw  new IllegalInviteException("Either emails or file with emails is required");
+            throw new IllegalInviteException("Either emails or file with emails is required");
         }
     }
 
@@ -75,10 +76,13 @@ public interface InvitationValidator {
 
     default List<String> emails(ClientInvitation clientInvitation) throws IOException {
         validateClientInvitation(clientInvitation);
-        //TODO combine instead of exclusive
-        return CollectionUtils.isEmpty(clientInvitation.getEmails()) ?
-                Arrays.stream(clientInvitation.getCsvEmails().split(",")).map(String::trim).collect(toList())
-                : clientInvitation.getEmails();
+        List<String> fromFile = StringUtils.hasText(clientInvitation.getCsvEmails()) ?
+                Stream.of(clientInvitation.getCsvEmails().split(","))
+                        .filter(email -> emailPattern.matcher(email.trim()).matches())
+                        .collect(toList()) : Collections.emptyList();
+        List<String> fromInput = clientInvitation.getEmails();
+        fromInput.addAll(fromFile);
+        return fromInput;
 
     }
 

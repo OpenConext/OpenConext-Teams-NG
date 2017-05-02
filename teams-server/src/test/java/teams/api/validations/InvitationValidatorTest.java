@@ -10,6 +10,7 @@ import teams.domain.*;
 import teams.exception.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -122,7 +123,7 @@ public class InvitationValidatorTest implements Seed {
 
     @Test
     public void emailsFile() throws Exception {
-        List<String> emails = subject.emails(clientInvitation(Collections.emptyList(), "test@org , test2@org"));
+        List<String> emails = subject.emails(clientInvitation(new ArrayList<>(), "test@org , test2@org"));
         assertEquals(emails.size(), 2);
     }
 
