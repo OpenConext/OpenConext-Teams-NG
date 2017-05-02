@@ -78,7 +78,8 @@ public interface InvitationValidator {
         validateClientInvitation(clientInvitation);
         List<String> fromFile = StringUtils.hasText(clientInvitation.getCsvEmails()) ?
                 Stream.of(clientInvitation.getCsvEmails().split(","))
-                        .filter(email -> emailPattern.matcher(email.trim()).matches())
+                        .map(email -> email.trim().replaceAll("[\\t\\n\\r]",""))
+                        .filter(email -> emailPattern.matcher(email).matches())
                         .collect(toList()) : Collections.emptyList();
         List<String> fromInput = clientInvitation.getEmails();
         fromInput.addAll(fromFile);

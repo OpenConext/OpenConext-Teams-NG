@@ -14,6 +14,7 @@ import {autoCompletePerson, invite, roleOfCurrentUserInTeam} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import SelectRole from "../components/select_role";
+import moment from "moment";
 
 const validEmailRegExp = /^\S+@\S+$/;
 
@@ -272,6 +273,7 @@ export default class Invite extends React.Component {
                                 isClearable={false}
                                 onChange={this.handleInputChange("expiryDate")}
                                 customInput={<DatePickerCustomInput clear={this.clearDate}/>}
+                                minDate={moment().add(1, "days")}
                                 locale={I18n.locale}/>
                 </div>
             </section>
