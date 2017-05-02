@@ -10,6 +10,8 @@ import teams.domain.*;
 import teams.exception.*;
 
 import java.io.UnsupportedEncodingException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -113,6 +115,18 @@ public class InvitationValidatorTest implements Seed {
     @Test
     public void validateClientInvitationFile() throws Exception {
         subject.validateClientInvitation(clientInvitation(Collections.emptyList(), "test@org , test2@org"));
+    }
+
+    @Test(expected = IllegalInviteException.class)
+    public void validateClientInvitationFileExpiryDatePast() throws Exception {
+        subject.validateClientInvitation(
+                clientInvitation(Collections.emptyList(), "test@org , test2@org", Instant.now().minus(5, ChronoUnit.DAYS)));
+    }
+
+    @Test
+    public void validateClientInvitationFileExpiryDateFuture() throws Exception {
+        subject.validateClientInvitation(
+                clientInvitation(Collections.emptyList(), "test@org , test2@org", Instant.now().plus(5, ChronoUnit.DAYS)));
     }
 
     @Test

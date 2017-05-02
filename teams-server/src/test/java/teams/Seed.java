@@ -1,8 +1,8 @@
 package teams;
 
-import org.springframework.web.multipart.MultipartFile;
 import teams.domain.*;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,6 +42,7 @@ public interface Seed {
     default FederatedUser federatedUser(String urn) {
         return new FederatedUser(person(urn), "urn:collab:group:dev.surfteams.nl:", Collections.emptyList());
     }
+
     default FederatedUser federatedUser() {
         return federatedUser("urn");
     }
@@ -52,9 +53,12 @@ public interface Seed {
     }
 
     default ClientInvitation clientInvitation(List<String> emails, String csvEmails) {
-        return new ClientInvitation(1L, Role.MANAGER, emails,null,"Message", csvEmails, Language.Dutch);
+        return clientInvitation(emails, csvEmails, null);
     }
 
+    default ClientInvitation clientInvitation(List<String> emails, String csvEmails, Instant instant) {
+        return new ClientInvitation(1L, Role.MANAGER, emails, instant, "Message", csvEmails, Language.Dutch);
+    }
 
 
 }

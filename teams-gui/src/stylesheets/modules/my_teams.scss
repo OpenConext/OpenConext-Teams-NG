@@ -26,6 +26,7 @@
 
   .card {
     @include card;
+    padding-bottom: 15px;
   }
 
   .options {
