@@ -99,6 +99,10 @@ export function teamExistsByName(name) {
     return fetchJson("team-exists-by-name?name=" + encodeURIComponent(name));
 }
 
+export function roleOfCurrentUserInTeam(teamId) {
+    return fetchJson("membership/"+teamId);
+}
+
 export function invite(invitation) {
     return postPutJson("invitations", invitation);
 }

@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface MembershipRepository extends CrudRepository<Membership, Long> {
 
     Optional<Membership> findByUrnTeamAndUrnPerson(String teamUrn, String personUrn);
+
 }

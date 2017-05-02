@@ -5,9 +5,19 @@ import org.springframework.web.bind.annotation.*;
 import teams.api.validations.MembershipValidator;
 import teams.domain.*;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+
 
 @RestController
 public class MembershipController extends ApiController implements MembershipValidator {
+
+    @GetMapping("api/teams/membership/{teamId}")
+    public Map<String, Role> membership(@PathVariable("teamId") Long teamId, FederatedUser federatedUser) {
+        Membership membership = membership(teamById(teamId), federatedUser.getUrn());
+        return Collections.singletonMap("role", membership.getRole());
+    }
 
     @PutMapping("api/teams/membership")
     public void changeMembership(@Validated @RequestBody Membership membershipProperties, FederatedUser federatedUser) {

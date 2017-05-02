@@ -6,7 +6,6 @@ import teams.domain.*;
 
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +18,9 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class InvitationControllerTest extends AbstractApplicationTest {
@@ -59,6 +60,24 @@ public class InvitationControllerTest extends AbstractApplicationTest {
         assertEquals(1, invitationMessages.size());
         InvitationMessage invitationMessage = invitationMessages.iterator().next();
         invitationMessage.getMessage().equals("Please join");
+    }
+
+    @Test
+    public void invitationInfo() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:unknown")
+                .queryParam("key", "secret")
+                .when()
+                .get("api/teams/invitations/info")
+                .then()
+                .statusCode(SC_OK)
+                .body("latestInvitationMessage.message", equalTo("Please join"))
+                .body("teamName", equalTo("riders"))
+                .body("teamDescription", equalTo("we are riders"))
+                .body("invitationEmail", equalTo("test@example.com"))
+                .body("intendedRole", equalTo("MANAGER"));
+
     }
 
     @Test

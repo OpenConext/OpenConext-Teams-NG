@@ -18,6 +18,8 @@ import java.util.Optional;
 @Repository
 public interface InvitationRepository extends CrudRepository<Invitation, Long> {
 
+    @EntityGraph(value = "findFirstByInvitationHash", type = EntityGraph.EntityGraphType.LOAD,
+            attributePaths = {"invitationMessages", "team", "team.memberships"})
     Optional<Invitation> findFirstByInvitationHash(String invitationHash);
 
     @Query(value = "select i.team.id, count(i.id) from teams.domain.Invitation i where i.team.id in :teamIds group by i.team")

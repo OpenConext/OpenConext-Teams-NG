@@ -75,6 +75,7 @@ public interface InvitationValidator {
 
     default List<String> emails(ClientInvitation clientInvitation) throws IOException {
         validateClientInvitation(clientInvitation);
+        //TODO combine instead of exclusive
         return CollectionUtils.isEmpty(clientInvitation.getEmails()) ?
                 Arrays.stream(clientInvitation.getCsvEmails().split(",")).map(String::trim).collect(toList())
                 : clientInvitation.getEmails();

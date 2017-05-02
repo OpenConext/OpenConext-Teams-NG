@@ -18,10 +18,11 @@ export default class SelectRole extends React.Component {
     };
 
     render() {
+        const isAdminInTeam = this.props.roleOfCurrentUserInTeam === "ADMIN";
         return <Select className="select-role"
                        onChange={this.props.onChange}
                        optionRenderer={this.renderOption}
-                       options={roleOptions}
+                       options={roleOptions.filter(option => isAdminInTeam || option.value === "MEMBER")}
                        value={this.props.role}
                        searchable={false}
                        valueRenderer={this.renderOption}/>;
@@ -32,7 +33,8 @@ export default class SelectRole extends React.Component {
 
 SelectRole.propTypes = {
     onChange: PropTypes.func.isRequired,
-    role: PropTypes.string.isRequired
+    role: PropTypes.string.isRequired,
+    roleOfCurrentUserInTeam: PropTypes.string.isRequired
 };
 
 

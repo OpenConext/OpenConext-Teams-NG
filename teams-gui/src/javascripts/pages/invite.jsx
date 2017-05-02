@@ -10,7 +10,7 @@ import PersonAutocomplete from "../components/person_autocomplete";
 import InvitationInfo from "../components/invitation_info";
 import DatePickerCustomInput from "../components/date_picker_custom";
 import SelectLanguage from "../components/select_language";
-import {autoCompletePerson, invite} from "../api";
+import {autoCompletePerson, invite, roleOfCurrentUserInTeam} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import SelectRole from "../components/select_role";
@@ -26,6 +26,7 @@ export default class Invite extends React.Component {
             emails: [],
             email: "",
             csvEmails: undefined,
+            mailsImported: 0,
             fileTypeError: false,
             fileName: "",
             fileInputKey: new Date().getMilliseconds(),
@@ -34,12 +35,15 @@ export default class Invite extends React.Component {
             expiryDate: undefined,
             message: "",
             suggestions: [],
-            selectedPerson: -1
+            selectedPerson: -1,
+            roleOfCurrentUserInTeam: "MANAGER"
         };
     }
 
     componentDidMount() {
         this.emailInput.focus();
+        roleOfCurrentUserInTeam(this.props.match.params.teamId).then(role =>
+            this.setState({roleOfCurrentUserInTeam: role.role}));
     }
 
     removeMail = mail => e => {
@@ -75,11 +79,12 @@ export default class Invite extends React.Component {
                 const reader = new FileReader();
                 reader.onload = () => {
                     const csvEmails = reader.result;
-                    this.setState({fileName: file.name, fileTypeError: false, csvEmails: csvEmails});
+                    this.setState({fileName: file.name, fileTypeError: false, initial: true, csvEmails: csvEmails,
+                        mailsImported: csvEmails.split(",").filter(mail => validEmailRegExp.test(mail.trim())) .length});
                 };
                 reader.readAsText(file);
             } else {
-                this.setState({fileName: file.name, fileTypeError: true, csvEmails: undefined});
+                this.setState({fileName: file.name, fileTypeError: true, csvEmails: undefined, mailsImported: 0});
             }
         }
 
@@ -88,7 +93,7 @@ export default class Invite extends React.Component {
     cancel = e => {
         stop(e);
         if (confirm(I18n.t("invite.cancel"))) {
-            this.props.history.replace(`/teams/${this.props.match.params.id}`);
+            this.props.history.replace(`/teams/${this.props.match.params.teamId}`);
         }
     };
 
@@ -165,7 +170,9 @@ export default class Invite extends React.Component {
             csvEmails: undefined,
             fileTypeError: false,
             fileName: "",
-            fileInputKey: new Date().getMilliseconds()
+            initial: true,
+            fileInputKey: new Date().getMilliseconds(),
+            mailsImported: 0
         });
     };
 
@@ -174,8 +181,7 @@ export default class Invite extends React.Component {
         const email = personAutocomplete.email.trim();
         if (emails.indexOf(email) < 0) {
             this.setState({email: "", emails: [...emails, email], initial: true});
-        }
-        else {
+        } else {
             this.setState({email: "", initial: true});
         }
 
@@ -185,7 +191,6 @@ export default class Invite extends React.Component {
         const invalidEmailFormat = !initial && !isEmpty(email) && !validEmailRegExp.test(email);
         const inValidEmail = !initial && emails.length === 0 && isEmpty(csvEmails) && isEmpty(email);
         const showAutoCompletes = email.length > 2;
-
         return (
             <section className="form-divider">
                 <label htmlFor="email">{I18n.t("invite.email")}</label>
@@ -221,7 +226,7 @@ export default class Invite extends React.Component {
         );
     };
 
-    renderEmailFile = (fileName, fileTypeError) => {
+    renderEmailFile = (fileName, fileTypeError, mailsImported) => {
         return (
             <section className="form-divider">
                 <label className="email-files">{I18n.t("invite.file_import")}</label>
@@ -237,15 +242,17 @@ export default class Invite extends React.Component {
                     </label>
                 </div>
                 {fileTypeError && <em className="error">{I18n.t("invite.file_extension_error")}</em>}
+                {mailsImported > 0 && <em>{I18n.t("invite.file_import_result", {nbr: mailsImported, fileName: fileName})}</em>}
             </section>
         );
     };
 
-    renderInvitationRole = intendedRole => {
+    renderInvitationRole = (intendedRole, roleOfCurrentUserInTeam) => {
         return (
             <section className="form-divider">
                 <label className="invitation-role" htmlFor="invitationRole">{I18n.t("invite.role")}</label>
-                <SelectRole onChange={this.handleInputChange("intendedRole")} role={intendedRole}/>
+                <SelectRole onChange={this.handleInputChange("intendedRole")} role={intendedRole}
+                            roleOfCurrentUserInTeam={roleOfCurrentUserInTeam}/>
             </section>
         );
     };
@@ -271,7 +278,7 @@ export default class Invite extends React.Component {
         );
     };
 
-    renderInvitationMessage = (message) => {
+    renderInvitationMessage = message => {
         return (
             <section className="form-divider">
                 <label className="invitation-message"
@@ -288,7 +295,8 @@ export default class Invite extends React.Component {
 
     render() {
         const {
-            initial, emails, email, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message, suggestions, selectedPerson
+            initial, emails, email, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message,
+            suggestions, selectedPerson, roleOfCurrentUserInTeam, mailsImported
         } = this.state;
 
         return (
@@ -297,8 +305,8 @@ export default class Invite extends React.Component {
                 <div className="card">
                     <section className="screen-divider">
                         {this.renderEmailInput(initial, emails, email, csvEmails, suggestions, selectedPerson)}
-                        {this.renderEmailFile(fileName, fileTypeError)}
-                        {this.renderInvitationRole(intendedRole)}
+                        {this.renderEmailFile(fileName, fileTypeError, mailsImported)}
+                        {this.renderInvitationRole(intendedRole, roleOfCurrentUserInTeam)}
                     </section>
                     <section className="screen-divider" style={{float: "right"}}>
                         <InvitationInfo locale={I18n.locale}/>
