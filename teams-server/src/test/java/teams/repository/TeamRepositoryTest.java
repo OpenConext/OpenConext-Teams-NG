@@ -1,12 +1,14 @@
 package teams.repository;
 
 import org.hibernate.Hibernate;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import teams.AbstractApplicationTest;
 import teams.domain.Team;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceUnitUtil;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -18,6 +20,13 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Autowired
     private EntityManager entityManager;
+
+    private PersistenceUnitUtil persistenceUnitUtil;
+
+    @Before
+    public void before() {
+        this.persistenceUnitUtil = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
+    }
 
     @Test
     public void findByUrn() throws Exception {
@@ -58,8 +67,27 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
         assertEquals(1, urns.size());
     }
 
-    private boolean areMembershipLoaded(Team team) {
-        return entityManager.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(team, "memberships");
+    @Test
+    public void findByIdNoPersonsFetched() {
+        Team team = teamRepository.findById(1L);
+        assertTrue(areMembershipLoaded(team));
+        assertFalse(arePersonsLoaded(team));
     }
 
+    @Test
+    public void findByIdPersonsFetched() {
+        Team team = teamRepository.findFirstById(1L);
+        assertTrue(areMembershipLoaded(team));
+        assertTrue(arePersonsLoaded(team));
+    }
+
+    private boolean areMembershipLoaded(Team team) {
+        return this.persistenceUnitUtil.isLoaded(team, "memberships");
+    }
+
+    private boolean arePersonsLoaded(Team team) {
+        return areMembershipLoaded(team) &&
+                team.getMemberships().stream()
+                        .allMatch(membership -> persistenceUnitUtil.isLoaded(membership, "person"));
+    }
 }

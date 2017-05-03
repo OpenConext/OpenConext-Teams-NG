@@ -36,4 +36,7 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
     @EntityGraph(value = "findById", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "memberships")
     Team findById(Long id);
 
+    @EntityGraph(value = "findFirstById", type = EntityGraph.EntityGraphType.LOAD,
+            attributePaths = {"memberships.person"})
+    Team findFirstById(Long id);
 }

@@ -60,14 +60,14 @@ public class TeamValidatorTest implements Seed {
         doIsAllowedToAcceptJoinRequest(Role.MANAGER, true);
         doIsAllowedToAcceptJoinRequest(Role.ADMIN, true);
 
-        assertEquals(false, subject.isAllowedToAcceptJoinRequest(new TeamSummary(team(), federatedUser())));
+        assertEquals(false, subject.isAllowedToAcceptJoinRequest(new TeamSummary(team(), federatedUser(), false)));
     }
 
     public void doIsAllowedToAcceptJoinRequest(Role role, boolean expected) {
         Team team = team();
         FederatedUser federatedUser = federatedUser("urn");
         membership(role, team, federatedUser.getPerson());
-        assertEquals(expected, subject.isAllowedToAcceptJoinRequest(new TeamSummary(team, federatedUser)));
+        assertEquals(expected, subject.isAllowedToAcceptJoinRequest(new TeamSummary(team, federatedUser, false)));
     }
 
 }

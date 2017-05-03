@@ -15,7 +15,7 @@ public class MembershipController extends ApiController implements MembershipVal
 
     @GetMapping("api/teams/membership/{teamId}")
     public Map<String, Role> membership(@PathVariable("teamId") Long teamId, FederatedUser federatedUser) {
-        Membership membership = membership(teamById(teamId), federatedUser.getUrn());
+        Membership membership = membership(teamById(teamId, false), federatedUser.getUrn());
         return Collections.singletonMap("role", membership.getRole());
     }
 

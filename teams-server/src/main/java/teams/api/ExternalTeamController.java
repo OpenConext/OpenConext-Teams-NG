@@ -17,7 +17,7 @@ public class ExternalTeamController extends ApiController implements ExternalTea
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("api/teams/external")
     public Object linkTeamToExternalTeam(@Validated @RequestBody ExternalTeamProperties externalTeamProperties, FederatedUser federatedUser) {
-        Team team = teamById(externalTeamProperties.getTeamId());
+        Team team = teamById(externalTeamProperties.getTeamId(), true);
         List<ExternalTeam> externalTeams = externalTeamProperties.getExternalTeams();
 
         externalTeams.forEach(externalTeam -> externalTeamNotLinked(team, externalTeam));
@@ -48,7 +48,7 @@ public class ExternalTeamController extends ApiController implements ExternalTea
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("api/teams/external/{id}/{teamId}")
     public Object delinkTeamFromExternalTeam(@PathVariable("id") Long id,@PathVariable("teamId") Long teamId, FederatedUser federatedUser) {
-        Team team = teamById(teamId);
+        Team team = teamById(teamId, true);
         ExternalTeam externalTeam = externalTeamById(id);
 
         String federatedUserUrn = federatedUser.getUrn();

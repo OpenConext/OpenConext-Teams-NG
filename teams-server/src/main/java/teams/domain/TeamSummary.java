@@ -3,6 +3,9 @@ package teams.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 public class TeamSummary {
 
@@ -22,7 +25,9 @@ public class TeamSummary {
 
     private int invitationsCount;
 
-    public TeamSummary(Team team, FederatedUser user) {
+    private List<AdminMember> admins;
+
+    public TeamSummary(Team team, FederatedUser user, boolean includeAdmins) {
         this.id = team.getId();
         this.urn = team.getUrn();
         this.name = team.getName();
@@ -34,6 +39,13 @@ public class TeamSummary {
                 .findAny()
                 .map(Membership::getRole)
                 .orElse(null);
+
+        if (includeAdmins) {
+            this.admins = team.getMemberships().stream()
+                    .filter(membership -> membership.getRole().equals(Role.ADMIN))
+                    .map(membership -> new AdminMember(membership.getPerson()))
+                    .collect(Collectors.toList());
+        }
     }
 
     @JsonIgnore

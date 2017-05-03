@@ -31,7 +31,7 @@ public class InvitationController extends ApiController implements MembershipVal
     @PostMapping("api/teams/invitations")
     public List<Invitation> invitation(@Validated @RequestBody ClientInvitation clientInvitation,
                                        FederatedUser federatedUser) throws IOException, MessagingException {
-        Team team = teamById(clientInvitation.getTeamId());
+        Team team = teamById(clientInvitation.getTeamId(), false);
         Person person = federatedUser.getPerson();
 
         membershipRequired(team, person);

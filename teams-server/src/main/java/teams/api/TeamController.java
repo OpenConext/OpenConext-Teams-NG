@@ -37,7 +37,7 @@ public class TeamController extends ApiController implements TeamValidator {
                 .findByMembershipsUrnPerson(federatedUser.getUrn());
         List<TeamSummary> teamSummaries = teams
                 .stream()
-                .map(team -> new TeamSummary(team, federatedUser))
+                .map(team -> new TeamSummary(team, federatedUser, false))
                 .collect(toList());
         List<Long> teamIds = teamSummaries.stream().filter(teamSummary -> isAllowedToAcceptJoinRequest(teamSummary))
                 .map(TeamSummary::getId).collect(toList());
@@ -57,10 +57,10 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @GetMapping("api/teams/teams/{id}")
     public Object teamById(@PathVariable("id") Long id, FederatedUser federatedUser) {
-        Team team = teamById(id);
+        Team team = teamById(id, true);
         Optional<Membership> membershipOptional = team.member(federatedUser.getUrn());
         return membershipOptional.map(membership -> lazyLoadTeam(team, membership.getRole(), federatedUser))
-                .orElse(new TeamSummary(team, federatedUser));
+                .orElse(new TeamSummary(team, federatedUser, true));
     }
 
     @GetMapping("api/teams/teams")
@@ -126,7 +126,7 @@ public class TeamController extends ApiController implements TeamValidator {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("api/teams/teams")
     public Object updateTeam(@Validated @RequestBody TeamProperties teamProperties, FederatedUser federatedUser) {
-        Team team = teamById(teamProperties.getId());
+        Team team = teamById(teamProperties.getId(), false);
 
         String federatedUserUrn = federatedUser.getUrn();
         Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
@@ -144,7 +144,7 @@ public class TeamController extends ApiController implements TeamValidator {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("api/teams/teams/{id}")
     public void deleteTeam(@PathVariable("id") Long id, FederatedUser federatedUser) {
-        Team team = teamById(id);
+        Team team = teamById(id, false);
 
         String federatedUserUrn = federatedUser.getUrn();
         Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
