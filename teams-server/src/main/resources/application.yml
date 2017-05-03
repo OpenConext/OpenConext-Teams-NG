@@ -3,7 +3,7 @@ logging:
   config: classpath:logback.xml
   level:
     org.hibernate.SQL: DEBUG
-#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 #    org.hibernate.event: TRACE
 
 security:
@@ -14,6 +14,7 @@ security:
 # Is this node in a load-balanced topology responsible for cleaning up resources (See ExpiredInvitationsRemover)
 cron:
   node-cron-job-responsible: true
+  expression: "0 0/15 * * * ?"
 
 teams:
   default-stem-name: "nl:surfnet:diensten"

@@ -12,6 +12,7 @@ import teams.domain.JoinRequest;
 import teams.domain.Person;
 import teams.domain.Team;
 
+import javax.persistence.OptimisticLockException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public interface InvitationRepository extends CrudRepository<Invitation, Long> {
     @Query(value = "select i.team.id, count(i.id) from teams.domain.Invitation i where i.team.id in :teamIds group by i.team")
     List<Object[]> countInvitationsByTeamId(@Param("teamIds") List<Long> teamIds);
 
-    @Transactional
+    @Transactional(noRollbackFor = OptimisticLockException.class)
     @Modifying
     @Query(value = "DELETE FROM invitations WHERE timestamp < :epochMilliseconds", nativeQuery = true)
     int deleteExpiredInvitations(@Param("epochMilliseconds") long epochMilliseconds);
