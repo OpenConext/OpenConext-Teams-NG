@@ -216,7 +216,7 @@ export default class TeamDetail extends React.Component {
                     <CopyToClipboard text={universalUrn} onCopy={this.copiedToClipboard}>
                         <span>{universalUrn}
                             <a data-for="copy-to-clipboard" data-tip>
-                                <i className={`fa fa-copy ${copiedToClipBoardClassName}`}></i>
+                                <i className={`fa fa-clone ${copiedToClipBoardClassName}`}></i>
                             </a>
                             <ReactTooltip id="copy-to-clipboard" place="right" getContent={[() => tooltip, 500]}/>
                         </span>

@@ -33,8 +33,8 @@ public class UserController {
 
     @GetMapping("api/teams/users")
     public List<PersonAutocomplete> autocomplete(@RequestParam("query") String query) {
-        if (query.trim().length() < 3) {
-            throw new IllegalSearchParamException("Minimal query length is 3");
+        if (query.trim().length() < 2) {
+            throw new IllegalSearchParamException("Minimal query length is 2");
         }
         List<Person> persons = personRepository.findFirst10ByNameStartingWithOrEmailStartingWithAllIgnoreCase(query, query);
         return persons.stream()

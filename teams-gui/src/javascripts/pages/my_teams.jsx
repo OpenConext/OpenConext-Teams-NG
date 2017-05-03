@@ -3,12 +3,14 @@ import I18n from "i18n-js";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 import debounce from "lodash/debounce";
+import moment from "moment";
 
 import SortDropDown from "../components/sort_drop_down";
+import IconLegend from "../components/icon_legend";
 import TeamAutocomplete from "../components/team_autocomplete";
 import {autoCompleteTeam, deleteTeam, getMyTeams} from "../api";
 import {clearFlash, setFlash} from "../utils/flash";
-import {stop} from "../utils/utils";
+import {stop, isEmpty} from "../utils/utils";
 
 export default class MyTeams extends React.Component {
 
@@ -31,6 +33,7 @@ export default class MyTeams extends React.Component {
             query: ""
 
         };
+        moment.locale(I18n.locale);
     }
 
     fetchMyTeams() {
@@ -39,7 +42,8 @@ export default class MyTeams extends React.Component {
             const joinRequests = myTeams.myJoinRequests.map(joinRequest => {
                 return {
                     name: joinRequest.teamName, description: joinRequest.teamDescription,
-                    role: "PENDING", isJoinRequest: true, membershipCount: "N/A"
+                    role: "JOIN REQUEST", isJoinRequest: true, membershipCount: "",
+                    created: joinRequest.created, message: joinRequest.message, id: joinRequest.id
                 };
             });
             const teams = myTeams.teamSummaries.concat(joinRequests).sort(this.sortByAttribute("name"));
@@ -88,7 +92,9 @@ export default class MyTeams extends React.Component {
     search = e => {
         const query = e.target.value;
         this.setState({query: query, selectedTeam: -1});
-        this.delayedAutocomplete();
+        if (!isEmpty(query) && query.trim().length > 1) {
+            this.delayedAutocomplete();
+        }
     };
 
     delayedAutocomplete = debounce(() =>
@@ -121,6 +127,25 @@ export default class MyTeams extends React.Component {
         this.props.history.replace("/new-team");
     };
 
+    roleCell = team => {
+        const role = team.role;
+        const isJoinRequest = team.isJoinRequest;
+        const toolTipId = isJoinRequest ? `join_request_tooltip_${team.id}` : null;
+        return (
+            <td className={`role ${isJoinRequest ? "join_request" : role.toLowerCase()}`}>
+                <span data-for={toolTipId} data-tip>
+                    {role.substring(0, 1) + role.substring(1).toLowerCase()}
+                    {isJoinRequest && <i className="fa fa-info-circle"></i>}
+                    {isJoinRequest &&
+                    <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
+                        {moment(team.created).format("LLL")}
+                        {team.message}
+                    </ReactTooltip>}
+                </span>
+            </td>
+        );
+    };
+
     membershipCountCell = team => {
         const joinRequestsCount = team.joinRequestsCount;
         const invitationsCount = team.invitationsCount;
@@ -128,12 +153,12 @@ export default class MyTeams extends React.Component {
         const toolTipId = `team_tooltip_${team.id}`;
         return (
             <td className="membership-count">
-                {tooltip && <i className="fa fa-info-circle"></i>}
                 <span className="membership-count" data-for={toolTipId} data-tip>{team.membershipCount}
                     {joinRequestsCount > 0 && <span className="join-requests-count"><span
                         className="count-divider"> / </span>{joinRequestsCount}</span> }
                     {invitationsCount > 0 && <span className="invitations-count"><span
                         className="count-divider"> / </span>{invitationsCount}</span> }
+                    {tooltip && <i className="fa fa-info-circle"></i>}
                     {tooltip &&
                     <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
                         <ul>
@@ -153,7 +178,10 @@ export default class MyTeams extends React.Component {
     renderTeamsTable(teams) {
         const currentSorted = this.state.sortAttributes.filter(attr => attr.current)[0];
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
-        const userIconClassName = team => team.isJoinRequest ? "fa fa-clock-o" : `fa fa-user-o ${team.role.toLowerCase()}`;
+        const userIconClassName = team => team.isJoinRequest ? "fa fa-envelope" :
+            team.role === "ADMIN" ? "fa fa-star" :
+                team.role === "MANAGER" ? "fa fa-user" : "fa fa-user-o";
+
         const columns = ["name", "description", "role", "membershipCount"];
         const th = index => (
             <th key={index} className={columns[index]}>
@@ -170,11 +198,13 @@ export default class MyTeams extends React.Component {
                     <tbody>
                     {teams.map((team, index) =>
                         <tr key={`${team.urn}_${index}`} onClick={this.showTeam(team)}
-                            className={team.isJoinRequest ? "pending" : ""}>
-                            <td className={team.isJoinRequest ? "pending name" : "name"}><i
-                                className={userIconClassName(team)}></i>{team.name}</td>
+                            className={team.isJoinRequest ? "join_request" : ""}>
+                            <td className={team.isJoinRequest ? "join_request name" : "name"}>
+                                <i className={userIconClassName(team)}></i>
+                                {team.name}
+                            </td>
                             <td className="description">{team.description}</td>
-                            <td className={`role ${team.role.toLowerCase()}`}>{team.role.substring(0, 1) + team.role.substring(1).toLowerCase()}</td>
+                            {this.roleCell(team)}
                             {this.membershipCountCell(team)}
                         </tr>
                     )}
@@ -191,9 +221,7 @@ export default class MyTeams extends React.Component {
         const showAutoCompletes = query.length > 2;
         return (
             <div className="my_teams">
-                <div className="operations">
-                    <h2>{I18n.t("teams.title")}</h2>
-                </div>
+                <IconLegend title={I18n.t("teams.title")}/>
                 <div className="card">
                     <div className="options">
                         <SortDropDown items={sortAttributes} sortBy={this.sort}/>

@@ -52,7 +52,7 @@ public class UserControllerTest extends AbstractApplicationTest {
     @Test
     public void teamAutocompleteIllegalArgument() throws Exception {
         given()
-                .param("query", "ER")
+                .param("query", "E ")
                 .when()
                 .get("api/teams/users")
                 .then()

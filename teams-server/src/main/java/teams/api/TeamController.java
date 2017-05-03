@@ -65,8 +65,8 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @GetMapping("api/teams/teams")
     public List<TeamAutocomplete> teamSearch(@RequestParam("query") String query, FederatedUser federatedUser) {
-        if (query.trim().length() < 3) {
-            throw new IllegalSearchParamException("Minimal query length is 3");
+        if (query.trim().length() < 2) {
+            throw new IllegalSearchParamException("Minimal query length is 2");
         }
         Long id = federatedUser.getPerson().getId();
         List<TeamAutocomplete> autoCompletes = teamRepository.autocomplete(id, ("%" + query + "%").toUpperCase(), id)

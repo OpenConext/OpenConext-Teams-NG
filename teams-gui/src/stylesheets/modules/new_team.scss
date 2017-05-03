@@ -27,6 +27,9 @@
         &.fa-exclamation {
           color: $red;
         }
+        &.fa-search {
+          color: $blue;
+        }
       }
     }
 
@@ -39,6 +42,10 @@
 
     label.invitation-message, label.invitation-language {
       margin-top: 20px;
+    }
+
+    label.email-input-label {
+      display: none;
     }
 
   }

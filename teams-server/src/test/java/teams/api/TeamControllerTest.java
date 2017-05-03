@@ -124,7 +124,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     public void teamAutocompleteIllegalArgument() throws Exception {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
-                .param("query", "ER")
+                .param("query", "E ")
                 .when()
                 .get("api/teams/teams")
                 .then()

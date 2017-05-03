@@ -41,10 +41,10 @@ public class Scheduler {
         return this.removeExpired(invitationRepository::deleteExpiredInvitations, System.currentTimeMillis() - TWO_WEEKS, Invitation.class);
     }
 
-    private int removeExpired(Function<Long, Integer> removeFuntion, Long argument, Class clazz) {
+    private int removeExpired(Function<Long, Integer> removeFunction, Long argument, Class clazz) {
         if (nodeCronJobResponsible) {
             try {
-                int count = removeFuntion.apply(argument);
+                int count = removeFunction.apply(argument);
                 LOG.info(String.format("Removed %s %s that were expired", count, clazz.getName()));
                 return count;
             } catch (Throwable t) {

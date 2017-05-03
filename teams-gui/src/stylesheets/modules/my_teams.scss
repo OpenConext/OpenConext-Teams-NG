@@ -2,28 +2,6 @@
 
   @include page;
 
-  .operations {
-    display: flex;
-    padding: 30px 0 15px 0;
-
-    h2 {
-      font-size: 22px;
-    }
-    span {
-      margin-left: 15px;
-      &.first {
-        margin-left: auto;
-      }
-      &.number {
-        margin-left: 5px;
-        padding: 2px 8px;
-        color: white;
-        background-color: $lighter-blue;
-        border-radius: 50%;
-      }
-    }
-  }
-
   .card {
     @include card;
     padding-bottom: 15px;
@@ -101,52 +79,43 @@
             color: $blue;
           }
         }
-        &.pending {
-          color: $green;
+        &.join_request {
+          color: $dark-green;
         }
       }
-      td.name {
-        color: $blue;
-        font-weight: bold;
-        &.pending {
-          color: $green;
-        }
-
-        i {
-          padding: 15px 15px 15px 0;
-          font-size: 16px;
-          &.admin {
-            color: rgba(242, 215, 50, 1);
-          }
-          &.manager {
-            color: rgba(160, 160, 160, 1);
-          }
-          &.member {
-            color: rgba(223, 182, 103, 1);
-          }
-          &.fa-clock-o {
-            color: $green;
-          }
-        }
-      }
-      td.role {
-        &.pending {
-          color: $green;
-        }
-      }
-      td.membership-count {
-        position: relative;
-        text-align: right;
-
+      td {
         i.fa-info-circle {
           color: $blue;
           position: absolute;
           top: 1px;
           right: 1px;
         }
+      }
+      td.name {
+        color: $blue;
+        font-weight: bold;
+        &.join_request {
+          color: $dark-green;
+        }
+        i {
+          padding: 15px 15px 15px 0;
+          font-size: 16px;
+        }
+      }
+      td.role {
+        &.join_request {
+          color: $dark-green;
+          span {
+            position: relative;
+            padding: 15px 10px 0 0;
+          }
+        }
+      }
+      td.membership-count {
+        text-align: right;
 
         span {
-
+          position: relative;
           &.membership-count {
             padding: 15px 10px;
             z-index: 99;

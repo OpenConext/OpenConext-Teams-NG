@@ -1,32 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 import I18n from "i18n-js";
-
-import debounce from "lodash/debounce";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import PersonAutocomplete from "../components/person_autocomplete";
+import EmailInput from "../components/email_input";
 import InvitationInfo from "../components/invitation_info";
 import DatePickerCustomInput from "../components/date_picker_custom";
 import SelectLanguage from "../components/select_language";
-import {autoCompletePerson, invite, roleOfCurrentUserInTeam} from "../api";
+import {invite, roleOfCurrentUserInTeam} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import SelectRole from "../components/select_role";
 import moment from "moment";
 
-const validEmailRegExp = /^\S+@\S+$/;
+import {validEmailRegExp} from "../validations/regular_exp";
 
 export default class Invite extends React.Component {
 
     constructor(props, context) {
         super(props, context);
         this.state = {
-            initial: true,
             emails: [],
-            email: "",
-            csvEmails: undefined,
+            csvEmails: false,
             mailsImported: 0,
             fileTypeError: false,
             fileName: "",
@@ -35,24 +31,16 @@ export default class Invite extends React.Component {
             language: "English",
             expiryDate: undefined,
             message: "",
-            suggestions: [],
-            selectedPerson: -1,
             roleOfCurrentUserInTeam: "MANAGER"
         };
     }
 
     componentDidMount() {
-        this.emailInput.focus();
         roleOfCurrentUserInTeam(this.props.match.params.teamId).then(role =>
             this.setState({roleOfCurrentUserInTeam: role.role}));
     }
 
-    removeMail = mail => e => {
-        stop(e);
-        const emails = [...this.state.emails];
-        emails.splice(emails.indexOf(mail), 1);
-        this.setState({emails: emails});
-    };
+    onChangeEmails = emails => this.setState({emails: emails});
 
     handleInputChange = attributeName => e => {
         let value;
@@ -80,12 +68,14 @@ export default class Invite extends React.Component {
                 const reader = new FileReader();
                 reader.onload = () => {
                     const csvEmails = reader.result;
-                    this.setState({fileName: file.name, fileTypeError: false, initial: true, csvEmails: csvEmails,
-                        mailsImported: csvEmails.split(",").filter(mail => validEmailRegExp.test(mail.trim())) .length});
+                    this.setState({
+                        fileName: file.name, fileTypeError: false, csvEmails: csvEmails,
+                        mailsImported: csvEmails.split(",").filter(mail => validEmailRegExp.test(mail.trim())).length
+                    });
                 };
                 reader.readAsText(file);
             } else {
-                this.setState({fileName: file.name, fileTypeError: true, csvEmails: undefined, mailsImported: 0});
+                this.setState({fileName: file.name, fileTypeError: true, csvEmails: false, mailsImported: 0});
             }
         }
 
@@ -109,7 +99,7 @@ export default class Invite extends React.Component {
                 emails,
                 expiryDate: expiryDate || null,
                 message,
-                csvEmails,
+                csvEmails: csvEmails === false ? null : csvEmails,
                 language
             })
                 .then(() => {
@@ -122,128 +112,36 @@ export default class Invite extends React.Component {
 
     isValid = () => !isEmpty(this.state.emails) || !isEmpty(this.state.csvEmails);
 
-    validateEmail = e => {
-        stop(e);
-        this.setState({initial: false});
-        const email = e.target.value;
-        if (!isEmpty(email) && validEmailRegExp.test(email.trim())) {
-            this.personSelected({email: email});
-        }
-    };
-
-    autocomplete = e => {
-        const email = e.target.value;
-        this.setState({email: email, selectedPerson: -1});
-        this.delayedAutocomplete();
-    };
-
-    delayedAutocomplete = debounce(() =>
-        autoCompletePerson(this.state.email).then(results => this.setState({suggestions: results})), 200);
-
-    onAutocompleteKeyDown = e => {
-        const {suggestions, selectedPerson} = this.state;
-        if (e.keyCode === 40 && selectedPerson < (suggestions.length - 1)) {
-            stop(e);
-            this.setState({selectedPerson: (selectedPerson + 1)});
-        }
-        if (e.keyCode === 38 && selectedPerson >= 0) {
-            stop(e);
-            this.setState({selectedPerson: (selectedPerson - 1)});
-        }
-        if (e.keyCode === 13) {
-            if (selectedPerson >= 0) {
-                stop(e);
-                this.setState({selectedPerson: -1}, () => this.personSelected(suggestions[selectedPerson]));
-            } else {
-                this.validateEmail(e);
-            }
-        }
-        if (e.keyCode === 27) {
-            stop(e);
-            this.setState({selectedPerson: -1, email: "", initial: true, suggestions: []});
-        }
-
-    };
-
     resetFileInput = e => {
         stop(e);
         this.setState({
-            csvEmails: undefined,
+            csvEmails: false,
             fileTypeError: false,
             fileName: "",
-            initial: true,
             fileInputKey: new Date().getMilliseconds(),
             mailsImported: 0
         });
     };
 
-    personSelected = personAutocomplete => {
-        const {emails} = this.state;
-        const email = personAutocomplete.email.trim();
-        if (emails.indexOf(email) < 0) {
-            this.setState({email: "", emails: [...emails, email], initial: true});
-        } else {
-            this.setState({email: "", initial: true});
-        }
-
-    };
-
-    renderEmailInput = (initial, emails, email, csvEmails, suggestions, selectedPerson) => {
-        const invalidEmailFormat = !initial && !isEmpty(email) && !validEmailRegExp.test(email);
-        const inValidEmail = !initial && emails.length === 0 && isEmpty(csvEmails) && isEmpty(email);
-        const showAutoCompletes = email.length > 2;
-        return (
-            <section className="form-divider">
-                <label htmlFor="email">{I18n.t("invite.email")}</label>
-                <div className="validity-input-wrapper">
-                    <input ref={self => this.emailInput = self}
-                           placeholder={I18n.t("invite.emails_placeholder")}
-                           type="text"
-                           onChange={this.autocomplete}
-                           onBlur={this.validateEmail}
-                           value={email}
-                           onKeyDown={this.onAutocompleteKeyDown}/>
-                    {initial && <i className="fa fa-search"></i>}
-                    {showAutoCompletes && <PersonAutocomplete suggestions={suggestions}
-                                                              query={email}
-                                                              selectedPerson={selectedPerson}
-                                                              itemSelected={this.personSelected}/>
-                    }
-                    {(!invalidEmailFormat && !inValidEmail && !initial) && <i className="fa fa-check"></i>}
-                    {(invalidEmailFormat || inValidEmail) && <i className="fa fa-exclamation"></i>}
-                </div>
-
-                {inValidEmail && <em className="error">{I18n.t("invite.email_required")}</em>}
-                {invalidEmailFormat && <em className="error">{I18n.t("invite.email_invalid")}</em>}
-
-                <section className="email_tags">
-                    {emails.map(mail =>
-                        <div key={mail} className="email_tag">
-                            <span>{mail}</span>
-                            <span onClick={this.removeMail(mail)}><i className="fa fa-remove"></i></span>
-                        </div>)}
-                </section>
-            </section>
-        );
-    };
-
     renderEmailFile = (fileName, fileTypeError, mailsImported) => {
         return (
             <section className="form-divider">
-                <label className="email-files">{I18n.t("invite.file_import")}</label>
-                <input key={this.state.fileInputKey} type="file" id="emailFiles" name="emailFiles"
+                <label>{I18n.t("invite.file_import")}</label>
+                <input key={this.state.fileInputKey} type="file"
+                       id="emailFiles" name="emailFiles"
                        accept="text/csv"
                        style={{display: "none"}}
                        onChange={this.handleFile}/>
-                <div className="email-files-container">
-                    <label htmlFor="emailFiles">
+                <div className="email-file-container">
+                    <label tabIndex="0" onClick={e => e} htmlFor="emailFiles">
                         <span className="file-name">{fileName || I18n.t("invite.file_placeholder")}</span>
                         {(!isEmpty(fileName) || fileTypeError) &&
                         <span className="remove" onClick={this.resetFileInput}><i className="fa fa-remove"></i></span>}
                     </label>
                 </div>
                 {fileTypeError && <em className="error">{I18n.t("invite.file_extension_error")}</em>}
-                {mailsImported > 0 && <em>{I18n.t("invite.file_import_result", {nbr: mailsImported, fileName: fileName})}</em>}
+                {mailsImported > 0 &&
+                <em>{I18n.t("invite.file_import_result", {nbr: mailsImported, fileName: fileName})}</em>}
             </section>
         );
     };
@@ -297,8 +195,8 @@ export default class Invite extends React.Component {
 
     render() {
         const {
-            initial, emails, email, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message,
-            suggestions, selectedPerson, roleOfCurrentUserInTeam, mailsImported
+            emails, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message,
+            roleOfCurrentUserInTeam, mailsImported
         } = this.state;
 
         return (
@@ -306,7 +204,10 @@ export default class Invite extends React.Component {
                 <h2>{I18n.t("invite.title")}</h2>
                 <div className="card">
                     <section className="screen-divider">
-                        {this.renderEmailInput(initial, emails, email, csvEmails, suggestions, selectedPerson)}
+                        <EmailInput emails={emails} emailRequired={csvEmails === false}
+                                    onChangeEmails={this.onChangeEmails}
+                                    multipleEmails={true} placeholder={I18n.t("invite.emails_placeholder")}
+                                    autoFocus={true}/>
                         {this.renderEmailFile(fileName, fileTypeError, mailsImported)}
                         {this.renderInvitationRole(intendedRole, roleOfCurrentUserInTeam)}
                     </section>

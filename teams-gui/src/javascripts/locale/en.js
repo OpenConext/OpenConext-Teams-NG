@@ -92,7 +92,13 @@ I18n.translations.en = {
         copied: "Copied",
         one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team."
     },
-
+    icon_legend: {
+        admin: "ADMIN",
+        manager: "MANAGER",
+        member: "MEMBER",
+        invitation: "INVITATION",
+        join_request: "JOIN REQUEST"
+    },
     sort: {
         label: "SORT BY",
         name: "Name",

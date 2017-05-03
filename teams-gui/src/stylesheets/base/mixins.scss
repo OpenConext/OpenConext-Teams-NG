@@ -1,8 +1,10 @@
 @mixin card {
   background-color: white;
-  box-shadow: 0px -1px 1px 0px $lighter-grey;
-  border-radius: $br;
+  border-bottom-left-radius: $br;
+  border-bottom-right-radius: $br;
   padding: 0 15px;
+  border-top: 2px solid $blue;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.05);
 }
 
 @mixin page {

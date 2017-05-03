@@ -34,7 +34,7 @@
       }
     }
 
-    div.email-files-container {
+    div.email-file-container {
       border: 1px solid $lighter-grey;
       border-radius: $br;
       margin-top: 5px;
@@ -49,6 +49,9 @@
         font-size: 14px;
         cursor: pointer;
         width: 100%;
+        &:focus {
+          outline: $blue auto 5px;
+        }
         span {
           &.file-name {
             flex-grow: 5;
@@ -65,7 +68,7 @@
       }
     }
 
-    label.email-files-placeholder {
+    label.email-files {
     }
 
     .validity-input-wrapper {
