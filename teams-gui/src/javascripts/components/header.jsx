@@ -36,19 +36,16 @@ export default class Header extends React.Component {
     }
 
 
-    renderExitLogout() {
-        return (
-            <li className="border-left"><a href="#" onClick={this.stop.bind(this)}>{I18n.t("header.links.logout")}</a>
-            </li>
-        );
-    }
+    renderExitLogout = () =>
+            <li className="border-left"><a href="#" onClick={this.stop}>{I18n.t("header.links.logout")}</a>
+            </li>;
 
-    stop(e) {
+    stop = e => {
         e.preventDefault();
         const node = document.getElementById("app");
         unmountComponentAtNode(node);
         render(<Logout />, node);
-    }
+    };
 
     handleToggle(e) {
         e.preventDefault();

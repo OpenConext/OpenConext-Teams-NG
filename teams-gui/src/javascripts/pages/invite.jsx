@@ -39,6 +39,7 @@ export default class Invite extends React.Component {
     componentDidMount() {
         roleOfCurrentUserInTeam(this.props.match.params.teamId).then(role =>
             this.setState({roleOfCurrentUserInTeam: role.role}));
+        window.scrollTo(0, 0);
     }
 
     onChangeEmails = emails => this.setState({emails: emails});
@@ -116,7 +117,9 @@ export default class Invite extends React.Component {
         }
     };
 
-    isValid = () => !isEmpty(this.state.emails) || !isEmpty(this.state.csvEmails);
+    isValid = () => {
+        return !isEmpty(this.state.emails) || this.state.csvEmails;
+    };
 
     resetFileInput = e => {
         stop(e);
@@ -204,7 +207,7 @@ export default class Invite extends React.Component {
             emails, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message,
             roleOfCurrentUserInTeam, mailsImported
         } = this.state;
-
+        const valid = this.isValid();
         return (
             <div className="invite">
                 <h2>{I18n.t("invite.title")}</h2>
@@ -226,7 +229,7 @@ export default class Invite extends React.Component {
                         <a className="button grey" href="#" onClick={this.cancel}>
                             {I18n.t("invite.cancel")}
                         </a>
-                        <a className={`button ${this.isValid() ? "blue" : "grey"}`} href="#" onClick={this.submit}>
+                        <a className={`button ${valid ? "blue" : "grey disabled"}`} href="#" onClick={this.submit}>
                             {I18n.t("invite.submit")}
                         </a>
                     </section>

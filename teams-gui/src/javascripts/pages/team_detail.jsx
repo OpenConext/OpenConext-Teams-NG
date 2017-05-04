@@ -168,7 +168,6 @@ export default class TeamDetail extends React.Component {
     };
 
     handleError = json => {
-        //console.log(json);
         return json ? true : false;
     };
 

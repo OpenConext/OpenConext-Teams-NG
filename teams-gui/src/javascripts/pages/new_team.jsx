@@ -91,7 +91,7 @@ export default class NewTeam extends React.Component {
             <a className="button grey" href="#" onClick={this.cancel}>
                 {I18n.t("new_team.cancel")}
             </a>
-            <a className={`button ${this.isValid() ? "blue" : "grey"}`} href="#" onClick={this.submit}>
+            <a className={`button ${this.isValid() ? "blue" : "grey disabled"}`} href="#" onClick={this.submit}>
                 {I18n.t("new_team.submit")}
             </a>
         </section>;

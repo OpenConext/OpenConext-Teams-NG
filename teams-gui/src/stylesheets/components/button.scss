@@ -19,6 +19,10 @@
     margin-right: 15px;
   }
 
+  &.disabled {
+    cursor: no-drop;
+  }
+
   i {
     margin-left: 10px;
     color: $medium-grey;
