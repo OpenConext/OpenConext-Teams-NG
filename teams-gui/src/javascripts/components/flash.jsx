@@ -24,10 +24,6 @@ export default class Flash extends React.Component {
         emitter.removeListener("flash", this.callback);
     }
 
-    closeFlash = () => {
-        this.setState({flash: null, className: ""});
-    };
-
     iconForMessage = type => {
         return type === "info" ?
             "<i class=\"fa fa-check\"></i>" :
@@ -44,7 +40,7 @@ export default class Flash extends React.Component {
                     <p className={flash.type} dangerouslySetInnerHTML={{__html: message}}>
                     </p>
 
-                    <a className="close" href="#" onClick={this.closeFlash}>
+                    <a className="close" href="#" onClick={() => this.setState({flash: null, className: ""})}>
                         <i className="fa fa-remove"></i>
                     </a>
                 </div>

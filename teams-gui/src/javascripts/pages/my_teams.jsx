@@ -5,9 +5,11 @@ import ReactTooltip from "react-tooltip";
 import debounce from "lodash/debounce";
 import moment from "moment";
 
+import {setBackPage} from "../lib/store";
 import SortDropDown from "../components/sort_drop_down";
 import FilterDropDown from "../components/filter_drop_down";
 import IconLegend from "../components/icon_legend";
+import DropDownActions from "../components/drop_down_actions";
 import TeamAutocomplete from "../components/team_autocomplete";
 import {autoCompleteTeam, deleteTeam, getMyTeams, deleteJoinRequest} from "../api";
 import {clearFlash, setFlash} from "../utils/flash";
@@ -227,32 +229,32 @@ export default class MyTeams extends React.Component {
 
     toggleActions = (team, actions) => e => {
         stop(e);
-        this.setState({actions: {show: actions.id !== team.name, id: team.name}});
+        const newShow = actions.id === team.name ? !actions.show : true;
+        this.setState({actions: {show: newShow, id: team.name}});
     };
 
     renderActions = (team, actions) => {
-        if (actions.id !== team.name) {
+        if (actions.id !== team.name || (actions.id === team.name && !actions.show)) {
             return null;
         }
         const options = [];
         if (team.role === JOIN_REQUESTS_ROLE) {
             options.push({icon: "fa fa-send-o", label: "resend", action: this.handleJoinRequest(team)});
-            options.push({icon: "fa fa-thrash", label: "remove", action: this.handleDeleteJoinRequest(team)});
+            options.push({icon: "fa fa-trash", label: "remove", action: this.handleDeleteJoinRequest(team)});
         }
         if (team.role !== JOIN_REQUESTS_ROLE) {
             options.push({icon: "fa fa-search-plus", label: "details", action: () => this.props.history.replace(`/teams/${team.id}`)});
         }
-        if (team.role !== "MEMBER") {
-            options.push({icon: "fa fa-clock-o", label: "invite", action: () => this.props.history.replace(`/invite/${team.id}`)});
+        if (team.role === "ADMIN" || team.role === "MANAGER") {
+            options.push({icon: "fa fa-clock-o", label: "invite", action: () => {
+                setBackPage("/my-teams");
+                this.props.history.replace(`/invite/${team.id}`);
+            }});
         }
         if (team.role === "ADMIN") {
-            options.push({icon: "fa fa-thrash", label: "remove", action: this.handleDeleteTeam(team)});
+            options.push({icon: "fa fa-trash", label: "remove", action: this.handleDeleteTeam(team)});
         }
-        return (
-            <ul className="actions" tabIndex="1" onBlur={() => this.toggleActions(team, actions)}>
-               <li><i className="fa fa-thrash"></i>{`teamName ${team.name}`}</li>
-            </ul>
-        );
+        return <DropDownActions options={options} i18nPrefix="teams.action_options"/>;
     };
 
     renderTeamsTable(teams, isMemberOfTeam, actions) {
@@ -280,7 +282,9 @@ export default class MyTeams extends React.Component {
                             <td data-label={I18n.t("teams.description")} className="description">{team.description}</td>
                             {this.roleCell(team)}
                             {this.membershipCountCell(team)}
-                            <td data-label={I18n.t("teams.actions_phone")} className="actions" onClick={this.toggleActions(team, actions)}>
+                            <td data-label={I18n.t("teams.actions_phone")} className="actions"
+                                onClick={this.toggleActions(team, actions)}
+                                tabIndex="1" onBlur={() => this.setState({actions : {show: false, id: ""}})}>
                                 <i className="fa fa-ellipsis-h"></i>
                                 {this.renderActions(team, actions)}
                             </td>
@@ -306,7 +310,8 @@ export default class MyTeams extends React.Component {
                     <div className="options">
                         <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                         <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
-                        <section className="search">
+                        <section className="search"
+                                 tabIndex="1" onBlur={() => this.setState({suggestions : []})}>
                             <input placeholder={I18n.t("teams.searchPlaceHolder")}
                                    type="text"
                                    onChange={this.search}

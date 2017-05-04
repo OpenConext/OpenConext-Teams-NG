@@ -116,8 +116,8 @@
       tr {
         cursor: pointer;
         &:hover {
-          background-color: #F9FCFD;
-          td.actions i {
+          background-color: $hover;
+          td.actions i.fa-ellipsis-h {
             color: $blue;
             font-size: 26px;
           }
@@ -139,7 +139,7 @@
             &.value {
               font-weight: normal;
               float: right;
-              padding: 3px 0;
+              padding: 0 0 0 60px;
             }
           }
         }
@@ -203,6 +203,8 @@
         cursor: pointer;
         text-align: right;
         font-size: 18px;
+        position: relative;
+
       }
     }
 

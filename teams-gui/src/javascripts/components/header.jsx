@@ -64,7 +64,8 @@ export default class Header extends React.Component {
                     <Link to="/" className="logo"><img src={logo}/></Link>
                     <ul className="links">
                         <li className="title"><span>Teams</span></li>
-                        <li className="profile">
+                        <li className="profile"
+                            tabIndex="1" onBlur={() => this.setState({dropDownActive : false})}>
                             {this.renderProfileLink(currentUser)}
                             {this.renderDropDown(currentUser)}
                         </li>
