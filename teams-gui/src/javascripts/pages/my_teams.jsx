@@ -128,7 +128,7 @@ export default class MyTeams extends React.Component {
 
     sort = item => {
         const {filteredTeams, sortAttributes} = this.state;
-        const sortedTeams = [...filteredTeams.sort(this.sortByAttribute(item.name, item.current && item.order === "down"))]
+        const sortedTeams = [...filteredTeams.sort(this.sortByAttribute(item.name, item.current && item.order === "down"))];
         const newSortAttributes = [...sortAttributes];
         newSortAttributes.forEach(attr => {
             if (attr.name === item.name) {
@@ -227,7 +227,7 @@ export default class MyTeams extends React.Component {
 
     toggleActions = (team, actions) => e => {
         stop(e);
-        this.setState({actions: {show: actions.id !== team.name, id: team.name}})
+        this.setState({actions: {show: actions.id !== team.name, id: team.name}});
     };
 
     renderActions = (team, actions) => {

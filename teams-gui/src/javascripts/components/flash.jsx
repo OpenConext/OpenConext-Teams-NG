@@ -8,7 +8,7 @@ export default class Flash extends React.Component {
         this.state = {flash: null, className: ""};
         this.callback = flash => {
             this.setState({flash: flash, className: ""});
-            if (flash && (!flash.type || flash.type !== "error") && false) {
+            if (flash && (!flash.type || flash.type !== "error")) {
                 setTimeout(() => this.setState({className: "hide"}),
                     flash.type === "info" ? 3500 : 5500);
             }
@@ -29,13 +29,10 @@ export default class Flash extends React.Component {
     };
 
     iconForMessage = type => {
-        switch (type) {
-            case "info" : return "<i class=\"fa fa-check\"></i>";
-            case "warning" : return "<i class=\"fa fa-exclamation\"></i>";
-            case "error" : return "<i class=\"fa fa-times\"></i>";
-            default: return null;
-        }
-    } ;
+        return type === "info" ?
+            "<i class=\"fa fa-check\"></i>" :
+            type === "warning" ? "<i class=\"fa fa-exclamation\"></i>" : "<i class=\"fa fa-times\"></i>";
+    };
 
     render() {
         const {flash, className} = this.state;

@@ -50,7 +50,6 @@ I18n.translations.en = {
         confirmation: "Are your sure you want to delete team {{name}}?",
         edit: "Edit",
         delete: "Delete",
-        add: "Add team",
         join: "JOIN",
         received_join_request: "1 received join request",
         received_join_requests: "{{count}} received join requests",
