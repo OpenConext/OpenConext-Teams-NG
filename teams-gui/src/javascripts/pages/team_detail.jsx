@@ -240,14 +240,19 @@ export default class TeamDetail extends React.Component {
 
     currentSorted = () => this.state.sortAttributes.filter(attr => attr.current)[0];
 
-    statusOfMembership = member => member.role ? moment(member.created).format("LLL") :
+    statusOfMembership = member => member.role ? moment.unix(member.created).format("LLL") :
         <span className="status-pending"><i className="fa fa-clock-o"></i>{I18n.t("team_detail.pending")}</span>;
+
+    userIconClassName = (member, currentUser) => {
+        const userIcon = isEmpty(member.role) ? "fa fa-envelope" :
+            member.role === "ADMIN" ? "fa fa-star" :
+                member.role === "MANAGER" ? "fa fa-user" : "fa fa-user-o";
+        return member.person.id !== currentUser.person.id ? `${userIcon} me` : userIcon;
+    };
 
     renderMembersTable(currentUser) {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
-        const userIconClassName = member => member.role ? (member.person.id !== currentUser.person.id ? `fa fa-user-o ${member.role.toLowerCase()}` : `fa fa-user ${member.role.toLowerCase()}`)
-            : "fa fa-clock-o";
         const columns = ["name", "email", "status", "role", "actions"];
         const th = index => (
             <th key={index} className={columns[index]}>
@@ -267,12 +272,14 @@ export default class TeamDetail extends React.Component {
                         <tr key={`${member.urnPerson}-${index}`}
                             className={member.role ? "" : "pending"}>
                             <td className={member.role ? "name" : "name pending"}>
-                                <i className={userIconClassName(member)}></i>
+                                <i className={this.userIconClassName(member, currentUser)}></i>
                                 {member.person.name}
                             </td>
                             <td className="email">{member.person.email}</td>
                             <td className="status">{this.statusOfMembership(member)}</td>
-                            <td className="role">{roleOfMembership(member)}</td>
+                            <td className="role">
+                                {roleOfMembership(member)}
+                            </td>
                             <td className="actions"><i className="fa fa-ellipsis-h"></i></td>
                         </tr>
                     )}

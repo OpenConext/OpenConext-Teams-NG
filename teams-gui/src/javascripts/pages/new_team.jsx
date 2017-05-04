@@ -32,9 +32,7 @@ export default class NewTeam extends React.Component {
         };
     }
 
-    componentDidMount() {
-        this.nameInput.focus();
-    }
+    componentDidMount = () => this.nameInput.focus();
 
     changeTeamName = e => {
         const name = e.target.value;
@@ -51,7 +49,7 @@ export default class NewTeam extends React.Component {
 
     onChangeEmails = emails => {
         this.setState({email: isEmpty(emails) ? "" : emails[0]});
-    } ;
+    };
 
     handleInputChange = attributeName => e => {
         let value;
@@ -89,7 +87,7 @@ export default class NewTeam extends React.Component {
     !isEmpty(this.state.name);
 
     renderButtons = () =>
-        <section>
+        <section className="buttons">
             <a className="button grey" href="#" onClick={this.cancel}>
                 {I18n.t("new_team.cancel")}
             </a>

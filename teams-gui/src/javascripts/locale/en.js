@@ -42,6 +42,7 @@ I18n.translations.en = {
         role: "My role",
         membershipCount: "Members",
         actions: "",
+        actions_phone: "Actions",
         flash: "Team '{{name}}' was successfully {{action}}",
         flash_updated: "updated",
         flash_created: "created",
@@ -56,6 +57,19 @@ I18n.translations.en = {
         pending_invitation: "1 pending invitation",
         pending_invitations: "{{count}} pending invitations",
         no_found: "You are not a member of a team",
+        filtered: "You have filtered all your teams",
+        add: "ADD",
+        join_request: "Join request: ",
+        created: "Date: ",
+        message: "Message: ",
+        action_options: {
+            remove: "Delete",
+            resend: "Resend",
+            invite: "Invite member",
+            details: "Details"
+        },
+        confirmation_join_request: "Are you sure you want to delete your join request for team {{name}}?",
+        flash_join_request: "Join request for team {{name}} was deleted"
     },
 
     team_detail: {
@@ -107,6 +121,16 @@ I18n.translations.en = {
         role: "Role",
         description: "Description",
         membershipCount: "Members"
+    },
+    filter: {
+        ADMIN: "Admins",
+        MANAGER: "Manager",
+        MEMBER: "Members",
+        JOIN_REQUEST: "Join requests",
+        label: "SHOW",
+        all: "ALL",
+        selected: "FILTERED",
+
     },
 
     new_team: {

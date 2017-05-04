@@ -34,7 +34,7 @@ export default class SortDropDown extends React.Component {
         const currentItem = items.filter(item => item.current)[0];
 
         return (
-            <section className="sort-drop-down">
+            <section className="sort-drop-down" tabIndex="1" onBlur={() => this.setState({dropDownActive: false})}>
                 <div className="selected" onClick={() => this.setState({dropDownActive: !dropDownActive})}>
                     <span className="sort-label">{I18n.t("sort.label")}</span>
                     <span className="sort-label-divider">:</span>

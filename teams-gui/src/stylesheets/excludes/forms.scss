@@ -60,3 +60,11 @@ div.checkbox {
   }
 }
 
+@include phone {
+  section.buttons {
+    .button {
+      min-width: inherit;
+    }
+  }
+}
+

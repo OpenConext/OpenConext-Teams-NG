@@ -7,12 +7,16 @@ public class PendingJoinRequest {
 
     private String teamName;
     private String teamDescription;
+    private Long teamId;
     private JoinRequest joinRequest;
 
     public PendingJoinRequest(JoinRequest joinRequest) {
         this.joinRequest = joinRequest;
 
-        this.teamName = joinRequest.getTeam().getName();
-        this.teamDescription = joinRequest.getTeam().getDescription();
+        Team team = joinRequest.getTeam();
+
+        this.teamName = team.getName();
+        this.teamDescription = team.getDescription();
+        this.teamId = team.getId();
     }
 }

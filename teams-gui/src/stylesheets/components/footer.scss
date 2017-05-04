@@ -5,6 +5,7 @@ div.footer {
   border-top: 3px solid white;
   margin-top: 25px;
 
+
   span {
     border-right: 1px solid $lighter-grey;
     &:first-child {
@@ -23,4 +24,12 @@ div.footer {
     text-decoration: none;
     padding: 0 15px;
   }
+
+  @include phone {
+    flex-direction: column;
+    span {
+      padding: 5px 0;
+    }
+  }
+
 }

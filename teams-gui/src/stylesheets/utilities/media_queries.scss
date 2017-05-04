@@ -1,3 +1,6 @@
+$minDesktop: 1024px;
+$minTablet: 768px;
+
 @mixin desktop {
   @media  (min-width: #{$minDesktop}) {
     @content

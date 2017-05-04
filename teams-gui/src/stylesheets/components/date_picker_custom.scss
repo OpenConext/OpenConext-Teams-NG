@@ -7,6 +7,10 @@ div.date_picker_custom {
   margin-top: 5px;
   cursor: pointer;
 
+  @include phone {
+    width: auto;
+  }
+
   a {
     font-size: 14px;
     padding: 7px;

@@ -41,7 +41,7 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
                 .body(clientJoinRequest)
                 .when()
-                .post("api/teams/join")
+                .post("api/teams/join-requests")
                 .then()
                 .statusCode(SC_OK);
 

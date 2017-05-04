@@ -10,30 +10,68 @@
   .options {
     display: flex;
     padding: 25px 0;
+    flex-direction: column;
 
-    .search {
+    section.search {
       position: relative;
-      width: 65%;
+      flex-grow: 5;
+      margin-top: 15px;
 
       input {
         padding: 10px;
         margin-left: auto;
-        border: 2px solid $light-grey;
+        border: 1px solid $lighter-grey;
         border-bottom-left-radius: $br;
         border-top-left-radius: $br;
         font-size: 14px;
         width: 100%;
-        background-color: $light-grey;
+        height: 100%;
       }
 
       i.fa-search {
-        color: lighten($blue, 5);
-        position: absolute;
-        right: 14px;
-        top: 8px;
-        font-size: 24px;
+          color: lighten($blue, 5);
+          position: absolute;
+          right: 14px;
+          top: 8px;
+          font-size: 24px;
       }
     }
+    a.button {
+      margin-top: 15px;
+      i.fa-plus {
+        font-size: inherit;
+        margin-left: 10px;
+      }
+
+    }
+
+    @include desktop {
+      flex-direction: row;
+
+      section.search {
+        margin-left: 15px;
+        margin-top: 0;
+
+        input {
+          border-right: none;
+        }
+      }
+      section.sort-drop-down {
+        margin-top: 0;
+        margin-right: 15px;
+      }
+
+      section.filter-drop-down {
+        margin-top: 0;
+        margin-right: auto;
+      }
+
+      a.button {
+        margin-top: 0;
+      }
+
+    }
+
   }
 
   table.teams {
@@ -46,7 +84,7 @@
         width: 25%;
       }
       th.description {
-        width: 45%;
+        width: 40%;
       }
       th.role {
         width: 15%;
@@ -54,6 +92,10 @@
       th.membershipCount {
         text-align: right;
         width: 15%;
+      }
+      th.actions {
+        text-align: right;
+        width: 5%;
       }
       span {
         position: relative;
@@ -77,32 +119,56 @@
           background-color: #F9FCFD;
           td.actions i {
             color: $blue;
+            font-size: 26px;
           }
-        }
-        &.join_request {
-          color: $dark-green;
         }
       }
       td {
         i.fa-info-circle {
-          color: $blue;
-          position: absolute;
-          top: 1px;
-          right: 1px;
+          @include info-icon;
+        }
+        div.tool-tip {
+          @include tool-tip;
+          span {
+            text-transform: none;
+            &.label {
+              font-weight: bold;
+              display: block;
+              padding: 3px 0;
+            }
+            &.value {
+              font-weight: normal;
+              float: right;
+              padding: 3px 0;
+            }
+          }
         }
       }
       td.name {
         color: $blue;
         font-weight: bold;
-        &.join_request {
-          color: $dark-green;
+      }
+      td.role {
+        span {
+          text-transform: capitalize;
         }
         i {
           padding: 15px 15px 15px 0;
           font-size: 16px;
+          font-weight: bold;
+
+          @include phone {
+            padding: 0 10px 0 0;
+          }
+
+          color: $medium-grey;
+          &.fa-envelope {
+            color: $dark-green;
+          }
+          &.fa-info-circle {
+            @include info-icon;
+          }
         }
-      }
-      td.role {
         &.join_request {
           color: $dark-green;
           span {
@@ -132,10 +198,38 @@
             color: $medium-grey;
           }
         }
-        div.tool-tip {
-          @include tool-tip;
+      }
+      td.actions {
+        cursor: pointer;
+        text-align: right;
+        font-size: 18px;
+      }
+    }
+
+    @include phone {
+      thead {
+        display: none;
+      }
+      tr {
+        margin-bottom: 10px;
+        display: block;
+        border-bottom: 2px solid $lighter-grey;
+      }
+      td {
+        display: block;
+        text-align: right;
+        border-bottom: 1px dotted $light-blue;
+        padding: 8px 0;
+
+        &:before {
+          content: attr(data-label);
+          float:left;
+          text-transform: uppercase;
+          font-weight: bold;
+          font-size: 14px;
         }
       }
+
     }
   }
 }

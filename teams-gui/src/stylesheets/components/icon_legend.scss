@@ -13,6 +13,9 @@ div.icon-legend {
     color: $medium-grey;
     margin-left: 18px;
     font-weight: bold;
+    &:first-child {
+      margin-left: auto;
+    }
     i {
       margin-right: 5px;
     }

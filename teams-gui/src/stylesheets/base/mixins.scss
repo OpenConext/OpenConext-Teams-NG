@@ -23,7 +23,17 @@
   &.show {
     opacity: 1 !important;
   }
-  max-width: 410px;
+  max-width: 390px;
+}
+
+@mixin info-icon {
+  color: $blue;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 @mixin select-dropdown {

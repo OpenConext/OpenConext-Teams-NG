@@ -44,27 +44,10 @@ public interface MembershipValidator {
         }
     }
 
-    default void membershipNotAllowed(Team team, Person person) {
-        if (team.getMemberships().stream().anyMatch(membership -> membership.getUrnPerson().equals(person.getUrn()))) {
-            throw new IllegalJoinRequestException(String.format("Person %s is already a member of team %s", person.getUrn(), team.getUrn()));
-        }
-    }
-
     default void privateTeamDoesNotAllowMembers(Team team, Person person) {
         if (!team.isViewable()) {
             throw new IllegalJoinRequestException(String.format("Person %s can not join private team %s", person.getUrn(), team.getUrn()));
         }
-    }
-
-    default List<String> admins(Team team) {
-        List<String> admins = team.getMemberships().stream()
-                .filter(membership -> membership.getRole().equals(Role.ADMIN))
-                .map(membership -> membership.getPerson().getEmail())
-                .collect(toList());
-        if (admins.isEmpty()) {
-            throw new IllegalJoinRequestException(String.format("Team %s does not have an ADMIN user", team.getUrn()));
-        }
-        return admins;
     }
 
 

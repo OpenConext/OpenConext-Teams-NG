@@ -27,6 +27,17 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 25px;
+
+        @include phone {
+          flex-direction: column;
+
+          .react-datepicker__input-container {
+            display: block;
+          }
+          label.expiry-date {
+            margin-top: 15px;
+          }
+        }
       }
 
       @include phone {

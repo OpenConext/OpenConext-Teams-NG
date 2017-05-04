@@ -216,13 +216,14 @@ export default class Invite extends React.Component {
                     </section>
                     {this.renderInvitationLanguageExpiryDate(language, expiryDate)}
                     {this.renderInvitationMessage(message)}
-
-                    <a className="button grey" href="#" onClick={this.cancel}>
-                        {I18n.t("invite.cancel")}
-                    </a>
-                    <a className={`button ${this.isValid() ? "blue" : "grey"}`} href="#" onClick={this.submit}>
-                        {I18n.t("invite.submit")}
-                    </a>
+                    <section className="buttons">
+                        <a className="button grey" href="#" onClick={this.cancel}>
+                            {I18n.t("invite.cancel")}
+                        </a>
+                        <a className={`button ${this.isValid() ? "blue" : "grey"}`} href="#" onClick={this.submit}>
+                            {I18n.t("invite.submit")}
+                        </a>
+                    </section>
                 </div>
             </div>
         );

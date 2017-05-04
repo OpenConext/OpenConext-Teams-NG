@@ -60,5 +60,8 @@ public interface Seed {
         return new ClientInvitation(1L, Role.MANAGER, emails, instant, "Message", csvEmails, Language.Dutch);
     }
 
+    default JoinRequest joinRequest(String personUrn) {
+        return new JoinRequest(person(personUrn), team(),"Message");
+    }
 
 }

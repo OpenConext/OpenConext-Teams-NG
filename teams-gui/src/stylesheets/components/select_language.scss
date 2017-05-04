@@ -4,6 +4,10 @@
 
   width: 200px;
 
+  @include phone {
+    width: auto;
+  }
+
   span.select-option {
     img {
       margin-right: 20px;

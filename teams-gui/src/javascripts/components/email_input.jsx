@@ -110,7 +110,7 @@ export default class EmailInput extends React.Component {
 
         const invalidEmailFormat = !initial && !isEmpty(email) && !validEmailRegExp.test(email);
         const inValidEmail = !initial && emails.length === 0 && emailRequired && isEmpty(email);
-        const showAutoCompletes = email.length > 2;
+        const showAutoCompletes = email.length > 1 && !isEmpty(suggestions);
         return (
             <section className="form-divider email-input">
                 <label className="email-input-label" htmlFor="email">{I18n.t("invite.email")}</label>

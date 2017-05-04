@@ -76,11 +76,11 @@ export function getUser() {
 }
 
 export function autoCompleteTeam(query) {
-    return isEmpty(query) || query.length < 2 ? Promise.resolve([]) : fetchJson("teams?query=" + encodeURIComponent(query));
+    return isEmpty(query) || query.length < 1 ? Promise.resolve([]) : fetchJson("teams?query=" + encodeURIComponent(query));
 }
 
 export function autoCompletePerson(query) {
-    return isEmpty(query) || query.length < 2 ? Promise.resolve([]) : fetchJson("users?query=" + encodeURIComponent(query));
+    return isEmpty(query) || query.length < 1 ? Promise.resolve([]) : fetchJson("users?query=" + encodeURIComponent(query));
 }
 
 export function deleteTeam(id) {
@@ -111,3 +111,6 @@ export function linkExternalTeam(teamId, externalTeamId) {
     return postPutJson("teams/external", {teamId: teamId, externalTeamId: externalTeamId});
 }
 
+export function deleteJoinRequest(id) {
+    return fetchDelete("join-requests/" + id);
+}

@@ -90,30 +90,8 @@ public class MembershipValidatorTest implements Seed {
     }
 
     @Test(expected = IllegalJoinRequestException.class)
-    public void membershipNotAllowed() {
-        Person person = person("urn");
-        Team team = team();
-        membership(Role.ADMIN, team, person);
-
-        subject.membershipNotAllowed(team, person);
-    }
-
-    @Test(expected = IllegalJoinRequestException.class)
     public void privateTeamDoesNotAllowMembers() {
         subject.privateTeamDoesNotAllowMembers(team(false), person("urn"));
     }
 
-    @Test(expected = IllegalJoinRequestException.class)
-    public void adminsException() {
-        subject.admins(team());
-    }
-
-    @Test
-    public void admins() {
-        Team team = team();
-        new Membership(Role.ADMIN, team, person());
-        List<String> admins = subject.admins(team);
-
-        assertEquals(1, admins.size());
-    }
 }
