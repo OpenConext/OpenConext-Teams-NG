@@ -14,8 +14,8 @@ import TeamAutocomplete from "../components/team_autocomplete";
 import {autoCompleteTeam, deleteTeam, getMyTeams, deleteJoinRequest} from "../api";
 import {clearFlash, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
+import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
 
-const JOIN_REQUESTS_ROLE = "JOIN REQUEST";
 
 export default class MyTeams extends React.Component {
 
@@ -36,10 +36,10 @@ export default class MyTeams extends React.Component {
                 {name: "membershipCount", order: "down", current: false}
             ],
             filterAttributes: [
-                {name: "ADMIN", selected: true, count: 0},
-                {name: "MANAGER", selected: true, count: 0},
-                {name: "MEMBER", selected: true, count: 0},
-                {name: JOIN_REQUESTS_ROLE, selected: true, count: 0}
+                {name: ROLES.ADMIN.role, selected: true, count: 0},
+                {name: ROLES.MANAGER.role, selected: true, count: 0},
+                {name: ROLES.MEMBER.role, selected: true, count: 0},
+                {name: ROLES.JOIN_REQUEST.role, selected: true, count: 0}
             ],
             selectedTeam: -1,
             suggestions: [],
@@ -55,7 +55,7 @@ export default class MyTeams extends React.Component {
             const joinRequests = myTeams.myJoinRequests.map(joinRequest => {
                 return {
                     name: joinRequest.teamName, description: joinRequest.teamDescription,
-                    role: JOIN_REQUESTS_ROLE, isJoinRequest: true, membershipCount: "",
+                    role: ROLES.JOIN_REQUEST.name.toUpperCase(), isJoinRequest: true, membershipCount: "",
                     created: joinRequest.joinRequest.created, message: joinRequest.joinRequest.message,
                     id: joinRequest.joinRequest.id, teamId: joinRequest.teamId
                 };
@@ -67,7 +67,6 @@ export default class MyTeams extends React.Component {
                 isMemberOfTeam: teams.length > 0,
                 teams: teams,
                 filteredTeams: [...teams],
-                joinRequests: joinRequests,
                 filterAttributes: newFilterAttributes.filter(attr => attr.count > 0)
             });
         });
@@ -75,7 +74,18 @@ export default class MyTeams extends React.Component {
 
     componentWillMount = () => this.fetchMyTeams();
 
-    showTeam = team => () => this.props.history.push("/teams/" + team.id);
+    showTeam = team => () => {
+        if (team.isJoinRequest) {
+            const possibleExistingJoinRequest = this.state.teams.filter(t => t.isJoinRequest && t.id === team.id);
+            if (possibleExistingJoinRequest.length > 0) {
+                this.props.history.push(`/join-requests/${team.teamId}/${team.id}`);
+            } else {
+                this.props.history.push(`/join-requests/${team.id}`);
+            }
+        } else {
+            this.props.history.push("/teams/" + team.id);
+        }
+    };
 
     handleDeleteTeam = team => e => {
         stop(e);
@@ -86,7 +96,7 @@ export default class MyTeams extends React.Component {
     };
 
     handleJoinRequest = joinRequest => () =>
-        this.props.history.push(`/join-request/${joinRequest.teamId}/${joinRequest.id}`);
+        this.props.history.push(`/join-requests/${joinRequest.teamId}/${joinRequest.id}`);
 
     handleDeleteJoinRequest = joinRequest => e => {
         stop(e);
@@ -98,19 +108,19 @@ export default class MyTeams extends React.Component {
 
     onSearchKeyDown = e => {
         const {suggestions, selectedTeam} = this.state;
-        if (e.keyCode === 40 && selectedTeam < (suggestions.length - 1)) {
+        if (e.keyCode === 40 && selectedTeam < (suggestions.length - 1)) {//keyDown
             stop(e);
             this.setState({selectedTeam: (selectedTeam + 1)});
         }
-        if (e.keyCode === 38 && selectedTeam >= 0) {
+        if (e.keyCode === 38 && selectedTeam >= 0) {//keyUp
             stop(e);
             this.setState({selectedTeam: (selectedTeam - 1)});
         }
-        if (e.keyCode === 13 && selectedTeam >= 0) {
+        if (e.keyCode === 13 && selectedTeam >= 0) {//enter
             stop(e);
             this.setState({selectedTeam: -1}, () => this.itemSelected(suggestions[selectedTeam]));
         }
-        if (e.keyCode === 27) {
+        if (e.keyCode === 27) {//escape
             stop(e);
             this.setState({selectedTeam: -1, query: "", suggestions: []});
         }
@@ -163,10 +173,7 @@ export default class MyTeams extends React.Component {
         this.setState({filteredTeams: sortedTeams, filterAttributes: newFilterAttributes});
     };
 
-    itemSelected = team => {
-        //TODO join requests
-        this.showTeam(team)();
-    };
+    itemSelected = team => this.showTeam({...team, isJoinRequest: isEmpty(team.role)})();
 
     addTeam = e => {
         stop(e);
@@ -177,14 +184,11 @@ export default class MyTeams extends React.Component {
         const role = team.role;
         const isJoinRequest = team.isJoinRequest;
         const toolTipId = isJoinRequest ? `join_request_tooltip_${team.id}` : null;
-        const userIconClassName = team => team.isJoinRequest ? "fa fa-envelope" :
-            team.role === "ADMIN" ? "fa fa-star" :
-                team.role === "MANAGER" ? "fa fa-user" : "fa fa-user-o";
         return (
             <td data-label={I18n.t("teams.role")} className={`role ${isJoinRequest ? "join_request" : role.toLowerCase()}`}>
                 <span data-for={toolTipId} data-tip>
-                    <i className={userIconClassName(team)}></i>
-                    {role.toLowerCase()}
+                    <i className={iconForRole(role)}></i>
+                    {labelForRole(role)}
                     {isJoinRequest && <i className="fa fa-info-circle"></i>}
                     {isJoinRequest &&
                     <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
@@ -238,11 +242,11 @@ export default class MyTeams extends React.Component {
             return null;
         }
         const options = [];
-        if (team.role === JOIN_REQUESTS_ROLE) {
+        if (team.role === ROLES.JOIN_REQUEST.role) {
             options.push({icon: "fa fa-send-o", label: "resend", action: this.handleJoinRequest(team)});
             options.push({icon: "fa fa-trash", label: "remove", action: this.handleDeleteJoinRequest(team)});
         }
-        if (team.role !== JOIN_REQUESTS_ROLE) {
+        if (team.role !== ROLES.JOIN_REQUEST.role) {
             options.push({icon: "fa fa-search-plus", label: "details", action: () => this.props.history.replace(`/teams/${team.id}`)});
         }
         if (team.role === "ADMIN" || team.role === "MANAGER") {
@@ -275,7 +279,7 @@ export default class MyTeams extends React.Component {
                     </thead>
                     <tbody>
                     {teams.map((team, index) =>
-                        <tr key={`${team.urn}_${index}`} onClick={this.showTeam(team)} className={team.isJoinRequest ? "join_request" : ""}>
+                        <tr key={`${team.urn}_${index}`} onClick={this.showTeam(team)} className={team.isJoinRequest ? "join_request" : "team_member"}>
                             <td data-label={I18n.t("teams.name")} className={team.isJoinRequest ? "join_request name" : "name"}>
                                 {team.name}
                             </td>
@@ -311,7 +315,7 @@ export default class MyTeams extends React.Component {
                         <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                         <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
                         <section className="search"
-                                 tabIndex="1" onBlur={() => this.setState({suggestions : []})}>
+                                 tabIndex="1" onBlur={() => setTimeout(() => this.setState({suggestions : []}), 5250)}>
                             <input placeholder={I18n.t("teams.searchPlaceHolder")}
                                    type="text"
                                    onChange={this.search}

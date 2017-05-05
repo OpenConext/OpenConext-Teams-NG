@@ -100,7 +100,7 @@ export function teamExistsByName(name) {
 }
 
 export function roleOfCurrentUserInTeam(teamId) {
-    return fetchJson("membership/"+teamId);
+    return fetchJson("membership/" + teamId);
 }
 
 export function invite(invitation) {
@@ -113,4 +113,12 @@ export function linkExternalTeam(teamId, externalTeamId) {
 
 export function deleteJoinRequest(id) {
     return fetchDelete("join-requests/" + id);
+}
+
+export function joinRequest(clientJoinRequest) {
+    return postPutJson("join-requests", clientJoinRequest);
+}
+
+export function getJoinRequest(id) {
+    return fetchJson("join-requests/" + id);
 }

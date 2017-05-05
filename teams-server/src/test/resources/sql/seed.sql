@@ -6,6 +6,9 @@ INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
 VALUES (3, 'nl:surfnet:diensten:gliders', 'gliders', 'we are gliders', 1);
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
 VALUES (4, 'nl:surfnet:diensten:masters', 'masters', 'we are masters', 1);
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
+VALUES (5, 'nl:surfnet:diensten:wolves', 'wolves', 'we are wolves', 1);
+
 
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)
 VALUES (1, 'urn:collab:person:surfnet.nl:jdoe', 'John Doe', 'john.doe@example.org', 0);
@@ -38,6 +41,9 @@ INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `ur
 VALUES (8, 'ADMIN', 3, 'nl:surfnet:diensten:gliders', 5, 'urn:collab:person:surfnet.nl:rdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
 VALUES (9, 'ADMIN', 4, 'nl:surfnet:diensten:masters', 5, 'urn:collab:person:surfnet.nl:rdoe');
+INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
+VALUES (10, 'ADMIN', 5, 'nl:surfnet:diensten:wolves', 3, 'urn:collab:person:surfnet.nl:wdoe');
+
 
 INSERT INTO `external_groups` (`id`, `description`, `group_provider`, `identifier`, `name`)
 VALUES (1, 'test description 1', 'org.example', 'urn:collab:group:example.org:name1', 'name1');

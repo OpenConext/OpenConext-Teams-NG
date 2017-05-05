@@ -82,7 +82,9 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .statusCode(SC_OK)
                 .body("description", equalTo("we are riders"))
                 .body("memberships", isEmptyOrNullString())
-                .body("role", isEmptyOrNullString());
+                .body("role", isEmptyOrNullString())
+                .body("admins.name", hasItems("John Doe"))
+                .body("admins.email", hasItems("john.doe@example.org"));
     }
 
     @Test

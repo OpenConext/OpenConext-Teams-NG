@@ -3,6 +3,7 @@ package teams.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class TeamSummary {
 
     private int invitationsCount;
 
-    private List<AdminMember> admins;
+    private List<AdminMember> admins = new ArrayList<>();
 
     public TeamSummary(Team team, FederatedUser user, boolean includeAdmins) {
         this.id = team.getId();

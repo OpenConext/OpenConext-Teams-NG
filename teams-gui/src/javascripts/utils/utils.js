@@ -1,3 +1,5 @@
+import {clearBackPage, backPage} from "../lib/store";
+
 export function stop(e) {
     if (e !== undefined && e !== null) {
         e.preventDefault();
@@ -19,4 +21,13 @@ export function isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }
     return false;
+}
+
+export function goto(path) {
+    if (isEmpty(backPage)) {
+        this.props.history.replace(path);
+    } else {
+        this.props.history.replace(backPage);
+        clearBackPage();
+    }
 }

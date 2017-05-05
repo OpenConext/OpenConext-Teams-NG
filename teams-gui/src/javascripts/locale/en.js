@@ -77,7 +77,7 @@ I18n.translations.en = {
         description: "Description",
         personalNote: "Personal note",
         viewable: "Public team",
-        viewable_info: "People can see team information and request membership for this team, Non-public teams are only visible for members.",
+        viewable_info: "People can see team information and request membership for this team. Non-public teams are only visible for members.",
         name: "Name",
         actions: "...",
         confirmation: "Are you sure you want to delete team {{name}}?",
@@ -103,14 +103,30 @@ I18n.translations.en = {
         no_found: "No members found",
         copy: "Copy to clipboard",
         copied: "Copied",
-        one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team."
+        one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team.",
+        add: "ADD",
+    },
+    join_request : {
+        title: "Join request",
+        cancel: "Cancel",
+        submit: "Join request",
+        flash: "Your request to join {{name}} has been sent to the administrators",
+        previous_message: "You have a pending join request for this team sent on {{date}}",
+        share_info: "Share this information with the applications used by this team.",
+        approval_required: "You need to approve that the information may be shared",
+        message: "Message",
+        message_info: "Your personal invitation message for the fellow admin of this team",
+        message_placeholder: "Your personal message",
+
+
+
     },
     icon_legend: {
-        admin: "ADMIN",
-        manager: "MANAGER",
-        member: "MEMBER",
-        invitation: "INVITATION",
-        join_request: "JOIN REQUEST"
+        admin: "Admin",
+        manager: "Manager",
+        member: "Member",
+        invitation: "Invitation",
+        join_request: "Join Request"
     },
     sort: {
         label: "SORT BY",
@@ -126,6 +142,7 @@ I18n.translations.en = {
         MANAGER: "Manager",
         MEMBER: "Members",
         JOIN_REQUEST: "Join requests",
+        INVITATION: "Invitations",
         label: "SHOW",
         all: "ALL",
         selected: "FILTERED",

@@ -26,7 +26,6 @@
       h2 {
         font-size: 26px;
         margin-right: auto;
-        text-transform: capitalize;
       }
     }
   }
@@ -43,15 +42,24 @@
 
   .team-detail-controls {
     display: flex;
+    flex-direction: column;
     margin: 20px 0;
-    align-items: center;
 
+    a.button {
+      margin-top: 15px;
+      i.fa-plus {
+        font-size: inherit;
+        margin-left: 10px;
+      }
+
+    }
   }
 
-  .search {
+
+  section.search {
     position: relative;
-    margin-right: 15px;
-    width: 50%;
+    flex-grow: 5;
+    margin-top: 15px;
 
     input {
       padding: 10px;
@@ -67,6 +75,37 @@
       right: 10px;
       top: 6px;
       font-size: 24px;
+    }
+  }
+
+  @include desktop {
+
+    .team-detail-controls {
+      flex-direction: row;
+
+
+      section.search {
+        margin-left: 15px;
+        margin-top: 0;
+
+        input {
+          border-right: none;
+        }
+      }
+      section.sort-drop-down {
+        margin-top: 0;
+        margin-right: 15px;
+      }
+
+      section.filter-drop-down {
+        margin-top: 0;
+        margin-right: auto;
+      }
+
+      a.button {
+        margin-top: 0;
+      }
+
     }
   }
 
@@ -123,23 +162,16 @@
       td.name {
         color: $blue;
         font-weight: bold;
-        &.pending {
-          color: $green;
-        }
-
         i {
           padding: 15px 15px 15px 0;
           font-size: 16px;
-          &.admin {
+          &.me {
             color: $admin;
           }
-          &.manager {
-            color: $manager;
-          }
-          &.member {
-            color: $member;
-          }
           &.fa-clock-o {
+            color: $dark-green;
+          }
+          &.fa-envelope {
             color: $green;
           }
         }
@@ -149,13 +181,6 @@
         text-align: right;
         font-size: 18px;
         position: relative;
-
-        section.actions {
-          background-color: red;
-          position: absolute;
-          top: 0;
-          right: 0;
-        }
       }
       td.status {
         i {
@@ -164,6 +189,5 @@
       }
     }
   }
-
 
 }

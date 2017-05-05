@@ -16,6 +16,17 @@ import java.util.List;
 @RestController
 public class JoinRequestController extends ApiController implements MembershipValidator, JoinRequestValidator {
 
+    @GetMapping("api/teams/join-requests/{id}")
+    public JoinRequest joinRequest(@PathVariable("id") Long id, FederatedUser federatedUser) {
+        JoinRequest joinRequest = joinRequestRepository.findOne(id);
+        assertNotNull(JoinRequest.class.getSimpleName(), joinRequest, id);
+
+        validateJoinRequest(joinRequest, federatedUser);
+
+        return joinRequest;
+    }
+
+
     @PostMapping("api/teams/join-requests")
     public JoinRequest join(@Validated @RequestBody ClientJoinRequest clientJoinRequest, FederatedUser federatedUser) throws MessagingException, IOException {
         Team team = teamById(clientJoinRequest.getTeamId(), true);

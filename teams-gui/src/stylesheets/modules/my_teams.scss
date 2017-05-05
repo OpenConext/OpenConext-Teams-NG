@@ -69,9 +69,7 @@
       a.button {
         margin-top: 0;
       }
-
     }
-
   }
 
   table.teams {
@@ -114,7 +112,9 @@
     }
     tbody {
       tr {
-        cursor: pointer;
+        &.team_member{
+          cursor: pointer;
+        }
         &:hover {
           background-color: $hover;
           td.actions i.fa-ellipsis-h {
@@ -149,9 +149,6 @@
         font-weight: bold;
       }
       td.role {
-        span {
-          text-transform: capitalize;
-        }
         i {
           padding: 15px 15px 15px 0;
           font-size: 16px;

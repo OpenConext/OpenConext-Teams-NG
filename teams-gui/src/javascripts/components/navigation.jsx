@@ -7,9 +7,9 @@ import spinner from "../lib/spin";
 import {NavLink} from "react-router-dom";
 
 export default class Navigation extends React.Component {
+
     constructor() {
         super();
-
         this.state = {
             loading: false
         };

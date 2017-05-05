@@ -4,14 +4,13 @@ import I18n from "i18n-js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import {clearBackPage, backPage} from "../lib/store";
 import EmailInput from "../components/email_input";
 import InvitationInfo from "../components/invitation_info";
 import DatePickerCustomInput from "../components/date_picker_custom";
 import SelectLanguage from "../components/select_language";
 import {invite, roleOfCurrentUserInTeam} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
-import {isEmpty, stop} from "../utils/utils";
+import {goto, isEmpty, stop} from "../utils/utils";
 import SelectRole from "../components/select_role";
 import moment from "moment";
 
@@ -83,15 +82,12 @@ export default class Invite extends React.Component {
 
     };
 
+    goBack = () => goto(`/teams/${this.props.match.params.teamId}`);
+
     cancel = e => {
         stop(e);
         if (confirm(I18n.t("invite.cancel"))) {
-            if (isEmpty(backPage)) {
-                this.props.history.replace(`/teams/${this.props.match.params.teamId}`);
-            } else {
-                this.props.history.replace(backPage);
-                clearBackPage();
-            }
+            this.goBack();
         }
     };
 
@@ -110,7 +106,7 @@ export default class Invite extends React.Component {
                 language
             })
                 .then(() => {
-                    this.props.history.push(`/teams/${teamId}`);
+                    this.goBack();
                     setFlash(I18n.t("invite.flash"));
                 })
                 .catch(err => handleServerError(err));

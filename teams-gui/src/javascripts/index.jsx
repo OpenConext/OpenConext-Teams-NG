@@ -21,6 +21,7 @@ import Flash from "./components/flash";
 import Navigation from "./components/navigation";
 import MyTeams from "./pages/my_teams";
 import TeamDetail from "./pages/team_detail";
+import JoinRequest from "./pages/join_request";
 import NewTeam from "./pages/new_team";
 import Invite from "./pages/invite";
 import ProtectedRoute from "./components/protected_route";
@@ -67,12 +68,15 @@ class App extends React.Component {
                                render={props => <MyTeams currentUser={currentUser} {...props}/>}/>
                         <Route path="/teams/:id"
                                render={props => <TeamDetail currentUser={currentUser} {...props}/>}/>
+                        <Route path="/join-requests/:teamId/:id?"
+                               render={props => <JoinRequest {...props}/>}/>
+
                         <ProtectedRoute path="/new-team"
                                         guest={currentUser.person.guest}
                                         render={props => <NewTeam currentUser={currentUser} {...props}/>}/>
                         <ProtectedRoute path="/invite/:teamId"
                                         guest={currentUser.person.guest}
-                                        render={props => <Invite currentUser={currentUser} {...props}/>}/>
+                                        render={props => <Invite {...props}/>}/>
                         <Route component={NotFound}/>
                     </Switch>
                     <Footer />

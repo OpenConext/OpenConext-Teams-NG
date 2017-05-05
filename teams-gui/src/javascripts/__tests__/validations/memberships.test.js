@@ -1,4 +1,4 @@
-import {allowedToLeave, roleOfMembership, currentUserRoleInTeam} from "../../validations/memberships";
+import {allowedToLeave, currentUserRoleInTeam} from "../../validations/memberships";
 
 const currentUser = {urn: "john"};
 
@@ -15,14 +15,6 @@ test("May leave as member", () => {
 test("May leave as admin if there are other admin's", () => {
     const team = {memberships: [{role: "ADMIN", urnPerson: "admin"},{role: "ADMIN", urnPerson: "john"}]};
     expect(allowedToLeave(team, currentUser)).toBe(true);
-});
-
-test("Role of membership capitalized", () => {
-    expect(roleOfMembership({role: "ADMIN"})).toBe("Admin");
-});
-
-test("Role of membership with sensible default", () => {
-    expect(roleOfMembership({})).toBe("Member");
 });
 
 test("Current role in team", () => {
