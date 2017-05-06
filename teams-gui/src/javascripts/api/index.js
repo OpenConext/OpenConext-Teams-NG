@@ -5,7 +5,7 @@ const apiPath = "/api/teams/";
 let csrfToken = null;
 
 function apiUrl(path) {
-    return `apiPath${path}`;
+    return apiPath + path;
 }
 
 function validateResponse(res) {
