@@ -21,6 +21,7 @@ export default class EmailInput extends React.Component {
             email: "",
             suggestions: [],
             selectedPerson: -1,
+            eventFromSelectedPerson: false
         };
     }
 
@@ -37,10 +38,7 @@ export default class EmailInput extends React.Component {
         }
     };
 
-    validateEmail = e => {
-        stop(e);
-        this.setState({initial: false});
-        const email = e.target.value;
+    persistEmailIfValid = email => {
         if (!isEmpty(email) && validEmailRegExp.test(email.trim())) {
             this.personSelected({email: email});
         } else {
@@ -48,12 +46,37 @@ export default class EmailInput extends React.Component {
         }
     };
 
+    validateEmail = (e, possibleTimeOut = true) => {
+        this.setState({initial: false});
+        const suggestions = this.state.suggestions;
+        if (!isEmpty(suggestions) && possibleTimeOut) {
+            /**
+             * We can't be sure if the event was caused as a click anywhere or in the list of suggestions as the onBlur
+             * occurs first and we don't want to swallow this event if the user has clicked in the list of autoCompletes
+             *
+             * See also: http://stackoverflow.com/questions/10755625/onblur-event-fires-before-another-divs-onclick
+             */
+            setTimeout(() => {
+                const {eventFromSelectedPerson} = this.state;
+                if (eventFromSelectedPerson) {
+                    this.setState({eventFromSelectedPerson: false});
+                } else {
+                    this.persistEmailIfValid(this.state.email);
+                }
+            }, 500);
+        } else {
+            this.persistEmailIfValid(e.target.value);
+        }
+
+    };
+
     personSelected = personAutocomplete => {
         const {emails, onChangeEmails, multipleEmails} = this.props;
         const email = personAutocomplete.email;
 
         const newEmail = emails.indexOf(email) < 0;
-        this.setState({email: multipleEmails ? "" : email, suggestions: [], selectedPerson: -1, initial: !newEmail});
+        this.setState({email: multipleEmails ? "" : email, suggestions: [], selectedPerson: -1,
+            initial: !newEmail, eventFromSelectedPerson: true});
         if (newEmail) {
             onChangeEmails([...emails, email]);
         }
@@ -68,7 +91,7 @@ export default class EmailInput extends React.Component {
 
     autocomplete = e => {
         const email = e.target.value;
-        this.setState({email: email, selectedPerson: -1});
+        this.setState({email: email, selectedPerson: -1, eventFromSelectedPerson: false});
         if (isEmpty(email)) {
             this.setState({initial: true});
         } else if (email.trim().length > 1) {
@@ -94,7 +117,7 @@ export default class EmailInput extends React.Component {
                 stop(e);
                 this.setState({selectedPerson: -1}, () => this.personSelected(suggestions[selectedPerson]));
             } else {
-                this.validateEmail(e);
+                this.validateEmail(e, false);
             }
         }
         if (e.keyCode === 27) {//escape

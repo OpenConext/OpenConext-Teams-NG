@@ -50,12 +50,11 @@ export default class MyTeams extends React.Component {
     }
 
     fetchMyTeams() {
-        clearFlash();
         getMyTeams().then(myTeams => {
             const joinRequests = myTeams.myJoinRequests.map(joinRequest => {
                 return {
                     name: joinRequest.teamName, description: joinRequest.teamDescription,
-                    role: ROLES.JOIN_REQUEST.name.toUpperCase(), isJoinRequest: true, membershipCount: "",
+                    role: ROLES.JOIN_REQUEST.role, isJoinRequest: true, membershipCount: "",
                     created: joinRequest.joinRequest.created, message: joinRequest.joinRequest.message,
                     id: joinRequest.joinRequest.id, teamId: joinRequest.teamId
                 };
@@ -72,7 +71,10 @@ export default class MyTeams extends React.Component {
         });
     }
 
-    componentWillMount = () => this.fetchMyTeams();
+    componentWillMount = () => {
+        clearFlash();
+        this.fetchMyTeams();
+    };
 
     showTeam = team => () => {
         if (team.isJoinRequest) {
@@ -100,9 +102,9 @@ export default class MyTeams extends React.Component {
 
     handleDeleteJoinRequest = joinRequest => e => {
         stop(e);
-        if (confirm(I18n.t("teams.confirmation_join_request", {name: joinRequest.teamName}))) {
+        if (confirm(I18n.t("teams.confirmation_join_request", {name: joinRequest.name}))) {
             deleteJoinRequest(joinRequest.id).then(() => this.fetchMyTeams());
-            setFlash(I18n.t("teams.flash_join_request", {name: joinRequest.teamName}));
+            setFlash(I18n.t("teams.flash_join_request", {name: joinRequest.name}));
         }
     };
 
@@ -233,12 +235,24 @@ export default class MyTeams extends React.Component {
 
     toggleActions = (team, actions) => e => {
         stop(e);
-        const newShow = actions.id === team.name ? !actions.show : true;
-        this.setState({actions: {show: newShow, id: team.name}});
+        const actionId = this.actionId(team);
+        const newShow = actions.id === actionId ? !actions.show : true;
+        this.setState({actions: {show: newShow, id: actionId}});
+    };
+
+    actionId = team => `${team.name}_${team.id}_${team.isJoinRequest}`;
+
+    onBlurSearch = suggestions => () => {
+        if (!isEmpty(suggestions)) {
+            setTimeout(() => this.setState({suggestions : []}), 500);
+        } else {
+            this.setState({suggestions : []});
+        }
     };
 
     renderActions = (team, actions) => {
-        if (actions.id !== team.name || (actions.id === team.name && !actions.show)) {
+        const actionId = this.actionId(team);
+        if (actions.id !== actionId || (actions.id === actionId && !actions.show)) {
             return null;
         }
         const options = [];
@@ -315,7 +329,7 @@ export default class MyTeams extends React.Component {
                         <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                         <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
                         <section className="search"
-                                 tabIndex="1" onBlur={() => setTimeout(() => this.setState({suggestions : []}), 5250)}>
+                                 tabIndex="1" onBlur={this.onBlurSearch(suggestions)}>
                             <input placeholder={I18n.t("teams.searchPlaceHolder")}
                                    type="text"
                                    onChange={this.search}

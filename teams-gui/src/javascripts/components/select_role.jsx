@@ -4,11 +4,15 @@ import Select from "react-select";
 import "react-select/dist/react-select.css";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
 
-const roleOptions = [ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER].map(role => {
-    return {value: role.role, label: labelForRole(role.role)};
-});
-
 export default class SelectRole extends React.Component {
+
+    constructor(props) {
+        super(props);
+        const roleOptions = [ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER].map(role => {
+            return {value: role.role, label: labelForRole(role.role)};
+        });
+        this.state = {roleOptions: roleOptions};
+    }
 
     renderOption = option => {
         return (
@@ -25,7 +29,7 @@ export default class SelectRole extends React.Component {
         return <Select className="select-role"
                        onChange={this.props.onChange}
                        optionRenderer={this.renderOption}
-                       options={roleOptions.filter(option => isAdminInTeam || option.value === ROLES.MEMBER.role)}
+                       options={this.state.roleOptions.filter(option => isAdminInTeam || option.value === ROLES.MEMBER.role)}
                        value={this.props.role}
                        searchable={false}
                        valueRenderer={this.renderOption}/>;

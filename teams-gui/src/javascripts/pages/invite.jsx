@@ -82,7 +82,7 @@ export default class Invite extends React.Component {
 
     };
 
-    goBack = () => goto(`/teams/${this.props.match.params.teamId}`);
+    goBack = () => goto(`/teams/${this.props.match.params.teamId}`, this.props);
 
     cancel = e => {
         stop(e);

@@ -45,7 +45,7 @@ export default class JoinRequest extends React.Component {
         this.setState({[attributeName]: value});
     };
 
-    goBack = () => goto(`/teams/${this.props.match.params.teamId}`);
+    goBack = () => goto("/my-teams", this.props);
 
     cancel = e => {
         stop(e);
@@ -63,10 +63,10 @@ export default class JoinRequest extends React.Component {
                 teamId,
                 message
             }).then(() => {
-                this.goBack();
                 setFlash(I18n.t("join_request.flash", {name: this.state.team.name}));
+                this.goBack();
             })
-                .catch(err => handleServerError(err));
+            .catch(err => handleServerError(err));
         }
     };
 
@@ -113,7 +113,7 @@ export default class JoinRequest extends React.Component {
     renderAdmins = team =>
         <section>
             {team.admins.map(admin =>
-                <div>
+                <div key={admin.name}>
                     <p>{admin.name}</p>
                     <a href={`@mailto:${admin.email}`}></a>
                 </div>

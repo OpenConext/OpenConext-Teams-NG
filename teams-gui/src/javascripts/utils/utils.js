@@ -1,4 +1,4 @@
-import {clearBackPage, backPage} from "../lib/store";
+import {backPage, clearBackPage} from "../lib/store";
 
 export function stop(e) {
     if (e !== undefined && e !== null) {
@@ -23,11 +23,7 @@ export function isEmpty(obj) {
     return false;
 }
 
-export function goto(path) {
-    if (isEmpty(backPage)) {
-        this.props.history.replace(path);
-    } else {
-        this.props.history.replace(backPage);
-        clearBackPage();
-    }
+export function goto(path, props) {
+    props.history.replace(backPage || path);
+    clearBackPage();
 }

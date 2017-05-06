@@ -1,7 +1,6 @@
 div.flash {
-  text-align: center;
   color: white;
-  font-size: large;
+  font-size: larger;
   position: relative;
 
   transition: 0.3s;
@@ -19,15 +18,15 @@ div.flash {
   a.close {
     text-decoration: none;
     position: absolute;
-    right: 0;
-    top: 0;
+    right: -2px;
+    top: -6px;
     color: white;
-    font-size: xx-large;
+    font-size: x-large;
     padding: 6px;
   }
 
   p {
-    padding: 20px 40px;
+    padding: 10px 15px;
 
     &.info {
       background-color: darken($green, 15%);

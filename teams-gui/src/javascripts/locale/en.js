@@ -117,9 +117,6 @@ I18n.translations.en = {
         message: "Message",
         message_info: "Your personal invitation message for the fellow admin of this team",
         message_placeholder: "Your personal message",
-
-
-
     },
     icon_legend: {
         admin: "Admin",
