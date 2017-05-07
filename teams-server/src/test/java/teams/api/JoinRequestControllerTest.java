@@ -4,16 +4,13 @@ import org.junit.Test;
 import teams.AbstractApplicationTest;
 import teams.domain.ClientJoinRequest;
 import teams.domain.JoinRequest;
-import teams.domain.Membership;
+import teams.domain.Person;
 import teams.domain.Role;
 
 import java.util.List;
-import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
-import static org.apache.http.HttpStatus.SC_NOT_FOUND;
-import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -28,7 +25,7 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
                 .get("api/teams/join-requests/{id}", 3L)
                 .then()
                 .statusCode(SC_OK)
-                .body("person.email",equalTo("john.doe@example.org"))
+                .body("person.email", equalTo("john.doe@example.org"))
                 .body("message", equalTo("Please, please let me join"));
     }
 
@@ -51,12 +48,12 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
                 .when()
                 .put("api/teams/join-requests/approve/{id}", 1L)
                 .then()
-                .statusCode(SC_OK);
+                .statusCode(SC_OK)
+                .body("role", equalTo(Role.MEMBER.name()));
 
-        Membership membership = membershipRepository.findByUrnTeamAndUrnPerson(
-                "nl:surfnet:diensten:riders",
-                "urn:collab:person:example.com:john.doe").get();
-        assertEquals(Role.MEMBER, membership.getRole());
+        Person person = personRepository.findByUrnIgnoreCase("urn:collab:person:example.com:john.doe").get();
+        assertEquals(0, person.getJoinRequests().size());
+        assertEquals(1, person.getMemberships().size());
     }
 
     @Test
@@ -65,14 +62,13 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .when()
-                .put("api/teams/join-requests/reject/{id}", 1L)
+                .delete("api/teams/join-requests/reject/{id}", 1L)
                 .then()
                 .statusCode(SC_OK);
 
-        Optional<Membership> membership = membershipRepository.findByUrnTeamAndUrnPerson(
-                "nl:surfnet:diensten:riders",
-                "urn:collab:person:example.com:john.doe");
-        assertFalse(membership.isPresent());
+        Person person = personRepository.findByUrnIgnoreCase("urn:collab:person:example.com:john.doe").get();
+        assertEquals(0, person.getJoinRequests().size());
+        assertEquals(0, person.getMemberships().size());
     }
 
 

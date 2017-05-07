@@ -41,7 +41,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
     }
 
     @PutMapping("api/teams/join-requests/approve/{id}")
-    public JoinRequest approve(@PathVariable("id") Long id, FederatedUser federatedUser) throws MessagingException, IOException {
+    public Membership approve(@PathVariable("id") Long id, FederatedUser federatedUser) throws MessagingException, IOException {
         JoinRequest joinRequest = notNullGetJoinRequestValidateMembership(id, federatedUser);
 
         Person person = joinRequest.getPerson();
@@ -58,11 +58,11 @@ public class JoinRequestController extends ApiController implements MembershipVa
         LOG.info("Approved joinRequest for team {} and person {} by {}",
                 team.getUrn(), person.getUrn(), federatedUser.getUrn());
 
-        return joinRequest;
+        return newMembership;
     }
 
-    @PutMapping("api/teams/join-requests/reject/{id}")
-    public JoinRequest reject(@PathVariable("id") Long id, FederatedUser federatedUser) throws MessagingException, IOException {
+    @DeleteMapping("api/teams/join-requests/reject/{id}")
+    public void reject(@PathVariable("id") Long id, FederatedUser federatedUser) throws MessagingException, IOException {
         JoinRequest joinRequest = notNullGetJoinRequestValidateMembership(id, federatedUser);
 
         mailBox.sendJoinRequestRejected(joinRequest);
@@ -70,8 +70,6 @@ public class JoinRequestController extends ApiController implements MembershipVa
 
         LOG.info("Rejected joinRequest for team {} and person {} by {}",
                 joinRequest.getTeam().getUrn(), joinRequest.getPerson().getUrn(), federatedUser.getUrn());
-
-        return joinRequest;
     }
 
     @DeleteMapping("api/teams/join-requests/{id}")

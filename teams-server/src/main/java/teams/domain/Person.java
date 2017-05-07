@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.ALL;
 import static org.springframework.util.StringUtils.hasText;
 
 @Entity(name = "persons")
@@ -42,6 +43,10 @@ public class Person {
     @OneToMany(mappedBy = "person", orphanRemoval = true)
     @JsonIgnore
     private Set<JoinRequest> joinRequests = new HashSet<>();
+
+    @OneToMany(mappedBy = "person", orphanRemoval = true)
+    @JsonIgnore
+    private Set<Membership> memberships = new HashSet<>();
 
     public Person(String urn, String name, String email, boolean isGuest) {
         this.urn = urn;

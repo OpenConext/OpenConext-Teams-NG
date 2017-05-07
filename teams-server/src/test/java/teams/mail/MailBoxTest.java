@@ -85,7 +85,7 @@ public class MailBoxTest extends AbstractApplicationTest {
 
     private String mailBody() throws InterruptedException, MessagingException {
         //we send async
-        Thread.sleep(1000);
+        Thread.sleep(1500);
 
         MimeMessage mimeMessage = greenMail.getReceivedMessages()[0];
         assertEquals(EMAIL, mimeMessage.getRecipients(Message.RecipientType.TO)[0].toString());
