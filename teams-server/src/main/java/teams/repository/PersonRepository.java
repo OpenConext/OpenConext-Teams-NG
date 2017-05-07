@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
-    Optional<Person> findByUrn(String urn);
+    Optional<Person> findByUrnIgnoreCase(String urn);
 
     List<Person> findFirst10ByNameStartingWithOrEmailStartingWithAllIgnoreCase(String name, String email);
 

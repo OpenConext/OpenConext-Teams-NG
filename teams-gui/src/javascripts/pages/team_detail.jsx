@@ -52,9 +52,9 @@ export default class TeamDetail extends React.Component {
         moment.locale(I18n.locale);
     }
 
-    componentWillMount = () => getTeamDetail(this.props.match.params.id).then(team => this.stateTeam(team));
+    componentWillMount = () => getTeamDetail(this.props.match.params.id).then(team => this.stateTeam(team, true));
 
-    stateTeam(team) {
+    stateTeam(team, displayOneAdminWarning) {
         const joinRequests = (team.joinRequests || []).map(joinRequest => {
             return {
                 ...joinRequest,
@@ -76,7 +76,7 @@ export default class TeamDetail extends React.Component {
             return {...member, isMembership: true, filterAttribute: member.role, order: 3};
         }).concat(joinRequests).concat(invitations);
 
-        if (!this.state.loaded && !allowedToLeave(team, this.props.currentUser)) {
+        if (displayOneAdminWarning && !allowedToLeave(team, this.props.currentUser)) {
             setFlash(I18n.t("team_detail.one_admin_warning"), "warning");
         }
 
@@ -217,7 +217,7 @@ export default class TeamDetail extends React.Component {
         };
         saveTeam({...teamProperties, ...changedAttribute})
             .then(team => {
-                this.stateTeam(team);
+                this.stateTeam(team, false);
                 setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_updated")}));
             })
             .catch(err => handleServerError(err));
@@ -228,15 +228,14 @@ export default class TeamDetail extends React.Component {
         const downgrade = member.urnPerson === currentUser.urn;
         let confirmed = true;
         if (downgrade) {
-            confirmed = confirm(I18n.t("team_detail.downgrade_current_user", {name: this.state.team.name}))
+            confirmed = confirm(I18n.t("team_detail.downgrade_current_user", {name: this.state.team.name}));
         }
         if (confirmed) {
             changeRole({id: member.id, role: role.value})
-                .then((membership) => {
+                .then(membership => {
                     const team = {...this.state.team};
-                    let ts = team.memberships.filter(m => m.id === membership.id);
-                    ts[0].role = membership.role;
-                    this.stateTeam(team);
+                    team.memberships.filter(m => m.id === membership.id)[0].role = membership.role;
+                    this.stateTeam(team, true);
                     setFlash(I18n.t("team_detail.role_changed", {
                         name: membership.person.name,
                         role: labelForRole(membership.role)
@@ -359,12 +358,14 @@ export default class TeamDetail extends React.Component {
         return member.person.id !== currentUser.person.id ? `${userIcon} me` : userIcon;
     };
 
-    roleCell = (member) => {
+    roleCell = member => {
         const {roleInTeam, isOnlyAdmin} = this.state;
-        return <SelectRole onChange={this.changeMembershipRole(member)} role={member.role}
-                           roleOfCurrentUserInTeam={roleInTeam} isOnlyAdmin={isOnlyAdmin}
-                           isCurrentUser={member.urnPerson === this.props.currentUser.urn}
-                           disabled={member.isJoinRequest || member.isInvitation}/>
+        return (
+            <SelectRole onChange={this.changeMembershipRole(member)} role={member.role}
+                        roleOfCurrentUserInTeam={roleInTeam} isOnlyAdmin={isOnlyAdmin}
+                        isCurrentUser={member.urnPerson === this.props.currentUser.urn}
+                        disabled={member.isJoinRequest || member.isInvitation}/>
+        );
     };
 
     renderMembersTable(currentUser, filteredMembers) {

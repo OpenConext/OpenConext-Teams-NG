@@ -62,14 +62,14 @@ public class MailBox {
     }
 
     public void sendJoinRequestAccepted(JoinRequest joinRequest) throws IOException, MessagingException {
-        doSendJoinRequestAcceptedOrDenied(joinRequest, "Your request has been accepted", "join_request_accepted.html");
+        doSendJoinRequestAcceptedOrRejected(joinRequest, "Your request has been accepted", "join_request_accepted.html");
     }
 
-    public void sendJoinRequestDenied(JoinRequest joinRequest) throws IOException, MessagingException {
-        doSendJoinRequestAcceptedOrDenied(joinRequest, "Your request has been declined", "join_request_declined.html");
+    public void sendJoinRequestRejected(JoinRequest joinRequest) throws IOException, MessagingException {
+        doSendJoinRequestAcceptedOrRejected(joinRequest, "Your request has been declined", "join_request_declined.html");
     }
 
-    private void doSendJoinRequestAcceptedOrDenied(JoinRequest joinRequest, String subject, String emailTemplate) throws MessagingException, IOException {
+    private void doSendJoinRequestAcceptedOrRejected(JoinRequest joinRequest, String subject, String emailTemplate) throws MessagingException, IOException {
         Map<String, Object> variables = new HashMap<>();
         variables.put("title", teamsWhiteLabel);
         variables.put("joinRequest", joinRequest);

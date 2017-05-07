@@ -13,7 +13,7 @@ public class PersonRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByUrn() throws Exception {
-        Optional<Person> personOptional = personRepository.findByUrn("urn:collab:person:surfnet.nl:jdoe");
+        Optional<Person> personOptional = personRepository.findByUrnIgnoreCase("URN:collab:PERSON:surfnet.nl:JDOE");
         assertEquals("John Doe", personOptional.get().getName());
     }
 

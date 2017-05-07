@@ -46,7 +46,7 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
     }
 
     private Person provision(Person person) {
-        Optional<Person> personOptional = personRepository.findByUrn(person.getUrn());
+        Optional<Person> personOptional = personRepository.findByUrnIgnoreCase(person.getUrn());
         if (personOptional.isPresent()) {
             Person personFromDatabase = personOptional.get();
             if (person.needsUpdate(personFromDatabase)) {

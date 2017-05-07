@@ -74,7 +74,7 @@ public class MailBoxTest extends AbstractApplicationTest {
 
     @Test
     public void sendJoinRequestDeclinedMail() throws Exception {
-        mailBox.sendJoinRequestDenied(joinRequest());
+        mailBox.sendJoinRequestRejected(joinRequest());
         validateJoinRequestStatusMail("declined");
     }
 

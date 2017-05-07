@@ -8,6 +8,7 @@ import teams.domain.Person;
 import teams.domain.Role;
 import teams.domain.Team;
 import teams.exception.IllegalJoinRequestException;
+import teams.exception.IllegalMembershipException;
 
 import java.util.List;
 
@@ -49,4 +50,15 @@ public class JoinRequestValidatorTest implements Seed{
     public void validateJoinRequestException() throws Exception {
         subject.validateJoinRequest(joinRequest("nope"), federatedUser("different"));
     }
+
+    @Test(expected = IllegalMembershipException.class)
+    public void membersCanNotApproveJoinRequests() {
+        subject.membersCanNotApproveJoinRequests(Role.MEMBER);
+    }
+
+    @Test
+    public void managersCanApproveJoinRequests() {
+        subject.membersCanNotApproveJoinRequests(Role.MANAGER);
+    }
+
 }

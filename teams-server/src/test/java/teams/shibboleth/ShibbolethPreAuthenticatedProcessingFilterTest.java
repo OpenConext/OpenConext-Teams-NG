@@ -39,7 +39,7 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
     public void getPreAuthenticatedPrincipalAlreadyExists() throws Exception {
         Person person = new Person("urn", "John Doe", "mail", false);
 
-        when(personRepository.findByUrn("urn")).thenReturn(Optional.empty());
+        when(personRepository.findByUrnIgnoreCase("urn")).thenReturn(Optional.empty());
         when(personRepository.save(any(Person.class))).thenReturn(person);
         Person principal = Person.class.cast(subject.getPreAuthenticatedPrincipal(populateServletRequest()));
         assertEquals(person, principal);
@@ -65,7 +65,7 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
     private Person doGetPreAuthenticatedPrincipal(Person person) {
         MockHttpServletRequest request = populateServletRequest();
 
-        when(personRepository.findByUrn("urn")).thenReturn(Optional.of(person));
+        when(personRepository.findByUrnIgnoreCase("urn")).thenReturn(Optional.of(person));
         return Person.class.cast(subject.getPreAuthenticatedPrincipal(request));
 
 

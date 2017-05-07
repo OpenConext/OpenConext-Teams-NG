@@ -2,6 +2,7 @@ package teams.api.validations;
 
 import teams.domain.*;
 import teams.exception.IllegalJoinRequestException;
+import teams.exception.IllegalMembershipException;
 
 import java.util.List;
 
@@ -29,6 +30,12 @@ public interface JoinRequestValidator {
     default void validateJoinRequest(JoinRequest joinRequest, FederatedUser federatedUser) {
         if (!joinRequest.getPerson().getUrn().equals(federatedUser.getUrn())) {
             throw new IllegalJoinRequestException(String.format("User %s is not the owner of JoinRequest %s", federatedUser.getUrn(), joinRequest.getId()));
+        }
+    }
+
+    default void membersCanNotApproveJoinRequests(Role roleOfLoggedInPerson) {
+        if (roleOfLoggedInPerson.equals(Role.MEMBER)) {
+            throw new IllegalMembershipException("Members are not allowed to approve join requests");
         }
     }
 }

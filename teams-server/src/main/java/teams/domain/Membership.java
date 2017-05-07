@@ -54,6 +54,7 @@ public class Membership {
     }
 
     public Membership(Role role, Team team, Person person, Instant expiryDate) {
+        Assert.notNull(role, "Role required");
         Assert.notNull(team.getUrn(), "Urn team required");
         Assert.notNull(person.getUrn(), "Urn person required");
         this.role = role;
