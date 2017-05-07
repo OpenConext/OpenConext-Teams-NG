@@ -156,7 +156,8 @@ export default class Invite extends React.Component {
             <section className="form-divider">
                 <label className="invitation-role" htmlFor="invitationRole">{I18n.t("invite.role")}</label>
                 <SelectRole onChange={this.handleInputChange("intendedRole")} role={intendedRole}
-                            roleOfCurrentUserInTeam={roleOfCurrentUserInTeam}/>
+                            roleOfCurrentUserInTeam={roleOfCurrentUserInTeam}
+                            isCurrentUser={true}/>
             </section>
         );
     };

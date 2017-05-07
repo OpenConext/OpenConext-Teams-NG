@@ -92,7 +92,7 @@ export function saveTeam(teamProperties) {
 }
 
 export function leaveTeam(membershipId) {
-    return fetchDelete("membership/" + membershipId);
+    return fetchDelete("memberships/" + membershipId);
 }
 
 export function teamExistsByName(name) {
@@ -100,7 +100,7 @@ export function teamExistsByName(name) {
 }
 
 export function roleOfCurrentUserInTeam(teamId) {
-    return fetchJson("membership/" + teamId);
+    return fetchJson("memberships/" + teamId);
 }
 
 export function invite(invitation) {
@@ -108,7 +108,7 @@ export function invite(invitation) {
 }
 
 export function linkExternalTeam(teamId, externalTeamId) {
-    return postPutJson("teams/external", {teamId: teamId, externalTeamId: externalTeamId});
+    return postPutJson("teams/external-teams", {teamId: teamId, externalTeamId: externalTeamId});
 }
 
 export function deleteJoinRequest(id) {
@@ -121,4 +121,8 @@ export function joinRequest(clientJoinRequest) {
 
 export function getJoinRequest(id) {
     return fetchJson("join-requests/" + id);
+}
+
+export function changeRole(membershipProperties) {
+    return postPutJson("memberships/", membershipProperties);
 }

@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 public class ExternalTeamController extends ApiController implements ExternalTeamValidator {
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("api/teams/external")
+    @PutMapping("api/teams/external-teams")
     public Object linkTeamToExternalTeam(@Validated @RequestBody ExternalTeamProperties externalTeamProperties, FederatedUser federatedUser) {
         Team team = teamById(externalTeamProperties.getTeamId(), true);
         List<ExternalTeam> externalTeams = externalTeamProperties.getExternalTeams();
@@ -46,7 +46,7 @@ public class ExternalTeamController extends ApiController implements ExternalTea
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("api/teams/external/{id}/{teamId}")
+    @DeleteMapping("api/teams/external-teams/{id}/{teamId}")
     public Object delinkTeamFromExternalTeam(@PathVariable("id") Long id,@PathVariable("teamId") Long teamId, FederatedUser federatedUser) {
         Team team = teamById(teamId, true);
         ExternalTeam externalTeam = externalTeamById(id);

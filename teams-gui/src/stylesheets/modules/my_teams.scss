@@ -152,19 +152,18 @@
         i {
           padding: 15px 15px 15px 0;
           font-size: 16px;
-          font-weight: bold;
 
-          @include phone {
-            padding: 0 10px 0 0;
-          }
-
-          color: $medium-grey;
           &.fa-envelope {
             color: $dark-green;
           }
           &.fa-info-circle {
             @include info-icon;
           }
+
+          @include phone {
+            padding: 0 10px 0 0;
+          }
+
         }
         &.join_request {
           color: $dark-green;

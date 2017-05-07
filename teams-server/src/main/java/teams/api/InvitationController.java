@@ -68,8 +68,8 @@ public class InvitationController extends ApiController implements MembershipVal
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("api/teams/invitations")
-    public void resend(@Validated @RequestBody ClientResendInvitation resendInvitation,
-                       FederatedUser federatedUser) throws IOException, MessagingException {
+    public Invitation resend(@Validated @RequestBody ClientResendInvitation resendInvitation,
+                             FederatedUser federatedUser) throws IOException, MessagingException {
         Long invitationId = resendInvitation.getInvitationId();
         Invitation invitation = invitationRepository.findOne(invitationId);
 
@@ -84,6 +84,8 @@ public class InvitationController extends ApiController implements MembershipVal
 
         LOG.info("Resend invitation for team {} and person {}",
                 invitation.getTeam().getUrn(), federatedUser.getUrn());
+
+        return invitation;
     }
 
 

@@ -105,6 +105,8 @@ I18n.translations.en = {
         copied: "Copied",
         one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team.",
         add: "ADD",
+        role_changed: "Role for {{name}} changed to {{role}}",
+        downgrade_current_user: "Are you sure you don't want to be administrator anymore in team {{name}}? You can't reverse this decision yourself."
     },
     join_request : {
         title: "Join request",

@@ -5,7 +5,7 @@ import ReactTooltip from "react-tooltip";
 import I18n from "i18n-js";
 import CopyToClipboard from "react-copy-to-clipboard";
 
-import {deleteTeam, getTeamDetail, leaveTeam, saveTeam} from "../api";
+import {changeRole, deleteTeam, getTeamDetail, leaveTeam, saveTeam} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
@@ -13,8 +13,15 @@ import SortDropDown from "../components/sort_drop_down";
 import FilterDropDown from "../components/filter_drop_down";
 import InlineEditable from "../components/inline_editable";
 import CheckBox from "../components/checkbox";
-import {allowedToLeave, currentUserRoleInTeam, iconForRole, labelForRole, ROLES} from "../validations/memberships";
-
+import {
+    allowedToLeave,
+    currentUserRoleInTeam,
+    iconForRole,
+    isOnlyAdmin,
+    labelForRole,
+    ROLES
+} from "../validations/memberships";
+import SelectRole from "../components/select_role";
 
 export default class TeamDetail extends React.Component {
 
@@ -37,9 +44,10 @@ export default class TeamDetail extends React.Component {
                 {name: ROLES.JOIN_REQUEST.role, selected: true, count: 0},
                 {name: ROLES.INVITATION.role, selected: true, count: 0}
             ],
-
             loaded: false,
-            copiedToClipboard: false
+            copiedToClipboard: false,
+            isOnlyAdmin: false,
+            roleInTeam: ROLES.MEMBER.role
         };
         moment.locale(I18n.locale);
     }
@@ -78,12 +86,15 @@ export default class TeamDetail extends React.Component {
         const newFilterAttributes = [...this.state.filterAttributes];
         newFilterAttributes.forEach(attr => attr.count = members.filter(member => member.filterAttribute === attr.name).length);
 
+        const {currentUser} = this.props;
         this.setState({
             team: team,
             members: members,
             filteredMembers: sortedMembers,
             filterAttributes: newFilterAttributes.filter(attr => attr.count > 0),
-            loaded: true
+            loaded: true,
+            isOnlyAdmin: isOnlyAdmin(team, currentUser),
+            roleInTeam: currentUserRoleInTeam(team, currentUser)
         });
 
     }
@@ -97,6 +108,7 @@ export default class TeamDetail extends React.Component {
 
     handleAcceptJoinRequest = team => e => {
         stop(e);
+        //TODO - reload everything
         this.props.history.replace("/team/" + team.urn);
     };
 
@@ -209,6 +221,29 @@ export default class TeamDetail extends React.Component {
                 setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_updated")}));
             })
             .catch(err => handleServerError(err));
+    };
+
+    changeMembershipRole = member => role => {
+        const {currentUser} = this.props;
+        const downgrade = member.urnPerson === currentUser.urn;
+        let confirmed = true;
+        if (downgrade) {
+            confirmed = confirm(I18n.t("team_detail.downgrade_current_user", {name: this.state.team.name}))
+        }
+        if (confirmed) {
+            changeRole({id: member.id, role: role.value})
+                .then((membership) => {
+                    const team = {...this.state.team};
+                    let ts = team.memberships.filter(m => m.id === membership.id);
+                    ts[0].role = membership.role;
+                    this.stateTeam(team);
+                    setFlash(I18n.t("team_detail.role_changed", {
+                        name: membership.person.name,
+                        role: labelForRole(membership.role)
+                    }));
+                })
+                .catch(err => handleServerError(err));
+        }
     };
 
     copiedToClipboard = () => {
@@ -324,7 +359,15 @@ export default class TeamDetail extends React.Component {
         return member.person.id !== currentUser.person.id ? `${userIcon} me` : userIcon;
     };
 
-    renderMembersTable(currentUser) {
+    roleCell = (member) => {
+        const {roleInTeam, isOnlyAdmin} = this.state;
+        return <SelectRole onChange={this.changeMembershipRole(member)} role={member.role}
+                           roleOfCurrentUserInTeam={roleInTeam} isOnlyAdmin={isOnlyAdmin}
+                           isCurrentUser={member.urnPerson === this.props.currentUser.urn}
+                           disabled={member.isJoinRequest || member.isInvitation}/>
+    };
+
+    renderMembersTable(currentUser, filteredMembers) {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
         const columns = ["name", "email", "status", "role", "actions"];
@@ -335,14 +378,14 @@ export default class TeamDetail extends React.Component {
             </th>
         );
 
-        if (this.state.filteredMembers.length !== 0) {
+        if (filteredMembers.length !== 0) {
             return (
                 <table className="members">
                     <thead>
                     <tr>{columns.map((column, index) => th(index))}</tr>
                     </thead>
                     <tbody>
-                    {this.state.filteredMembers.map((member, index) =>
+                    {filteredMembers.map((member, index) =>
                         <tr key={`${index}`}>
                             <td className={member.isJoinRequest ? "join_request" : member.isInvitation ? "invitation" : "membership"}>
                                 <i className={this.userIconClassName(member, currentUser)}></i>
@@ -351,7 +394,7 @@ export default class TeamDetail extends React.Component {
                             <td className="email">{member.person.email}</td>
                             <td className="status">{this.statusOfMembership(member)}</td>
                             <td className="role">
-                                {labelForRole(member.role)}
+                                {this.roleCell(member)}
                             </td>
                             <td className="actions"><i className="fa fa-ellipsis-h"></i></td>
                         </tr>
@@ -364,7 +407,7 @@ export default class TeamDetail extends React.Component {
     }
 
     render() {
-        const {team, sortAttributes, filterAttributes, loaded} = this.state;
+        const {team, filteredMembers, sortAttributes, filterAttributes, loaded} = this.state;
         const {currentUser} = this.props;
         if (!loaded) {
             return null;
@@ -393,7 +436,7 @@ export default class TeamDetail extends React.Component {
                             {I18n.t("team_detail.add")}<i className="fa fa-plus"></i>
                         </a>}
                     </section>
-                    {this.renderMembersTable(currentUser)}
+                    {this.renderMembersTable(currentUser, filteredMembers)}
                 </section>
             </div>
         );

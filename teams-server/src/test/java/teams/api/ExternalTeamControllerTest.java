@@ -37,7 +37,7 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
                 .body(new ExternalTeamProperties(3L, externalTeams))
                 .when()
-                .put("api/teams/external")
+                .put("api/teams/external-teams")
                 .then()
                 .statusCode(SC_OK)
                 .body("externalTeams.identifier",
@@ -60,7 +60,7 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
                 .when()
-                .delete(String.format("api/teams/external/%s/%s", 2, 2))
+                .delete(String.format("api/teams/external-teams/%s/%s", 2, 2))
                 .then()
                 .statusCode(SC_OK)
                 .body("externalTeams.size()", equalTo(0));
@@ -74,7 +74,7 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .when()
-                .delete(String.format("api/teams/external/%s/%s", 1, 1))
+                .delete(String.format("api/teams/external-teams/%s/%s", 1, 1))
                 .then()
                 .statusCode(SC_OK)
                 .body("externalTeams.size()", equalTo(1));

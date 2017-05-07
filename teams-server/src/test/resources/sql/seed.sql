@@ -42,7 +42,9 @@ VALUES (8, 'ADMIN', 3, 'nl:surfnet:diensten:gliders', 5, 'urn:collab:person:surf
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
 VALUES (9, 'ADMIN', 4, 'nl:surfnet:diensten:masters', 5, 'urn:collab:person:surfnet.nl:rdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (10, 'ADMIN', 5, 'nl:surfnet:diensten:wolves', 3, 'urn:collab:person:surfnet.nl:wdoe');
+VALUES (11, 'ADMIN', 5, 'nl:surfnet:diensten:wolves', 3, 'urn:collab:person:surfnet.nl:wdoe');
+INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
+VALUES (10, 'MEMBER', 1, 'nl:surfnet:diensten:riders', 5, 'urn:collab:person:surfnet.nl:rdoe');
 
 
 INSERT INTO `external_groups` (`id`, `description`, `group_provider`, `identifier`, `name`)

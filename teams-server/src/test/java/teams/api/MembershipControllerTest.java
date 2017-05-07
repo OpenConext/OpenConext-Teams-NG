@@ -3,6 +3,7 @@ package teams.api;
 import org.junit.Test;
 import teams.AbstractApplicationTest;
 import teams.domain.Membership;
+import teams.domain.MembershipProperties;
 import teams.domain.Role;
 import teams.exception.NotAllowedException;
 
@@ -22,7 +23,7 @@ public class MembershipControllerTest extends AbstractApplicationTest {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
-                .get("api/teams/membership/{teamId}", 1L)
+                .get("api/teams/memberships/{teamId}", 1L)
                 .then()
                 .statusCode(SC_OK)
                 .body("role", equalTo("ADMIN"));
@@ -33,7 +34,7 @@ public class MembershipControllerTest extends AbstractApplicationTest {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:no-member")
-                .get("api/teams/membership/{teamId}", 1L)
+                .get("api/teams/memberships/{teamId}", 1L)
                 .then()
                 .statusCode(SC_BAD_REQUEST)
                 .body("exception",equalTo(NotAllowedException.class.getName()));
@@ -41,37 +42,32 @@ public class MembershipControllerTest extends AbstractApplicationTest {
 
     @Test
     public void changeMembership() throws Exception {
-        Membership body = new Membership(
-                Role.ADMIN,
-                team("nl:surfnet:diensten:giants"),
-                person("urn:collab:person:surfnet.nl:tdoe"));
+        MembershipProperties body = new MembershipProperties(6L, Role.ADMIN);
 
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:mdoe")
                 .body(body)
                 .when()
-                .put("api/teams/membership")
+                .put("api/teams/memberships")
                 .then()
                 .statusCode(SC_OK);
 
-        Membership membership = membershipRepository.findByUrnTeamAndUrnPerson(body.getUrnTeam(), body.getUrnPerson()).get();
+        Membership membership = membershipRepository.findByUrnTeamAndUrnPerson(
+                "nl:surfnet:diensten:giants", "urn:collab:person:surfnet.nl:tdoe").get();
         assertEquals(Role.ADMIN, membership.getRole());
     }
 
     @Test
     public void changeMembershipNotExist() throws Exception {
-        Membership body = new Membership(
-                Role.ADMIN,
-                team("nope"),
-                person("urn:collab:person:surfnet.nl:tdoe"));
+        MembershipProperties body = new MembershipProperties(99L, Role.ADMIN);
 
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:mdoe")
                 .body(body)
                 .when()
-                .put("api/teams/membership")
+                .put("api/teams/memberships")
                 .then()
                 .statusCode(SC_NOT_FOUND);
     }
@@ -82,7 +78,7 @@ public class MembershipControllerTest extends AbstractApplicationTest {
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:mdoe")
                 .when()
-                .delete("api/teams/membership/{id}", 6)
+                .delete("api/teams/memberships/{id}", 6)
                 .then()
                 .statusCode(SC_OK);
 
@@ -97,7 +93,7 @@ public class MembershipControllerTest extends AbstractApplicationTest {
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:mdoe")
                 .when()
-                .delete("api/teams/membership/{id}", 999)
+                .delete("api/teams/memberships/{id}", 999)
                 .then()
                 .statusCode(SC_NOT_FOUND);
     }

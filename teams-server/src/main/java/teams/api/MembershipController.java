@@ -13,15 +13,16 @@ import java.util.Optional;
 @RestController
 public class MembershipController extends ApiController implements MembershipValidator {
 
-    @GetMapping("api/teams/membership/{teamId}")
+    @GetMapping("api/teams/memberships/{teamId}")
     public Map<String, Role> membership(@PathVariable("teamId") Long teamId, FederatedUser federatedUser) {
         Membership membership = membership(teamById(teamId, false), federatedUser.getUrn());
         return Collections.singletonMap("role", membership.getRole());
     }
 
-    @PutMapping("api/teams/membership")
-    public void changeMembership(@Validated @RequestBody Membership membershipProperties, FederatedUser federatedUser) {
-        Membership membership = membershipByUrns(membershipProperties.getUrnTeam(), membershipProperties.getUrnPerson());
+    @PutMapping("api/teams/memberships")
+    public Membership changeMembership(@Validated @RequestBody MembershipProperties membershipProperties, FederatedUser federatedUser) {
+        Membership membership = membershipRepository.findOne(membershipProperties.getId());
+        assertNotNull(Membership.class.getSimpleName(),membership, membershipProperties.getId());
         Team team = membership.getTeam();
         Person person = membership.getPerson();
 
@@ -40,10 +41,12 @@ public class MembershipController extends ApiController implements MembershipVal
 
         LOG.info("Changed membership for team {} and person {} from {} to {}",
                 team.getUrn(), person.getUrn(), membership.getRole(), futureRole);
+
+        return membership;
     }
 
 
-    @DeleteMapping("api/teams/membership/{id}")
+    @DeleteMapping("api/teams/memberships/{id}")
     public void deleteMembership(@PathVariable("id") Long id, FederatedUser federatedUser) {
         Membership membership = membershipRepository.findOne(id);
 
