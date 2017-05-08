@@ -196,7 +196,7 @@ export default class TeamDetail extends React.Component {
 
     handleDeleteMember = (member, teamId) => e => {
         stop(e);
-        const i18nHash = {name: member.name};
+        const i18nHash = {name: member.person.name};
         if (confirm(I18n.t("team_detail.confirmations.delete_member", i18nHash))) {
             deleteMember(member.id).then(() =>
                 this.refreshTeamState(teamId, () => setFlash(I18n.t("team_detail.flash.deleted_member", i18nHash))));
@@ -457,7 +457,7 @@ export default class TeamDetail extends React.Component {
     actionId = member => `${member.id}_${member.isJoinRequest ? "join_request" : member.isInvitation ? "invitation" : "member"}`;
 
     actionOptions = (currentUser, member, team) => {
-        const isMemberCurrentUser = member.urnPerson !== currentUser.urn;
+        const isMemberCurrentUser = member.urnPerson === currentUser.urn;
         const currentRole = currentUserRoleInTeam(team, currentUser);
         const isMember = currentRole === ROLES.MEMBER.role;
         const isAdmin = currentRole === ROLES.ADMIN.role;
@@ -548,7 +548,7 @@ export default class TeamDetail extends React.Component {
                     </td>
                     <td data-label={I18n.t("team_detail.actions_phone")} className="actions"
                         onClick={this.toggleActions(member, actions)}
-                        tabIndex="1" /*onBlur={() => this.setState({actions: {show: false, id: ""}})}*/>
+                        tabIndex="1" onBlur={() => this.setState({actions: {show: false, id: ""}})}>
                         {!isEmpty(options) && <i className="fa fa-ellipsis-h"></i>}
                         {this.renderActions(options, member, actions)}
                     </td>

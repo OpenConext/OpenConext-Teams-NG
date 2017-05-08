@@ -148,5 +148,5 @@ export function changeRole(membershipProperties) {
 }
 
 export function deleteMember(memberId) {
-    return fetchDelete("memberships" + memberId);
+    return fetchDelete("memberships/" + memberId);
 }
