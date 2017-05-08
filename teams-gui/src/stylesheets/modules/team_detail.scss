@@ -55,7 +55,6 @@
     }
   }
 
-
   section.search {
     position: relative;
     flex-grow: 5;
@@ -83,7 +82,6 @@
     .team-detail-controls {
       flex-direction: row;
 
-
       section.search {
         margin-left: 15px;
         margin-top: 0;
@@ -108,6 +106,35 @@
 
     }
   }
+  div.icon-legend {
+    padding: 0;
+    margin-top: 40px;
+
+    .members-tab {
+      margin-right: auto;
+      cursor: pointer;
+
+      span {
+        font-weight: bold;
+        padding: 10px 25px;
+        color: $blue;
+        background-color: white;
+        border: 1px solid $blue;
+        border-bottom: none;
+        display: inline-block;
+        &.active {
+          color: white;
+          background-color: $blue;
+        }
+        &:first-child {
+          border-top-left-radius: $br;
+        }
+        &:last-child {
+          border-top-right-radius: $br;
+        }
+      }
+    }
+  }
 
   table.members {
     width: 100%;
@@ -116,7 +143,7 @@
     }
     thead {
       th.name {
-        width: 20%;
+        width: 25%;
       }
       th.email {
         width: 25%;
@@ -125,7 +152,7 @@
         width: 25%;
       }
       th.role {
-        width: 25%;
+        width: 20%;
       }
       th.actions {
         text-align: right;
@@ -150,23 +177,53 @@
       tr {
         &:hover {
           background-color: #F9FCFD;
-          td.actions i {
+          td.actions i.fa-ellipsis-h {
             color: $blue;
             font-size: 26px;
           }
         }
-        &.pending {
-          color: $green;
+        &.me {
+          font-weight: bold;
         }
+      }
+      td {
+        font-weight: inherit;
       }
       td.name {
         color: $blue;
-        font-weight: bold;
+      }
+      td.actions {
+        cursor: pointer;
+        text-align: right;
+        font-size: 18px;
+        position: relative;
+      }
+      td.status {
+        span {
+          position: relative;
+          padding: 15px 10px 0 0;
+        }
+        div.tool-tip {
+          @include tool-tip;
+          span {
+            text-transform: none;
+            &.label {
+              font-weight: bold;
+              display: block;
+              padding: 3px 0;
+            }
+            &.value {
+              font-weight: normal;
+              float: right;
+              padding: 0 0 0 60px;
+            }
+          }
+        }
         i {
           padding: 15px 15px 15px 0;
           font-size: 16px;
-          &.me {
-            color: $gold;
+          &.fa-info-circle {
+            @include info-icon;
           }
           &.fa-clock-o {
             color: $dark-green;
@@ -176,17 +233,32 @@
           }
         }
       }
-      td.actions {
-        cursor: pointer;
-        text-align: right;
-        font-size: 18px;
-        position: relative;
+    }
+    @include phone {
+      thead {
+        display: none;
       }
-      td.status {
-        i {
-          padding: 15px 15px 15px 0;
+      tr {
+        margin-bottom: 10px;
+        display: block;
+        border-bottom: 2px solid $lighter-grey;
+      }
+      td {
+        display: block;
+        text-align: right;
+        border-bottom: 1px dotted $light-blue;
+        padding: 8px 0;
+
+        &:before {
+          content: attr(data-label);
+          float:left;
+          text-transform: uppercase;
+          font-weight: bold;
+          font-size: 14px;
+          color: $medium-grey;
         }
       }
+
     }
   }
 

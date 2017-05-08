@@ -1,6 +1,6 @@
 div.icon-legend {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   padding: 30px 0 10px 0;
 
   h2 {
@@ -8,7 +8,7 @@ div.icon-legend {
     line-height: 26px;
     margin-right: auto;
   }
-  span {
+  span.role {
     color: $medium-grey;
     margin-left: 18px;
     font-weight: bold;

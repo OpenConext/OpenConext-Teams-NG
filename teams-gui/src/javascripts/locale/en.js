@@ -62,10 +62,11 @@ I18n.translations.en = {
         created: "Date: ",
         message: "Message: ",
         action_options: {
-            remove: "Delete",
-            resend: "Resend",
-            invite: "Invite member",
-            details: "Details"
+            join_request_resend: "Resend join request",
+            join_request_remove: "Delete join request",
+            invite_member: "Invite member",
+            team_delete: "Delete team",
+            team_details: "Team details"
         },
         confirmation_join_request: "Are you sure you want to delete your join request for team {{name}}?",
         flash_join_request: "Join request for team {{name}} was deleted"
@@ -85,7 +86,8 @@ I18n.translations.en = {
         leave_confirmation: "Are you sure you want to leave team {{name}}",
         left: "Successfully left team {{name}}",
         leave: "Leave",
-        team_members: "Team members",
+        team_members: "MEMBERS ({{count}})",
+        team_groups: "LINKED GROUPS ({{count}})",
         membership: {
             name: "name",
             email: "email",
@@ -93,6 +95,7 @@ I18n.translations.en = {
             role: "role",
             actions: ""
         },
+        email: "Email",
         pending: "PENDING",
         resend_invitation: "Resend invitation",
         delete: "Delete",
@@ -104,9 +107,16 @@ I18n.translations.en = {
         copy: "Copy to clipboard",
         copied: "Copied",
         one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team.",
-        add: "ADD",
+        add: "INVITE",
         role_changed: "Role for {{name}} changed to {{role}}",
-        downgrade_current_user: "Are you sure you don't want to be administrator anymore in team {{name}}? You can't reverse this decision yourself."
+        downgrade_current_user: "Are you sure you don't want to be administrator anymore in team {{name}}? You can't reverse this decision yourself.",
+        action_options: {
+            join_request_accept: "Accept join request",
+            join_request_reject: "Reject join request",
+            invite_resend: "Resent invitation",
+            invite_delete: "Resent invitation",
+            member_delete: "Delete member"
+        }
     },
     join_request : {
         title: "Join request",

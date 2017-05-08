@@ -11,8 +11,10 @@ import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
 import SortDropDown from "../components/sort_drop_down";
 import FilterDropDown from "../components/filter_drop_down";
+import DropDownActions from "../components/drop_down_actions";
 import InlineEditable from "../components/inline_editable";
 import CheckBox from "../components/checkbox";
+import IconLegend from "../components/icon_legend";
 import {
     allowedToLeave,
     currentUserRoleInTeam,
@@ -30,7 +32,8 @@ export default class TeamDetail extends React.Component {
         this.state = {
             team: {},
             members: [],
-            filteredMembers: [],
+            visibleMembers: [],
+            actions: {show: false, id: ""},
             sortAttributes: [
                 {name: "name", order: "down", current: false},
                 {name: "email", order: "down", current: false},
@@ -47,9 +50,10 @@ export default class TeamDetail extends React.Component {
             loaded: false,
             copiedToClipboard: false,
             isOnlyAdmin: false,
-            roleInTeam: ROLES.MEMBER.role
+            roleInTeam: ROLES.MEMBER.role,
+            searchQuery: "",
+            tab: "members"
         };
-        moment.locale(I18n.locale);
     }
 
     componentWillMount = () => getTeamDetail(this.props.match.params.id).then(team => this.stateTeam(team, true));
@@ -90,7 +94,7 @@ export default class TeamDetail extends React.Component {
         this.setState({
             team: team,
             members: members,
-            filteredMembers: sortedMembers,
+            visibleMembers: sortedMembers,
             filterAttributes: newFilterAttributes.filter(attr => attr.count > 0),
             loaded: true,
             isOnlyAdmin: isOnlyAdmin(team, currentUser),
@@ -138,37 +142,27 @@ export default class TeamDetail extends React.Component {
     handleLinkExternalTeam = () => this.props.history.replace(`/external/${this.state.team.id}`);
 
     search = e => {
-        const input = e.target.value;
-        if (isEmpty(input)) {
-            this.setState({filteredMembers: this.state.members});
-        } else {
-            this.setState({filteredMembers: this.filterMembers(input.toLowerCase())});
-        }
+        const searchQuery = e.target.value ? e.target.value.toLowerCase() : "";
+        const searchedMembers = this.invariantVisibleMembers(this.state.members, searchQuery,
+            this.state.filterAttributes, this.currentSorted());
+        this.setState({visibleMembers: searchedMembers, searchQuery: searchQuery});
     };
 
-    filterMembers = input => this.state.members.filter(member =>
-    member.person.name.toLowerCase().indexOf(input) > -1 ||
-    member.person.email.toLowerCase().indexOf(input) > -1);
-
-
     filter = item => {
-        const {filteredMembers, filterAttributes} = this.state;
+        const {members, filterAttributes} = this.state;
         const newFilterAttributes = [...filterAttributes];
         newFilterAttributes.forEach(attr => {
             if (attr.name === item.name) {
                 attr.selected = !attr.selected;
             }
         });
-        const newFilteredMembers = filteredMembers.filter(member => newFilterAttributes.filter(attr => attr.name === member.filterAttribute)[0].selected);
-        const currentSorted = this.currentSorted();
-        const sortedMembers = [...newFilteredMembers.sort(this.sortByAttribute(currentSorted.name, item.order === "up"))];
-
-        this.setState({filteredMembers: sortedMembers, filterAttributes: newFilterAttributes});
+        const newFilteredMembers = this.invariantVisibleMembers(members, this.state.searchQuery, newFilterAttributes,
+            this.currentSorted());
+        this.setState({visibleMembers: newFilteredMembers, filterAttributes: newFilterAttributes});
     };
 
     sort = item => {
-        const {filteredMembers, sortAttributes} = this.state;
-        const sortedMembers = filteredMembers.sort(this.sortByAttribute(item.name, item.current && item.order === "down"));
+        const {visibleMembers, sortAttributes} = this.state;
         const newSortAttributes = [...sortAttributes];
         newSortAttributes.forEach(attr => {
             if (attr.name === item.name) {
@@ -179,18 +173,39 @@ export default class TeamDetail extends React.Component {
                 attr.current = false;
             }
         });
-        this.setState({filteredMembers: sortedMembers, sortAttributes: newSortAttributes});
+        const sortedMembers = this.doSort(visibleMembers, item);
+        this.setState({visibleMembers: sortedMembers, sortAttributes: newSortAttributes});
     };
+
+    doSearch = (members, input) => {
+        let searchedMembers;
+        if (isEmpty(input)) {
+            searchedMembers = members;
+        } else {
+            searchedMembers = members.filter(member => member.person.name.toLowerCase().indexOf(input) > -1 ||
+            member.person.email.toLowerCase().indexOf(input) > -1);
+        }
+        return searchedMembers;
+    };
+
+    doFilter = (members, filterAttributes) =>
+        members.filter(member => filterAttributes.filter(attr => attr.name === member.filterAttribute)[0].selected);
+
+    doSort = (members, currentSorted) =>
+        [...members.sort(this.sortByAttribute(currentSorted.name, currentSorted.order === "up"))];
+
+    invariantVisibleMembers = (members, searchQuery, filterAttributes, sortItem) =>
+        this.doSort(this.doFilter(this.doSearch(members, searchQuery), filterAttributes), sortItem);
 
     sortByAttribute = (name, reverse = false) => (a, b) => {
         if (name === "status") {
             return this.sortByStatus(a, b) * (reverse ? -1 : 1);
         }
-        if (a[name]) {
-            return a[name].toString().localeCompare(b[name].toString()) * (reverse ? -1 : 1);
-        }
-        if (a["person"][name]) {
+        if (a["person"][name] && b["person"][name]) {
             return a["person"][name].toString().localeCompare(b["person"][name].toString()) * (reverse ? -1 : 1);
+        }
+        if (a[name] && b[name]) {
+            return a[name].toString().localeCompare(b[name].toString()) * (reverse ? -1 : 1);
         }
         return a.toString().localeCompare(b.toString()) * (reverse ? -1 : 1);
     };
@@ -311,6 +326,22 @@ export default class TeamDetail extends React.Component {
         );
     }
 
+    tabsAndIconLegend = (team, tab) => {
+        const memberCount = team.memberships.length;
+        const externalCount = team.externalTeams.length;
+        return (
+            <IconLegend>
+                <div className="members-tab">
+                    <span className={tab === "members" ? "active" : ""} onClick={() => this.setState({tab: "members"})}>
+                        {I18n.t("team_detail.team_members", {count: memberCount})}
+                        </span>
+                    <span className={tab === "groups" ? "active" : ""} onClick={() => this.setState({tab: "groups"})}>
+                        {I18n.t("team_detail.team_groups", {count: externalCount})}</span>
+                </div>
+            </IconLegend>
+        );
+    };
+
     currentSorted = () => this.state.sortAttributes.filter(attr => attr.current)[0];
 
     statusOfMembership = member => {
@@ -320,13 +351,15 @@ export default class TeamDetail extends React.Component {
             const toolTipId = `join_request_tooltip_${member.id}`;
             const label = labelForRole(ROLES.JOIN_REQUEST.role);
             return (
-                <span data-for={toolTipId} data-tip>
-                {label}
+                <span className="join-request" data-for={toolTipId} data-tip>
+                <i className={iconForRole(ROLES.JOIN_REQUEST.role)}></i>{label}
                     <i className="fa fa-info-circle"></i>
                 <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
                     <span className="label">{label}</span>
                     <span className="label">{I18n.t("teams.created")}<span
                         className="value">{moment.unix(member.created).format("LLL")}</span></span>
+                    <span className="label">{I18n.t("team_detail.email")}<span
+                        className="value">{member.person.email}</span></span>
                     <span className="label">{I18n.t("teams.message")}</span>
                     <span>{member.message}</span>
                 </ReactTooltip>
@@ -337,13 +370,17 @@ export default class TeamDetail extends React.Component {
             const toolTipId = `invitation_${member.id}`;
             const latestMessage = member.invitationMessages[member.invitationMessages.length - 1];
             return (
-                <span data-for={toolTipId} data-tip>
-                {label}
+                <span className="invitation" data-for={toolTipId} data-tip>
+                    <i className={iconForRole(ROLES.INVITATION.role)}></i>
+                    {label}
                     <i className="fa fa-info-circle"></i>
                 <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
                     <span className="label">{label}</span>
                     <span className="label">{I18n.t("teams.created")}<span
                         className="value">{moment(latestMessage.timestamp).format("LLL")}</span></span>
+                    <span className="label">{I18n.t("team_detail.email")}<span
+                        className="value">{member.person.email}</span></span>
+
                     <span className="label">{I18n.t("teams.message")}</span>
                     <span>{latestMessage.message}</span>
                 </ReactTooltip>
@@ -351,11 +388,6 @@ export default class TeamDetail extends React.Component {
             );
         }
         throw new Error(`Unknown kind of member ${JSON.stringify(member)}`);
-    };
-
-    userIconClassName = (member, currentUser) => {
-        const userIcon = iconForRole(member.role);
-        return member.person.id !== currentUser.person.id ? `${userIcon} me` : userIcon;
     };
 
     roleCell = member => {
@@ -368,7 +400,44 @@ export default class TeamDetail extends React.Component {
         );
     };
 
-    renderMembersTable(currentUser, filteredMembers) {
+    toggleActions = (member, actions) => e => {
+        stop(e);
+        const actionId = this.actionId(member);
+        const newShow = actions.id === actionId ? !actions.show : true;
+        this.setState({actions: {show: newShow, id: actionId}});
+    };
+
+    actionId = member => `${member.id}_${member.isJoinRequest ? "join_request" : member.isInvitation ? "invitation" : "member"}`;
+
+    renderActions = (member, actions) => {
+        const actionId = this.actionId(member);
+        if (actions.id !== actionId || (actions.id === actionId && !actions.show)) {
+            return null;
+        }
+        const options = [];
+        if (member.isJoinRequest) {
+            options.push({icon: "fa fa-check", label: "join_request_accept", action: () => 1});
+            options.push({icon: "fa fa-times", label: "join_request_reject", action: () => 1});
+        }
+        if (member.isInvitation) {
+            options.push({icon: "fa fa-send-o", label: "invite_resend", action: () => 1});
+            options.push({icon: "fa fa-trash", label: "invite_delete", action: () => 1});
+        }
+        if (member.isMembership) {
+            options.push({icon: "fa trash", label: "member_delete", action: () => 1});
+        }
+        return <DropDownActions options={options} i18nPrefix="team_detail.action_options"/>;
+    };
+
+    renderGroupsTable(userExternalTeams, teamExternalTeams) {
+        return (
+            <section><span>TODO .......{userExternalTeams.length}</span>
+                <span>TODO .......{teamExternalTeams.length}</span>
+            </section>
+        );
+    }
+
+    renderMembersTable(currentUser, filteredMembers, actions) {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
         const columns = ["name", "email", "status", "role", "actions"];
@@ -387,17 +456,23 @@ export default class TeamDetail extends React.Component {
                     </thead>
                     <tbody>
                     {filteredMembers.map((member, index) =>
-                        <tr key={`${index}`}>
-                            <td className={member.isJoinRequest ? "join_request" : member.isInvitation ? "invitation" : "membership"}>
-                                <i className={this.userIconClassName(member, currentUser)}></i>
+                        <tr key={`${index}`} className={member.person.id === currentUser.person.id ? "me" : ""}>
+                            <td data-label={I18n.t("team_detail.name")} className="name">
                                 {member.person.name}
                             </td>
-                            <td className="email">{member.person.email}</td>
-                            <td className="status">{this.statusOfMembership(member)}</td>
-                            <td className="role">
+                            <td data-label={I18n.t("team_detail.email")} className="email">{member.person.email}</td>
+                            <td data-label={I18n.t("team_detail.status")} className="status">
+                                {this.statusOfMembership(member)}
+                            </td>
+                            <td data-label={I18n.t("team_detail.role")} className="role">
                                 {this.roleCell(member)}
                             </td>
-                            <td className="actions"><i className="fa fa-ellipsis-h"></i></td>
+                            <td data-label={I18n.t("teams.actions_phone")} className="actions"
+                                onClick={this.toggleActions(member, actions)}
+                                tabIndex="1" /*onBlur={() => this.setState({actions : {show: false, id: ""}})}*/>
+                                <i className="fa fa-ellipsis-h"></i>
+                                {this.renderActions(member, actions)}
+                            </td>
                         </tr>
                     )}
                     </tbody>
@@ -408,21 +483,19 @@ export default class TeamDetail extends React.Component {
     }
 
     render() {
-        const {team, filteredMembers, sortAttributes, filterAttributes, loaded} = this.state;
+        const {team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded} = this.state;
         const {currentUser} = this.props;
         if (!loaded) {
             return null;
         }
         const role = currentUserRoleInTeam(team, currentUser);
-        const joinRequests = team.joinRequests || [];
-        const hasExternalTeams = !isEmpty(currentUser.externalTeams);
         const mayInvite = role !== "MEMBER";
 
         return (
             <div className="team-detail">
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role, currentUser)}
-                <h2 className="members">{`${I18n.t("team_detail.team_members")} (${team.memberships.length + joinRequests.length})`}</h2>
+                {this.tabsAndIconLegend(team, tab)}
                 <section className="card">
                     <section className="team-detail-controls">
                         <SortDropDown items={sortAttributes} sortBy={this.sort}/>
@@ -432,12 +505,13 @@ export default class TeamDetail extends React.Component {
                                    onChange={this.search}/>
                             <i className="fa fa-search"></i>
                         </section>
-                        {(mayInvite || hasExternalTeams) &&
+                        {mayInvite &&
                         <a className="button green" href="#" onClick={() => 1}>
                             {I18n.t("team_detail.add")}<i className="fa fa-plus"></i>
                         </a>}
                     </section>
-                    {this.renderMembersTable(currentUser, filteredMembers)}
+                    {tab === "members" && this.renderMembersTable(currentUser, visibleMembers, actions)}
+                    {tab === "groups" && this.renderGroupsTable(currentUser.externalTeams, team.externalTeams)}
                 </section>
             </div>
         );

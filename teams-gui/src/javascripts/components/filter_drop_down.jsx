@@ -11,15 +11,11 @@ export default class FilterDropDown extends React.Component {
         this.state = {dropDownActive: false};
     }
 
-    filter = (item, filterBy) => () => {
-        filterBy(item);
-    };
-
     renderDropDownItem = (item, filterBy) => {
         const name = I18n.t(`filter.${item.name.replace(/ /g,"_")}`);
         return (
             <li key={item.name}>
-                <CheckBox name={item.name} value={item.selected} onChange={this.filter(item, filterBy)}/>
+                <CheckBox name={item.name} value={item.selected} onChange={() => filterBy(item)}/>
                 <label htmlFor={item.name}>{`${name} (${item.count})`}</label>
             </li>
         );

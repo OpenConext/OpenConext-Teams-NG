@@ -46,7 +46,6 @@ export default class MyTeams extends React.Component {
             query: ""
 
         };
-        moment.locale(I18n.locale);
     }
 
     fetchMyTeams() {
@@ -257,20 +256,20 @@ export default class MyTeams extends React.Component {
         }
         const options = [];
         if (team.role === ROLES.JOIN_REQUEST.role) {
-            options.push({icon: "fa fa-send-o", label: "resend", action: this.handleJoinRequest(team)});
-            options.push({icon: "fa fa-trash", label: "remove", action: this.handleDeleteJoinRequest(team)});
+            options.push({icon: "fa fa-send-o", label: "join_request_resend", action: this.handleJoinRequest(team)});
+            options.push({icon: "fa fa-trash", label: "join_request_remove", action: this.handleDeleteJoinRequest(team)});
         }
         if (team.role !== ROLES.JOIN_REQUEST.role) {
-            options.push({icon: "fa fa-search-plus", label: "details", action: () => this.props.history.replace(`/teams/${team.id}`)});
+            options.push({icon: "fa fa-search-plus", label: "team_details", action: () => this.props.history.replace(`/teams/${team.id}`)});
         }
         if (team.role === "ADMIN" || team.role === "MANAGER") {
-            options.push({icon: "fa fa-clock-o", label: "invite", action: () => {
+            options.push({icon: "fa fa-clock-o", label: "invite_member", action: () => {
                 setBackPage("/my-teams");
                 this.props.history.replace(`/invite/${team.id}`);
             }});
         }
         if (team.role === "ADMIN") {
-            options.push({icon: "fa fa-trash", label: "remove", action: this.handleDeleteTeam(team)});
+            options.push({icon: "fa fa-trash", label: "team_delete", action: this.handleDeleteTeam(team)});
         }
         return <DropDownActions options={options} i18nPrefix="teams.action_options"/>;
     };

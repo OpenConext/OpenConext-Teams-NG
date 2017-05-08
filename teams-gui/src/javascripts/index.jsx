@@ -3,6 +3,7 @@ import "../stylesheets/application.scss";
 import {polyfill} from "es6-promise";
 import "isomorphic-fetch";
 import "lodash";
+import moment from "moment";
 
 import React from "react";
 import {render} from "react-dom";
@@ -106,6 +107,7 @@ App.propTypes = {
     }
 
     I18n.locale = parameterByName;
+    moment.locale(I18n.locale);
 })();
 
 getUser().catch(e => {

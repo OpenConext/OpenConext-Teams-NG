@@ -13,7 +13,7 @@ export function labelForRole(role) {
 }
 
 export function allowedToLeave(team, currentUser) {
-    const pendingAdminInvitations = team.invitations.filter(invitation => invitation.intendedRole === ROLES.ADMIN.role
+    const pendingAdminInvitations = (team.invitations || []).filter(invitation => invitation.intendedRole === ROLES.ADMIN.role
         && !invitation.declined).length > 0;
     const admins = team.memberships
         .filter(membership => membership.role === ROLES.ADMIN.role && membership.urnPerson !== currentUser.urn);
