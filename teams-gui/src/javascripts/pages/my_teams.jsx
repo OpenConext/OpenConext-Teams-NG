@@ -12,7 +12,7 @@ import IconLegend from "../components/icon_legend";
 import DropDownActions from "../components/drop_down_actions";
 import TeamAutocomplete from "../components/team_autocomplete";
 import {autoCompleteTeam, deleteTeam, getMyTeams, deleteJoinRequest} from "../api";
-import {clearFlash, setFlash} from "../utils/flash";
+import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
 
@@ -71,7 +71,7 @@ export default class MyTeams extends React.Component {
     }
 
     componentWillMount = () => {
-        clearFlash();
+        //clearFlash();
         this.fetchMyTeams();
     };
 

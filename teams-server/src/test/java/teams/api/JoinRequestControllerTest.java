@@ -8,6 +8,7 @@ import teams.domain.Person;
 import teams.domain.Role;
 
 import java.util.List;
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.*;
@@ -16,6 +17,7 @@ import static org.junit.Assert.*;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class JoinRequestControllerTest extends AbstractApplicationTest {
+
     @Test
     public void joinRequest() throws Exception {
         given()

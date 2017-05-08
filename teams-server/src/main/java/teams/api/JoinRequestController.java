@@ -10,6 +10,8 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
 public class JoinRequestController extends ApiController implements MembershipValidator, JoinRequestValidator {
 
@@ -25,6 +27,10 @@ public class JoinRequestController extends ApiController implements MembershipVa
         Team team = teamById(clientJoinRequest.getTeamId(), true);
         Person person = federatedUser.getPerson();
 
+        List<JoinRequest> existingJoinRequestForTheSameTeam = team.getJoinRequests().stream()
+                .filter(existingJoinRequest -> existingJoinRequest.getPerson().getId().equals(person.getId()))
+                .collect(toList());
+
         List<String> admins = admins(team);
 
         membershipNotAllowed(team, person);
@@ -32,6 +38,8 @@ public class JoinRequestController extends ApiController implements MembershipVa
 
         JoinRequest joinRequest = new JoinRequest(person, team, clientJoinRequest.getMessage());
         joinRequestRepository.save(joinRequest);
+
+        joinRequestRepository.delete(existingJoinRequestForTheSameTeam);
 
         mailBox.sendJoinRequestMail(joinRequest, admins);
 

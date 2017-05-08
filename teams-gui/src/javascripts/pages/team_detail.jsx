@@ -467,7 +467,7 @@ export default class TeamDetail extends React.Component {
                             <td data-label={I18n.t("team_detail.role")} className="role">
                                 {this.roleCell(member)}
                             </td>
-                            <td data-label={I18n.t("teams.actions_phone")} className="actions"
+                            <td data-label={I18n.t("team_detail.actions_phone")} className="actions"
                                 onClick={this.toggleActions(member, actions)}
                                 tabIndex="1" /*onBlur={() => this.setState({actions : {show: false, id: ""}})}*/>
                                 <i className="fa fa-ellipsis-h"></i>
@@ -506,7 +506,7 @@ export default class TeamDetail extends React.Component {
                             <i className="fa fa-search"></i>
                         </section>
                         {mayInvite &&
-                        <a className="button green" href="#" onClick={() => 1}>
+                        <a className="button green" href="#" onClick={this.handleInvite}>
                             {I18n.t("team_detail.add")}<i className="fa fa-plus"></i>
                         </a>}
                     </section>

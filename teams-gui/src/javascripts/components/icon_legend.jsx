@@ -7,9 +7,11 @@ export default function IconLegend(props) {
         <div className="icon-legend">
             {props.title && <h2>{props.title}</h2>}
             {props.children && props.children}
-            {Object.keys(ROLES).map(role =>
-                <span className="role" key={role}><i className={iconForRole(role)}></i>{labelForRole(role)}</span>
-            )}
+            <section className="roles">
+                {Object.keys(ROLES).map(role =>
+                    <span className="role" key={role}><i className={iconForRole(role)}></i>{labelForRole(role)}</span>
+                )}
+            </section>
         </div>);
 }
 

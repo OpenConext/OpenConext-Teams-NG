@@ -74,12 +74,33 @@ export default class JoinRequest extends React.Component {
         return this.state.approval;
     };
 
+    renderTeam = team => {
+        return (
+            <section className="team">
+                <label >{I18n.t("join_request.team.name")}</label>
+                <input type="text" value={team.name} disabled="true"/>
+                <label >{I18n.t("join_request.team.description")}</label>
+                <input type="text" value={team.description} disabled="true"/>
+                <section className="admins">
+                    <label>{I18n.t("join_request.team.admins")}</label>
+                    {team.admins.map((admin, index) =>
+                        <div key={index}>
+                            <input type="text" value={admin.name} disabled="true"/>
+                        </div>
+                    )}
+                </section>
+            </section>
+
+        );
+    };
+
     renderExistingJoinRequest = joinRequest => {
         if (isEmpty(joinRequest.id)) {
             return null;
         }
         return (
             <section className="form-divider previous-join-request">
+                <label>{I18n.t("join_request.previous")}</label>
                 <p>{I18n.t("join_request.previous_message", {date: moment.unix(joinRequest.created).format("LLL")})}</p>
             </section>
         );
@@ -94,10 +115,9 @@ export default class JoinRequest extends React.Component {
             {!approval && <em className="error with-checkbox">{I18n.t("join_request.approval_required")}</em>}
         </section>;
 
-
     renderInvitationMessage = message => {
         return (
-            <section className="form-divider">
+            <section className="form-divider" style={{clear: "both"}}>
                 <label className="join-request-message"
                        htmlFor="message">{I18n.t("join_request.message")}</label>
                 <em>{I18n.t("join_request.message_info")}</em>
@@ -110,16 +130,6 @@ export default class JoinRequest extends React.Component {
         );
     };
 
-    renderAdmins = team =>
-        <section>
-            {team.admins.map(admin =>
-                <div key={admin.name}>
-                    <p>{admin.name}</p>
-                    <a href={`@mailto:${admin.email}`}></a>
-                </div>
-            )}
-        </section>;
-
     render() {
         const {team, joinRequest, message, approval, loaded} = this.state;
         if (!loaded) {
@@ -131,7 +141,7 @@ export default class JoinRequest extends React.Component {
                 <h2>{I18n.t("join_request.title")}</h2>
                 <div className="card">
                     <section className="screen-divider">
-                        {this.renderAdmins(team)}
+                        {this.renderTeam(team)}
                         {this.renderExistingJoinRequest(joinRequest)}
                     </section>
                     <section className="screen-divider" style={{float: "right"}}>
@@ -144,7 +154,7 @@ export default class JoinRequest extends React.Component {
                             {I18n.t("join_request.cancel")}
                         </a>
                         <a className={`button ${valid ? "blue" : "grey disabled"}`} href="#" onClick={this.submit}>
-                            {I18n.t("join_request.submit")}
+                            {isEmpty(joinRequest.id) ? I18n.t("join_request.submit") : I18n.t("join_request.resubmit")}
                         </a>
                     </section>
                 </div>

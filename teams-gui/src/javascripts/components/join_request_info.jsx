@@ -5,14 +5,17 @@ import PropTypes from "prop-types";
 export default function JoinRequestInfo({team, locale = "en"}) {
     return locale === "en" ?
         <div className="join_request_info">
-            <p className="info">The administrators of the {team.name} will receive an email with request
+            <p className="info">The administrators of the {team.name} will receive an email with your request
                 to join the {team.name}.</p>
-            <p className="by-email">If for some reason you want to contact one of the administrators you can use the mail link.</p>
+            <p className="delete">You can at any time delete the join request from the 'My Teams' page.</p>
+            <p className="email">After approval or rejection of your join request you will receive a email
+                with the details.</p>
         </div> :
         <div className="join_request_info">
             <p className="info">De administrators van {team.name} zullen een email ontvangen met daarin je verzoek om
                 lid te worden van {team.name}.</p>
-            <p className="by-email">Je kan eventueel direct contact nemen met één van de administrators middels de email link.</p>
+            <p className="delete">Je kan je verzoek om lid te worden elk moment verwijderen vanaf de 'Mijn Teams' pagina.</p>
+            <p className="email">Nadat je verzoek is goedgekeurd dan wel is if afgewezen ontvang je een email met daarin de details.</p>
         </div>;
 
 }

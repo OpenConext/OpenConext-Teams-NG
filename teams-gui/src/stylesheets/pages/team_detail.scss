@@ -238,27 +238,48 @@
       thead {
         display: none;
       }
-      tr {
-        margin-bottom: 10px;
-        display: block;
-        border-bottom: 2px solid $lighter-grey;
-      }
-      td {
-        display: block;
-        text-align: right;
-        border-bottom: 1px dotted $light-blue;
-        padding: 8px 0;
+      tbody {
+        tr {
+          margin-bottom: 10px;
+          display: block;
+          border-bottom: 2px solid $lighter-grey;
+        }
+        td {
+          display: block;
+          text-align: right;
+          border-bottom: 1px dotted $light-blue;
+          padding: 8px 0;
 
-        &:before {
-          content: attr(data-label);
-          float:left;
-          text-transform: uppercase;
-          font-weight: bold;
-          font-size: 14px;
-          color: $medium-grey;
+          &:before {
+            content: attr(data-label);
+            float: left;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 14px;
+            color: $medium-grey;
+          }
+
+          &.status {
+            span {
+              padding: 0 20px 0 0;
+            }
+            i {
+              padding: 0 10px 0 0;
+              font-size: 16px;
+              &.fa-info-circle {
+                @include info-icon;
+              }
+              &.fa-clock-o {
+                color: $dark-green;
+              }
+              &.fa-envelope {
+                color: $green;
+              }
+            }
+
+          }
         }
       }
-
     }
   }
 

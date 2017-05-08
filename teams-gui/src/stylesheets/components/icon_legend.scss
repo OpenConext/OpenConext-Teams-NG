@@ -8,15 +8,20 @@ div.icon-legend {
     line-height: 26px;
     margin-right: auto;
   }
-  span.role {
-    color: $medium-grey;
-    margin-left: 18px;
-    font-weight: bold;
-    &:first-child {
-      margin-left: auto;
+  section.roles {
+    margin-left: auto;
+
+    @include phone {
+      display: none;
     }
-    i {
-      margin-right: 5px;
+
+    span.role {
+      color: $medium-grey;
+      margin-left: 18px;
+      font-weight: bold;
+      i {
+        margin-right: 5px;
+      }
     }
   }
 }
