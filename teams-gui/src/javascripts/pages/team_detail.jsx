@@ -5,7 +5,17 @@ import ReactTooltip from "react-tooltip";
 import I18n from "i18n-js";
 import CopyToClipboard from "react-copy-to-clipboard";
 
-import {changeRole, deleteTeam, getTeamDetail, leaveTeam, saveTeam} from "../api";
+import {
+    approveJoinRequest,
+    changeRole,
+    deleteInvitation,
+    deleteMember,
+    deleteTeam,
+    getTeamDetail,
+    leaveTeam,
+    rejectJoinRequest,
+    saveTeam
+} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import moment from "moment";
@@ -18,6 +28,7 @@ import IconLegend from "../components/icon_legend";
 import {
     allowedToLeave,
     currentUserRoleInTeam,
+    hasOneAdmin,
     iconForRole,
     isOnlyAdmin,
     labelForRole,
@@ -56,7 +67,12 @@ export default class TeamDetail extends React.Component {
         };
     }
 
-    componentWillMount = () => getTeamDetail(this.props.match.params.id).then(team => this.stateTeam(team, true));
+    componentWillMount = () => this.refreshTeamState(this.props.match.params.id);
+
+    refreshTeamState = (teamId, callback = () => 1) => getTeamDetail(teamId).then(team => {
+        this.stateTeam(team, true);
+        callback();
+    }).catch(err => handleServerError(err));
 
     stateTeam(team, displayOneAdminWarning) {
         const joinRequests = (team.joinRequests || []).map(joinRequest => {
@@ -80,7 +96,7 @@ export default class TeamDetail extends React.Component {
             return {...member, isMembership: true, filterAttribute: member.role, order: 3};
         }).concat(joinRequests).concat(invitations);
 
-        if (displayOneAdminWarning && !allowedToLeave(team, this.props.currentUser)) {
+        if (displayOneAdminWarning && hasOneAdmin(team, this.props.currentUser)) {
             setFlash(I18n.t("team_detail.one_admin_warning"), "warning");
         }
 
@@ -110,18 +126,12 @@ export default class TeamDetail extends React.Component {
         return member.order > otherMember.order ? 1 : member.order === otherMember.order ? 0 : -1;
     };
 
-    handleAcceptJoinRequest = team => e => {
-        stop(e);
-        //TODO - reload everything
-        this.props.history.replace("/team/" + team.urn);
-    };
-
     handleDeleteTeam = team => e => {
         stop(e);
-        if (confirm(I18n.t("team_detail.confirmation", {name: team.name}))) {
+        if (confirm(I18n.t("team_detail.confirmations.delete_team", {name: team.name}))) {
             deleteTeam(team.id).then(() => {
                 this.props.history.replace("/my-teams");
-                setFlash(I18n.t("team_detail.deleted", {name: team.name}));
+                setFlash(I18n.t("team_detail.flash.deleted", {name: team.name}));
             });
         }
     };
@@ -129,17 +139,91 @@ export default class TeamDetail extends React.Component {
     handleLeaveTeam = myMembershipId => e => {
         stop(e);
         const i18nHash = {name: this.state.team.name};
-        if (confirm(I18n.t("team_detail.leave_confirmation", i18nHash))) {
+        if (confirm(I18n.t("team_detail.confirmations.leave_team", i18nHash))) {
             leaveTeam(myMembershipId).then(() => {
                 this.props.history.replace("/my-teams");
-                setFlash(I18n.t("team_detail.left", i18nHash));
+                setFlash(I18n.t("team_detail.flash.left", i18nHash));
             });
         }
     };
 
     handleInvite = () => this.props.history.replace(`/invite/${this.state.team.id}`);
 
+    handleDeleteInvitation = invitation => e => {
+        stop(e);
+        const i18nHash = {name: invitation.name};
+        if (confirm(I18n.t("team_detail.confirmations.delete_invitation", i18nHash))) {
+            deleteInvitation(invitation.id).then(() =>
+                this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.deleted_invitation", i18nHash))));
+        }
+    };
+
+    handleAcceptJoinRequest = member => e => {
+        stop(e);
+        if (confirm(I18n.t("team_detail.confirmations.accept_join_request", {name: member.name}))) {
+            const i18nHash = {name: member.name};
+            approveJoinRequest(member.id).then(() =>
+                this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.accepted_join_request", i18nHash))));
+        }
+    };
+
+    handleRejectJoinRequest = member => e => {
+        stop(e);
+        if (confirm(I18n.t("team_detail.confirmations.reject_join_request", {name: member.name}))) {
+            const i18nHash = {name: member.name};
+            rejectJoinRequest(member.id).then(() =>
+                this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.rejected_join_request", i18nHash))));
+        }
+    };
+
     handleLinkExternalTeam = () => this.props.history.replace(`/external/${this.state.team.id}`);
+
+    saveTeamProperties = changedAttribute => {
+        const {team} = this.state;
+        const teamProperties = {
+            id: team.id,
+            description: team.description,
+            personalNote: team.personalNote,
+            viewable: team.viewable
+        };
+        saveTeam({...teamProperties, ...changedAttribute})
+            .then(team => {
+                this.stateTeam(team, false);
+                setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_updated")}));
+            })
+            .catch(err => handleServerError(err));
+    };
+
+    handleDeleteMember = (member, teamId) => e => {
+        stop(e);
+        const i18nHash = {name: member.name};
+        if (confirm(I18n.t("team_detail.confirmations.delete_member", i18nHash))) {
+            deleteMember(member.id).then(() =>
+                this.refreshTeamState(teamId, () => setFlash(I18n.t("team_detail.flash.deleted_member", i18nHash))));
+        }
+    };
+
+    changeMembershipRole = member => role => {
+        const {currentUser} = this.props;
+        const downgrade = member.urnPerson === currentUser.urn;
+        let confirmed = true;
+        if (downgrade) {
+            confirmed = confirm(I18n.t("team_detail.confirmations.downgrade_current_user", {name: this.state.team.name}));
+        }
+        if (confirmed) {
+            changeRole({id: member.id, role: role.value})
+                .then(membership => {
+                    const team = {...this.state.team};
+                    team.memberships.filter(m => m.id === membership.id)[0].role = membership.role;
+                    this.stateTeam(team, true);
+                    setFlash(I18n.t("team_detail.flash.role_changed", {
+                        name: membership.person.name,
+                        role: labelForRole(membership.role)
+                    }));
+                })
+                .catch(err => handleServerError(err));
+        }
+    };
 
     search = e => {
         const searchQuery = e.target.value ? e.target.value.toLowerCase() : "";
@@ -222,44 +306,6 @@ export default class TeamDetail extends React.Component {
         this.saveTeamProperties({viewable: !this.state.team.viewable});
     };
 
-    saveTeamProperties = changedAttribute => {
-        const {team} = this.state;
-        const teamProperties = {
-            id: team.id,
-            description: team.description,
-            personalNote: team.personalNote,
-            viewable: team.viewable
-        };
-        saveTeam({...teamProperties, ...changedAttribute})
-            .then(team => {
-                this.stateTeam(team, false);
-                setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_updated")}));
-            })
-            .catch(err => handleServerError(err));
-    };
-
-    changeMembershipRole = member => role => {
-        const {currentUser} = this.props;
-        const downgrade = member.urnPerson === currentUser.urn;
-        let confirmed = true;
-        if (downgrade) {
-            confirmed = confirm(I18n.t("team_detail.downgrade_current_user", {name: this.state.team.name}));
-        }
-        if (confirmed) {
-            changeRole({id: member.id, role: role.value})
-                .then(membership => {
-                    const team = {...this.state.team};
-                    team.memberships.filter(m => m.id === membership.id)[0].role = membership.role;
-                    this.stateTeam(team, true);
-                    setFlash(I18n.t("team_detail.role_changed", {
-                        name: membership.person.name,
-                        role: labelForRole(membership.role)
-                    }));
-                })
-                .catch(err => handleServerError(err));
-        }
-    };
-
     copiedToClipboard = () => {
         this.setState({copiedToClipboard: true});
         setTimeout(() => this.setState({copiedToClipboard: false}), 5000);
@@ -268,7 +314,6 @@ export default class TeamDetail extends React.Component {
     teamDetailHeader(team, role, currentUser) {
         const myMembershipId =
             team.memberships.filter(membership => membership.urnPerson === currentUser.urn).map(membership => membership.id)[0];
-        const mayLeave = allowedToLeave(team, currentUser);
         return (
             <section className="team-header">
                 <Link className="back" to="/my-teams"><i className="fa fa-arrow-left"></i>
@@ -276,8 +321,8 @@ export default class TeamDetail extends React.Component {
                 </Link>
                 <div className="actions">
                     <h2>{team.name}</h2>
-                    {mayLeave && <a className="button" href="#"
-                                    onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
+                    {allowedToLeave(team, currentUser) && <a className="button" href="#"
+                                                             onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
                         <i className="fa fa-sign-out"></i>
                     </a>}
                     {role === ROLES.ADMIN.role && <a className="button" href="#"
@@ -328,7 +373,7 @@ export default class TeamDetail extends React.Component {
 
     tabsAndIconLegend = (team, tab) => {
         const memberCount = team.memberships.length;
-        const externalCount = team.externalTeams.length;
+        const externalCount = (team.externalTeams || []).length;
         return (
             <IconLegend>
                 <div className="members-tab">
@@ -378,6 +423,8 @@ export default class TeamDetail extends React.Component {
                     <span className="label">{label}</span>
                     <span className="label">{I18n.t("teams.created")}<span
                         className="value">{moment(latestMessage.timestamp).format("LLL")}</span></span>
+                    <span className="label">{I18n.t("team_detail.intended_role")}<span
+                        className="value">{member.intendedRole}</span></span>
                     <span className="label">{I18n.t("team_detail.email")}<span
                         className="value">{member.person.email}</span></span>
 
@@ -409,22 +456,60 @@ export default class TeamDetail extends React.Component {
 
     actionId = member => `${member.id}_${member.isJoinRequest ? "join_request" : member.isInvitation ? "invitation" : "member"}`;
 
-    renderActions = (member, actions) => {
-        const actionId = this.actionId(member);
-        if (actions.id !== actionId || (actions.id === actionId && !actions.show)) {
-            return null;
-        }
+    actionOptions = (currentUser, member, team) => {
+        const isMemberCurrentUser = member.urnPerson !== currentUser.urn;
+        const currentRole = currentUserRoleInTeam(team, currentUser);
+        const isMember = currentRole === ROLES.MEMBER.role;
+        const isAdmin = currentRole === ROLES.ADMIN.role;
+
         const options = [];
-        if (member.isJoinRequest) {
-            options.push({icon: "fa fa-check", label: "join_request_accept", action: () => 1});
-            options.push({icon: "fa fa-times", label: "join_request_reject", action: () => 1});
+        if (member.isJoinRequest && !isMember) {
+            options.push({
+                icon: "fa fa-check",
+                label: "join_request_accept",
+                action: () => this.handleAcceptJoinRequest(member)
+            });
+            options.push({
+                icon: "fa fa-times",
+                label: "join_request_reject",
+                action: () => this.handleRejectJoinRequest(member)
+            });
         }
-        if (member.isInvitation) {
-            options.push({icon: "fa fa-send-o", label: "invite_resend", action: () => 1});
-            options.push({icon: "fa fa-trash", label: "invite_delete", action: () => 1});
+        if (member.isInvitation && !isMember) {
+            options.push({
+                icon: "fa fa-send-o",
+                label: "invite_resend",
+                action: () => this.props.history.replace(`/invite/${this.state.team.id}/${member.id}`)
+            });
+            options.push({
+                icon: "fa fa-trash",
+                label: "invite_delete",
+                action: () => this.handleDeleteInvitation(member)
+            });
         }
         if (member.isMembership) {
-            options.push({icon: "fa trash", label: "member_delete", action: () => 1});
+            if (!isMemberCurrentUser && isAdmin) {
+                options.push({
+                    icon: "fa fa-trash",
+                    label: "member_delete",
+                    action: () => this.handleDeleteMember(member, team.id)
+                });
+            }
+            if (isMemberCurrentUser && allowedToLeave(team, currentUser)) {
+                options.push({
+                    icon: "fa fa-sign-out",
+                    label: "member_leave",
+                    action: () => this.handleLeaveTeam(member.id)
+                });
+            }
+        }
+        return options;
+    };
+
+    renderActions = (options, member, actions) => {
+        const actionId = this.actionId(member);
+        if (actions.id !== actionId || (actions.id === actionId && !actions.show) || isEmpty(options)) {
+            return null;
         }
         return <DropDownActions options={options} i18nPrefix="team_detail.action_options"/>;
     };
@@ -437,7 +522,7 @@ export default class TeamDetail extends React.Component {
         );
     }
 
-    renderMembersTable(currentUser, filteredMembers, actions) {
+    renderMembersTable(currentUser, visibleMembers, actions, team) {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
         const columns = ["name", "email", "status", "role", "actions"];
@@ -447,34 +532,39 @@ export default class TeamDetail extends React.Component {
                     className={sortColumnClassName(columns[index])}>{I18n.t(`team_detail.membership.${columns[index]}`)}</span>
             </th>
         );
+        const tr = (member, index) => {
+            const options = this.actionOptions(currentUser, member, team);
+            return (
+                <tr key={`${index}`} className={member.person.id === currentUser.person.id ? "me" : ""}>
+                    <td data-label={I18n.t("team_detail.name")} className="name">
+                        {member.person.name}
+                    </td>
+                    <td data-label={I18n.t("team_detail.email")} className="email">{member.person.email}</td>
+                    <td data-label={I18n.t("team_detail.status")} className="status">
+                        {this.statusOfMembership(member)}
+                    </td>
+                    <td data-label={I18n.t("team_detail.role")} className="role">
+                        {this.roleCell(member)}
+                    </td>
+                    <td data-label={I18n.t("team_detail.actions_phone")} className="actions"
+                        onClick={this.toggleActions(member, actions)}
+                        tabIndex="1" onBlur={() => this.setState({actions: {show: false, id: ""}})}>
+                        {!isEmpty(options) && <i className="fa fa-ellipsis-h"></i>}
+                        {this.renderActions(options, member, actions)}
+                    </td>
+                </tr>
+            );
+        };
 
-        if (filteredMembers.length !== 0) {
+        if (visibleMembers.length !== 0) {
+
             return (
                 <table className="members">
                     <thead>
                     <tr>{columns.map((column, index) => th(index))}</tr>
                     </thead>
                     <tbody>
-                    {filteredMembers.map((member, index) =>
-                        <tr key={`${index}`} className={member.person.id === currentUser.person.id ? "me" : ""}>
-                            <td data-label={I18n.t("team_detail.name")} className="name">
-                                {member.person.name}
-                            </td>
-                            <td data-label={I18n.t("team_detail.email")} className="email">{member.person.email}</td>
-                            <td data-label={I18n.t("team_detail.status")} className="status">
-                                {this.statusOfMembership(member)}
-                            </td>
-                            <td data-label={I18n.t("team_detail.role")} className="role">
-                                {this.roleCell(member)}
-                            </td>
-                            <td data-label={I18n.t("team_detail.actions_phone")} className="actions"
-                                onClick={this.toggleActions(member, actions)}
-                                tabIndex="1" /*onBlur={() => this.setState({actions : {show: false, id: ""}})}*/>
-                                <i className="fa fa-ellipsis-h"></i>
-                                {this.renderActions(member, actions)}
-                            </td>
-                        </tr>
-                    )}
+                    {visibleMembers.map((member, index) => tr(member, index))}
                     </tbody>
                 </table>
             );
@@ -510,7 +600,7 @@ export default class TeamDetail extends React.Component {
                             {I18n.t("team_detail.add")}<i className="fa fa-plus"></i>
                         </a>}
                     </section>
-                    {tab === "members" && this.renderMembersTable(currentUser, visibleMembers, actions)}
+                    {tab === "members" && this.renderMembersTable(currentUser, visibleMembers, actions, team)}
                     {tab === "groups" && this.renderGroupsTable(currentUser.externalTeams, team.externalTeams)}
                 </section>
             </div>

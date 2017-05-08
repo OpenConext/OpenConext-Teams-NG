@@ -8,7 +8,7 @@ import EmailInput from "../components/email_input";
 import InvitationInfo from "../components/invitation_info";
 import DatePickerCustomInput from "../components/date_picker_custom";
 import SelectLanguage from "../components/select_language";
-import {invite, roleOfCurrentUserInTeam} from "../api";
+import {invite, roleOfCurrentUserInTeam, getInvitation} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {goto, isEmpty, stop} from "../utils/utils";
 import SelectRole from "../components/select_role";
@@ -31,13 +31,27 @@ export default class Invite extends React.Component {
             language: "English",
             expiryDate: undefined,
             message: "",
-            roleOfCurrentUserInTeam: "MANAGER"
+            roleOfCurrentUserInTeam: "MANAGER",
+            invitation: {},
+            readOnly: false
         };
     }
 
     componentDidMount() {
-        roleOfCurrentUserInTeam(this.props.match.params.teamId).then(role =>
-            this.setState({roleOfCurrentUserInTeam: role.role}));
+        const {teamId, id} = this.props.match.params;
+        roleOfCurrentUserInTeam(teamId).then(role =>{
+            this.setState({roleOfCurrentUserInTeam: role.role});
+            if (!isEmpty(id)) {
+                getInvitation(id).then(invitation => this.setState({
+                    emails: [invitation.email],
+                    intendedRole: invitation.intendedRole,
+                    language: invitation.language,
+                    expiryDate: invitation.expiryDate,
+                    invitation: invitation,
+                    readOnly: true,
+                }));
+            }
+        });
         window.scrollTo(0, 0);
     }
 

@@ -7,7 +7,6 @@ import teams.exception.*;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -52,13 +51,14 @@ public interface InvitationValidator {
     }
 
     default void mustBeTeamAdminOrManager(Invitation invitation, FederatedUser federatedUser) {
-        Membership membership = invitation.getTeam().member(federatedUser.getUrn()).orElseThrow(() ->
+        Team team = invitation.getTeam();
+        Membership membership = team.member(federatedUser.getUrn()).orElseThrow(() ->
                 new NotAllowedException(String.format(
-                        "Person %s is a member of team %s", federatedUser.getUrn(), invitation.getTeam().getUrn())));
+                        "Person %s is a member of team %s", federatedUser.getUrn(), team.getUrn())));
 
         if (membership.getRole().equals(Role.MEMBER)) {
             throw new NotAllowedException(String.format(
-                    "Person %s is not the inviter of invitation %s", federatedUser.getUrn(), invitation.getId()));
+                    "Person %s is a member of team %s of invitation %s", federatedUser.getUrn(), team.getUrn(), invitation.getId()));
         }
     }
 
@@ -84,7 +84,7 @@ public interface InvitationValidator {
         validateClientInvitation(clientInvitation);
         List<String> fromFile = StringUtils.hasText(clientInvitation.getCsvEmails()) ?
                 Stream.of(clientInvitation.getCsvEmails().split(","))
-                        .map(email -> email.trim().replaceAll("[\\t\\n\\r]",""))
+                        .map(email -> email.trim().replaceAll("[\\t\\n\\r]", ""))
                         .filter(email -> emailPattern.matcher(email).matches())
                         .collect(toList()) : Collections.emptyList();
         List<String> fromInput = clientInvitation.getEmails();

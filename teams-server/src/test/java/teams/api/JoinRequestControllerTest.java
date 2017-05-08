@@ -2,10 +2,7 @@ package teams.api;
 
 import org.junit.Test;
 import teams.AbstractApplicationTest;
-import teams.domain.ClientJoinRequest;
-import teams.domain.JoinRequest;
-import teams.domain.Person;
-import teams.domain.Role;
+import teams.domain.*;
 
 import java.util.List;
 import java.util.Set;
@@ -47,8 +44,9 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+                .body(new IdHolder(1L))
                 .when()
-                .put("api/teams/join-requests/approve/{id}", 1L)
+                .put("api/teams/join-requests/approve")
                 .then()
                 .statusCode(SC_OK)
                 .body("role", equalTo(Role.MEMBER.name()));

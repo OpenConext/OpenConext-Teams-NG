@@ -3,6 +3,7 @@ package teams.api;
 import org.junit.Test;
 import teams.AbstractApplicationTest;
 import teams.domain.*;
+import teams.exception.NotAllowedException;
 
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
@@ -14,16 +15,40 @@ import java.util.stream.StreamSupport;
 
 import static io.restassured.RestAssured.given;
 import static java.util.stream.Collectors.toList;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class InvitationControllerTest extends AbstractApplicationTest {
+
+    @Test
+    public void invitationCanOnlyBeRetrievedByNonMember() {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:rdoe")
+                .when()
+                .get("api/teams/invitations/{id}", 1L)
+                .then()
+                .statusCode(SC_BAD_REQUEST)
+                .body("exception", equalTo(NotAllowedException.class.getName()));
+    }
+
+    @Test
+    public void invitation() {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+                .when()
+                .get("api/teams/invitations/{id}", 1L)
+                .then()
+                .statusCode(SC_OK)
+                .body("email", equalTo("test@example.com"))
+                .body("invitationMessages.size()", equalTo(1));
+    }
 
     @Test
     public void invitationNl() throws Exception {
@@ -77,7 +102,6 @@ public class InvitationControllerTest extends AbstractApplicationTest {
                 .body("teamDescription", equalTo("we are riders"))
                 .body("invitationEmail", equalTo("test@example.com"))
                 .body("intendedRole", equalTo("MANAGER"));
-
     }
 
     @Test

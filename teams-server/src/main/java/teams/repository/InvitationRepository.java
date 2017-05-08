@@ -31,4 +31,7 @@ public interface InvitationRepository extends CrudRepository<Invitation, Long> {
     @Query(value = "DELETE FROM invitations WHERE timestamp < :epochMilliseconds", nativeQuery = true)
     int deleteExpiredInvitations(@Param("epochMilliseconds") long epochMilliseconds);
 
+    @EntityGraph(value = "findFirstById", type = EntityGraph.EntityGraphType.LOAD,
+            attributePaths = {"invitationMessages", "team", "team.memberships"})
+    Invitation findById(Long id);
 }

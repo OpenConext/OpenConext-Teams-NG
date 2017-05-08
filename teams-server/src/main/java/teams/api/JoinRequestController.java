@@ -48,9 +48,9 @@ public class JoinRequestController extends ApiController implements MembershipVa
         return joinRequest;
     }
 
-    @PutMapping("api/teams/join-requests/approve/{id}")
-    public Membership approve(@PathVariable("id") Long id, FederatedUser federatedUser) throws MessagingException, IOException {
-        JoinRequest joinRequest = notNullGetJoinRequestValidateMembership(id, federatedUser);
+    @PutMapping("api/teams/join-requests/approve")
+    public Membership approve(@Validated @RequestBody IdHolder idHolder, FederatedUser federatedUser) throws MessagingException, IOException {
+        JoinRequest joinRequest = notNullGetJoinRequestValidateMembership(idHolder.getId(), federatedUser);
 
         Person person = joinRequest.getPerson();
         Team team = joinRequest.getTeam();

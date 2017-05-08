@@ -15,6 +15,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.util.stream.IntStream;
 
 import static com.icegreen.greenmail.util.GreenMailUtil.getBody;
 import static java.util.Collections.singletonList;
@@ -84,10 +85,21 @@ public class MailBoxTest extends AbstractApplicationTest {
     }
 
     private String mailBody() throws InterruptedException, MessagingException {
-        //we send async
-        Thread.sleep(1500);
+        return this.doMailBody(0);
+    }
 
-        MimeMessage mimeMessage = greenMail.getReceivedMessages()[0];
+    //we send async
+    private String doMailBody(int retryCount) throws InterruptedException, MessagingException {
+        MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
+        if (receivedMessages.length == 0) {
+            if (retryCount < 50) {
+                Thread.sleep(100);
+                return doMailBody(retryCount + 1);
+            } else {
+                throw new IllegalStateException(String.format("Mailbox timed out after {} ms", retryCount * 100));
+            }
+        }
+        MimeMessage mimeMessage = receivedMessages[0];
         assertEquals(EMAIL, mimeMessage.getRecipients(Message.RecipientType.TO)[0].toString());
         return getBody(mimeMessage);
     }

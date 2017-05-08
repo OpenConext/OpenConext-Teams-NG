@@ -1,36 +1,36 @@
 package teams.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StreamUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.InvitationValidator;
 import teams.api.validations.MembershipValidator;
 import teams.domain.*;
-import teams.exception.IllegalInviteException;
 import teams.exception.ResourceNotFoundException;
-import teams.mail.MailBox;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
 @RestController
 public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator {
 
+    @GetMapping("api/teams/invitations/{id}")
+    public Invitation invitation(@PathVariable("id") Long id, FederatedUser federatedUser) throws IOException, MessagingException {
+        Invitation invitation = invitationRepository.findById(id);
+
+        assertNotNull(Invitation.class.getSimpleName(), invitation, id);
+        mustBeTeamAdminOrManager(invitation, federatedUser);
+
+        return invitation;
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/invitations")
-    public List<Invitation> invitation(@Validated @RequestBody ClientInvitation clientInvitation,
-                                       FederatedUser federatedUser) throws IOException, MessagingException {
+    public List<Invitation> invite(@Validated @RequestBody ClientInvitation clientInvitation,
+                                   FederatedUser federatedUser) throws IOException, MessagingException {
         Team team = teamById(clientInvitation.getTeamId(), false);
         Person person = federatedUser.getPerson();
 
@@ -90,7 +90,7 @@ public class InvitationController extends ApiController implements MembershipVal
 
 
     @GetMapping("api/teams/invitations/info")
-    public InvitationInfo invitation(@RequestParam("key") String key, FederatedUser federatedUser) throws IOException, MessagingException {
+    public InvitationInfo invitationInfo(@RequestParam("key") String key, FederatedUser federatedUser) throws IOException, MessagingException {
         return new InvitationInfo(this.getInvitationByHash(key, federatedUser.getPerson()));
     }
 

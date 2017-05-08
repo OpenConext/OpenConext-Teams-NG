@@ -53,7 +53,7 @@ function fetchJson(path, options = {}, headers = {}) {
         .then(res => res.json());
 }
 
-function postPutJson(path, body) {
+function postPutJson(path, body = {}) {
     const method = body.id === undefined ? "post" : "put";
     return fetchJson(path, {method: method, body: JSON.stringify(body)});
 }
@@ -107,6 +107,18 @@ export function invite(invitation) {
     return postPutJson("invitations", invitation);
 }
 
+export function getInvitation(id) {
+    return fetchJson("invitations/" + id);
+}
+
+export function resendInvitation(invitation) {
+    return postPutJson("invitations", invitation);
+}
+
+export function deleteInvitation(id) {
+    return fetchDelete("invitations/" + id);
+}
+
 export function linkExternalTeam(teamId, externalTeamId) {
     return postPutJson("teams/external-teams", {teamId: teamId, externalTeamId: externalTeamId});
 }
@@ -123,6 +135,18 @@ export function getJoinRequest(id) {
     return fetchJson("join-requests/" + id);
 }
 
+export function approveJoinRequest(id) {
+    return postPutJson("join-requests/approve", {id: id});
+}
+
+export function rejectJoinRequest(id) {
+    return fetchDelete("join-requests/reject/" + id);
+}
+
 export function changeRole(membershipProperties) {
-    return postPutJson("memberships/", membershipProperties);
+    return postPutJson("memberships", membershipProperties);
+}
+
+export function deleteMember(memberId) {
+    return fetchDelete("memberships" + memberId);
 }

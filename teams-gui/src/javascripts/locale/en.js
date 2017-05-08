@@ -81,10 +81,6 @@ I18n.translations.en = {
         viewable_info: "People can see team information and request membership for this team. Non-public teams are only visible for members.",
         name: "Name",
         actions: "...",
-        confirmation: "Are you sure you want to delete team {{name}}?",
-        deleted: "Successfully deleted team {{name}}",
-        leave_confirmation: "Are you sure you want to leave team {{name}}",
-        left: "Successfully left team {{name}}",
         leave: "Leave",
         team_members: "MEMBERS ({{count}})",
         team_groups: "LINKED GROUPS ({{count}})",
@@ -96,6 +92,7 @@ I18n.translations.en = {
             actions: "",
         },
         email: "Email",
+        intended_role: "Intended role",
         actions_phone: "Actions",
         status: "Status",
         role: "Role",
@@ -111,15 +108,34 @@ I18n.translations.en = {
         copied: "Copied",
         one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team.",
         add: "INVITE",
-        role_changed: "Role for {{name}} changed to {{role}}",
-        downgrade_current_user: "Are you sure you don't want to be administrator anymore in team {{name}}? You can't reverse this decision yourself.",
         action_options: {
             join_request_accept: "Accept join request",
             join_request_reject: "Reject join request",
             invite_resend: "Resent invitation",
-            invite_delete: "Resent invitation",
-            member_delete: "Delete member"
+            invite_delete: "Delete invitation",
+            member_delete: "Delete member",
+            member_leave: "Leave team",
+            member_send_email: "Send email"
+        },
+        confirmations: {
+            delete_team: "Are you sure you want to delete team {{name}}?",
+            leave_team: "Are you sure you want to leave team {{name}}",
+            delete_member: "Are you sure you want to delete the membership of {{name}}",
+            accept_join_request: "Are you sure you want to approve the join request from {{name}}?",
+            reject_join_request: "Are you sure you want to reject the join request from {{name}}?",
+            delete_invitation: "Are you sure you want to delete the invitation for {{name}}?",
+            downgrade_current_user: "Are you sure you don't want to be administrator anymore in team {{name}}? You can't reverse this decision yourself.",
+        },
+        flash: {
+            deleted: "Successfully deleted team {{name}}.",
+            role_changed: "Role for {{name}} changed to {{role}}.",
+            left: "Successfully left team {{name}}.",
+            deleted_member: "Successfully deleted the membership of {{name}}.",
+            deleted_invitation: "Successfully deleted the invitation for {{name}}.",
+            accepted_join_request: "Successfully accepted join request from {{name}}.",
+            rejected_join_request: "Successfully rejected join request from {{name}}.",
         }
+
     },
     join_request : {
         title: "Join request",
