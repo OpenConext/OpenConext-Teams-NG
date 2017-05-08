@@ -8,7 +8,7 @@ import EmailInput from "../components/email_input";
 import InvitationInfo from "../components/invitation_info";
 import DatePickerCustomInput from "../components/date_picker_custom";
 import SelectLanguage from "../components/select_language";
-import {invite, roleOfCurrentUserInTeam, getInvitation} from "../api";
+import {getInvitation, invite, roleOfCurrentUserInTeam} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {goto, isEmpty, stop} from "../utils/utils";
 import SelectRole from "../components/select_role";
@@ -39,7 +39,7 @@ export default class Invite extends React.Component {
 
     componentDidMount() {
         const {teamId, id} = this.props.match.params;
-        roleOfCurrentUserInTeam(teamId).then(role =>{
+        roleOfCurrentUserInTeam(teamId).then(role => {
             this.setState({roleOfCurrentUserInTeam: role.role});
             if (!isEmpty(id)) {
                 getInvitation(id).then(invitation => this.setState({
@@ -47,6 +47,7 @@ export default class Invite extends React.Component {
                     intendedRole: invitation.intendedRole,
                     language: invitation.language,
                     expiryDate: invitation.expiryDate,
+                    message: invitation.invitationMessages[invitation.invitationMessages.length - 1].message,
                     invitation: invitation,
                     readOnly: true,
                 }));

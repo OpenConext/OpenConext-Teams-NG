@@ -151,7 +151,7 @@ export default class TeamDetail extends React.Component {
 
     handleDeleteInvitation = invitation => e => {
         stop(e);
-        const i18nHash = {name: invitation.name};
+        const i18nHash = {name: invitation.email};
         if (confirm(I18n.t("team_detail.confirmations.delete_invitation", i18nHash))) {
             deleteInvitation(invitation.id).then(() =>
                 this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.deleted_invitation", i18nHash))));
@@ -467,12 +467,12 @@ export default class TeamDetail extends React.Component {
             options.push({
                 icon: "fa fa-check",
                 label: "join_request_accept",
-                action: () => this.handleAcceptJoinRequest(member)
+                action: this.handleAcceptJoinRequest(member)
             });
             options.push({
                 icon: "fa fa-times",
                 label: "join_request_reject",
-                action: () => this.handleRejectJoinRequest(member)
+                action: this.handleRejectJoinRequest(member)
             });
         }
         if (member.isInvitation && !isMember) {
@@ -484,7 +484,7 @@ export default class TeamDetail extends React.Component {
             options.push({
                 icon: "fa fa-trash",
                 label: "invite_delete",
-                action: () => this.handleDeleteInvitation(member)
+                action: this.handleDeleteInvitation(member)
             });
         }
         if (member.isMembership) {
@@ -492,14 +492,14 @@ export default class TeamDetail extends React.Component {
                 options.push({
                     icon: "fa fa-trash",
                     label: "member_delete",
-                    action: () => this.handleDeleteMember(member, team.id)
+                    action: this.handleDeleteMember(member, team.id)
                 });
             }
             if (isMemberCurrentUser && allowedToLeave(team, currentUser)) {
                 options.push({
                     icon: "fa fa-sign-out",
                     label: "member_leave",
-                    action: () => this.handleLeaveTeam(member.id)
+                    action: this.handleLeaveTeam(member.id)
                 });
             }
         }
@@ -548,7 +548,7 @@ export default class TeamDetail extends React.Component {
                     </td>
                     <td data-label={I18n.t("team_detail.actions_phone")} className="actions"
                         onClick={this.toggleActions(member, actions)}
-                        tabIndex="1" onBlur={() => this.setState({actions: {show: false, id: ""}})}>
+                        tabIndex="1" /*onBlur={() => this.setState({actions: {show: false, id: ""}})}*/>
                         {!isEmpty(options) && <i className="fa fa-ellipsis-h"></i>}
                         {this.renderActions(options, member, actions)}
                     </td>

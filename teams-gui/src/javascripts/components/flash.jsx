@@ -3,6 +3,7 @@ import React from "react";
 import {emitter, getFlash} from "../utils/flash";
 
 export default class Flash extends React.Component {
+
     constructor() {
         super();
         this.state = {flash: null, className: ""};
@@ -34,10 +35,9 @@ export default class Flash extends React.Component {
         const {flash, className} = this.state;
 
         if (flash && flash.message) {
-            const message = `${flash.message}${this.iconForMessage(flash.type)}`;
             return (
-                <div className={`flash ${className}`}>
-                    <p className={flash.type} dangerouslySetInnerHTML={{__html: message}}>
+                <div className={`flash ${className} ${flash.type}`}>
+                    <p dangerouslySetInnerHTML={{__html: flash.message}}>
                     </p>
 
                     <a className="close" href="#" onClick={() => this.setState({flash: null, className: ""})}>

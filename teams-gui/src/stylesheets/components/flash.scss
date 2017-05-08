@@ -1,7 +1,7 @@
 div.flash {
   color: white;
-  font-size: larger;
   position: relative;
+  text-transform: uppercase;
 
   transition: 0.3s;
   opacity: 1;
@@ -15,33 +15,29 @@ div.flash {
     height: 0;
   }
 
+  &.info {
+    background-color: darken($green, 15%);
+  }
+  &.warning {
+    background-color: $orange;
+  }
+  &.error {
+    background-color: $red;
+  }
+
   a.close {
     text-decoration: none;
     position: absolute;
     right: -2px;
     top: -6px;
     color: white;
-    font-size: x-large;
+    font-size: larger;
     padding: 6px;
   }
 
   p {
-    padding: 10px 15px;
-
-    &.info {
-      background-color: darken($green, 15%);
-    }
-    &.warning {
-      background-color: $orange;
-    }
-    &.error {
-      background-color: $red;
-    }
-    i {
-      margin-left: 15px;
-      font-weight: bold;
-      font-size: larger;
-    }
+    @include page;
+    padding: 8px 15px;
   }
 
 }
