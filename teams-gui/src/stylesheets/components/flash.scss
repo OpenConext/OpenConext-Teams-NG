@@ -1,7 +1,6 @@
 div.flash {
   color: white;
   position: relative;
-  text-transform: uppercase;
 
   transition: 0.3s;
   opacity: 1;
@@ -37,7 +36,9 @@ div.flash {
 
   p {
     @include page;
-    padding: 8px 15px;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    font-weight: bold;
   }
 
 }

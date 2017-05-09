@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 import I18n from "i18n-js";
 import CopyToClipboard from "react-copy-to-clipboard";
+import moment from "moment";
 
 import {
     approveJoinRequest,
@@ -18,7 +19,8 @@ import {
 } from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
-import moment from "moment";
+
+import ConfirmationDialog from "../components/confirmation_dialog";
 import SortDropDown from "../components/sort_drop_down";
 import FilterDropDown from "../components/filter_drop_down";
 import DropDownActions from "../components/drop_down_actions";
@@ -63,14 +65,17 @@ export default class TeamDetail extends React.Component {
             isOnlyAdmin: false,
             roleInTeam: ROLES.MEMBER.role,
             searchQuery: "",
-            tab: "members"
+            tab: "members",
+            confirmationDialogOpen: false,
+            confirmationDialogQuestion: "",
+            confirmationDialogAction: () => false
         };
     }
 
     componentWillMount = () => this.refreshTeamState(this.props.match.params.id);
 
-    refreshTeamState = (teamId, callback = () => 1) => getTeamDetail(teamId).then(team => {
-        this.stateTeam(team, true);
+    refreshTeamState = (teamId, callback = () => 1, displayOneAdminWarning = true) => getTeamDetail(teamId).then(team => {
+        this.stateTeam(team, displayOneAdminWarning);
         callback();
     }).catch(err => handleServerError(err));
 
@@ -119,21 +124,25 @@ export default class TeamDetail extends React.Component {
 
     }
 
-    sortByStatus = (member, otherMember) => {
-        if (member.isMembership && otherMember.isMembership) {
-            return member.created > otherMember.created ? 1 : member.created === otherMember.created ? 0 : -1;
+    confirmation = (question, action) => this.setState({
+        confirmationDialogOpen: true,
+        confirmationDialogQuestion: question,
+        confirmationDialogAction: () => {
+            this.cancelConfirmation();
+            action();
         }
-        return member.order > otherMember.order ? 1 : member.order === otherMember.order ? 0 : -1;
-    };
+    });
+
+    cancelConfirmation = () => this.setState({confirmationDialogOpen: false});
 
     handleDeleteTeam = team => e => {
         stop(e);
-        if (confirm(I18n.t("team_detail.confirmations.delete_team", {name: team.name}))) {
+        this.confirmation(I18n.t("team_detail.confirmations.delete_team", {name: team.name}), () => {
             deleteTeam(team.id).then(() => {
                 this.props.history.replace("/my-teams");
                 setFlash(I18n.t("team_detail.flash.deleted", {name: team.name}));
             });
-        }
+        });
     };
 
     handleLeaveTeam = myMembershipId => e => {
@@ -178,22 +187,6 @@ export default class TeamDetail extends React.Component {
 
     handleLinkExternalTeam = () => this.props.history.replace(`/external/${this.state.team.id}`);
 
-    saveTeamProperties = changedAttribute => {
-        const {team} = this.state;
-        const teamProperties = {
-            id: team.id,
-            description: team.description,
-            personalNote: team.personalNote,
-            viewable: team.viewable
-        };
-        saveTeam({...teamProperties, ...changedAttribute})
-            .then(team => {
-                this.stateTeam(team, false);
-                setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_updated")}));
-            })
-            .catch(err => handleServerError(err));
-    };
-
     handleDeleteMember = (member, teamId) => e => {
         stop(e);
         const i18nHash = {name: member.person.name};
@@ -223,6 +216,22 @@ export default class TeamDetail extends React.Component {
                 })
                 .catch(err => handleServerError(err));
         }
+    };
+
+    saveTeamProperties = changedAttribute => {
+        const {team} = this.state;
+        const teamProperties = {
+            id: team.id,
+            description: team.description,
+            personalNote: team.personalNote,
+            viewable: team.viewable
+        };
+        saveTeam({...teamProperties, ...changedAttribute})
+            .then(team => {
+                this.stateTeam(team, false);
+                setFlash(I18n.t("teams.flash.team", {name: team.name, action: I18n.t("teams.flash.updated")}));
+            })
+            .catch(err => handleServerError(err));
     };
 
     search = e => {
@@ -280,6 +289,13 @@ export default class TeamDetail extends React.Component {
 
     invariantVisibleMembers = (members, searchQuery, filterAttributes, sortItem) =>
         this.doSort(this.doFilter(this.doSearch(members, searchQuery), filterAttributes), sortItem);
+
+    sortByStatus = (member, otherMember) => {
+        if (member.isMembership && otherMember.isMembership) {
+            return member.created > otherMember.created ? 1 : member.created === otherMember.created ? 0 : -1;
+        }
+        return member.order > otherMember.order ? 1 : member.order === otherMember.order ? 0 : -1;
+    };
 
     sortByAttribute = (name, reverse = false) => (a, b) => {
         if (name === "status") {
@@ -573,7 +589,8 @@ export default class TeamDetail extends React.Component {
     }
 
     render() {
-        const {team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded} = this.state;
+        const {team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded,
+            confirmationDialogOpen} = this.state;
         const {currentUser} = this.props;
         if (!loaded) {
             return null;
@@ -583,6 +600,10 @@ export default class TeamDetail extends React.Component {
 
         return (
             <div className="team-detail">
+                <ConfirmationDialog isOpen={confirmationDialogOpen}
+                                    cancel={this.cancelConfirmation}
+                                    confirm={() => this.state.confirmationDialogAction()}
+                                    question={this.state.confirmationDialogQuestion}/>
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role, currentUser)}
                 {this.tabsAndIconLegend(team, tab)}

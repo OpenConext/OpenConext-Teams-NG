@@ -77,7 +77,7 @@ export default class NewTeam extends React.Component {
             saveTeam(teamProperties)
                 .then(team => {
                     this.props.history.push(`/teams/${team.id}`);
-                    setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_created")}));
+                    setFlash(I18n.t("teams.flash.team", {name: team.name, action: I18n.t("teams.flash.created")}));
                 })
                 .catch(err => handleServerError(err));
         }

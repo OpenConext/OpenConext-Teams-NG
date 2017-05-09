@@ -34,6 +34,12 @@ I18n.translations.en = {
         external_teams: "Institution Teams"
     },
 
+    confirmation_dialog: {
+        title: "Please confirm",
+        confirm: "Confirm",
+        cancel: "Cancel"
+    },
+
     teams: {
         title: "My teams",
         name: "Team name",
@@ -43,11 +49,6 @@ I18n.translations.en = {
         membershipCount: "Members",
         actions: "",
         actions_phone: "Actions",
-        flash: "Team '{{name}}' was successfully {{action}}",
-        flash_updated: "updated",
-        flash_created: "created",
-        flash_deleted: "deleted",
-        confirmation: "Are your sure you want to delete team {{name}}?",
         edit: "Edit",
         delete: "Delete",
         join: "JOIN",
@@ -68,8 +69,17 @@ I18n.translations.en = {
             team_delete: "Delete team",
             team_details: "Team details"
         },
-        confirmation_join_request: "Are you sure you want to delete your join request for team {{name}}?",
-        flash_join_request: "Join request for team {{name}} was deleted"
+        confirmations: {
+            team_delete: "Are your sure you want to delete team {{name}}?",
+            join_request_delete: "Are you sure you want to delete your join request for team {{name}}?",
+        },
+        flash: {
+            team: "Team {{name}} was successfully {{action}}",
+            updated: "updated",
+            created: "created",
+            deleted: "deleted",
+            join_request_deleted: "Join request for team {{name}} was deleted"
+        }
     },
 
     team_detail: {

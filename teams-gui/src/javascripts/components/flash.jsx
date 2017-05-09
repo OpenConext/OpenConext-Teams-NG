@@ -25,12 +25,6 @@ export default class Flash extends React.Component {
         emitter.removeListener("flash", this.callback);
     }
 
-    iconForMessage = type => {
-        return type === "info" ?
-            "<i class=\"fa fa-check\"></i>" :
-            type === "warning" ? "<i class=\"fa fa-exclamation\"></i>" : "<i class=\"fa fa-times\"></i>";
-    };
-
     render() {
         const {flash, className} = this.state;
 

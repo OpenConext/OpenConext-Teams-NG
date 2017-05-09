@@ -7,11 +7,12 @@ import moment from "moment";
 
 import {setBackPage} from "../lib/store";
 import SortDropDown from "../components/sort_drop_down";
+import ConfirmationDialog from "../components/confirmation_dialog";
 import FilterDropDown from "../components/filter_drop_down";
 import IconLegend from "../components/icon_legend";
 import DropDownActions from "../components/drop_down_actions";
 import TeamAutocomplete from "../components/team_autocomplete";
-import {autoCompleteTeam, deleteTeam, getMyTeams, deleteJoinRequest} from "../api";
+import {autoCompleteTeam, deleteJoinRequest, deleteTeam, getMyTeams} from "../api";
 import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
@@ -43,8 +44,10 @@ export default class MyTeams extends React.Component {
             ],
             selectedTeam: -1,
             suggestions: [],
-            query: ""
-
+            query: "",
+            confirmationDialogOpen: false,
+            confirmationDialogQuestion: "",
+            confirmationDialogAction: () => false
         };
     }
 
@@ -88,12 +91,26 @@ export default class MyTeams extends React.Component {
         }
     };
 
+
+    confirmation = (question, action) => this.setState({
+        confirmationDialogOpen: true,
+        confirmationDialogQuestion: question,
+        confirmationDialogAction: () => {
+            this.cancelConfirmation();
+            action();
+        }
+    });
+
+    cancelConfirmation = () => this.setState({confirmationDialogOpen: false});
+
     handleDeleteTeam = team => e => {
         stop(e);
-        if (confirm(I18n.t("teams.confirmation", {name: team.name}))) {
-            deleteTeam(team.id).then(() => this.fetchMyTeams());
-            setFlash(I18n.t("teams.flash", {name: team.name, action: I18n.t("teams.flash_deleted")}));
-        }
+        this.confirmation(I18n.t("teams.confirmations.team_delete", {name: team.name}), () =>
+            deleteTeam(team.id).then(() => {
+                this.fetchMyTeams();
+                setFlash(I18n.t("teams.flash.team", {name: team.name, action: I18n.t("teams.flash.deleted")}));
+            })
+        );
     };
 
     handleJoinRequest = joinRequest => () =>
@@ -101,10 +118,13 @@ export default class MyTeams extends React.Component {
 
     handleDeleteJoinRequest = joinRequest => e => {
         stop(e);
-        if (confirm(I18n.t("teams.confirmation_join_request", {name: joinRequest.name}))) {
-            deleteJoinRequest(joinRequest.id).then(() => this.fetchMyTeams());
-            setFlash(I18n.t("teams.flash_join_request", {name: joinRequest.name}));
-        }
+        const i18nOptions = {name: joinRequest.name};
+        this.confirmation(I18n.t("teams.confirmations.join_request_delete", i18nOptions), () =>
+            deleteJoinRequest(joinRequest.id).then(() => {
+                this.fetchMyTeams();
+                setFlash(I18n.t("teams.flash.join_request_deleted", i18nOptions));
+            })
+        );
     };
 
     onSearchKeyDown = e => {
@@ -186,7 +206,8 @@ export default class MyTeams extends React.Component {
         const isJoinRequest = team.isJoinRequest;
         const toolTipId = isJoinRequest ? `join_request_tooltip_${team.id}` : null;
         return (
-            <td data-label={I18n.t("teams.role")} className={`role ${isJoinRequest ? "join_request" : role.toLowerCase()}`}>
+            <td data-label={I18n.t("teams.role")}
+                className={`role ${isJoinRequest ? "join_request" : role.toLowerCase()}`}>
                 <span data-for={toolTipId} data-tip>
                     <i className={iconForRole(role)}></i>
                     {labelForRole(role)}
@@ -194,7 +215,8 @@ export default class MyTeams extends React.Component {
                     {isJoinRequest &&
                     <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
                         <span className="label">{I18n.t("teams.join_request")}<span className="value">{team.name}</span></span>
-                        <span className="label">{I18n.t("teams.created")}<span className="value">{moment.unix(team.created).format("LLL")}</span></span>
+                        <span className="label">{I18n.t("teams.created")}<span
+                            className="value">{moment.unix(team.created).format("LLL")}</span></span>
                         <span className="label">{I18n.t("teams.message")}</span>
                         <span>{team.message}</span>
                     </ReactTooltip>}
@@ -209,7 +231,7 @@ export default class MyTeams extends React.Component {
         const tooltip = joinRequestsCount > 0 || invitationsCount > 0;
         const toolTipId = `team_tooltip_${team.id}`;
         return (
-            <td className="membership-count"  data-label={I18n.t("teams.membershipCount")}>
+            <td className="membership-count" data-label={I18n.t("teams.membershipCount")}>
                 <span className="membership-count" data-for={toolTipId} data-tip>{team.membershipCount}
                     {joinRequestsCount > 0 && <span className="join-requests-count"><span
                         className="count-divider"> / </span>{joinRequestsCount}</span> }
@@ -243,9 +265,9 @@ export default class MyTeams extends React.Component {
 
     onBlurSearch = suggestions => () => {
         if (!isEmpty(suggestions)) {
-            setTimeout(() => this.setState({suggestions : []}), 500);
+            setTimeout(() => this.setState({suggestions: []}), 500);
         } else {
-            this.setState({suggestions : []});
+            this.setState({suggestions: []});
         }
     };
 
@@ -257,16 +279,26 @@ export default class MyTeams extends React.Component {
         const options = [];
         if (team.role === ROLES.JOIN_REQUEST.role) {
             options.push({icon: "fa fa-send-o", label: "join_request_resend", action: this.handleJoinRequest(team)});
-            options.push({icon: "fa fa-trash", label: "join_request_remove", action: this.handleDeleteJoinRequest(team)});
+            options.push({
+                icon: "fa fa-trash",
+                label: "join_request_remove",
+                action: this.handleDeleteJoinRequest(team)
+            });
         }
         if (team.role !== ROLES.JOIN_REQUEST.role) {
-            options.push({icon: "fa fa-search-plus", label: "team_details", action: () => this.props.history.replace(`/teams/${team.id}`)});
+            options.push({
+                icon: "fa fa-search-plus",
+                label: "team_details",
+                action: () => this.props.history.replace(`/teams/${team.id}`)
+            });
         }
         if (team.role === "ADMIN" || team.role === "MANAGER") {
-            options.push({icon: "fa fa-clock-o", label: "invite_member", action: () => {
-                setBackPage("/my-teams");
-                this.props.history.replace(`/invite/${team.id}`);
-            }});
+            options.push({
+                icon: "fa fa-clock-o", label: "invite_member", action: () => {
+                    setBackPage("/my-teams");
+                    this.props.history.replace(`/invite/${team.id}`);
+                }
+            });
         }
         if (team.role === "ADMIN") {
             options.push({icon: "fa fa-trash", label: "team_delete", action: this.handleDeleteTeam(team)});
@@ -292,8 +324,10 @@ export default class MyTeams extends React.Component {
                     </thead>
                     <tbody>
                     {teams.map((team, index) =>
-                        <tr key={`${team.urn}_${index}`} onClick={this.showTeam(team)} className={team.isJoinRequest ? "join_request" : "team_member"}>
-                            <td data-label={I18n.t("teams.name")} className={team.isJoinRequest ? "join_request name" : "name"}>
+                        <tr key={`${team.urn}_${index}`} onClick={this.showTeam(team)}
+                            className={team.isJoinRequest ? "join_request" : "team_member"}>
+                            <td data-label={I18n.t("teams.name")}
+                                className={team.isJoinRequest ? "join_request name" : "name"}>
                                 {team.name}
                             </td>
                             <td data-label={I18n.t("teams.description")} className="description">{team.description}</td>
@@ -301,7 +335,7 @@ export default class MyTeams extends React.Component {
                             {this.membershipCountCell(team)}
                             <td data-label={I18n.t("teams.actions_phone")} className="actions"
                                 onClick={this.toggleActions(team, actions)}
-                                tabIndex="1" onBlur={() => this.setState({actions : {show: false, id: ""}})}>
+                                tabIndex="1" onBlur={() => this.setState({actions: {show: false, id: ""}})}>
                                 <i className="fa fa-ellipsis-h"></i>
                                 {this.renderActions(team, actions)}
                             </td>
@@ -317,11 +351,16 @@ export default class MyTeams extends React.Component {
     render() {
         const {currentUser} = this.props;
         const {
-            filteredTeams, actions, sortAttributes, filterAttributes, selectedTeam, suggestions, query, isMemberOfTeam
+            filteredTeams, actions, sortAttributes, filterAttributes, selectedTeam, suggestions, query,
+            isMemberOfTeam, confirmationDialogOpen
         } = this.state;
         const showAutoCompletes = query.length > 1 && !isEmpty(suggestions);
         return (
             <div className="my_teams">
+                <ConfirmationDialog isOpen={confirmationDialogOpen}
+                                    cancel={this.cancelConfirmation}
+                                    confirm={() => this.state.confirmationDialogAction()}
+                                    question={this.state.confirmationDialogQuestion}/>
                 <IconLegend/>
                 <div className="card">
                     <div className="options">
