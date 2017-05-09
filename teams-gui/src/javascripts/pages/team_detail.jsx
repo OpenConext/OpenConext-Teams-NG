@@ -148,12 +148,12 @@ export default class TeamDetail extends React.Component {
     handleLeaveTeam = myMembershipId => e => {
         stop(e);
         const i18nHash = {name: this.state.team.name};
-        if (confirm(I18n.t("team_detail.confirmations.leave_team", i18nHash))) {
+        this.confirmation(I18n.t("team_detail.confirmations.leave_team", i18nHash), () => {
             leaveTeam(myMembershipId).then(() => {
                 this.props.history.replace("/my-teams");
                 setFlash(I18n.t("team_detail.flash.left", i18nHash));
             });
-        }
+        });
     };
 
     handleInvite = () => this.props.history.replace(`/invite/${this.state.team.id}`);
@@ -161,28 +161,28 @@ export default class TeamDetail extends React.Component {
     handleDeleteInvitation = invitation => e => {
         stop(e);
         const i18nHash = {name: invitation.email};
-        if (confirm(I18n.t("team_detail.confirmations.delete_invitation", i18nHash))) {
+        this.confirmation(I18n.t("team_detail.confirmations.delete_invitation", i18nHash), () =>
             deleteInvitation(invitation.id).then(() =>
-                this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.deleted_invitation", i18nHash))));
-        }
+                this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.deleted_invitation", i18nHash))))
+        );
     };
 
     handleAcceptJoinRequest = member => e => {
         stop(e);
-        if (confirm(I18n.t("team_detail.confirmations.accept_join_request", {name: member.name}))) {
-            const i18nHash = {name: member.name};
+        const i18nHash = {name: member.name};
+        this.confirmation(I18n.t("team_detail.confirmations.accept_join_request", i18nHash), () =>
             approveJoinRequest(member.id).then(() =>
-                this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.accepted_join_request", i18nHash))));
-        }
+                this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.accepted_join_request", i18nHash))))
+        );
     };
 
     handleRejectJoinRequest = member => e => {
         stop(e);
-        if (confirm(I18n.t("team_detail.confirmations.reject_join_request", {name: member.name}))) {
-            const i18nHash = {name: member.name};
+        const i18nHash = {name: member.name};
+        this.confirmation(I18n.t("team_detail.confirmations.reject_join_request", i18nHash), () =>
             rejectJoinRequest(member.id).then(() =>
-                this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.rejected_join_request", i18nHash))));
-        }
+                this.refreshTeamState(this.state.team.id, () => setFlash(I18n.t("team_detail.flash.rejected_join_request", i18nHash))))
+        );
     };
 
     handleLinkExternalTeam = () => this.props.history.replace(`/external/${this.state.team.id}`);
@@ -190,31 +190,24 @@ export default class TeamDetail extends React.Component {
     handleDeleteMember = (member, teamId) => e => {
         stop(e);
         const i18nHash = {name: member.person.name};
-        if (confirm(I18n.t("team_detail.confirmations.delete_member", i18nHash))) {
+        this.confirmation(I18n.t("team_detail.confirmations.delete_member", i18nHash), () =>
             deleteMember(member.id).then(() =>
-                this.refreshTeamState(teamId, () => setFlash(I18n.t("team_detail.flash.deleted_member", i18nHash))));
-        }
+                this.refreshTeamState(teamId, () => setFlash(I18n.t("team_detail.flash.deleted_member", i18nHash))))
+        );
     };
 
     changeMembershipRole = member => role => {
         const {currentUser} = this.props;
-        const downgrade = member.urnPerson === currentUser.urn;
-        let confirmed = true;
-        if (downgrade) {
-            confirmed = confirm(I18n.t("team_detail.confirmations.downgrade_current_user", {name: this.state.team.name}));
-        }
-        if (confirmed) {
-            changeRole({id: member.id, role: role.value})
-                .then(membership => {
-                    const team = {...this.state.team};
-                    team.memberships.filter(m => m.id === membership.id)[0].role = membership.role;
-                    this.stateTeam(team, true);
-                    setFlash(I18n.t("team_detail.flash.role_changed", {
-                        name: membership.person.name,
-                        role: labelForRole(membership.role)
-                    }));
-                })
-                .catch(err => handleServerError(err));
+        const {name, id} = this.state.team;
+        const i18nHash = {name: member.person.name, role: labelForRole(role.value)};
+
+        const action = () => changeRole({id: member.id, role: role.value}).then(() =>
+            this.refreshTeamState(id, () => setFlash(I18n.t("team_detail.flash.role_changed", i18nHash))));
+
+        if (member.urnPerson === currentUser.urn) {
+            this.confirmation(I18n.t("team_detail.confirmations.downgrade_current_user", {name: name}), action);
+        } else {
+            action();
         }
     };
 
@@ -429,7 +422,7 @@ export default class TeamDetail extends React.Component {
         } else if (member.isInvitation) {
             const label = labelForRole(ROLES.INVITATION.role);
             const toolTipId = `invitation_${member.id}`;
-            const latestMessage = member.invitationMessages[member.invitationMessages.length - 1];
+            const latestMessage = member.invitationMessages.sort((m1, m2) => m1.id < m2.id ? 1 : -1)[0];
             return (
                 <span className="invitation" data-for={toolTipId} data-tip>
                     <i className={iconForRole(ROLES.INVITATION.role)}></i>
@@ -589,8 +582,10 @@ export default class TeamDetail extends React.Component {
     }
 
     render() {
-        const {team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded,
-            confirmationDialogOpen} = this.state;
+        const {
+            team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded,
+            confirmationDialogOpen
+        } = this.state;
         const {currentUser} = this.props;
         if (!loaded) {
             return null;
@@ -602,7 +597,7 @@ export default class TeamDetail extends React.Component {
             <div className="team-detail">
                 <ConfirmationDialog isOpen={confirmationDialogOpen}
                                     cancel={this.cancelConfirmation}
-                                    confirm={() => this.state.confirmationDialogAction()}
+                                    confirm={this.state.confirmationDialogAction}
                                     question={this.state.confirmationDialogQuestion}/>
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role, currentUser)}

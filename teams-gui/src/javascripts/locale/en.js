@@ -240,6 +240,7 @@ I18n.translations.en = {
         submit: "Invite members",
         cancel: "Cancel",
         flash: "Invitation has been sent",
+        flash_resent: "Reminder email has been sent",
         message_placeholder: "Personal message to be included in the invitation email"
 
     },

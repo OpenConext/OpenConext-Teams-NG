@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class ClientResendInvitation {
 
     @NotNull
-    private Long invitationId;
+    private Long id;
 
     private String message;
 

@@ -70,7 +70,7 @@ public class InvitationController extends ApiController implements MembershipVal
     @PutMapping("api/teams/invitations")
     public Invitation resend(@Validated @RequestBody ClientResendInvitation resendInvitation,
                              FederatedUser federatedUser) throws IOException, MessagingException {
-        Long invitationId = resendInvitation.getInvitationId();
+        Long invitationId = resendInvitation.getId();
         Invitation invitation = invitationRepository.findOne(invitationId);
 
         assertNotNull(Invitation.class.getSimpleName(), invitation, invitationId);

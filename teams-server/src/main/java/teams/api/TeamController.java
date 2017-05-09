@@ -58,6 +58,7 @@ public class TeamController extends ApiController implements TeamValidator {
     @GetMapping("api/teams/teams/{id}")
     public Object teamById(@PathVariable("id") Long id, FederatedUser federatedUser) {
         Team team = teamById(id, true);
+        assertNotNull("Team", team, id);
         Optional<Membership> membershipOptional = team.member(federatedUser.getUrn());
         return membershipOptional.map(membership -> lazyLoadTeam(team, membership.getRole(), federatedUser))
                 .orElse(new TeamSummary(team, federatedUser, true));

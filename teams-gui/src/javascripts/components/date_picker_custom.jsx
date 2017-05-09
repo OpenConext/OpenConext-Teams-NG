@@ -7,12 +7,13 @@ export default class DatePickerCustom extends React.Component {
 
     render() {
         const value = this.props.value || I18n.t("invite.expiry_date_none");
+        const {onClick, clear, disabled} = this.props;
         return (
-            <div className="date_picker_custom">
-                <a href="#" onClick={this.props.onClick}>
+            <div className={disabled ? "date_picker_custom disabled" : "date_picker_custom"}>
+                <a href="#" onClick={onClick}>
                     {value}
                 </a>
-                {!isEmpty(this.props.value) && <span className="clear" onClick={this.props.clear}>
+                {(!isEmpty(this.props.value) && !disabled) && <span className="clear" onClick={clear}>
                     <i className="fa fa-remove"></i></span>}
                 <span onClick={this.props.onClick}><i className="fa fa-calendar"></i></span>
             </div>
@@ -23,5 +24,6 @@ export default class DatePickerCustom extends React.Component {
 DatePickerCustom.propTypes = {
     onClick: PropTypes.func,
     value: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    clear: PropTypes.func
+    clear: PropTypes.func,
+    disabled: PropTypes.bool
 };

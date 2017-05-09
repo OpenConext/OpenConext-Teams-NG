@@ -7,6 +7,13 @@ div.date_picker_custom {
   margin-top: 5px;
   cursor: pointer;
 
+  &.disabled {
+    cursor: not-allowed;
+    a {
+      cursor: not-allowed;
+    }
+  }
+
   @include phone {
     width: auto;
   }

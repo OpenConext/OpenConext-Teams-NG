@@ -119,6 +119,10 @@
             background-color: $light-grey;
             cursor: pointer;
             font-size: larger;
+
+            &.disabled {
+              cursor: not-allowed;
+            }
           }
         }
       }

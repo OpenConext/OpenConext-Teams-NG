@@ -45,7 +45,7 @@ public abstract class ApiController {
     protected MailBox mailBox;
 
     protected Team teamById(Long id, boolean includePersons) {
-        Team team = teamRepository.findById(id);
+        Team team = includePersons ? teamRepository.findFirstById(id) : teamRepository.findById(id);
         assertNotNull("Team", team, id);
         return team;
     }

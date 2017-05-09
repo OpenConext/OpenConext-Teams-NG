@@ -6,9 +6,10 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import EmailInput from "../components/email_input";
 import InvitationInfo from "../components/invitation_info";
+import InvitationResentInfo from "../components/invitation_resent_info";
 import DatePickerCustomInput from "../components/date_picker_custom";
 import SelectLanguage from "../components/select_language";
-import {getInvitation, invite, roleOfCurrentUserInTeam} from "../api";
+import {getInvitation, invite, resendInvitation, roleOfCurrentUserInTeam} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {goto, isEmpty, stop} from "../utils/utils";
 import SelectRole from "../components/select_role";
@@ -46,8 +47,8 @@ export default class Invite extends React.Component {
                     emails: [invitation.email],
                     intendedRole: invitation.intendedRole,
                     language: invitation.language,
-                    expiryDate: invitation.expiryDate,
-                    message: invitation.invitationMessages[invitation.invitationMessages.length - 1].message,
+                    expiryDate: moment(invitation.expiryDate),
+                    message: invitation.invitationMessages.sort((m1, m2) => m1.id < m2.id ? 1 : -1)[0].message,
                     invitation: invitation,
                     readOnly: true,
                 }));
@@ -109,22 +110,32 @@ export default class Invite extends React.Component {
     submit = e => {
         stop(e);
         if (this.isValid()) {
-            const {intendedRole, emails, expiryDate, message, csvEmails, language} = this.state;
-            const teamId = this.props.match.params.teamId;
-            invite({
-                teamId,
-                intendedRole,
-                emails,
-                expiryDate: expiryDate || null,
-                message,
-                csvEmails: csvEmails === false ? null : csvEmails,
-                language
-            })
-                .then(() => {
-                    this.goBack();
-                    setFlash(I18n.t("invite.flash"));
+            const {intendedRole, emails, expiryDate, message, csvEmails, language, readOnly} = this.state;
+            const {teamId, id} = this.props.match.params;
+            if (readOnly) {
+                resendInvitation({ id, message })
+                    .then(() => {
+                        this.goBack();
+                        setFlash(I18n.t("invite.flash_resent"));
+                    })
+                    .catch(err => handleServerError(err));
+
+            } else {
+                invite({
+                    teamId,
+                    intendedRole,
+                    emails,
+                    expiryDate: expiryDate || null,
+                    message,
+                    csvEmails: csvEmails === false ? null : csvEmails,
+                    language
                 })
-                .catch(err => handleServerError(err));
+                    .then(() => {
+                        this.goBack();
+                        setFlash(I18n.t("invite.flash"));
+                    })
+                    .catch(err => handleServerError(err));
+            }
         }
     };
 
@@ -166,24 +177,25 @@ export default class Invite extends React.Component {
         );
     };
 
-    renderInvitationRole = (intendedRole, roleOfCurrentUserInTeam) => {
+    renderInvitationRole = (intendedRole, roleOfCurrentUserInTeam, readOnly) => {
         return (
             <section className="form-divider">
                 <label className="invitation-role" htmlFor="invitationRole">{I18n.t("invite.role")}</label>
                 <SelectRole onChange={this.handleInputChange("intendedRole")} role={intendedRole}
                             roleOfCurrentUserInTeam={roleOfCurrentUserInTeam}
-                            isCurrentUser={true}/>
+                            isCurrentUser={true}
+                            disabled={readOnly}/>
             </section>
         );
     };
 
-    renderInvitationLanguageExpiryDate = (language, expiryDate) => {
+    renderInvitationLanguageExpiryDate = (language, expiryDate, readOnly) => {
         return (
             <section className="screen-divider invitation-expiry-date">
                 <div>
                     <label className="invitation-language"
                            htmlFor="invitationLanguage">{I18n.t("invite.invitation_language")}</label>
-                    <SelectLanguage onChange={this.handleInputChange("language")} language={language}/>
+                    <SelectLanguage onChange={this.handleInputChange("language")} language={language} disabled={readOnly} />
                 </div>
                 <div>
                     <label className="expiry-date"
@@ -191,9 +203,10 @@ export default class Invite extends React.Component {
                     <DatePicker selected={expiryDate}
                                 isClearable={false}
                                 onChange={this.handleInputChange("expiryDate")}
-                                customInput={<DatePickerCustomInput clear={this.clearDate}/>}
+                                customInput={<DatePickerCustomInput clear={this.clearDate} disabled={readOnly}/>}
                                 minDate={moment().add(1, "days")}
-                                locale={I18n.locale}/>
+                                locale={I18n.locale}
+                                disabled={readOnly}/>
                 </div>
             </section>
         );
@@ -217,7 +230,7 @@ export default class Invite extends React.Component {
     render() {
         const {
             emails, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message,
-            roleOfCurrentUserInTeam, mailsImported
+            roleOfCurrentUserInTeam, mailsImported, readOnly
         } = this.state;
         const valid = this.isValid();
         return (
@@ -228,14 +241,15 @@ export default class Invite extends React.Component {
                         <EmailInput emails={emails} emailRequired={csvEmails === false}
                                     onChangeEmails={this.onChangeEmails}
                                     multipleEmails={true} placeholder={I18n.t("invite.emails_placeholder")}
-                                    autoFocus={true}/>
-                        {this.renderEmailFile(fileName, fileTypeError, mailsImported)}
-                        {this.renderInvitationRole(intendedRole, roleOfCurrentUserInTeam)}
+                                    autoFocus={true}
+                                    disabled={readOnly}/>
+                        {!readOnly && this.renderEmailFile(fileName, fileTypeError, mailsImported)}
+                        {this.renderInvitationRole(intendedRole, roleOfCurrentUserInTeam, readOnly)}
                     </section>
                     <section className="screen-divider" style={{float: "right"}}>
-                        <InvitationInfo locale={I18n.locale}/>
+                        {readOnly ? <InvitationResentInfo locale={I18n.locale}/> : <InvitationInfo locale={I18n.locale}/>}
                     </section>
-                    {this.renderInvitationLanguageExpiryDate(language, expiryDate)}
+                    {this.renderInvitationLanguageExpiryDate(language, expiryDate, readOnly)}
                     {this.renderInvitationMessage(message)}
                     <section className="buttons">
                         <a className="button grey" href="#" onClick={this.cancel}>

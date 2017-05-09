@@ -26,7 +26,7 @@ export default class EmailInput extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.autoFocus) {
+        if (this.props.autoFocus && !this.props.disabled) {
             this.emailInput.focus();
         }
     }
@@ -128,7 +128,7 @@ export default class EmailInput extends React.Component {
     };
 
     render() {
-        const {emails, emailRequired, multipleEmails, placeholder} = this.props;
+        const {emails, emailRequired, multipleEmails, placeholder, disabled} = this.props;
         const {initial, email, suggestions, selectedPerson} = this.state;
 
         const invalidEmailFormat = !initial && !isEmpty(email) && !validEmailRegExp.test(email);
@@ -137,7 +137,7 @@ export default class EmailInput extends React.Component {
         return (
             <section className="form-divider email-input">
                 <label className="email-input-label" htmlFor="email">{I18n.t("invite.email")}</label>
-                <div className="validity-input-wrapper">
+                {!disabled && <div className="validity-input-wrapper">
                     <input ref={self => this.emailInput = self}
                            placeholder={placeholder}
                            type="text"
@@ -155,7 +155,7 @@ export default class EmailInput extends React.Component {
                     }
                     {(!invalidEmailFormat && !inValidEmail && !initial) && <i className="fa fa-check"></i>}
                     {(invalidEmailFormat || inValidEmail) && <i className="fa fa-exclamation"></i>}
-                </div>
+                </div>}
 
                 {inValidEmail && <em className="error">{I18n.t("invite.email_required")}</em>}
                 {invalidEmailFormat && <em className="error">{I18n.t("invite.email_invalid")}</em>}
@@ -164,7 +164,9 @@ export default class EmailInput extends React.Component {
                     {emails.map(mail =>
                         <div key={mail} className="email_tag">
                             <span>{mail}</span>
-                            <span onClick={this.removeMail(mail)}><i className="fa fa-remove"></i></span>
+                            {disabled ?
+                                <span className="disabled"><i className="fa fa-envelope"></i></span> :
+                                <span onClick={this.removeMail(mail)}><i className="fa fa-remove"></i></span> }
                         </div>)}
                 </section>}
             </section>
@@ -179,7 +181,8 @@ EmailInput.propTypes = {
     emailRequired: PropTypes.bool,
     onChangeEmails: PropTypes.func.isRequired,
     multipleEmails: PropTypes.bool,
-    autoFocus: PropTypes.bool
+    autoFocus: PropTypes.bool,
+    disabled: PropTypes.bool
 };
 
 

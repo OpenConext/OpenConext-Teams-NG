@@ -21,13 +21,15 @@ export default class SelectLanguage extends React.Component {
     };
 
     render() {
+        const {onChange, language, disabled} = this.props;
         return <Select className="select-language"
-                       onChange={this.props.onChange}
+                       onChange={onChange}
                        optionRenderer={this.renderOption}
                        options={languageOptions}
-                       value={this.props.language}
+                       value={language}
                        searchable={false}
-                       valueRenderer={this.renderOption}/>;
+                       valueRenderer={this.renderOption}
+                       disabled={disabled}/>;
     }
 
 
@@ -35,7 +37,8 @@ export default class SelectLanguage extends React.Component {
 
 SelectLanguage.propTypes = {
     onChange: PropTypes.func.isRequired,
-    language: PropTypes.string.isRequired
+    language: PropTypes.string.isRequired,
+    disabled: PropTypes.bool
 };
 
 

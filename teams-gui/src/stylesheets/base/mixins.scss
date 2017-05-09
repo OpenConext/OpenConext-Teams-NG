@@ -37,6 +37,7 @@
 }
 
 @mixin select-dropdown {
+
   span.Select-clear-zone {
     display: none;
   }
@@ -63,4 +64,11 @@
     align-items: center;
     cursor: pointer;
   }
+
+  &.is-disabled {
+    span.select-option {
+      cursor: not-allowed;
+    }
+  }
+
 }
