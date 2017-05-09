@@ -52,7 +52,7 @@ public class MailBoxTest extends AbstractApplicationTest {
         String body = mailBody();
         assertTrue(body.contains("Uitnodiging voor Champions"));
         assertTrue(body.contains("<strong>Persoonlijk bericht van John Doe:</strong><br>\"Please join\""));
-        assertTrue(body.contains("<span><a href=\"http://localhost:8080/invitations/accept?key="));
+        assertTrue(body.contains("<span><a href=\"http://localhost:8080/invitations/accept/"));
     }
 
     @Test

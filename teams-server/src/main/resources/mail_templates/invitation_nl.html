@@ -25,10 +25,10 @@
 <table id="invitation-mail-table" cellpadding="10" width="90%" align="center">
     <tr>
         <td class="invitation-accept" bgcolor="#EDFFDE" align="center" width="50%">
-            <span><a href="{{baseUrl}}/invitations/accept?key={{invitation.invitationHash}}" style="color:#0088CC;">Inloggen om de uitnodiging te accepteren</a></span>
+            <span><a href="{{baseUrl}}/invitations/accept/{{invitation.invitationHash}}" style="color:#0088CC;">Inloggen om de uitnodiging te accepteren</a></span>
         </td>
         <td class="invitation-deny" align="center" width="50%">
-            <span><a href="{{baseUrl}}/invitations/deny?key={{invitation.invitationHash}}" style="color:#0088CC;">De uitnodiging afwijzen</a></span>
+            <span><a href="{{baseUrl}}/invitations/deny/{{invitation.invitationHash}}" style="color:#0088CC;">De uitnodiging afwijzen</a></span>
         </td>
     </tr>
 </table>
