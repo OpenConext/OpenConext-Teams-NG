@@ -248,7 +248,16 @@ I18n.translations.en = {
         message_placeholder: "Personal message to be included in the invitation email"
 
     },
+    institution_teams: {
+        name: "Team name / identifier",
+        description: "Description",
+        linked_teams: "Linked teams",
+        searchPlaceHolder: "SEARCH TEAMS",
+        filtered: "No institution teams found",
+        institution_team: "Institutional team",
+        no_teams: "Your institution either does not provide teams or you don't have any team memberships within your institution",
 
+    },
     profile: {
         email: "Email",
         role: "Role",

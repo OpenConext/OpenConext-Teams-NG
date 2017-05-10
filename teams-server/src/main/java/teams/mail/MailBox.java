@@ -21,15 +21,15 @@ public class MailBox {
     private JavaMailSender mailSender;
     private String baseUrl;
     private String emailFrom;
-    private String teamsWhiteLabel;
+    private String productName;
 
     private final MustacheFactory mustacheFactory = new DefaultMustacheFactory();
 
-    public MailBox(JavaMailSender mailSender, String emailFrom, String baseUrl, String teamsWhiteLabel) {
+    public MailBox(JavaMailSender mailSender, String emailFrom, String baseUrl, String productName) {
         this.mailSender = mailSender;
         this.emailFrom = emailFrom;
         this.baseUrl = baseUrl;
-        this.teamsWhiteLabel = teamsWhiteLabel;
+        this.productName = productName;
     }
 
     public void sendInviteMail(Invitation invitation) throws MessagingException, IOException {
@@ -52,7 +52,7 @@ public class MailBox {
 
     public void sendJoinRequestMail(JoinRequest joinRequest, List<String> admins) throws MessagingException, IOException {
         Map<String, Object> variables = new HashMap<>();
-        variables.put("title", teamsWhiteLabel);
+        variables.put("title", productName);
         variables.put("joinRequest", joinRequest);
         sendMail(
                 "mail_templates/join_request.html",
@@ -71,7 +71,7 @@ public class MailBox {
 
     private void doSendJoinRequestAcceptedOrRejected(JoinRequest joinRequest, String subject, String emailTemplate) throws MessagingException, IOException {
         Map<String, Object> variables = new HashMap<>();
-        variables.put("title", teamsWhiteLabel);
+        variables.put("title", productName);
         variables.put("joinRequest", joinRequest);
         sendMail(
                 String.format("mail_templates/%s", emailTemplate),

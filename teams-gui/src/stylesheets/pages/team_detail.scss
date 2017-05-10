@@ -9,11 +9,8 @@
     a.back {
       font-weight: bold;
       font-size: 18px;
-      text-decoration: none;
       color: $blue;
-      &:hover, &:visited {
-        text-decoration: none
-      }
+      @include no-text-decoration;
       i {
         margin-right: 10px;
       }

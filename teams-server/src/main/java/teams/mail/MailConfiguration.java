@@ -20,8 +20,8 @@ public class MailConfiguration {
     @Value("${email.base-url}")
     private String baseUrl;
 
-    @Value("${teams.white-label}")
-    private String teamsWhiteLabel;
+    @Value("${teams.product-name}")
+    private String productName;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -29,7 +29,7 @@ public class MailConfiguration {
     @Bean
     @Profile({"!dev"})
     public MailBox mailSenderProd() {
-        return new MailBox(mailSender, emailFrom, baseUrl, teamsWhiteLabel);
+        return new MailBox(mailSender, emailFrom, baseUrl, productName);
     }
 
     @Bean

@@ -15,16 +15,18 @@ public class ShibbolethUserDetailService implements AuthenticationUserDetailsSer
 
     private final VootClient vootClient;
     private String groupNameContext;
+    private String productName;
 
-    public ShibbolethUserDetailService(String groupNameContext, VootClient vootClient) {
+    public ShibbolethUserDetailService(String groupNameContext, String  productName, VootClient vootClient) {
         this.groupNameContext = groupNameContext;
         this.vootClient = vootClient;
+        this.productName = productName;
     }
 
     @Override
     public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken authentication) throws UsernameNotFoundException {
         Person person = Person.class.cast(authentication.getPrincipal());
         List<ExternalTeam> externalTeams = vootClient.teams(person.getUrn());
-        return new FederatedUser(person, groupNameContext, externalTeams);
+        return new FederatedUser(person, groupNameContext, productName, externalTeams);
     }
 }

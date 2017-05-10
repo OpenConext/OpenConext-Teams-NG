@@ -7,13 +7,10 @@
   border: 1px solid $lighter-grey;
   border-radius: $br;
   font-size: larger;
-  text-decoration: none;
   font-weight: bold;
   text-align: center;
 
-  &:hover, &:visited {
-    text-decoration: none
-  }
+  @include no-text-decoration;
 
   &:not(:last-child) {
     margin-right: 15px;

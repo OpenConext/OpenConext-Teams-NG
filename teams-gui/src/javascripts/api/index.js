@@ -123,6 +123,10 @@ export function linkExternalTeam(teamId, externalTeamId) {
     return postPutJson("teams/external-teams", {teamId: teamId, externalTeamId: externalTeamId});
 }
 
+export function linkedTeams() {
+    return fetchJson("external-teams/linked-teams");
+}
+
 export function deleteJoinRequest(id) {
     return fetchDelete("join-requests/" + id);
 }

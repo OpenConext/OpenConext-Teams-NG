@@ -10,11 +10,8 @@
 
     a {
       color: $blue;
-      text-decoration: none;
       font-weight: bold;
-      &:hover, &:visited {
-        text-decoration: none
-      }
+      @include no-text-decoration;
     }
 
 

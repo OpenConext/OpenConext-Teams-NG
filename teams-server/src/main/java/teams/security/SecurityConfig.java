@@ -77,10 +77,13 @@ public class SecurityConfig {
         @Value("${teams.group-name-context}")
         private String groupNameContext;
 
+        @Value("${teams.product-name}")
+        private String productName;
+
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             PreAuthenticatedAuthenticationProvider authenticationProvider = new PreAuthenticatedAuthenticationProvider();
-            authenticationProvider.setPreAuthenticatedUserDetailsService(new ShibbolethUserDetailService(groupNameContext, vootClient));
+            authenticationProvider.setPreAuthenticatedUserDetailsService(new ShibbolethUserDetailService(groupNameContext,productName, vootClient));
             auth.authenticationProvider(authenticationProvider);
         }
 

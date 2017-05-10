@@ -20,7 +20,7 @@ cron:
 teams:
   default-stem-name: "nl:surfnet:diensten"
   group-name-context: "urn:collab:group:dev.surfteams.nl:"
-  white-label: "SURFconext Teams"
+  product-name: "SURFconext Teams"
   non-guest-member-of: "urn:collab:org:surf.nl"
 
 voot:

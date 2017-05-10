@@ -10,16 +10,11 @@
     display: flex;
 
     a {
-
-      text-decoration: none;
       font-weight: bold;
       color: lighten($light-blue, 5);
       margin-right: 50px;
       padding-bottom: 12px;
-
-      &:hover, &:visited {
-        text-decoration: none
-      }
+      @include no-text-decoration;
 
       &.active {
         color: white;
