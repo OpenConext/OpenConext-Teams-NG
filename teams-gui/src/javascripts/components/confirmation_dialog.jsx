@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Modal from "react-modal";
 import I18n from "i18n-js";
 
-export default function ConfirmationDialog({isOpen = false, cancel, confirm, question}) {
+export default function ConfirmationDialog({isOpen = false, cancel, confirm, question = "", leavePage = false}) {
     return (
         <Modal
             isOpen={isOpen}
@@ -15,15 +15,20 @@ export default function ConfirmationDialog({isOpen = false, cancel, confirm, que
             <section className="dialog-header">
                 {I18n.t("confirmation_dialog.title")}
             </section>
-            <section className="dialog-content">
-                <h2>{question}</h2>
-            </section>
+            {leavePage ?
+                <section className="dialog-content">
+                    <h2>{I18n.t("confirmation_dialog.leavePage")}</h2>
+                    <p>{I18n.t("confirmation_dialog.leavePageSub")}</p>
+                </section> :
+                <section className="dialog-content">
+                    <h2>{question}</h2>
+                </section>}
             <section className="dialog-buttons">
                 <a className="button grey" href="#" onClick={cancel}>
-                    {I18n.t("confirmation_dialog.cancel")}
+                    {leavePage ? I18n.t("confirmation_dialog.leave") : I18n.t("confirmation_dialog.cancel")}
                 </a>
                 <a className="button blue" href="#" onClick={confirm}>
-                    {I18n.t("confirmation_dialog.confirm")}
+                    {leavePage ? I18n.t("confirmation_dialog.stay") : I18n.t("confirmation_dialog.confirm")}
                 </a>
             </section>
         </Modal>
@@ -35,7 +40,8 @@ ConfirmationDialog.propTypes = {
     isOpen: PropTypes.bool,
     cancel: PropTypes.func.isRequired,
     confirm: PropTypes.func.isRequired,
-    question: PropTypes.string.isRequired,
+    question: PropTypes.string,
+    leavePage: PropTypes.bool
 };
 
 

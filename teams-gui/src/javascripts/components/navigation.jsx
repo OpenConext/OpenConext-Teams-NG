@@ -52,7 +52,7 @@ export default class Navigation extends React.Component {
             <div className="navigation-container">
                 <div className="navigation">
                     {this.renderItem("/my-teams", "my_teams")}
-                    {this.renderItem("/external-teams", "external_teams")}
+                    {this.renderItem("/institution-teams", "institution_teams")}
                     {this.renderSpinner()}
                 </div>
             </div>

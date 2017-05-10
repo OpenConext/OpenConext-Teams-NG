@@ -21,6 +21,7 @@ import Header from "./components/header";
 import Flash from "./components/flash";
 import Navigation from "./components/navigation";
 import MyTeams from "./pages/my_teams";
+import InstitutionTeams from "./pages/institution_teams";
 import TeamDetail from "./pages/team_detail";
 import JoinRequest from "./pages/join_request";
 import NewTeam from "./pages/new_team";
@@ -69,6 +70,9 @@ class App extends React.Component {
                                render={props => <MyTeams currentUser={currentUser} {...props}/>}/>
                         <Route path="/teams/:id"
                                render={props => <TeamDetail currentUser={currentUser} {...props}/>}/>
+                        <Route path="/institution-teams"
+                               render={props => <InstitutionTeams currentUser={currentUser} {...props}/>}/>
+
                         <Route path="/join-requests/:teamId/:id?"
                                render={props => <JoinRequest {...props}/>}/>
 

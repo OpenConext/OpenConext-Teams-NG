@@ -584,7 +584,7 @@ export default class TeamDetail extends React.Component {
     render() {
         const {
             team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded,
-            confirmationDialogOpen
+            confirmationDialogOpen, confirmationDialogAction, confirmationDialogQuestion
         } = this.state;
         const {currentUser} = this.props;
         if (!loaded) {
@@ -597,8 +597,8 @@ export default class TeamDetail extends React.Component {
             <div className="team-detail">
                 <ConfirmationDialog isOpen={confirmationDialogOpen}
                                     cancel={this.cancelConfirmation}
-                                    confirm={this.state.confirmationDialogAction}
-                                    question={this.state.confirmationDialogQuestion}/>
+                                    confirm={confirmationDialogAction}
+                                    question={confirmationDialogQuestion}/>
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role, currentUser)}
                 {this.tabsAndIconLegend(team, tab)}

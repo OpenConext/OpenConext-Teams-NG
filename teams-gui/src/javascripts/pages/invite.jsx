@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import EmailInput from "../components/email_input";
+import ConfirmationDialog from "../components/confirmation_dialog";
 import InvitationInfo from "../components/invitation_info";
 import InvitationResentInfo from "../components/invitation_resent_info";
 import DatePickerCustomInput from "../components/date_picker_custom";
@@ -34,7 +35,12 @@ export default class Invite extends React.Component {
             message: "",
             roleOfCurrentUserInTeam: "MANAGER",
             invitation: {},
-            readOnly: false
+            readOnly: false,
+            confirmationDialogOpen: false,
+            confirmationDialogAction: () => {
+                this.setState({confirmationDialogOpen: false});
+                this.goBack();
+            }
         };
     }
 
@@ -56,6 +62,11 @@ export default class Invite extends React.Component {
         });
         window.scrollTo(0, 0);
     }
+
+    cancel = e => {
+        stop(e);
+        this.setState({confirmationDialogOpen: true});
+    };
 
     onChangeEmails = emails => this.setState({emails: emails});
 
@@ -100,24 +111,18 @@ export default class Invite extends React.Component {
 
     goBack = () => goto(`/teams/${this.props.match.params.teamId}`, this.props);
 
-    cancel = e => {
-        stop(e);
-        if (confirm(I18n.t("invite.cancel"))) {
-            this.goBack();
-        }
-    };
-
     submit = e => {
         stop(e);
         if (this.isValid()) {
             const {intendedRole, emails, expiryDate, message, csvEmails, language, readOnly} = this.state;
             const {teamId, id} = this.props.match.params;
+            const afterAction = () => {
+                this.goBack();
+                setFlash(I18n.t(readOnly ? "invite.flash_resent" : "invite.flash"));
+            };
             if (readOnly) {
                 resendInvitation({ id, message })
-                    .then(() => {
-                        this.goBack();
-                        setFlash(I18n.t("invite.flash_resent"));
-                    })
+                    .then(afterAction)
                     .catch(err => handleServerError(err));
 
             } else {
@@ -130,10 +135,7 @@ export default class Invite extends React.Component {
                     csvEmails: csvEmails === false ? null : csvEmails,
                     language
                 })
-                    .then(() => {
-                        this.goBack();
-                        setFlash(I18n.t("invite.flash"));
-                    })
+                    .then(afterAction)
                     .catch(err => handleServerError(err));
             }
         }
@@ -230,11 +232,15 @@ export default class Invite extends React.Component {
     render() {
         const {
             emails, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message,
-            roleOfCurrentUserInTeam, mailsImported, readOnly
+            roleOfCurrentUserInTeam, mailsImported, readOnly, confirmationDialogOpen, confirmationDialogAction
         } = this.state;
         const valid = this.isValid();
         return (
             <div className="invite">
+                <ConfirmationDialog isOpen={confirmationDialogOpen}
+                                    cancel={confirmationDialogAction}
+                                    confirm={() => this.setState({confirmationDialogOpen: false})}
+                                    leavePage={true}/>
                 <h2>{I18n.t("invite.title")}</h2>
                 <div className="card">
                     <section className="screen-divider">

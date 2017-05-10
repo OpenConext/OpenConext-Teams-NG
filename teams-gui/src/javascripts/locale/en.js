@@ -31,13 +31,17 @@ I18n.translations.en = {
 
     navigation: {
         my_teams: "My Teams",
-        external_teams: "Institution Teams"
+        institution_teams: "Institution Teams"
     },
 
     confirmation_dialog: {
         title: "Please confirm",
         confirm: "Confirm",
-        cancel: "Cancel"
+        cancel: "Cancel",
+        leavePage: "Do you want to leave this page?",
+        leavePageSub: "Changes that you made will no be saved.",
+        stay: "Stay",
+        leave: "Leave"
     },
 
     teams: {

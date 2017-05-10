@@ -4,6 +4,7 @@ import I18n from "i18n-js";
 
 import debounce from "lodash/debounce";
 
+import ConfirmationDialog from "../components/confirmation_dialog";
 import EmailInput from "../components/email_input";
 import SelectLanguage from "../components/select_language";
 import CheckBox from "../components/checkbox";
@@ -28,11 +29,21 @@ export default class NewTeam extends React.Component {
             format: true,
             exists: false,
             approval: true,
-            language: "English"
+            language: "English",
+            confirmationDialogOpen: false,
+            confirmationDialogAction: () => {
+                this.setState({confirmationDialogOpen: false});
+                this.props.history.replace("/my-teams");
+            }
         };
     }
 
     componentDidMount = () => this.nameInput.focus();
+
+    cancel = e => {
+        stop(e);
+        this.setState({confirmationDialogOpen: true});
+    };
 
     changeTeamName = e => {
         const name = e.target.value;
@@ -60,13 +71,6 @@ export default class NewTeam extends React.Component {
             value = target.type === "checkbox" ? target.checked : target.value;
         }
         this.setState({[attributeName]: value});
-    };
-
-    cancel = e => {
-        stop(e);
-        if (confirm(I18n.t("new_team.cancel_confirmation"))) {
-            this.props.history.replace("/my-teams");
-        }
     };
 
     submit = e => {
@@ -171,13 +175,17 @@ export default class NewTeam extends React.Component {
     render() {
         const {currentUser} = this.props;
         const {
-            name, description, personalNote, viewable, initial, format, exists,
-            invitationMessage, email, approval, language
+            name, description, personalNote, viewable, initial, format, exists, invitationMessage, email, approval,
+            language, confirmationDialogOpen, confirmationDialogAction
         } = this.state;
         const validName = format && !exists;
 
         return (
             <div className="new-team">
+                <ConfirmationDialog isOpen={confirmationDialogOpen}
+                                    cancel={confirmationDialogAction}
+                                    confirm={() => this.setState({confirmationDialogOpen: false})}
+                                    leavePage={true}/>
                 <h2>{I18n.t("new_team.title")}</h2>
                 <div className="card">
                     {this.renderName(name, validName, initial, format, exists)}

@@ -5,6 +5,7 @@ import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 
 import JoinRequestInfo from "../components/join_request_info";
+import ConfirmationDialog from "../components/confirmation_dialog";
 import CheckBox from "../components/checkbox";
 import {getJoinRequest, getTeamDetail, joinRequest} from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
@@ -20,7 +21,12 @@ export default class JoinRequest extends React.Component {
             joinRequest: {},
             loaded: false,
             approval: true,
-            message: ""
+            message: "",
+            confirmationDialogOpen: false,
+            confirmationDialogAction: () => {
+                this.setState({confirmationDialogOpen: false});
+                this.goBack();
+            }
         };
     }
 
@@ -49,9 +55,7 @@ export default class JoinRequest extends React.Component {
 
     cancel = e => {
         stop(e);
-        if (confirm(I18n.t("join_request.cancel"))) {
-            this.goBack();
-        }
+        this.setState({confirmationDialogOpen: true});
     };
 
     submit = e => {
@@ -131,13 +135,17 @@ export default class JoinRequest extends React.Component {
     };
 
     render() {
-        const {team, joinRequest, message, approval, loaded} = this.state;
+        const {team, joinRequest, message, approval, loaded, confirmationDialogOpen, confirmationDialogAction} = this.state;
         if (!loaded) {
             return null;
         }
         const valid = this.isValid();
         return (
             <div className="join-request">
+                <ConfirmationDialog isOpen={confirmationDialogOpen}
+                                    cancel={confirmationDialogAction}
+                                    confirm={() => this.setState({confirmationDialogOpen: false})}
+                                    leavePage={true}/>
                 <h2>{I18n.t("join_request.title")}</h2>
                 <div className="card">
                     <section className="screen-divider">

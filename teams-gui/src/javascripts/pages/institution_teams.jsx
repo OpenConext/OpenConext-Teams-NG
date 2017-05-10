@@ -12,70 +12,24 @@ import FilterDropDown from "../components/filter_drop_down";
 import IconLegend from "../components/icon_legend";
 import DropDownActions from "../components/drop_down_actions";
 import TeamAutocomplete from "../components/team_autocomplete";
-import {autoCompleteTeam, deleteJoinRequest, deleteTeam, getMyTeams} from "../api";
+import {autoCompleteTeam, deleteJoinRequest, deleteTeam} from "../api";
 import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
 
 
-export default class MyTeams extends React.Component {
+export default class InstitutionTeams extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            isMemberOfTeam: false,
-            teams: [],
-            filteredTeams: [],
-            joinRequests: [],
-            invitationsSend: [],
-            sorted: {name: "name", order: "down"},
-            actions: {show: false, id: ""},
-            sortAttributes: [
-                {name: "name", order: "down", current: true},
-                {name: "description", order: "down", current: false},
-                {name: "role", order: "down", current: false},
-                {name: "membershipCount", order: "down", current: false}
-            ],
-            filterAttributes: [
-                {name: ROLES.ADMIN.role, selected: true, count: 0},
-                {name: ROLES.MANAGER.role, selected: true, count: 0},
-                {name: ROLES.MEMBER.role, selected: true, count: 0},
-                {name: ROLES.JOIN_REQUEST.role, selected: true, count: 0}
-            ],
-            selectedTeam: -1,
-            suggestions: [],
-            query: "",
-            confirmationDialogOpen: false,
-            confirmationDialogQuestion: "",
-            confirmationDialogAction: () => false
+            institutionTeam: props.currentUser.externalTeams || [],
+            filteredTeams: []
         };
     }
 
-    fetchMyTeams() {
-        getMyTeams().then(myTeams => {
-            const joinRequests = myTeams.myJoinRequests.map(joinRequest => {
-                return {
-                    name: joinRequest.teamName, description: joinRequest.teamDescription,
-                    role: ROLES.JOIN_REQUEST.role, isJoinRequest: true, membershipCount: "",
-                    created: joinRequest.joinRequest.created, message: joinRequest.joinRequest.message,
-                    id: joinRequest.joinRequest.id, teamId: joinRequest.teamId
-                };
-            });
-            const teams = myTeams.teamSummaries.concat(joinRequests).sort(this.sortByAttribute("name"));
-            const newFilterAttributes = [...this.state.filterAttributes];
-            newFilterAttributes.forEach(attr => attr.count = teams.filter(team => team.role === attr.name).length);
-            this.setState({
-                isMemberOfTeam: teams.length > 0,
-                teams: teams,
-                filteredTeams: [...teams],
-                filterAttributes: newFilterAttributes.filter(attr => attr.count > 0)
-            });
-        });
-    }
-
     componentWillMount = () => {
-        //clearFlash();
-        this.fetchMyTeams();
+
     };
 
     showTeam = team => () => {
@@ -392,7 +346,7 @@ export default class MyTeams extends React.Component {
     }
 }
 
-MyTeams.propTypes = {
+InstitutionTeams.propTypes = {
     history: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired
 };

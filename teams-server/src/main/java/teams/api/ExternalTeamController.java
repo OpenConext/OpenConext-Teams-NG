@@ -6,13 +6,30 @@ import org.springframework.web.bind.annotation.*;
 import teams.api.validations.ExternalTeamValidator;
 import teams.domain.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 
 @RestController
 public class ExternalTeamController extends ApiController implements ExternalTeamValidator {
+
+    @GetMapping("api/teams/external-teams/linked-teams")
+    public Map<String, List<LinkedTeamInfo>> linkedTeams(FederatedUser federatedUser) {
+        List<String> externalTeamIdentifiers = federatedUser.getExternalTeams().stream()
+                .map(ExternalTeam::getIdentifier).collect(toList());
+        List<Object[]> teamsByExternalTeamIdentifiers = externalTeamRepository
+                .findTeamsByExternalTeamIdentifiers(externalTeamIdentifiers);
+
+        return teamsByExternalTeamIdentifiers.stream()
+                .map(obj ->
+                        new LinkedTeamInfo(String.class.cast(obj[0]), Long.class.cast(obj[1]), String.class.cast(obj[2])))
+                .collect(groupingBy(LinkedTeamInfo::getExternalTeamIdentifier));
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("api/teams/external-teams")
@@ -66,4 +83,5 @@ public class ExternalTeamController extends ApiController implements ExternalTea
         }
         return lazyLoadTeam(teamSaved, roleOfLoggedInPerson, federatedUser);
     }
+
 }

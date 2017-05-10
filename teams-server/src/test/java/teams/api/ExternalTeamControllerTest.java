@@ -17,6 +17,7 @@ import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.isEmptyString;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
@@ -24,6 +25,19 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 public class ExternalTeamControllerTest extends AbstractApplicationTest implements Mocks, Seed {
 
     private String teamUrn = "nl:surfnet:diensten:gliders";
+
+    @Test
+    public void linkedTeams() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+                .when()
+                .get("api/teams/external-teams/linked-teams")
+                .then()
+                .statusCode(SC_OK)
+                .body("'urn:collab:group:example.org:name1'.name", hasItems("riders"))
+                .body("'urn:collab:group:example.org:name2'.name", hasItems("riders", "giants"));
+    }
 
     @Test
     public void linkTeamToExternalTeam() throws Exception {

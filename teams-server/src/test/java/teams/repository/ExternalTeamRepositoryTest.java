@@ -22,4 +22,5 @@ public class ExternalTeamRepositoryTest extends AbstractApplicationTest {
         List<ExternalTeam> externalTeams = externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:riders");
         assertEquals(2, externalTeams.size());
     }
+
 }
