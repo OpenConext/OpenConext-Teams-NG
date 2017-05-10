@@ -18,8 +18,8 @@ export default function CheckBox({name, value, readOnly = false, onChange, info 
 CheckBox.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.bool.isRequired,
-    readOnly: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
+    readOnly: PropTypes.bool,
     info: PropTypes.string,
     className: PropTypes.string
 };

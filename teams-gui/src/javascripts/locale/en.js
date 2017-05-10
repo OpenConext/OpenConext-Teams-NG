@@ -122,6 +122,7 @@ I18n.translations.en = {
         copied: "Copied",
         one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team.",
         add: "INVITE",
+        linked: "Linked",
         action_options: {
             join_request_accept: "Accept join request",
             join_request_reject: "Reject join request",

@@ -2,34 +2,25 @@ import React from "react";
 import I18n from "i18n-js";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
-import {NavLink} from "react-router-dom";
 
+import CheckBox from "./checkbox";
 import CopyToClipboard from "react-copy-to-clipboard";
-import {linkedTeams} from "../api";
 import {isEmpty} from "../utils/utils";
-import {clearFlash} from "../utils/flash";
 
-export default class InstitutionTeams extends React.Component {
+export default class LinkedInstitutionTeams extends React.Component {
 
     constructor(props) {
         super(props);
-        const institutionTeams = [...(props.currentUser.externalTeams || [])].sort((a, b) => a.name.localeCompare(b.name));
+        const institutionTeams = [...(props.institutionTeams || [])].sort((a, b) => a.name.localeCompare(b.name));
         this.state = {
-            institutionTeams: institutionTeams,
             filteredTeams: institutionTeams,
-            linkedTeams: {},
             copiedToClipboard: {},
         };
     }
 
-    componentWillMount = () => {
-        clearFlash();
-        linkedTeams().then(linked => this.setState({linkedTeams: linked}));
-    };
-
     search = e => {
         const query = e.target.value;
-        const {institutionTeams} = this.state;
+        const {institutionTeams} = this.props;
         if (isEmpty(query)) {
             this.setState({filteredTeams: institutionTeams});
         } else {
@@ -53,18 +44,6 @@ export default class InstitutionTeams extends React.Component {
         setTimeout(() => this.setState({copiedToClipboard: newStateAfterTimeout}), 5000);
     };
 
-    renderIconLegend = () => {
-        return (
-            <div className="icon-legend">
-                <section className="roles">
-                    <span className="role"><i
-                        className="fa fa-building-o"></i>{I18n.t("institution_teams.institution_team")}</span>
-                    <span className="role"><i className="fa fa-users"></i>{this.props.currentUser.productName}</span>
-                </section>
-            </div>);
-
-    };
-
     renderNameCell = team => {
         const copiedToClipboard = this.state.copiedToClipboard[team.identifier];
         const copiedToClipBoardClassName = copiedToClipboard ? "copied" : "";
@@ -86,21 +65,31 @@ export default class InstitutionTeams extends React.Component {
         );
     };
 
-    renderLinkedTeamsCell = linkedTeams =>
-        <td data-label={I18n.t("institution_teams.linked_teams")} className="linked-teams">
-            {linkedTeams.map((team, index) =>
-                <NavLink key={`${team.id}_${index}`} className="linked-team" to={`/teams/${team.id}`}>
-                    <i className="fa fa-users"></i>{team.name}
-                </NavLink>
-            )}
+    linkOrUnlink = institutionTeam => e => {
+        const target = e.target;
+        // const value = target.type === "checkbox" ? target.checked : target.value;
+        const identifier = institutionTeam.identifier;
+        //TODO delegate to parent
+        return [target, identifier];
+    };
+
+    isInstitutionalTeamLinked = (institutionTeam, linkedTeams) => linkedTeams
+        .filter(et => et.identifier === institutionTeam.identifier).length > 0;
+
+
+    renderLinkedTeamsCell = (institutionTeam, linkedTeams) =>
+        <td data-label={I18n.t("team_detail.linked")} className="team-linked">
+            <CheckBox name={institutionTeam.identifier}
+                      value={this.isInstitutionalTeamLinked(institutionTeam, linkedTeams)}
+                      onChange={this.linkOrUnlink(institutionTeam)}/>
         </td>;
 
 
     renderTeamsTable(filteredTeams, linkedTeams) {
-        const columns = ["name", "description", "linked_teams"];
+        const columns = ["name", "description", "linked"];
         const th = index => (
             <th key={index} className={columns[index]}>
-                <span>{I18n.t(`institution_teams.${columns[index]}`)}</span>
+                <span>{I18n.t(`team_detail.${columns[index]}`)}</span>
             </th>
         );
         if (filteredTeams.length !== 0) {
@@ -115,7 +104,7 @@ export default class InstitutionTeams extends React.Component {
                             {this.renderNameCell(team)}
                             <td data-label={I18n.t("institution_teams.description")}
                                 className="description">{team.description}</td>
-                            {this.renderLinkedTeamsCell(linkedTeams[team.identifier] || [])}
+                            {this.renderLinkedTeamsCell(team, linkedTeams)}
                         </tr>
                     )}
                     </tbody>
@@ -130,28 +119,26 @@ export default class InstitutionTeams extends React.Component {
     }
 
     render() {
-        const {filteredTeams, linkedTeams} = this.state;
+        const {filteredTeams} = this.state;
+        const {team} = this.props;
+
         return (
-            <div className="institution_teams">
-                {this.renderIconLegend()}
-                <section className="card">
-                    <section className="options">
-                        <section className="search">
-                            <input placeholder={I18n.t("institution_teams.searchPlaceHolder")}
-                                   type="text"
-                                   onChange={this.search}/>
-                            <i className="fa fa-search"></i>
-                        </section>
+            <section className="card">
+                <section className="team-detail-controls">
+                    <section className="search">
+                        <input placeholder={I18n.t("institution_teams.searchPlaceHolder")} type="text"
+                               onChange={this.search}/>
+                        <i className="fa fa-search"></i>
                     </section>
-                    {this.renderTeamsTable(filteredTeams, linkedTeams)}
                 </section>
-            </div>
+                {this.renderTeamsTable(filteredTeams, team.externalTeams)}
+            </section>
         );
     }
 }
 
-InstitutionTeams.propTypes = {
-    history: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired
+LinkedInstitutionTeams.propTypes = {
+    institutionTeams: PropTypes.array.isRequired,
+    team: PropTypes.object.isRequired,
 };
 

@@ -31,12 +31,13 @@ export default class Flash extends React.Component {
         if (flash && flash.message) {
             return (
                 <div className={`flash ${className} ${flash.type}`}>
-                    <p dangerouslySetInnerHTML={{__html: flash.message}}>
-                    </p>
-
-                    <a className="close" href="#" onClick={() => this.setState({flash: null, className: ""})}>
-                        <i className="fa fa-remove"></i>
-                    </a>
+                    <div className="message-container">
+                        <p dangerouslySetInnerHTML={{__html: flash.message}}>
+                        </p>
+                        <a className="close" href="#" onClick={() => this.setState({flash: null, className: ""})}>
+                            <i className="fa fa-remove"></i>
+                        </a>
+                    </div>
                 </div>
             );
         }

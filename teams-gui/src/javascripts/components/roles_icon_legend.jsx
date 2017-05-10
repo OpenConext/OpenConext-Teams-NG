@@ -2,10 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import {ROLES, iconForRole, labelForRole} from "../validations/memberships";
 
-export default function IconLegend(props) {
+export default function RolesIconLegend(props) {
     return (
         <div className="icon-legend">
-            {props.title && <h2>{props.title}</h2>}
             {props.children && props.children}
             <section className="roles">
                 {Object.keys(ROLES).map(role =>
@@ -15,8 +14,7 @@ export default function IconLegend(props) {
         </div>);
 }
 
-IconLegend.propTypes = {
-    title: PropTypes.string,
+RolesIconLegend.propTypes = {
     children: PropTypes.element
 };
 

@@ -20,13 +20,16 @@ import {
 import {handleServerError, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 
+import LinkedInstitutionTeams from "../components/linked_institution_teams";
 import ConfirmationDialog from "../components/confirmation_dialog";
 import SortDropDown from "../components/sort_drop_down";
 import FilterDropDown from "../components/filter_drop_down";
 import DropDownActions from "../components/drop_down_actions";
 import InlineEditable from "../components/inline_editable";
 import CheckBox from "../components/checkbox";
-import IconLegend from "../components/icon_legend";
+import RolesIconLegend from "../components/roles_icon_legend";
+import TeamsIconLegend from "../components/teams_icon_legend";
+
 import {
     allowedToLeave,
     currentUserRoleInTeam,
@@ -380,21 +383,24 @@ export default class TeamDetail extends React.Component {
         );
     }
 
-    tabsAndIconLegend = (team, tab) => {
-        const memberCount = team.memberships.length;
-        const externalCount = (team.externalTeams || []).length;
-        return (
-            <IconLegend>
-                <div className="members-tab">
+    renderTabs = (tab, team) =>
+        <div className="members-tab">
                     <span className={tab === "members" ? "active" : ""} onClick={() => this.setState({tab: "members"})}>
-                        {I18n.t("team_detail.team_members", {count: memberCount})}
+                        {I18n.t("team_detail.team_members", {count: team.memberships.length})}
                         </span>
-                    <span className={tab === "groups" ? "active" : ""} onClick={() => this.setState({tab: "groups"})}>
-                        {I18n.t("team_detail.team_groups", {count: externalCount})}</span>
-                </div>
-            </IconLegend>
-        );
-    };
+            <span className={tab === "groups" ? "active" : ""} onClick={() => this.setState({tab: "groups"})}>
+                        {I18n.t("team_detail.team_groups", {count: (team.externalTeams || []).length})}</span>
+        </div>;
+
+    tabsAndIconLegend = (team, tab) =>
+        tab === "members" ?
+            <RolesIconLegend>
+                {this.renderTabs(tab, team)}
+            </RolesIconLegend> :
+            <TeamsIconLegend currentUser={this.props.currentUser}>
+                {this.renderTabs(tab, team)}
+            </TeamsIconLegend>
+
 
     currentSorted = () => this.state.sortAttributes.filter(attr => attr.current)[0];
 
@@ -523,14 +529,6 @@ export default class TeamDetail extends React.Component {
         return <DropDownActions options={options} i18nPrefix="team_detail.action_options"/>;
     };
 
-    renderGroupsTable(userExternalTeams, teamExternalTeams) {
-        return (
-            <section><span>TODO .......{userExternalTeams.length}</span>
-                <span>TODO .......{teamExternalTeams.length}</span>
-            </section>
-        );
-    }
-
     renderMembersTable(currentUser, visibleMembers, actions, team) {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
@@ -581,6 +579,24 @@ export default class TeamDetail extends React.Component {
         return <div><em>{I18n.t("team_detail.no_found")}</em></div>;
     }
 
+    renderDetailTab = (sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team) =>
+        <section className="card">
+            <section className="team-detail-controls">
+                <SortDropDown items={sortAttributes} sortBy={this.sort}/>
+                <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
+                <section className="search">
+                    <input placeholder={I18n.t("team_detail.search_members_placeholder")} type="text"
+                           onChange={this.search}/>
+                    <i className="fa fa-search"></i>
+                </section>
+                {mayInvite &&
+                <a className="button green" href="#" onClick={this.handleInvite}>
+                    {I18n.t("team_detail.add")}<i className="fa fa-plus"></i>
+                </a>}
+            </section>
+            {this.renderMembersTable(currentUser, visibleMembers, actions, team)}
+        </section>;
+
     render() {
         const {
             team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded,
@@ -602,23 +618,8 @@ export default class TeamDetail extends React.Component {
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role, currentUser)}
                 {this.tabsAndIconLegend(team, tab)}
-                <section className="card">
-                    <section className="team-detail-controls">
-                        <SortDropDown items={sortAttributes} sortBy={this.sort}/>
-                        <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
-                        <section className="search">
-                            <input placeholder={I18n.t("team_detail.search_members_placeholder")} type="text"
-                                   onChange={this.search}/>
-                            <i className="fa fa-search"></i>
-                        </section>
-                        {mayInvite &&
-                        <a className="button green" href="#" onClick={this.handleInvite}>
-                            {I18n.t("team_detail.add")}<i className="fa fa-plus"></i>
-                        </a>}
-                    </section>
-                    {tab === "members" && this.renderMembersTable(currentUser, visibleMembers, actions, team)}
-                    {tab === "groups" && this.renderGroupsTable(currentUser.externalTeams, team.externalTeams)}
-                </section>
+                {tab === "members" && this.renderDetailTab(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team)}
+                {tab === "groups" && <LinkedInstitutionTeams institutionTeams={currentUser.externalTeams} team={team}/>}
             </div>
         );
     }

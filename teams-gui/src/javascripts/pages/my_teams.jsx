@@ -9,7 +9,7 @@ import {setBackPage} from "../lib/store";
 import SortDropDown from "../components/sort_drop_down";
 import ConfirmationDialog from "../components/confirmation_dialog";
 import FilterDropDown from "../components/filter_drop_down";
-import IconLegend from "../components/icon_legend";
+import RolesIconLegend from "../components/roles_icon_legend";
 import DropDownActions from "../components/drop_down_actions";
 import TeamAutocomplete from "../components/team_autocomplete";
 import {autoCompleteTeam, deleteJoinRequest, deleteTeam, getMyTeams} from "../api";
@@ -361,7 +361,7 @@ export default class MyTeams extends React.Component {
                                     cancel={this.cancelConfirmation}
                                     confirm={confirmationDialogAction}
                                     question={confirmationDialogQuestion}/>
-                <IconLegend/>
+                <RolesIconLegend/>
                 <div className="card">
                     <div className="options">
                         <SortDropDown items={sortAttributes} sortBy={this.sort}/>
