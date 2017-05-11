@@ -5,10 +5,17 @@ import org.springframework.test.util.ReflectionTestUtils;
 import teams.Seed;
 import teams.api.ExternalTeamController;
 import teams.domain.ExternalTeam;
+import teams.domain.FederatedUser;
+import teams.domain.Role;
 import teams.domain.Team;
 import teams.exception.IllegalLinkExternalTeamException;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertNotNull;
 
 public class ExternalTeamValidatorTest implements Seed {
 
@@ -48,20 +55,30 @@ public class ExternalTeamValidatorTest implements Seed {
         subject.externalTeamLinked(team, externalTeam);
     }
 
+    @Test
+    public void isAllowedToLinkExternalTeam() throws Exception {
+        subject.isAllowedToLinkExternalTeam(Role.ADMIN, team(), federatedUser());
+    }
+
     @Test(expected = IllegalLinkExternalTeamException.class)
-    public void externalTeamsMembershipException() {
-        subject.externalTeamsMembership(
-                asList(externalTeam("identifier_1")),
-                asList(externalTeam("identifier_2")),
-                "urn");
+    public void isAllowedToLinkExternalTeamNotAllowed() throws Exception {
+        subject.isAllowedToLinkExternalTeam(Role.MEMBER, team(), federatedUser());
     }
 
     @Test
-    public void externalTeamsMembership() {
-        subject.externalTeamsMembership(
-                asList(externalTeam("identifier_1")),
-                asList(externalTeam("identifier_1")),
-                "urn");
+    public void externalTeamFromFederatedUser() throws Exception {
+        FederatedUser federatedUser = new FederatedUser(person("urn"), "nope", "OC",
+                singletonList(externalTeam("identifier")));
+        ExternalTeam externalTeam = subject.externalTeamFromFederatedUser(federatedUser, "identifier");
+        assertNotNull(externalTeam);
+    }
+
+    @Test(expected = IllegalLinkExternalTeamException.class)
+    public void externalTeamFromFederatedUserNotMember() throws Exception {
+        FederatedUser federatedUser = new FederatedUser(person("urn"), "nope", "OC",
+                singletonList(externalTeam("nope")));
+        ExternalTeam externalTeam = subject.externalTeamFromFederatedUser(federatedUser, "identifier");
+        assertNotNull(externalTeam);
     }
 
 }

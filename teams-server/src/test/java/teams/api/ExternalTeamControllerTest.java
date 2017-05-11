@@ -41,31 +41,25 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
 
     @Test
     public void linkTeamToExternalTeam() throws Exception {
-        List<ExternalTeam> externalTeams = Arrays.asList(
-                externalTeam("urn:collab:group:example.org:name1"),
-                externalTeam("urn:collab:group:example.org:name6"),
-                externalTeam("urn:collab:group:example.org:name7")
-        );
+        String externalTeamIdentifier = "urn:collab:group:example.org:name6";
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
-                .body(new ExternalTeamProperties(3L, externalTeams))
+                .body(new ExternalTeamProperties(3L, externalTeamIdentifier))
                 .when()
-                .put("api/teams/external-teams")
+                .put("api/teams/external-teams/link")
                 .then()
                 .statusCode(SC_OK)
                 .body("externalTeams.identifier",
-                        hasItems(externalTeams.stream().map(ExternalTeam::getIdentifier).toArray()));
+                        hasItems(externalTeamIdentifier));
 
 
-        List<ExternalTeam> externalTeamsFromDB = externalTeamRepository.findByTeamsUrn(teamUrn);
-        assertEquals(3, externalTeams.size());
-        assertExternalTeam(
-                externalTeamByIdentifier("urn:collab:group:example.org:name1", externalTeamsFromDB), 2);
-        assertExternalTeam(
-                externalTeamByIdentifier("urn:collab:group:example.org:name6", externalTeamsFromDB), 1);
-        assertExternalTeam(
-                externalTeamByIdentifier("urn:collab:group:example.org:name6", externalTeamsFromDB), 1);
+        List<ExternalTeam> externalTeams = externalTeamRepository.findByTeamsUrn(teamUrn);
+        assertEquals(1, externalTeams.size());
+
+        Set<Team> teams = externalTeams.get(0).getTeams();
+        assertEquals(1, teams.size());
+        assertEquals(1, teams.iterator().next().getExternalTeams().size());
     }
 
     @Test
@@ -73,8 +67,9 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
+                .body(new ExternalTeamProperties(2L, "urn:collab:group:example.org:name2"))
                 .when()
-                .delete(String.format("api/teams/external-teams/%s/%s", 2, 2))
+                .put("api/teams/external-teams/delink")
                 .then()
                 .statusCode(SC_OK)
                 .body("externalTeams.size()", equalTo(0));
@@ -87,8 +82,9 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+                .body(new ExternalTeamProperties(1L, "urn:collab:group:example.org:name2"))
                 .when()
-                .delete(String.format("api/teams/external-teams/%s/%s", 1, 1))
+                .put("api/teams/external-teams/delink")
                 .then()
                 .statusCode(SC_OK)
                 .body("externalTeams.size()", equalTo(1));
@@ -96,14 +92,4 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
         assertEquals(1, externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:riders").size());
     }
 
-    private void assertExternalTeam(ExternalTeam externalTeam, int expectedTeamSize) {
-        Set<Team> teams = externalTeam.getTeams();
-        assertEquals(expectedTeamSize, teams.size());
-        assertEquals(1, teams.stream().filter(team -> team.getUrn().equals(teamUrn)).count());
-    }
-
-    private ExternalTeam externalTeamByIdentifier(String identifier, List<ExternalTeam> externalTeams) {
-        return externalTeams.stream().filter(externalTeam -> externalTeam.getIdentifier().equals(identifier))
-                .findFirst().get();
-    }
 }

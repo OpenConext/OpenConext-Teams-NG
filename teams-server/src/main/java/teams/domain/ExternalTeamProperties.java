@@ -13,10 +13,9 @@ import java.util.List;
 public class ExternalTeamProperties {
 
     @NotNull
-    private Long teamId;
+    private Long id;
 
     @NotNull
-    @Size(min=1)
-    private List<ExternalTeam> externalTeams;
+    private String externalTeamIdentifier;
 
 }

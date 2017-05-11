@@ -2,34 +2,49 @@ import React from "react";
 import I18n from "i18n-js";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
+import CopyToClipboard from "react-copy-to-clipboard";
+import {NavLink} from "react-router-dom";
 
 import CheckBox from "./checkbox";
-import CopyToClipboard from "react-copy-to-clipboard";
+import TeamsIconLegend from "./teams_icon_legend";
 import {isEmpty} from "../utils/utils";
 
 export default class LinkedInstitutionTeams extends React.Component {
 
     constructor(props) {
         super(props);
-        const institutionTeams = [...(props.institutionTeams || [])].sort((a, b) => a.name.localeCompare(b.name));
+        const institutionTeams = [...(props.institutionTeams || [])].sort(this.sort(props.team));
         this.state = {
             filteredTeams: institutionTeams,
+            hasInstitutionsTeams: institutionTeams.length > 0,
             copiedToClipboard: {},
         };
     }
+
+    sort = team => (a, b) => {
+        if (isEmpty(team)) {
+            return a.name.localeCompare(b.name);
+        }
+        const linkedA = this.isInstitutionalTeamLinked(a, team);
+        const linkedB = this.isInstitutionalTeamLinked(b, team);
+        if ((linkedA && linkedB) || (!linkedA && !linkedB)) {
+            return a.name.localeCompare(b.name);
+        }
+        return linkedA ? -1 : 1;
+    };
 
     search = e => {
         const query = e.target.value;
         const {institutionTeams} = this.props;
         if (isEmpty(query)) {
-            this.setState({filteredTeams: institutionTeams});
+            this.setState({filteredTeams: [...institutionTeams]});
         } else {
             const input = query.toLowerCase();
             const filteredTeams = institutionTeams.filter(team => {
                 const description = team.description || "";
                 return team.name.toLowerCase().indexOf(input) > -1 || description.toLowerCase().indexOf(input) > -1;
             });
-            this.setState({filteredTeams: filteredTeams});
+            this.setState({filteredTeams: [...filteredTeams.sort(this.sort(this.props.team))]});
         }
 
     };
@@ -66,26 +81,37 @@ export default class LinkedInstitutionTeams extends React.Component {
     };
 
     linkOrUnlink = institutionTeam => e => {
-        const target = e.target;
-        // const value = target.type === "checkbox" ? target.checked : target.value;
+        const value = e.target.checked;
         const identifier = institutionTeam.identifier;
-        //TODO delegate to parent
-        return [target, identifier];
+        this.props.institutionTeamLinked(identifier, value);
     };
 
-    isInstitutionalTeamLinked = (institutionTeam, linkedTeams) => linkedTeams
-        .filter(et => et.identifier === institutionTeam.identifier).length > 0;
+    isInstitutionalTeamLinked = (institutionTeam, team) => {
+        if (isEmpty(team)) {
+            return false;
+        }
+        return team.externalTeams
+                .filter(et => et.identifier === institutionTeam.identifier).length > 0;
+    };
 
 
-    renderLinkedTeamsCell = (institutionTeam, linkedTeams) =>
+    renderLinkedTeamsCellSelectionMode = (institutionTeam, team) =>
         <td data-label={I18n.t("team_detail.linked")} className="team-linked">
             <CheckBox name={institutionTeam.identifier}
-                      value={this.isInstitutionalTeamLinked(institutionTeam, linkedTeams)}
+                      value={this.isInstitutionalTeamLinked(institutionTeam, team)}
                       onChange={this.linkOrUnlink(institutionTeam)}/>
         </td>;
 
+    renderLinkedTeamsCellReadOnlyMode = linkedTeams =>
+        <td data-label={I18n.t("institution_teams.linked_teams")} className="linked-teams">
+            {linkedTeams.map((linkedTeam, index) =>
+                <NavLink key={`${linkedTeam.id}_${index}`} className="linked-team" to={`/teams/${linkedTeam.id}`}>
+                    <i className="fa fa-users"></i>{linkedTeam.name}
+                </NavLink>
+            )}
+        </td>;
 
-    renderTeamsTable(filteredTeams, linkedTeams) {
+    renderTeamsTable(filteredTeams, linkedTeams, team) {
         const columns = ["name", "description", "linked"];
         const th = index => (
             <th key={index} className={columns[index]}>
@@ -99,12 +125,14 @@ export default class LinkedInstitutionTeams extends React.Component {
                     <tr>{columns.map((column, index) => th(index))}</tr>
                     </thead>
                     <tbody>
-                    {filteredTeams.map((team, index) =>
-                        <tr key={`${team.identifier}_${index}`}>
-                            {this.renderNameCell(team)}
+                    {filteredTeams.map((institutionTeam, index) =>
+                        <tr key={`${institutionTeam.identifier}_${index}`}
+                            className={this.isInstitutionalTeamLinked(institutionTeam, team) ? "linked-institutional-team" : ""}>
+                            {this.renderNameCell(institutionTeam)}
                             <td data-label={I18n.t("institution_teams.description")}
-                                className="description">{team.description}</td>
-                            {this.renderLinkedTeamsCell(team, linkedTeams)}
+                                className="description">{institutionTeam.description}</td>
+                            {team && this.renderLinkedTeamsCellSelectionMode(institutionTeam, team)}
+                            {linkedTeams && this.renderLinkedTeamsCellReadOnlyMode(linkedTeams[institutionTeam.identifier] || [])}
                         </tr>
                     )}
                     </tbody>
@@ -113,32 +141,40 @@ export default class LinkedInstitutionTeams extends React.Component {
         }
         return (
             <div>
-                <em>{I18n.t(`institution_teams.${this.state.institutionTeams.length > 0 ? "filtered" : "no_teams"}`)}</em>
+                <em>{I18n.t(`institution_teams.${this.state.hasInstitutionsTeams ? "filtered" : "no_teams"}`)}</em>
             </div>
         );
     }
 
     render() {
         const {filteredTeams} = this.state;
-        const {team} = this.props;
+        const {team, linkedTeams, includeLegend} = this.props;
+        const filteredSortedTeams = isEmpty(team) ? filteredTeams : [...filteredTeams].sort(this.sort(team));
 
         return (
-            <section className="card">
-                <section className="team-detail-controls">
-                    <section className="search">
-                        <input placeholder={I18n.t("institution_teams.searchPlaceHolder")} type="text"
-                               onChange={this.search}/>
-                        <i className="fa fa-search"></i>
+            <div className="institution_teams">
+                {includeLegend && <TeamsIconLegend currentUser={this.props.currentUser}/>}
+                <section className="card-institution-teams">
+                    <section className="options-institution-teams">
+                        <section className="search-institution-teams">
+                            <input placeholder={I18n.t("institution_teams.searchPlaceHolder")} type="text"
+                                   onChange={this.search}/>
+                            <i className="fa fa-search"></i>
+                        </section>
                     </section>
+                    {this.renderTeamsTable(filteredSortedTeams, linkedTeams, team)}
                 </section>
-                {this.renderTeamsTable(filteredTeams, team.externalTeams)}
-            </section>
+            </div>
         );
     }
 }
 
 LinkedInstitutionTeams.propTypes = {
     institutionTeams: PropTypes.array.isRequired,
-    team: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    team: PropTypes.object,
+    linkedTeams: PropTypes.object,
+    includeLegend: PropTypes.bool,
+    institutionTeamLinked: PropTypes.func
 };
 

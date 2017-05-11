@@ -242,7 +242,7 @@ export default class MyTeams extends React.Component {
                     <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
                         <ul>
                             {joinRequestsCount > 0 &&
-                            <li>{joinRequestsCount === 1 ? I18n.t("received_join_request") :
+                            <li>{joinRequestsCount === 1 ? I18n.t("teams.received_join_request") :
                                 I18n.t("teams.received_join_requests", {count: joinRequestsCount})}</li>}
                             {invitationsCount > 0 &&
                             <li>{invitationsCount === 1 ? I18n.t("teams.pending_invitation") :

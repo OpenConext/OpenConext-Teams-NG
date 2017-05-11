@@ -15,7 +15,9 @@ import {
     getTeamDetail,
     leaveTeam,
     rejectJoinRequest,
-    saveTeam
+    saveTeam,
+    linkExternalTeam,
+    delinkExternalTeam
 } from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
@@ -188,7 +190,11 @@ export default class TeamDetail extends React.Component {
         );
     };
 
-    handleLinkExternalTeam = () => this.props.history.replace(`/external/${this.state.team.id}`);
+    institutionTeamLinked = (identifier, value) => {
+        const teamId = this.state.team.id;
+        const promise = value ? linkExternalTeam(teamId, identifier) : delinkExternalTeam(teamId, identifier);
+        promise.then(team => this.stateTeam(team, false));
+    };
 
     handleDeleteMember = (member, teamId) => e => {
         stop(e);
@@ -619,7 +625,9 @@ export default class TeamDetail extends React.Component {
                 {this.teamDetailAttributes(team, role, currentUser)}
                 {this.tabsAndIconLegend(team, tab)}
                 {tab === "members" && this.renderDetailTab(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team)}
-                {tab === "groups" && <LinkedInstitutionTeams institutionTeams={currentUser.externalTeams} team={team}/>}
+                {tab === "groups" &&
+                <LinkedInstitutionTeams currentUser={currentUser} institutionTeams={currentUser.externalTeams}
+                                        team={team} institutionTeamLinked={this.institutionTeamLinked}/>}
             </div>
         );
     }

@@ -7,11 +7,14 @@ import org.springframework.stereotype.Repository;
 import teams.domain.ExternalTeam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ExternalTeamRepository extends CrudRepository<ExternalTeam, Long> {
 
     List<ExternalTeam> findByIdentifierIn(List<String> identifiers);
+
+    Optional<ExternalTeam> findByIdentifier(String identifier);
 
     List<ExternalTeam> findByTeamsUrn(String urn);
 

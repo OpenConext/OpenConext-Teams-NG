@@ -3,25 +3,23 @@ import {isEmpty} from "./utils";
 
 export const emitter = new EventEmitter();
 
-let flash = null;
-let timeout = null;
+let flash = {};
 
 export function getFlash() {
-    const tempFlash = flash;
-    timeout = setTimeout(() => flash = null, 100);
-    return tempFlash;
+    return {...flash};
 }
 
 export function setFlash(message, type) {
-    clearTimeout(timeout);
     flash = {message, type: type || "info"};
     emitter.emit("flash", flash);
-    window.scrollTo(0, 0);
 }
 
 export function clearFlash() {
-    clearTimeout(timeout);
     emitter.emit("flash", {});
+}
+
+export function clearFlashDependencies() {
+    emitter.emit("clear_flash", {});
 }
 
 export function handleServerError(err) {

@@ -1,16 +1,17 @@
 div.flash {
   color: white;
 
-  transition: 0.3s;
-  opacity: 1;
-  visibility: visible;
-  height: auto;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 99999;
+  opacity: .9;
+
+  transition: top 150ms ease-in-out;
 
   &.hide {
-    transition: 1.3s;
-    opacity: 0;
-    visibility: hidden;
-    height: 0;
+    transition: top 350ms ease-in-out;
+    top: -50px;
   }
 
   &.info {
@@ -24,7 +25,8 @@ div.flash {
   }
 
   .message-container {
-    @include page;
+    max-width: $medium;
+    margin: 0 auto;
     position: relative;
 
     p {

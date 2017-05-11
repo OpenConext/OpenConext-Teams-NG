@@ -27,11 +27,6 @@
     }
   }
 
-  h2.members {
-    font-size: 26px;
-    padding: 25px 0 20px 0;
-  }
-
   section.card {
     @include card;
     padding: 15px;

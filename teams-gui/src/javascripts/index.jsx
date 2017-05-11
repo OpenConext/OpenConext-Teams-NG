@@ -59,10 +59,10 @@ class App extends React.Component {
         return (
             <Router>
                 <div>
-                    <div className="header">
+                    <div>
+                        <Flash/>
                         <Header currentUser={currentUser}/>
                         <Navigation currentUser={currentUser}/>
-                        <Flash/>
                     </div>
                     <Switch>
                         <Route exact path="/" render={() => <Redirect to="/my-teams"/>}/>

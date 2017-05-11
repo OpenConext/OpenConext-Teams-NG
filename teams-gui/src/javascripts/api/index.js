@@ -119,8 +119,12 @@ export function deleteInvitation(id) {
     return fetchDelete("invitations/" + id);
 }
 
-export function linkExternalTeam(teamId, externalTeamId) {
-    return postPutJson("teams/external-teams", {teamId: teamId, externalTeamId: externalTeamId});
+export function linkExternalTeam(teamId, externalTeamIdentifier) {
+    return postPutJson("external-teams/link", {id: teamId, externalTeamIdentifier: externalTeamIdentifier});
+}
+
+export function delinkExternalTeam(teamId, externalTeamIdentifier) {
+    return postPutJson("external-teams/delink", {id: teamId, externalTeamIdentifier: externalTeamIdentifier});
 }
 
 export function linkedTeams() {

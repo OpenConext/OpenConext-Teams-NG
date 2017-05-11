@@ -4,15 +4,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.ExternalTeamValidator;
+import teams.api.validations.TeamValidator;
 import teams.domain.*;
+import teams.exception.IllegalLinkExternalTeamException;
+import teams.exception.ResourceNotFoundException;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 
 @RestController
@@ -32,46 +33,50 @@ public class ExternalTeamController extends ApiController implements ExternalTea
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("api/teams/external-teams")
+    @PutMapping("api/teams/external-teams/link")
     public Object linkTeamToExternalTeam(@Validated @RequestBody ExternalTeamProperties externalTeamProperties, FederatedUser federatedUser) {
-        Team team = teamById(externalTeamProperties.getTeamId(), true);
-        List<ExternalTeam> externalTeams = externalTeamProperties.getExternalTeams();
+        Team team = teamById(externalTeamProperties.getId(), true);
+        String externalTeamIdentifier = externalTeamProperties.getExternalTeamIdentifier();
 
-        externalTeams.forEach(externalTeam -> externalTeamNotLinked(team, externalTeam));
+        ExternalTeam externalTeam = externalTeamFromFederatedUser(federatedUser, externalTeamIdentifier);
+
+        externalTeamNotLinked(team, externalTeam);
 
         String federatedUserUrn = federatedUser.getUrn();
         Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
 
-        List<ExternalTeam> teams = federatedUser.getExternalTeams();
-        externalTeamsMembership(teams, externalTeams, federatedUserUrn);
+        isAllowedToLinkExternalTeam(roleOfLoggedInPerson, team, federatedUser);
 
-        //replace all external teams that are already provisioned
-        List<ExternalTeam> provisionedExternalTeams = externalTeamRepository.findByIdentifierIn(
-                externalTeams.stream().map(externalTeam -> externalTeam.getIdentifier()).collect(toList()));
+        //There is the possibility that the external team is already linked another team of this person
+        externalTeam = externalTeamRepository.findByIdentifier(externalTeamIdentifier).orElse(externalTeam);
 
-        List<ExternalTeam> newExternalTeams = externalTeams.stream()
-                .filter(externalTeam -> !provisionedExternalTeams.contains(externalTeam)).collect(toList());
+        team.getExternalTeams().add(externalTeam);
+        externalTeam.getTeams().add(team);
 
-        provisionedExternalTeams.addAll(newExternalTeams);
-        team.getExternalTeams().addAll(provisionedExternalTeams);
-        provisionedExternalTeams.forEach(externalTeam -> externalTeam.getTeams().add(team));
-
-        LOG.info("Team {} linked to external teams {} by {}", team.getUrn(),
-                provisionedExternalTeams.stream().map(ExternalTeam::getIdentifier).collect(toList()), federatedUserUrn);
+        LOG.info("Team {} linked to external team {} by {}", team.getUrn(), externalTeamIdentifier, federatedUserUrn);
 
         return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("api/teams/external-teams/{id}/{teamId}")
-    public Object delinkTeamFromExternalTeam(@PathVariable("id") Long id,@PathVariable("teamId") Long teamId, FederatedUser federatedUser) {
-        Team team = teamById(teamId, true);
-        ExternalTeam externalTeam = externalTeamById(id);
+    @PutMapping("api/teams/external-teams/delink")
+    public Object delinkTeamFromExternalTeam(@Validated @RequestBody ExternalTeamProperties externalTeamProperties, FederatedUser federatedUser) {
+        Team team = teamById(externalTeamProperties.getId(), true);
+        String externalTeamIdentifier = externalTeamProperties.getExternalTeamIdentifier();
+
+        //validation
+        externalTeamFromFederatedUser(federatedUser, externalTeamIdentifier);
+        ExternalTeam externalTeam = externalTeamRepository.findByIdentifier(externalTeamIdentifier).orElseThrow(() ->
+                new ResourceNotFoundException(
+                        String.format("ExternalTeam %s does not exists. Can not be unlinked by Person %s.",
+                                externalTeamIdentifier, federatedUser.getUrn())));
 
         String federatedUserUrn = federatedUser.getUrn();
         Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
 
+        isAllowedToLinkExternalTeam(roleOfLoggedInPerson, team, federatedUser);
         externalTeamLinked(team, externalTeam);
+
         team.getExternalTeams().remove(externalTeam);
         externalTeam.getTeams().remove(team);
 

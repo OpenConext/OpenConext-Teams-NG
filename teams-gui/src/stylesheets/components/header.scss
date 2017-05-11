@@ -7,6 +7,12 @@
     margin: 0 auto;
     padding: 15px 15px 40px 15px;
     position: relative;
+    transition: margin-top 350ms ease-in-out;
+
+    &.with-flash {
+      transition: margin-top 150ms ease-in-out;
+      margin-top: 40px;
+    }
 
     a {
       color: $blue;

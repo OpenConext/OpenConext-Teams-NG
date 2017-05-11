@@ -1,6 +1,6 @@
 import React from "react";
 
-import {emitter, getFlash} from "../utils/flash";
+import {clearFlash, clearFlashDependencies, emitter, getFlash} from "../utils/flash";
 
 export default class Flash extends React.Component {
 
@@ -10,8 +10,10 @@ export default class Flash extends React.Component {
         this.callback = flash => {
             this.setState({flash: flash, className: ""});
             if (flash && (!flash.type || flash.type !== "error")) {
-                setTimeout(() => this.setState({className: "hide"}),
-                    flash.type === "info" ? 3500 : 5500);
+                setTimeout(() => {
+                    this.setState({className: "hide"});
+                    clearFlashDependencies();
+                }, flash.type === "info" ? 3500 : 5500);
             }
         };
     }
@@ -34,7 +36,7 @@ export default class Flash extends React.Component {
                     <div className="message-container">
                         <p dangerouslySetInnerHTML={{__html: flash.message}}>
                         </p>
-                        <a className="close" href="#" onClick={() => this.setState({flash: null, className: ""})}>
+                        <a className="close" href="#" onClick={clearFlash}>
                             <i className="fa fa-remove"></i>
                         </a>
                     </div>

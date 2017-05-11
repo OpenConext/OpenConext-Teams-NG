@@ -7,16 +7,30 @@ import logo from "../../images/logo@2x.png";
 import LanguageSelector from "./language_selector";
 import UserProfile from "./user_profile";
 import Logout from "../pages/logout";
+import {isEmpty} from "../utils/utils";
+import {emitter, getFlash} from "../utils/flash";
 
 export default class Header extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            dropDownActive: false
+            dropDownActive: false,
+            withFlash: false
         };
+        this.callback = flash => this.setState({withFlash: !isEmpty(flash) && !isEmpty(flash.message)});
     }
 
+    componentWillMount() {
+        this.callback(getFlash());
+        emitter.addListener("flash", this.callback);
+        emitter.addListener("clear_flash", this.callback);
+    }
+
+    componentWillUnmount() {
+        emitter.removeListener("flash", this.callback);
+        emitter.removeListener("clear_flash", this.callback);
+    }
     renderProfileLink(currentUser) {
         return (
             <a href="#" className="welcome-link" onClick={this.handleToggle.bind(this)}>
@@ -55,9 +69,10 @@ export default class Header extends React.Component {
 
     render() {
         const currentUser = this.props.currentUser;
+        const classNameHeader = `header ${this.state.withFlash ? "with-flash" : ""}`;
         return (
             <div className="header-container">
-                <div className="header">
+                <div className={classNameHeader}>
                     <Link to="/" className="logo"><img src={logo}/></Link>
                     <ul className="links">
                         <li className="title"><span>Teams</span></li>

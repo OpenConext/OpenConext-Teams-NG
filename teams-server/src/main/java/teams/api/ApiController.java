@@ -62,7 +62,7 @@ public abstract class ApiController {
                         ("Member %s is not a member of team %s.", urn, team.getUrn())));
     }
 
-    protected void assertNotNull(String entityName, Object entity, Long id) {
+    protected void assertNotNull(String entityName, Object entity, Object id) {
         if (entity == null) {
             throw new ResourceNotFoundException(String.format("%s %s does not exist", entityName, id));
         }
