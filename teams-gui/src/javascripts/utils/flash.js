@@ -3,6 +3,7 @@ import {isEmpty} from "./utils";
 
 export const emitter = new EventEmitter();
 
+//sneaky global...
 let flash = {};
 
 export function getFlash() {
@@ -16,10 +17,6 @@ export function setFlash(message, type) {
 
 export function clearFlash() {
     emitter.emit("flash", {});
-}
-
-export function clearFlashDependencies() {
-    emitter.emit("clear_flash", {});
 }
 
 export function handleServerError(err) {
