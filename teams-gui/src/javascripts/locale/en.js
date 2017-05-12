@@ -149,6 +149,8 @@ I18n.translations.en = {
             deleted_invitation: "Successfully deleted the invitation for {{name}}.",
             accepted_join_request: "Successfully accepted join request from {{name}}.",
             rejected_join_request: "Successfully rejected join request from {{name}}.",
+            linked_institutional_team: "Successfully linked institutional team {{team}} to {{name}}.",
+            unlinked_institutional_team: "Successfully unlinked institutional team {{team}} from {{name}}."
         }
 
     },

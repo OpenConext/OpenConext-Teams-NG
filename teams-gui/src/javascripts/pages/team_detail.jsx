@@ -190,10 +190,16 @@ export default class TeamDetail extends React.Component {
         );
     };
 
-    institutionTeamLinked = (identifier, value) => {
+    institutionTeamLinked = (institutionTeam, value) => {
         const teamId = this.state.team.id;
+        const identifier = institutionTeam.identifier;
         const promise = value ? linkExternalTeam(teamId, identifier) : delinkExternalTeam(teamId, identifier);
-        promise.then(team => this.stateTeam(team, false));
+        promise.then(team => {
+            this.stateTeam(team, false);
+            const message = I18n.t(`team_detail.flash.${value ? "linked_institutional_team" : "unlinked_institutional_team"}`,
+                {team: institutionTeam.name, name: team.name});
+             setFlash(message);
+        });
     };
 
     handleDeleteMember = (member, teamId) => e => {
@@ -591,7 +597,9 @@ export default class TeamDetail extends React.Component {
                 <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                 <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
                 <section className="search">
-                    <input placeholder={I18n.t("team_detail.search_members_placeholder")} type="text"
+                    <input className={mayInvite ? "allowed" : ""}
+                        placeholder={I18n.t("team_detail.search_members_placeholder")}
+                        type="text"
                            onChange={this.search}/>
                     <i className="fa fa-search"></i>
                 </section>

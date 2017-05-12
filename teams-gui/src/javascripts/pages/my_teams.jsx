@@ -233,10 +233,6 @@ export default class MyTeams extends React.Component {
         return (
             <td className="membership-count" data-label={I18n.t("teams.membershipCount")}>
                 <span className="membership-count" data-for={toolTipId} data-tip>{team.membershipCount}
-                    {joinRequestsCount > 0 && <span className="join-requests-count"><span
-                        className="count-divider"> / </span>{joinRequestsCount}</span> }
-                    {invitationsCount > 0 && <span className="invitations-count"><span
-                        className="count-divider"> / </span>{invitationsCount}</span> }
                     {tooltip && <i className="fa fa-info-circle"></i>}
                     {tooltip &&
                     <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
@@ -368,7 +364,8 @@ export default class MyTeams extends React.Component {
                         <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
                         <section className="search"
                                  tabIndex="1" onBlur={this.onBlurSearch(suggestions)}>
-                            <input placeholder={I18n.t("teams.searchPlaceHolder")}
+                            <input className={currentUser.person.guest ? "" : "allowed"}
+                                   placeholder={I18n.t("teams.searchPlaceHolder")}
                                    type="text"
                                    onChange={this.search}
                                    value={query}

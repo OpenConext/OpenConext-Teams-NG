@@ -52,7 +52,7 @@
         margin-left: 15px;
         margin-top: 0;
 
-        input {
+        input.allowed {
           border-right: none;
         }
       }
@@ -82,14 +82,14 @@
         width: 25%;
       }
       th.description {
-        width: 40%;
+        width: 35%;
       }
       th.role {
-        width: 15%;
+        width: 25%;
       }
       th.membershipCount {
         text-align: right;
-        width: 15%;
+        width: 10%;
       }
       th.actions {
         text-align: right;
@@ -150,7 +150,7 @@
       }
       td.role {
         i {
-          padding: 15px 15px 15px 0;
+          padding: 15px 5px 15px 0;
           font-size: 16px;
 
           &.fa-envelope {
@@ -182,16 +182,8 @@
             padding: 15px 10px;
             z-index: 99;
           }
-          &.join-requests-count {
-            color: $green;
-            font-weight: bold;
-          }
-          &.invitations-count {
-            color: $blue;
-            font-weight: bold;
-          }
-          &.count-divider {
-            color: $medium-grey;
+          i.fa-info-circle {
+            color: $orange;
           }
         }
       }

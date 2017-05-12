@@ -8,6 +8,7 @@ import {NavLink} from "react-router-dom";
 import CheckBox from "./checkbox";
 import TeamsIconLegend from "./teams_icon_legend";
 import {isEmpty} from "../utils/utils";
+import {currentUserRoleInTeam, ROLES} from "../validations/memberships";
 
 export default class LinkedInstitutionTeams extends React.Component {
 
@@ -82,8 +83,7 @@ export default class LinkedInstitutionTeams extends React.Component {
 
     linkOrUnlink = institutionTeam => e => {
         const value = e.target.checked;
-        const identifier = institutionTeam.identifier;
-        this.props.institutionTeamLinked(identifier, value);
+        this.props.institutionTeamLinked(institutionTeam, value);
     };
 
     isInstitutionalTeamLinked = (institutionTeam, team) => {
@@ -99,7 +99,8 @@ export default class LinkedInstitutionTeams extends React.Component {
         <td data-label={I18n.t("team_detail.linked")} className="team-linked">
             <CheckBox name={institutionTeam.identifier}
                       value={this.isInstitutionalTeamLinked(institutionTeam, team)}
-                      onChange={this.linkOrUnlink(institutionTeam)}/>
+                      onChange={this.linkOrUnlink(institutionTeam)}
+                      readOnly={currentUserRoleInTeam(team, this.props.currentUser) === ROLES.MEMBER.role}/>
         </td>;
 
     renderLinkedTeamsCellReadOnlyMode = linkedTeams =>
