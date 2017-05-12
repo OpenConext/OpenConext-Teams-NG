@@ -6,8 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import EmailInput from "../components/email_input";
 import ConfirmationDialog from "../components/confirmation_dialog";
-import InvitationInfo from "../components/invitation_info";
-import InvitationResentInfo from "../components/invitation_resent_info";
+import InviteInfo from "../components/invite_info";
+import InviteResentInfo from "../components/invite_resent_info";
 import DatePickerCustomInput from "../components/date_picker_custom";
 import SelectLanguage from "../components/select_language";
 import {getInvitation, invite, resendInvitation, roleOfCurrentUserInTeam} from "../api";
@@ -253,7 +253,7 @@ export default class Invite extends React.Component {
                         {this.renderInvitationRole(intendedRole, roleOfCurrentUserInTeam, readOnly)}
                     </section>
                     <section className="screen-divider" style={{float: "right"}}>
-                        {readOnly ? <InvitationResentInfo locale={I18n.locale}/> : <InvitationInfo locale={I18n.locale}/>}
+                        {readOnly ? <InviteResentInfo locale={I18n.locale}/> : <InviteInfo locale={I18n.locale}/>}
                     </section>
                     {this.renderInvitationLanguageExpiryDate(language, expiryDate, readOnly)}
                     {this.renderInvitationMessage(message)}

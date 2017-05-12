@@ -53,9 +53,9 @@ function fetchJson(path, options = {}, headers = {}) {
         .then(res => res.json());
 }
 
-function postPutJson(path, body = {}) {
-    const method = body.id === undefined ? "post" : "put";
-    return fetchJson(path, {method: method, body: JSON.stringify(body)});
+function postPutJson(path, body = {}, method) {
+    const httpMethod = method || (body.id === undefined ? "post" : "put");
+    return fetchJson(path, {method: httpMethod, body: JSON.stringify(body)});
 }
 
 function fetchDelete(path) {
@@ -109,6 +109,18 @@ export function invite(invitation) {
 
 export function getInvitation(id) {
     return fetchJson("invitations/" + id);
+}
+
+export function getInvitationInfo(key) {
+    return fetchJson("invitations/info/" + key);
+}
+
+export function denyInvitation(key) {
+    return postPutJson("invitations/deny/"+key,{}, "put");
+}
+
+export function acceptInvitation(key) {
+    return postPutJson("invitations/accept/"+key,{}, "put");
 }
 
 export function resendInvitation(invitation) {

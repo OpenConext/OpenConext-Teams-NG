@@ -1,6 +1,7 @@
 package teams.domain;
 
 import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 import teams.Seed;
 import teams.exception.ResourceNotFoundException;
 
@@ -8,6 +9,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +49,15 @@ public class InvitationTest implements Seed {
     public void emailValid() throws UnsupportedEncodingException {
         List<ConstraintViolation<Invitation>> violations = violations("a@a.com");
         assertEquals(0, violations.size());
+    }
+
+    @Test
+    public void daysValid() throws UnsupportedEncodingException {
+        Invitation invitation = invitation("email");
+        long fiveDaysAgo = LocalDateTime.now().minusDays(5).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        ReflectionTestUtils.setField(invitation, "timestamp", fiveDaysAgo);
+        long daysValid = invitation.daysValid();
+        assertEquals(9, daysValid);
     }
 
     private Invitation invitation() throws UnsupportedEncodingException {

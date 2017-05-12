@@ -56,9 +56,9 @@ INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUE
 INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUES (2, 1, 2);
 INSERT INTO `team_external_groups` (`id`, `team_id`, `external_groups_id`) VALUES (3, 2, 2);
 
-INSERT INTO `invitations` (`id`, `mailaddress`, `timestamp`, `invitation_uiid`, `denied`, `accepted`, `intended_role`, `language`, `team_id`)
+INSERT INTO `invitations` (`id`, `mailaddress`, `timestamp`, `invitation_uiid`, `denied`, `accepted`, `intended_role`, `language`, `team_id`, `expiry_date`)
 VALUES
-  (1,'test@example.com', 2491484828910, 'secret', 0, 0, 'MANAGER', 'Dutch', 1);
+  (1,'test@example.com', 2491484828910, 'secret', 0, 0, 'MANAGER', 'Dutch', 1, '2017-09-29 00:00:00');
 INSERT INTO `invitations` (`id`, `mailaddress`, `timestamp`, `invitation_uiid`, `denied`, `accepted`, `intended_role`, `language`, `team_id`)
 VALUES
   (2,'john.doe@example.org', 2491484828910, 'secret2', 0, 0, 'ADMIN', 'Dutch', 2);

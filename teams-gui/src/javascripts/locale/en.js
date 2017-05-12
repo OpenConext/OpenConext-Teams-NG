@@ -251,6 +251,26 @@ I18n.translations.en = {
         message_placeholder: "Personal message to be included in the invitation email"
 
     },
+    invitation: {
+        title: "Invitation",
+        team: {
+            name: "Team name",
+            description: "Description",
+            admins: "Administrators",
+            role: "Intended role"
+        },
+        cancel: "Cancel",
+        deny: "Deny",
+        accept: "Accept",
+        share_info: "Share this information with the applications used by this team.",
+        approval_required: "You need to approve that the information may be shared",
+        message: "Message",
+        message_info: "The personal invitation message you have received with the invitation",
+        flash: {
+            "accept": "You have successfully joined team {{name}}.",
+            "deny": "You have successfully denied membership for team {{name}}."
+        }
+    },
     institution_teams: {
         name: "Team name / identifier",
         description: "Description",

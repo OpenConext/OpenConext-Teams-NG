@@ -1,0 +1,43 @@
+.invitation {
+
+  @include page;
+
+  h2 {
+    margin: 35px 0 20px 0;
+    font-size: 22px;
+  }
+
+  .card {
+    @include card;
+    @import "../excludes/forms.scss";
+
+    padding: 50px 25px 25px;
+
+    section.form-divider {
+      margin-bottom: 25px;
+
+    }
+
+    section.screen-divider {
+      display: inline-block;
+      width: 50%;
+      margin-bottom: 0;
+
+      @include phone {
+        width: 100%;
+      }
+    }
+
+    section.team {
+      input {
+        margin-bottom: 20px;
+      }
+    }
+    section.admins {
+      input:not(:last-child) {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+}

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 
-export default function InvitationResentInfo({locale = "en"}) {
+export default function InviteResentInfo({locale = "en"}) {
     return locale === "en" ?
         <div className="invitation_info">
             <p className="info">Sent a reminder mail to the invitee. </p>
@@ -15,7 +15,7 @@ export default function InvitationResentInfo({locale = "en"}) {
 
 }
 
-InvitationResentInfo.propTypes = {
+InviteResentInfo.propTypes = {
     locale: PropTypes.string.isRequired
 };
 

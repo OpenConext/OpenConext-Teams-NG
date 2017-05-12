@@ -1,25 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-
-export default function InvitationInfo({locale = "en"}) {
+export default function InvitationInfo({invitation, locale = "en"}) {
     return locale === "en" ?
         <div className="invitation_info">
-            <p className="info">Search and add the email addresses of colleagues you would like to invite for this team.</p>
-            <p className="by-email">You can invite one or more people by their email address.</p>
-            <span className="by-file">To send multiple invitations, simply add more email
-                addresses or upload a csv file with comma- separated email addresses.</span>
+            <p className="info">You have been invited by {invitation.inviter} to join team {invitation.teamName}.</p>
+            <span className="by-file">This invitation will expire in {invitation.daysValid} days.</span>
         </div> :
         <div className="invitation_info">
-            <p className="info">Zoek en voeg de eamil adressen van je collega's toe die je wilt uitnodigen voor dit team.</p>
-            <p className="by-email">Je kan één of meer personen uitnodigen door email adres.</p>
-            <p className="by-file">Je kan meerdere uitnodigingen versturen door meerdere email adressen te selecteren
-                of je kan een csv bestand met komma gescheiden emails uploaden.</p>
+            <p className="info">je bent door {invitation.inviter} uitgenodigd om lid te worden van het
+                team {invitation.teamName}.</p>
+            <p className="by-file">Deze uitnodiging verloopt over {invitation.daysValid} dagen.</p>
         </div>;
 
 }
 
 InvitationInfo.propTypes = {
-    locale: PropTypes.string.isRequired
+    locale: PropTypes.string.isRequired,
+    invitation: PropTypes.object.isRequired
 };
 

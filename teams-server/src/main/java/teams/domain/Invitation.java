@@ -2,7 +2,6 @@ package teams.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import teams.exception.ResourceNotFoundException;
@@ -15,8 +14,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
+import static java.time.temporal.ChronoUnit.DAYS;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
 
@@ -70,7 +72,7 @@ public class Invitation {
     @Column
     private Instant expiryDate;
 
-    public Invitation(Team team, String email, Role intendedRole, Language language, Instant expiryDate)  {
+    public Invitation(Team team, String email, Role intendedRole, Language language, Instant expiryDate) {
         this.team = team;
         this.email = email;
         this.invitationHash = generateInvitationHash();
@@ -85,7 +87,13 @@ public class Invitation {
         return (timestamp + TWO_WEEKS) < System.currentTimeMillis();
     }
 
-    private String generateInvitationHash()  {
+    @JsonProperty(value = "daysValid", access = JsonProperty.Access.READ_ONLY)
+    public int daysValid() {
+        return (int) (14 - (DAYS.between(Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate(),
+                LocalDate.now())));
+    }
+
+    private String generateInvitationHash() {
         Random secureRandom = new SecureRandom();
         byte[] aesKey = new byte[128];
         secureRandom.nextBytes(aesKey);

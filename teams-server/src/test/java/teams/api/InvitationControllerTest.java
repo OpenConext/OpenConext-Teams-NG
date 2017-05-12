@@ -97,7 +97,13 @@ public class InvitationControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_OK)
                 .body("latestInvitationMessage.message", equalTo("Please join"))
+                .body("inviter", equalTo("Ronald Doe"))
+                .body("teamId", equalTo(1))
                 .body("teamName", equalTo("riders"))
+                .body("accepted", equalTo(false))
+                .body("declined", equalTo(false))
+                .body("expiryDate", equalTo(1_506_636_000))
+                .body("expired", equalTo(false))
                 .body("teamDescription", equalTo("we are riders"))
                 .body("invitationEmail", equalTo("test@example.com"))
                 .body("intendedRole", equalTo("MANAGER"));
@@ -126,7 +132,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:unknown")
                 .when()
-                .get("api/teams/invitations/accept/{key}", "secret")
+                .put("api/teams/invitations/accept/{key}", "secret")
                 .then()
                 .statusCode(SC_OK)
                 .body("memberships.role", hasItems("MANAGER", "ADMIN"))
@@ -141,7 +147,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
                 .header("name-id", "urn:collab:person:surfnet.nl:unknown")
                 .header("is-member-of", "guest")
                 .when()
-                .get("api/teams/invitations/accept/{key}", "secret")
+                .put("api/teams/invitations/accept/{key}", "secret")
                 .then()
                 .statusCode(SC_OK)
                 .body("memberships.role", hasItems("MEMBER", "ADMIN"));
@@ -153,7 +159,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:unknown")
                 .when()
-                .get("api/teams/invitations/deny/{key}", "secret")
+                .put("api/teams/invitations/deny/{key}", "secret")
                 .then()
                 .statusCode(SC_OK)
                 .body("declined", equalTo(true));
@@ -164,7 +170,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .when()
-                .get("api/teams/invitations/deny/{key}", "nope")
+                .put("api/teams/invitations/deny/{key}", "nope")
                 .then()
                 .statusCode(SC_NOT_FOUND);
     }
