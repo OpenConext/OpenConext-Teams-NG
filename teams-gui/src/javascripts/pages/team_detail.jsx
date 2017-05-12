@@ -12,12 +12,12 @@ import {
     deleteInvitation,
     deleteMember,
     deleteTeam,
+    delinkExternalTeam,
     getTeamDetail,
     leaveTeam,
-    rejectJoinRequest,
-    saveTeam,
     linkExternalTeam,
-    delinkExternalTeam
+    rejectJoinRequest,
+    saveTeam
 } from "../api";
 import {handleServerError, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
@@ -198,7 +198,7 @@ export default class TeamDetail extends React.Component {
             this.stateTeam(team, false);
             const message = I18n.t(`team_detail.flash.${value ? "linked_institutional_team" : "unlinked_institutional_team"}`,
                 {team: institutionTeam.name, name: team.name});
-             setFlash(message);
+            setFlash(message);
         });
     };
 
@@ -598,8 +598,8 @@ export default class TeamDetail extends React.Component {
                 <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
                 <section className="search">
                     <input className={mayInvite ? "allowed" : ""}
-                        placeholder={I18n.t("team_detail.search_members_placeholder")}
-                        type="text"
+                           placeholder={I18n.t("team_detail.search_members_placeholder")}
+                           type="text"
                            onChange={this.search}/>
                     <i className="fa fa-search"></i>
                 </section>
