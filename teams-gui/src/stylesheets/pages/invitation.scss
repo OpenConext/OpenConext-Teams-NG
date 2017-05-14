@@ -16,6 +16,7 @@
     &.with-invalid {
       padding-top: 100px;
       position: relative;
+      border-top: none;
     }
 
     section.invalid-invitation {
@@ -24,8 +25,8 @@
       width: 100%;
       left: 0;
       padding: 25px;
-      background-color: $light-grey;
-      color: $red;
+      background-color: $red;
+      color: whitesmoke;
       font-size: 16px;
       a:hover, a:visited {
         color: $red;

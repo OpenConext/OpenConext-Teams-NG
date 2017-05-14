@@ -257,7 +257,7 @@ I18n.translations.en = {
             name: "Team name",
             description: "Description",
             admins: "Administrators",
-            role: "Your role"
+            role: "Your future role"
         },
         cancel: "Cancel",
         deny: "Deny",
