@@ -102,7 +102,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
                 .body("teamName", equalTo("riders"))
                 .body("accepted", equalTo(false))
                 .body("declined", equalTo(false))
-                .body("expiryDate", equalTo(1_506_636_000))
+                .body("expiryDate", notNullValue())
                 .body("expired", equalTo(false))
                 .body("teamDescription", equalTo("we are riders"))
                 .body("invitationEmail", equalTo("test@example.com"))
