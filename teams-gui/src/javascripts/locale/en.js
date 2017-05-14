@@ -257,7 +257,7 @@ I18n.translations.en = {
             name: "Team name",
             description: "Description",
             admins: "Administrators",
-            role: "Intended role"
+            role: "Your role"
         },
         cancel: "Cancel",
         deny: "Deny",
@@ -269,6 +269,16 @@ I18n.translations.en = {
         flash: {
             "accept": "You have successfully joined team {{name}}.",
             "deny": "You have successfully denied membership for team {{name}}."
+        },
+        invalid: {
+            not_found: "Either the invitation has expired and has been removed or you have not been invited.",
+            accepted: "You have already accepted this invitation.",
+            declined: "You have already declined this invitation.",
+            expired: "This invitation is expired.",
+            already_member: "You are already a member of this team",
+            join_request: "join request",
+            join_request_1: " You can sent a ",
+            join_request_2: " if you want to become a member."
         }
     },
     institution_teams: {

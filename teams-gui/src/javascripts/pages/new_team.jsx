@@ -92,7 +92,7 @@ export default class NewTeam extends React.Component {
 
     renderButtons = () =>
         <section className="buttons">
-            <a className="button grey" href="#" onClick={this.cancel}>
+            <a className="button" href="#" onClick={this.cancel}>
                 {I18n.t("new_team.cancel")}
             </a>
             <a className={`button ${this.isValid() ? "blue" : "grey disabled"}`} href="#" onClick={this.submit}>

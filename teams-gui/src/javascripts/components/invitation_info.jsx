@@ -5,7 +5,8 @@ export default function InvitationInfo({invitation, locale = "en"}) {
     return locale === "en" ?
         <div className="invitation_info">
             <p className="info">You have been invited by {invitation.inviter} to join team {invitation.teamName}.</p>
-            <span className="by-file">This invitation will expire in {invitation.daysValid} days.</span>
+            <span className="by-file">This invitation {invitation.expired ? "is expired" :
+                `will expire in ${invitation.daysValid} days`} .</span>
         </div> :
         <div className="invitation_info">
             <p className="info">je bent door {invitation.inviter} uitgenodigd om lid te worden van het

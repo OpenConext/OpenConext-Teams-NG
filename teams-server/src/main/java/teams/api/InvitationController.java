@@ -94,7 +94,7 @@ public class InvitationController extends ApiController implements MembershipVal
         Invitation invitation = invitationRepository.findFirstByInvitationHash(key).orElseThrow(() ->
                 new ResourceNotFoundException(String.format("Invitation %s not found", key))
         );
-        return new InvitationInfo(invitation);
+        return new InvitationInfo(invitation, federatedUser);
     }
 
     @PutMapping("api/teams/invitations/accept/{key}")

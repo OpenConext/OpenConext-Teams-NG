@@ -38,9 +38,3 @@ export function isOnlyAdmin(team, currentUser) {
 export function iconForRole(role) {
     return ROLES[role].icon;
 }
-
-// export function allowedRoles(currentUser, otherMember) {
-//     return currentUser ||;
-// }
-
-

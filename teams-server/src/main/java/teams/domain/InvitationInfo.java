@@ -13,6 +13,7 @@ public class InvitationInfo {
     private boolean accepted;
     private boolean expired;
     private boolean declined;
+    private boolean alreadyMember;
     private InvitationMessage latestInvitationMessage;
     private Long teamId;
     private String teamName;
@@ -23,7 +24,7 @@ public class InvitationInfo {
     private List<String> admins;
 
 
-    public InvitationInfo(Invitation invitation) {
+    public InvitationInfo(Invitation invitation, FederatedUser federatedUser) {
         this.latestInvitationMessage = invitation.getLatestInvitationMessage();
         Team team = invitation.getTeam();
         this.teamId = team.getId();
@@ -36,6 +37,7 @@ public class InvitationInfo {
         this.declined = invitation.isDeclined();
         this.accepted = invitation.isAccepted();
         this.expired = invitation.expired();
+        this.alreadyMember = team.member(federatedUser.getUrn()).isPresent();
         this.daysValid = invitation.daysValid();
         this.admins = team.getMemberships().stream()
                 .filter(membership -> membership.getRole().equals(Role.ADMIN))

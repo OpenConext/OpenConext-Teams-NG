@@ -87,7 +87,7 @@ export default class JoinRequest extends React.Component {
                 <input type="text" value={team.description} disabled="true"/>
                 <section className="admins">
                     <label>{I18n.t("join_request.team.admins")}</label>
-                    {team.admins.map((admin, index) =>
+                    {(team.admins || []).map((admin, index) =>
                         <div key={index}>
                             <input type="text" value={admin.name} disabled="true"/>
                         </div>
@@ -158,7 +158,7 @@ export default class JoinRequest extends React.Component {
                     {this.renderInvitationMessage(message)}
                     {this.renderApproval(approval)}
                     <section className="buttons">
-                        <a className="button grey" href="#" onClick={this.cancel}>
+                        <a className="button" href="#" onClick={this.cancel}>
                             {I18n.t("join_request.cancel")}
                         </a>
                         <a className={`button ${valid ? "blue" : "grey disabled"}`} href="#" onClick={this.submit}>

@@ -56,8 +56,8 @@ export default class SelectRole extends React.Component {
 SelectRole.propTypes = {
     onChange: PropTypes.func.isRequired,
     role: PropTypes.string.isRequired,
-    roleOfCurrentUserInTeam: PropTypes.string.isRequired,
-    isCurrentUser: PropTypes.bool.isRequired,
+    roleOfCurrentUserInTeam: PropTypes.string,
+    isCurrentUser: PropTypes.bool,
     isOnlyAdmin: PropTypes.bool,
     disabled: PropTypes.bool
 };

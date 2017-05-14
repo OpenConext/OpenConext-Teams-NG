@@ -24,7 +24,7 @@ export default function ConfirmationDialog({isOpen = false, cancel, confirm, que
                     <h2>{question}</h2>
                 </section>}
             <section className="dialog-buttons">
-                <a className="button grey" href="#" onClick={cancel}>
+                <a className="button" href="#" onClick={cancel}>
                     {leavePage ? I18n.t("confirmation_dialog.leave") : I18n.t("confirmation_dialog.cancel")}
                 </a>
                 <a className="button blue" href="#" onClick={confirm}>
