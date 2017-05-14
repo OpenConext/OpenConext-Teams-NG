@@ -30,14 +30,13 @@ export default class Flash extends React.Component {
 
         return (
             <div className={`flash ${className} ${flash.type}`}>
-                {className !== "hide" &&
                 <div className="message-container">
                     <p dangerouslySetInnerHTML={{__html: flash.message}}>
                     </p>
                     <a className="close" href="#" onClick={clearFlash}>
                         <i className="fa fa-remove"></i>
                     </a>
-                </div>}
+                </div>
             </div>
         );
     }
