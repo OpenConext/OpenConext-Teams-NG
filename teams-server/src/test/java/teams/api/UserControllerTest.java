@@ -46,7 +46,7 @@ public class UserControllerTest extends AbstractApplicationTest {
                 .statusCode(SC_OK)
                 .body("size()", is(3))
                 .body("name", hasItems("John Doe"))
-                .body("email", hasItems("john.doe@example.org", "UNKNOWN_ATTRIBUTE"));
+                .body("email", hasItems("john.doe@example.org", "junior@domain.net"));
     }
 
     @Test

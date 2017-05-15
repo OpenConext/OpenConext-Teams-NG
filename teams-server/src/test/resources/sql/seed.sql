@@ -21,7 +21,7 @@ VALUES (4, 'urn:collab:person:surfnet.nl:tdoe', 'Tracey Doe', 'tracey.doe@exampl
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)
 VALUES (5, 'urn:collab:person:surfnet.nl:rdoe', 'Ronald Doe', 'ronald.doe@example.org', 0);
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)
-VALUES (6, 'urn:collab:person:example.com:john.doe', 'John Doe Junior', 'UNKNOWN_ATTRIBUTE', 1);
+VALUES (6, 'urn:collab:person:example.com:john.doe', 'John Doe Junior', 'junior@domain.net', 1);
 
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
 VALUES (1, 'ADMIN', 1, 'nl:surfnet:diensten:riders', 1, 'urn:collab:person:surfnet.nl:jdoe');
