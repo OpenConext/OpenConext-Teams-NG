@@ -208,7 +208,7 @@ export default class Invitation extends React.Component {
                                     confirm={confirmationDialogAction}
                                     question={confirmationQuestion}
                                     leavePage={leavePage}/>
-                <h2>{I18n.t("invitation.title")}</h2>
+                <h2>{I18n.t("invitation.title", {name: invitation.teamName})}</h2>
                 <div className={`card ${validInvitation ? "" : "with-invalid"}`}>
                     {!validInvitation && this.renderInvalidInvitation(invitation, notFound)}
                     {!notFound &&

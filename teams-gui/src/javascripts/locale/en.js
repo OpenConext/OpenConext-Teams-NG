@@ -252,7 +252,7 @@ I18n.translations.en = {
 
     },
     invitation: {
-        title: "Invitation",
+        title: "Invitation received for team '{{name}}'",
         team: {
             name: "Team name",
             description: "Description",

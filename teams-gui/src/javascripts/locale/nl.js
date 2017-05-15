@@ -252,7 +252,7 @@ I18n.translations.nl = {
 
     },
     invitation: {
-        title: "Uitnodiging",
+        title: "Uitnodiging ontvangen voor team '{{name}}'",
         team: {
             name: "Team naam",
             description: "Omschrijving",
