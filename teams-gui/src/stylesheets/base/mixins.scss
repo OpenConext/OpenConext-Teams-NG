@@ -24,6 +24,9 @@
     opacity: 1 !important;
   }
   max-width: 390px;
+  @include phone {
+    max-width: 200px;
+  }
 }
 
 @mixin info-icon {

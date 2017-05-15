@@ -105,11 +105,13 @@ export default class LinkedInstitutionTeams extends React.Component {
 
     renderLinkedTeamsCellReadOnlyMode = linkedTeams =>
         <td data-label={I18n.t("institution_teams.linked_teams")} className="linked-teams">
+            <section className="linked-teams-container">
             {linkedTeams.map((linkedTeam, index) =>
                 <NavLink key={`${linkedTeam.id}_${index}`} className="linked-team" to={`/teams/${linkedTeam.id}`}>
                     <i className="fa fa-users"></i>{linkedTeam.name}
                 </NavLink>
             )}
+            </section>
         </td>;
 
     renderTeamsTable(filteredTeams, linkedTeams, team) {

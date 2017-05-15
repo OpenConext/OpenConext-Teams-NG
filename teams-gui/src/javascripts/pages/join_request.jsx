@@ -8,7 +8,7 @@ import JoinRequestInfo from "../components/join_request_info";
 import ConfirmationDialog from "../components/confirmation_dialog";
 import CheckBox from "../components/checkbox";
 import {getJoinRequest, getTeamDetail, joinRequest} from "../api";
-import {handleServerError, setFlash} from "../utils/flash";
+import {setFlash} from "../utils/flash";
 import {goto, isEmpty, stop} from "../utils/utils";
 
 
@@ -69,8 +69,7 @@ export default class JoinRequest extends React.Component {
             }).then(() => {
                 setFlash(I18n.t("join_request.flash", {name: this.state.team.name}));
                 this.goBack();
-            })
-            .catch(err => handleServerError(err));
+            });
         }
     };
 

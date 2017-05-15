@@ -52,7 +52,7 @@ public class MailBoxTest extends AbstractApplicationTest {
         String body = mailBody();
         assertTrue(body.contains("Uitnodiging voor Champions"));
         assertTrue(body.contains("<strong>Persoonlijk bericht van John Doe:</strong><br>\"Please join\""));
-        assertTrue(body.contains("<span><a href=\"http://localhost:8080/invitation/accept/"));
+        assertTrue(body.contains("<span><a href=\"http://localhost:8001/invitation/accept/"));
     }
 
     @Test
@@ -80,8 +80,7 @@ public class MailBoxTest extends AbstractApplicationTest {
     }
 
     private void validateJoinRequestStatusMail(String status) throws IOException, MessagingException, InterruptedException {
-        String body = mailBody();
-        assertTrue(body.contains(String.format("Your <strong>request</strong> to join team %s has been <strong>%s</strong>", "name", status)));
+        assertTrue(mailBody().contains(String.format("has been <strong>%s</strong>", status)));
     }
 
     private String mailBody() throws InterruptedException, MessagingException {

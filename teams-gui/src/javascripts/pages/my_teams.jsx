@@ -13,10 +13,9 @@ import RolesIconLegend from "../components/roles_icon_legend";
 import DropDownActions from "../components/drop_down_actions";
 import TeamAutocomplete from "../components/team_autocomplete";
 import {autoCompleteTeam, deleteJoinRequest, deleteTeam, getMyTeams} from "../api";
-import {clearFlash, setFlash} from "../utils/flash";
+import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
-
 
 export default class MyTeams extends React.Component {
 
@@ -73,16 +72,13 @@ export default class MyTeams extends React.Component {
         });
     }
 
-    componentWillMount = () => {
-        clearFlash();
-        this.fetchMyTeams();
-    };
+    componentWillMount = () => this.fetchMyTeams();
 
     showTeam = team => () => {
         if (team.isJoinRequest) {
-            const possibleExistingJoinRequest = this.state.teams.filter(t => t.isJoinRequest && t.id === team.id);
+            const possibleExistingJoinRequest = this.state.teams.filter(t => t.isJoinRequest && t.teamId === team.id);
             if (possibleExistingJoinRequest.length > 0) {
-                this.props.history.push(`/join-requests/${team.teamId}/${team.id}`);
+                this.props.history.push(`/join-requests/${team.id}/${possibleExistingJoinRequest[0].id}`);
             } else {
                 this.props.history.push(`/join-requests/${team.id}`);
             }

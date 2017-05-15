@@ -295,8 +295,8 @@ I18n.translations.en = {
     profile: {
         email: "Email",
         role: "Role",
-        true: "SURFconext Guest",
-        false: "SURFconext Member"
+        true: "{{productName}} Guest",
+        false: "{{productName}} Member"
     },
 
     auto_complete: {

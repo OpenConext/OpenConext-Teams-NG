@@ -19,7 +19,7 @@ import {
     rejectJoinRequest,
     saveTeam
 } from "../api";
-import {handleServerError, setFlash} from "../utils/flash";
+import { setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 
 import LinkedInstitutionTeams from "../components/linked_institution_teams";
@@ -82,9 +82,15 @@ export default class TeamDetail extends React.Component {
     refreshTeamState = (teamId, callback = () => 1, displayOneAdminWarning = true) => getTeamDetail(teamId).then(team => {
         this.stateTeam(team, displayOneAdminWarning);
         callback();
-    }).catch(err => handleServerError(err));
+    });
 
     stateTeam(team, displayOneAdminWarning) {
+        //url guessing
+        if (isEmpty(team.memberships)) {
+            this.props.history.push(`/join-requests/${team.id}`);
+            return;
+        }
+
         const joinRequests = (team.joinRequests || []).map(joinRequest => {
             return {
                 ...joinRequest,
@@ -238,8 +244,7 @@ export default class TeamDetail extends React.Component {
             .then(team => {
                 this.stateTeam(team, false);
                 setFlash(I18n.t("teams.flash.team", {name: team.name, action: I18n.t("teams.flash.updated")}));
-            })
-            .catch(err => handleServerError(err));
+            });
     };
 
     search = e => {

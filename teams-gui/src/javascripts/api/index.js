@@ -8,27 +8,33 @@ function apiUrl(path) {
     return apiPath + path;
 }
 
-function validateResponse(res) {
-    spinner.stop();
+function validateResponse(redirectTo404) {
+    return res => {
+        spinner.stop();
 
-    if (!res.ok) {
-        const error = new Error(res.statusText);
-        error.response = res;
-        throw error;
-    }
+        if (!res.ok) {
+            if (redirectTo404) {
+                const location = window.location;
+                window.location.href = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/404?page=${location.href}`;
+            }
+            const error = new Error(res.statusText);
+            error.response = res;
+            throw error;
+        }
 
-    csrfToken = res.headers.get("x-csrf-token");
+        csrfToken = res.headers.get("x-csrf-token");
 
-    const sessionAlive = res.headers.get("x-session-alive");
+        const sessionAlive = res.headers.get("x-session-alive");
 
-    if (sessionAlive !== "true") {
-        window.location.reload(true);
-    }
+        if (sessionAlive !== "true") {
+            window.location.reload(true);
+        }
 
-    return res;
+        return res;
+    };
 }
 
-function validFetch(path, options, headers = {}) {
+function validFetch(path, options, headers = {}, redirectTo404 = true) {
     const contentHeaders = {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -45,11 +51,11 @@ function validFetch(path, options, headers = {}) {
             spinner.stop();
             throw err;
         })
-        .then(validateResponse);
+        .then(validateResponse(redirectTo404));
 }
 
-function fetchJson(path, options = {}, headers = {}) {
-    return validFetch(path, options, headers)
+function fetchJson(path, options = {}, headers = {}, redirectTo404 = true) {
+    return validFetch(path, options, headers, redirectTo404)
         .then(res => res.json());
 }
 
@@ -112,15 +118,15 @@ export function getInvitation(id) {
 }
 
 export function getInvitationInfo(key) {
-    return fetchJson("invitations/info/" + key);
+    return fetchJson("invitations/info/" + key, {}, {}, false);
 }
 
 export function denyInvitation(key) {
-    return postPutJson("invitations/deny/"+key,{}, "put");
+    return postPutJson("invitations/deny/" + key, {}, "put");
 }
 
 export function acceptInvitation(key) {
-    return postPutJson("invitations/accept/"+key,{}, "put");
+    return postPutJson("invitations/accept/" + key, {}, "put");
 }
 
 export function resendInvitation(invitation) {

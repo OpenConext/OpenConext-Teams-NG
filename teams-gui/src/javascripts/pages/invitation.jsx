@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ConfirmationDialog from "../components/confirmation_dialog";
 import CheckBox from "../components/checkbox";
 import {acceptInvitation, denyInvitation, getInvitationInfo} from "../api";
-import {handleServerError, setFlash} from "../utils/flash";
+import { setFlash} from "../utils/flash";
 import {goto, isEmpty, stop} from "../utils/utils";
 import InvitationInfo from "../components/invitation_info";
 import SelectRole from "../components/select_role";
@@ -34,7 +34,7 @@ export default class Invitation extends React.Component {
                 if (err.response.status === 404) {
                     this.setState({notFound: true, loaded: true});
                 } else {
-                    handleServerError(err);
+                    throw err;
                 }
 
             });
@@ -71,16 +71,14 @@ export default class Invitation extends React.Component {
                     goto(`/teams/${this.state.invitation.teamId}`, this.props);
                     setFlash(I18n.t("invitation.flash.accept", {name: this.state.invitation.teamName}));
 
-                })
-                .catch(err => handleServerError(err));
+                });
         } else {
             const promise = () => {
                 denyInvitation(key)
                     .then(() => {
                         this.goBack();
                         setFlash(I18n.t("invitation.flash.deny", {name: this.state.invitation.teamName}));
-                    })
-                    .catch(err => handleServerError(err));
+                    });
             };
             if (action === "accept") {
                 this.setState({

@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import LinkedInstitutionTeams from "../components/linked_institution_teams";
 import {linkedTeams} from "../api";
-import {clearFlash} from "../utils/flash";
 
 export default class InstitutionTeams extends React.Component {
 
@@ -15,10 +14,7 @@ export default class InstitutionTeams extends React.Component {
         };
     }
 
-    componentWillMount = () => {
-        clearFlash();
-        linkedTeams().then(linked => this.setState({linkedTeams: linked}));
-    };
+    componentWillMount = () => linkedTeams().then(linked => this.setState({linkedTeams: linked}));
 
     render() {
         const {linkedTeams} = this.state;

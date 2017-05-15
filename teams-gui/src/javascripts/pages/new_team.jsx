@@ -9,7 +9,7 @@ import EmailInput from "../components/email_input";
 import SelectLanguage from "../components/select_language";
 import CheckBox from "../components/checkbox";
 import {saveTeam, teamExistsByName} from "../api";
-import {handleServerError, setFlash} from "../utils/flash";
+import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 
 import {validNameRegExp} from "../validations/regular_exp";
@@ -82,8 +82,7 @@ export default class NewTeam extends React.Component {
                 .then(team => {
                     this.props.history.push(`/teams/${team.id}`);
                     setFlash(I18n.t("teams.flash.team", {name: team.name, action: I18n.t("teams.flash.created")}));
-                })
-                .catch(err => handleServerError(err));
+                });
         }
     };
 

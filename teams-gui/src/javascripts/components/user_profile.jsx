@@ -11,7 +11,7 @@ export default function UserProfile({currentUser}) {
             </li>
             <li>
                 <span>{`${I18n.t("profile.role")}:`}</span>
-                <span  className="value">{I18n.t("profile." + currentUser.person.guest)}</span>
+                <span  className="value">{I18n.t("profile." + currentUser.person.guest, {productName: currentUser.productName})}</span>
 
             </li>
         </ul>);

@@ -52,7 +52,7 @@ spring:
 
 email:
   from: test@surf.nl
-  base-url: http://localhost:8080
+  base-url: http://localhost:8001
 
 # We disable all endpoints except health for the load-balancer and info for git information.
 endpoints:

@@ -73,8 +73,13 @@
     }
     tbody {
       td {
-        vertical-align: middle;
         padding: 10px 0;
+        word-wrap: break-word;
+
+        @include desktop {
+          vertical-align: middle;
+
+        }
       }
       td.name {
         span {
@@ -111,6 +116,14 @@
       }
       td.linked-teams {
         text-align: right;
+
+        .linked-teams-container {
+          display: flex;
+          flex-direction: column;
+          @include desktop {
+            flex-direction: row;
+          }
+        }
         a.linked-team {
           border: 1px solid $lighter-grey;
           border-radius: $br;
@@ -118,6 +131,7 @@
           padding: 8px 15px;
           color: $dark-grey;
           background-color: $hover;
+          white-space: nowrap;
 
           @include no-text-decoration;
 
@@ -137,42 +151,42 @@
       td.team-linked {
         text-align: right;
       }
-      @include phone {
-        thead {
-          display: none;
+    }
+    @include phone {
+      thead {
+        display: none;
+      }
+      tbody {
+        tr {
+          margin-bottom: 10px;
+          display: block;
+          border-bottom: 2px solid $lighter-grey;
         }
-        tbody {
-          tr {
-            margin-bottom: 10px;
-            display: block;
-            border-bottom: 2px solid $lighter-grey;
-          }
-          td {
-            display: block;
-            text-align: right;
-            min-height: 40px;
-            border-bottom: 1px dotted $light-blue;
-            padding: 8px 0;
-            &.name {
-              span.name {
-                i {
-                  padding-top: 0;
-                }
+        td {
+          display: block;
+          text-align: right;
+          min-height: 40px;
+          border-bottom: 1px dotted $light-blue;
+          padding: 8px 0;
+          &.name {
+            span.name {
+              i {
+                padding-top: 0;
               }
             }
+          }
 
-            &:before {
-              content: attr(data-label);
-              float: left;
-              text-transform: uppercase;
-              font-weight: bold;
-              font-size: 14px;
-              color: $medium-grey;
-            }
-
+          &:before {
+            content: attr(data-label);
+            float: left;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 14px;
+            color: $medium-grey;
           }
 
         }
+
       }
     }
 

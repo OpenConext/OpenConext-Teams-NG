@@ -36,7 +36,7 @@ public class MailConfiguration {
     @Profile({"dev"})
     @Primary
     public MailBox mailSenderDev() {
-        return new MockMailBox(mailSender);
+        return new MockMailBox(mailSender, emailFrom, baseUrl, productName);
     }
 
 

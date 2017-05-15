@@ -1,7 +1,7 @@
 {{> header.html}}
 <p lang="en">
     <a href="mailto:{{joinRequest.person.email}}">{{joinRequest.person.name}}</a> would like to join team
-    <strong>{{joinRequest.team.name}}</strong>.
+    <a href="{{baseUrl}}/teams/{{joinRequest.team.id}}" style="color:#0088CC;"><strong>{{joinRequest.team.name}}</strong></a>.
 </p>
 
 {{#joinRequest.containsMessage}}

@@ -11,7 +11,7 @@ import InviteResentInfo from "../components/invite_resent_info";
 import DatePickerCustomInput from "../components/date_picker_custom";
 import SelectLanguage from "../components/select_language";
 import {getInvitation, invite, resendInvitation, roleOfCurrentUserInTeam} from "../api";
-import {handleServerError, setFlash} from "../utils/flash";
+import { setFlash} from "../utils/flash";
 import {goto, isEmpty, stop} from "../utils/utils";
 import SelectRole from "../components/select_role";
 import moment from "moment";
@@ -122,8 +122,7 @@ export default class Invite extends React.Component {
             };
             if (readOnly) {
                 resendInvitation({ id, message })
-                    .then(afterAction)
-                    .catch(err => handleServerError(err));
+                    .then(afterAction);
 
             } else {
                 invite({
@@ -135,8 +134,7 @@ export default class Invite extends React.Component {
                     csvEmails: csvEmails === false ? null : csvEmails,
                     language
                 })
-                    .then(afterAction)
-                    .catch(err => handleServerError(err));
+                    .then(afterAction);
             }
         }
     };
