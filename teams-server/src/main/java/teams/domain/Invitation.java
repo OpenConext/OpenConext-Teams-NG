@@ -4,15 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import teams.api.validations.HashGenerator;
 import teams.exception.ResourceNotFoundException;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -25,7 +23,7 @@ import static javax.persistence.FetchType.EAGER;
 @Entity(name = "invitations")
 @Getter
 @NoArgsConstructor
-public class Invitation {
+public class Invitation implements HashGenerator{
 
     private static final long TWO_WEEKS = 14L * 24L * 60L * 60L * 1000L;
 
@@ -75,7 +73,7 @@ public class Invitation {
     public Invitation(Team team, String email, Role intendedRole, Language language, Instant expiryDate) {
         this.team = team;
         this.email = email;
-        this.invitationHash = generateInvitationHash();
+        this.invitationHash = generateHash();
         this.timestamp = new Date().getTime();
         this.language = language;
         this.intendedRole = intendedRole;
@@ -91,18 +89,6 @@ public class Invitation {
     public int daysValid() {
         return (int) (14 - (DAYS.between(Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate(),
                 LocalDate.now())));
-    }
-
-    private String generateInvitationHash() {
-        Random secureRandom = new SecureRandom();
-        byte[] aesKey = new byte[128];
-        secureRandom.nextBytes(aesKey);
-        String base64 = Base64.getEncoder().encodeToString(aesKey);
-        try {
-            return URLEncoder.encode(base64, "UTF-8").replaceAll("%", "");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @JsonIgnore

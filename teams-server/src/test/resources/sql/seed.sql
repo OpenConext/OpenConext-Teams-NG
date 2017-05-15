@@ -1,13 +1,13 @@
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
-VALUES (1, 'nl:surfnet:diensten:riders', 'riders', 'we are riders', 1);
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `personal_note`)
-VALUES (2, 'nl:surfnet:diensten:giants', 'giants', 'we are giants', 1, 'Why did I create this team');
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
-VALUES (3, 'nl:surfnet:diensten:gliders', 'gliders', 'we are gliders', 1);
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
-VALUES (4, 'nl:surfnet:diensten:masters', 'masters', 'we are masters', 1);
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`)
-VALUES (5, 'nl:surfnet:diensten:wolves', 'wolves', 'we are wolves', 1);
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
+VALUES (1, 'nl:surfnet:diensten:riders', 'riders', 'we are riders', 1, 'public_link_secret_1');
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `personal_note`, `public_link`)
+VALUES (2, 'nl:surfnet:diensten:giants', 'giants', 'we are giants', 1, 'Why did I create this team', 'public_link_secret_2');
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
+VALUES (3, 'nl:surfnet:diensten:gliders', 'gliders', 'we are gliders', 1, 'public_link_secret_3');
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
+VALUES (4, 'nl:surfnet:diensten:masters', 'masters', 'we are masters', 1, 'public_link_secret_4');
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
+VALUES (5, 'nl:surfnet:diensten:wolves', 'wolves', 'we are wolves', 1, 'public_link_secret_5');
 
 
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)

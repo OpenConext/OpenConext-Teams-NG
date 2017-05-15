@@ -1,16 +1,15 @@
 package teams.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Formula;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
+import teams.api.validations.HashGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.Instant;
 import java.util.HashSet;
@@ -24,7 +23,7 @@ import static javax.persistence.CascadeType.ALL;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Team {
+public class Team implements HashGenerator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +48,9 @@ public class Team {
     @Column
     private Instant created;
 
+    @Column
+    private String publicLink;
+
     @Formula("(select count(*) from memberships m where m.team_id = id)")
     private int membershipCount;
 
@@ -70,6 +72,7 @@ public class Team {
         this.description = StringUtils.hasText(description) ? description : null;
         this.viewable = viewable;
         this.personalNote = personalNote;
+        this.publicLink = generateHash();
     }
 
     public Optional<Membership> member(String urn) {

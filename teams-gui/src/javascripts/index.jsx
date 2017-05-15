@@ -25,6 +25,7 @@ import InstitutionTeams from "./pages/institution_teams";
 import TeamDetail from "./pages/team_detail";
 import JoinRequest from "./pages/join_request";
 import Invitation from "./pages/invitation";
+import PublicLink from "./pages/public_link";
 import NewTeam from "./pages/new_team";
 import Invite from "./pages/invite";
 import ProtectedRoute from "./components/protected_route";
@@ -77,6 +78,8 @@ class App extends React.Component {
                                render={props => <JoinRequest {...props}/>}/>
                         <Route path="/invitation/:action/:key"
                                render={props => <Invitation {...props}/>}/>
+                        <Route path="/public-link/:key"
+                               render={props => <PublicLink {...props}/>}/>
                         <ProtectedRoute path="/new-team"
                                         guest={currentUser.person.guest}
                                         render={props => <NewTeam currentUser={currentUser} {...props}/>}/>

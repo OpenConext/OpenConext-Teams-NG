@@ -19,6 +19,9 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
 
     Optional<Team> findByUrnOrderById(String urn);
 
+    @EntityGraph(value = "findByPublicLink", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "memberships")
+    Optional<Team> findByPublicLink(String publicLink);
+
     @EntityGraph(value = "findByMembershipsUrnPerson", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "memberships")
     List<Team> findByMembershipsUrnPerson(String personUrn);
 
