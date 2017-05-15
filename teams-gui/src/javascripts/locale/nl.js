@@ -47,10 +47,10 @@ I18n.translations.nl = {
     teams: {
         title: "Mijn teams",
         name: "Team naam",
-        description: "Beschrijving",
+        description: "Omschrijving",
         searchPlaceHolder: "ZOEK / WORDT LID ALLE PUBLIEKE TEAMS...",
         role: "Mijn rol",
-        membershipCount: "Ledem",
+        membershipCount: "Leden",
         actions: "",
         actions_phone: "Acties",
         edit: "Aanpassen",

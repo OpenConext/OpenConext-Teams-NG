@@ -411,7 +411,7 @@ export default class TeamDetail extends React.Component {
 
     tabsAndIconLegend = (team, tab) =>
         tab === "members" ?
-            <RolesIconLegend>
+            <RolesIconLegend includeInvitation={true}>
                 {this.renderTabs(tab, team)}
             </RolesIconLegend> :
             <TeamsIconLegend currentUser={this.props.currentUser}>
