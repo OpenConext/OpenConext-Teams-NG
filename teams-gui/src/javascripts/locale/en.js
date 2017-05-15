@@ -134,8 +134,8 @@ I18n.translations.en = {
         },
         confirmations: {
             delete_team: "Are you sure you want to delete team {{name}}?",
-            leave_team: "Are you sure you want to leave team {{name}}",
-            delete_member: "Are you sure you want to delete the membership of {{name}}",
+            leave_team: "Are you sure you want to leave team {{name}}?",
+            delete_member: "Are you sure you want to delete the membership of {{name}}?",
             accept_join_request: "Are you sure you want to approve the join request from {{name}}?",
             reject_join_request: "Are you sure you want to reject the join request from {{name}}?",
             delete_invitation: "Are you sure you want to delete the invitation for {{name}}?",
@@ -261,6 +261,7 @@ I18n.translations.en = {
         },
         cancel: "Cancel",
         deny: "Deny",
+        deny_confirmation: "Are you sure you want to decline this invitation?",
         accept: "Accept",
         share_info: "Share this information with the applications used by this team.",
         approval_required: "You need to approve that the information may be shared",

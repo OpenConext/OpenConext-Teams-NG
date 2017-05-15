@@ -13,7 +13,7 @@ import RolesIconLegend from "../components/roles_icon_legend";
 import DropDownActions from "../components/drop_down_actions";
 import TeamAutocomplete from "../components/team_autocomplete";
 import {autoCompleteTeam, deleteJoinRequest, deleteTeam, getMyTeams} from "../api";
-import {setFlash, clearFlash} from "../utils/flash";
+import {clearFlash, setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
 

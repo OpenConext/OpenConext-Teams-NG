@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -34,13 +35,11 @@ public class TeamSummary {
         this.name = team.getName();
         this.membershipCount = team.getMembershipCount();
         this.description = team.getDescription();
-        this.role = team.getMemberships()
+        Optional<Membership> membershipOptional = team.getMemberships()
                 .stream()
                 .filter(membership -> membership.getUrnPerson().equals(user.getUrn()))
-                .findAny()
-                .map(Membership::getRole)
-                .orElse(null);
-
+                .findAny();
+        this.role = membershipOptional.map(Membership::getRole).orElse(null);
         if (includeAdmins) {
             this.admins = team.getMemberships().stream()
                     .filter(membership -> membership.getRole().equals(Role.ADMIN))

@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Modal from "react-modal";
 import I18n from "i18n-js";
+import {stop} from "../utils/utils";
 
 export default function ConfirmationDialog({isOpen = false, cancel, confirm, question = "", leavePage = false}) {
     return (
@@ -24,10 +25,16 @@ export default function ConfirmationDialog({isOpen = false, cancel, confirm, que
                     <h2>{question}</h2>
                 </section>}
             <section className="dialog-buttons">
-                <a className="button" href="#" onClick={cancel}>
+                <a className="button" onClick={e => {
+                    stop(e);
+                    cancel();
+                }}>
                     {leavePage ? I18n.t("confirmation_dialog.leave") : I18n.t("confirmation_dialog.cancel")}
                 </a>
-                <a className="button blue" href="#" onClick={confirm}>
+                <a className="button blue" onClick={e => {
+                    stop(e);
+                    confirm();
+                }}>
                     {leavePage ? I18n.t("confirmation_dialog.stay") : I18n.t("confirmation_dialog.confirm")}
                 </a>
             </section>

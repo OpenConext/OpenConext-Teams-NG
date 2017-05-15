@@ -54,6 +54,7 @@ public class MailBox {
         Map<String, Object> variables = new HashMap<>();
         variables.put("title", productName);
         variables.put("joinRequest", joinRequest);
+        variables.put("baseUrl", baseUrl);
         sendMail(
                 "mail_templates/join_request.html",
                 String.format("Membership request for %s", joinRequest.getTeam().getName()),

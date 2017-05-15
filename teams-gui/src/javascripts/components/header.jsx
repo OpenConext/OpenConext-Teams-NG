@@ -19,7 +19,7 @@ export default class Header extends React.Component {
 
     renderProfileLink(currentUser) {
         return (
-            <a href="#" className="welcome-link" onClick={this.handleToggle.bind(this)}>
+            <a className="welcome-link" onClick={this.handleToggle.bind(this)}>
                 <i className="fa fa-user-circle-o"></i>
                 {currentUser.username}
                 {this.renderDropDownIndicator()}
@@ -37,7 +37,7 @@ export default class Header extends React.Component {
 
 
     renderExitLogout = () =>
-        <li className="border-left"><a href="#" onClick={this.stop}>{I18n.t("header.links.logout")}</a>
+        <li className="border-left"><a onClick={this.stop}>{I18n.t("header.links.logout")}</a>
         </li>;
 
     stop = e => {

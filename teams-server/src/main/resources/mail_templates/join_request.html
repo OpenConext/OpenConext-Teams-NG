@@ -5,10 +5,12 @@
 </p>
 
 {{#joinRequest.containsMessage}}
+<hr/>
 <p>
     <strong>Personal message from {{joinRequest.person.name}}:
     </strong><br/> "{{{joinRequest.htmlMessage}}}"
 </p>
+<hr/>
 {{/joinRequest.containsMessage}}
 
 {{#joinRequest.team.containsDescription}}
@@ -23,9 +25,9 @@
         <td bgcolor="#D9EDF7"
             style="mso-line-height-rule:exactly;line-height:18px;font-size:13px;font-family:Arial, sans-serif;border-radius:4px 4px 4px 4px;color:#333333;border-style:solid;border-width:1px;border-color:#4FB3CF;"
             align="center" width="100%">
-            <span lang="en"><a href="{{baseUrl}}/team-detail/{{joinRequest.team.id}}" style="color:#0088CC;">Login to process this request</a></span>
+            <span lang="en"><a href="{{baseUrl}}/teams/{{joinRequest.team.id}}" style="color:#0088CC;">Login to process this request</a></span>
             <br/>
-            <span lang="nl"><a href="{{baseUrl}}/team-detail/{{joinRequest.team.id}}" style="color:#0088CC;">Inloggen om dit verzoek af te handelen</a></span>
+            <span lang="nl"><a href="{{baseUrl}}/teams/{{joinRequest.team.id}}" style="color:#0088CC;">Inloggen om dit verzoek af te handelen</a></span>
         </td>
     </tr>
 </table>

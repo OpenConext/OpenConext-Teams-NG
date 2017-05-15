@@ -10,7 +10,7 @@ export default class DatePickerCustom extends React.Component {
         const {onClick, clear, disabled} = this.props;
         return (
             <div className={disabled ? "date_picker_custom disabled" : "date_picker_custom"}>
-                <a href="#" onClick={onClick}>
+                <a onClick={onClick}>
                     {value}
                 </a>
                 {(!isEmpty(this.props.value) && !disabled) && <span className="clear" onClick={clear}>

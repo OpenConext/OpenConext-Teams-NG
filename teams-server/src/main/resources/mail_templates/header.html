@@ -1,63 +1,82 @@
 <html>
 <head><title>{{title}}</title>
 </head>
-<body style="color:#333333;mso-line-height-rule:exactly;line-height:18px;font-size:13px;font-family:Arial, sans-serif;">
-<table width="100%" border="0" cellspacing="0" cellpadding="0"
-       style="color:#333333;mso-line-height-rule:exactly;line-height:18px;font-size:13px;font-family:Arial, sans-serif;">
-  <tr>
-    <td>
-      <style type="text/css">
-        body {
-          color: #333333;
-          line-height: 18px;
-          font-size: 13px;
-          font-family: Arial, sans-serif;
-        }
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <style type="text/css">
+                body {
+                    color: #333333;
+                    mso-line-height-rule: exactly;
+                    line-height: 18px;
+                    font-size: 13px;
+                    font-family: Arial, sans-serif;
+                    color: #333333;
+                    background-color: #EFF4F5;
+                    margin: 0;
+                }
 
-        body, td {
-          font-family: Arial, sans-serif;
-          font-size: 13px;
-          mso-line-height-rule: exactly;
-          line-height: 18px;
-          color: #333333;
-        }
+                body, td {
+                    font-family: Arial, sans-serif;
+                    font-size: 13px;
+                    mso-line-height-rule: exactly;
+                    line-height: 18px;
+                    color: #333333;
+                }
 
-        h1 {
-          font-size: 28px;
-          font-weight: normal;
-          mso-line-height-rule: exactly;
-          line-height: 33px;
-        }
+                #title {
+                    font-size: 28px;
+                    font-weight: normal;
+                    mso-line-height-rule: exactly;
+                    line-height: 33px;
+                    background-color: #4DB2CF;
+                    color: #FFFFFF;
+                    padding: 25px;
+                    margin: 0;
+                }
 
-        a, a:visited {
-          color: #0088CC;
-        }
+                a, a:visited {
+                    color: #0088CC;
+                }
 
-        #invitation-mail-table {
-            margin-bottom:1em;
-            margin-left:auto;
-            margin-right:auto;
-            margin-top:1em;
-        }
-        #invitation-mail-table td{
-            mso-line-height-rule:exactly;
-            line-height:18px;
-            font-size:13px;
-            font-family:Arial, sans-serif;
-        }
-        #invitation-mail-table td.invitation-accept {
-            border-radius:4px 4px 4px 4px;
-            color:#489406;
-            border-style:solid;
-            border-width:1px;
-            border-color:#489406;
-        }
-        #invitation-mail-table td.invitation-deny {
-            color:#333333;
-        }
+                #main_div {
+                    max-width: 720px;
+                    margin: 0 auto;
+                    border: 1px solid #D8DADC;
+                    background-color: #FFFFFF;
+                }
 
-      </style>
-      <div
-          style="max-width:960px;border-radius:4px 4px 4px 4px;margin-bottom:0 ;margin-left:auto;margin-right:auto;margin-top:0 ;padding-bottom:1%;padding-left:1%;padding-right:1%;padding-top:1%;border-style:solid;border-width:1px;border-color:#D8DADC;">
+                #inner_div {
+                    padding: 25px;
+                }
 
-        <h1 style="mso-line-height-rule:exactly;line-height:33px;font-weight:normal;font-size:28px;margin-top:0;">{{title}}</h1>
+
+                #invitation-mail-table {
+                    margin: 1em auto;
+                    font-weight: bold;
+                }
+
+                #invitation-mail-table td {
+                    mso-line-height-rule: exactly;
+                    line-height: 18px;
+                    font-size: 13px;
+                    font-family: Arial, sans-serif;
+                }
+
+                #invitation-mail-table td.invitation-accept {
+                    border-radius: 4px 4px 4px 4px;
+                    color: #4DB2CF;
+                    border: 1px solid #A3D8E7;
+                    background-color: #E5F4F8;
+                }
+
+                #invitation-mail-table td.invitation-deny {
+                    color: #333333;
+                }
+
+            </style>
+            <div id="main_div">
+
+                <h1 id="title">{{title}}</h1>
+                <div id="inner_div">

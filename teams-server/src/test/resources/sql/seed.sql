@@ -61,7 +61,7 @@ VALUES
   (1,'test@example.com', 2491484828910, 'secret', 0, 0, 'MANAGER', 'Dutch', 1, '2017-09-29 00:00:00');
 INSERT INTO `invitations` (`id`, `mailaddress`, `timestamp`, `invitation_uiid`, `denied`, `accepted`, `intended_role`, `language`, `team_id`)
 VALUES
-  (2,'john.doe@example.org', 2491484828910, 'secret2', 0, 0, 'ADMIN', 'Dutch', 2);
+  (2,'john.doe@example.org', 2491484828910, 'secret2', 0, 0, 'ADMIN', 'Dutch', 5);
 
 INSERT INTO `invitation_message` (`id`, `message`, `timestamp`, `invitation_id`, `person_id`)
 VALUES

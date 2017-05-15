@@ -20,10 +20,8 @@ export default class Invitation extends React.Component {
             loaded: false,
             approval: true,
             confirmationDialogOpen: false,
-            confirmationDialogAction: () => {
-                this.setState({confirmationDialogOpen: false});
-                this.goBack();
-            },
+            confirmationDialogAction: () => 1,
+            cancelDialogAction: () => 1,
             confirmationQuestion: "",
             notFound: false
         };
@@ -53,20 +51,46 @@ export default class Invitation extends React.Component {
 
     cancel = e => {
         stop(e);
-        this.setState({confirmationDialogOpen: true, leavePage: true});
+        this.setState({
+            confirmationDialogOpen: true, leavePage: true,
+            cancelDialogAction: () => {
+                this.setState({confirmationDialogOpen: false});
+                this.goBack();
+            },
+            confirmationDialogAction: () => this.setState({confirmationDialogOpen: false})
+        });
     };
 
-    submit = action => e => {
+    submit = whatToDo => e => {
         stop(e);
-        if (this.isValid()) {
-            const {key} = this.props.match.params;
-            const promise = (action === "accept" ? acceptInvitation : denyInvitation);
-            promise(key)
+        const {key, action} = this.props.match.params;
+        if (whatToDo === "accept" && this.isValid()) {
+            acceptInvitation(key)
                 .then(() => {
-                    setFlash(I18n.t(`invitation.flash.${action}`, {name: this.state.invitation.teamName}));
-                    goto(`/teams/${this.state.invitation.teamId}`);
+                    this.setState({confirmationDialogOpen: false});
+                    goto(`/teams/${this.state.invitation.teamId}`, this.props);
+                    setFlash(I18n.t("invitation.flash.accept", {name: this.state.invitation.teamName}));
+
                 })
                 .catch(err => handleServerError(err));
+        } else {
+            const promise = () => {
+                denyInvitation(key)
+                    .then(() => {
+                        this.goBack();
+                        setFlash(I18n.t("invitation.flash.deny", {name: this.state.invitation.teamName}));
+                    })
+                    .catch(err => handleServerError(err));
+            };
+            if (action === "accept") {
+                this.setState({
+                    confirmationDialogOpen: true, leavePage: false,
+                    cancelDialogAction: () => this.setState({confirmationDialogOpen: false}),
+                    confirmationDialogAction: promise, confirmationQuestion: I18n.t("invitation.deny_confirmation")
+                });
+            } else {
+                promise();
+            }
         }
     };
 
@@ -152,10 +176,10 @@ export default class Invitation extends React.Component {
             <section>
                 {this.renderApproval(approval)}
                 <section className="buttons">
-                    <a className="button" href="#" onClick={this.cancel}>
+                    <a className="button" onClick={this.cancel}>
                         {I18n.t("invitation.cancel")}
                     </a>
-                    <a className={`button ${action === "deny" ? "blue" : "grey"}`} href="#"
+                    <a className={`button ${action === "deny" ? "blue" : "grey"}`}
                        onClick={this.submit("deny")}>
                         {I18n.t("invitation.deny")}
                     </a>
@@ -172,7 +196,7 @@ export default class Invitation extends React.Component {
     render() {
         const {
             invitation, notFound, approval, loaded, confirmationDialogOpen, confirmationDialogAction,
-            confirmationQuestion, leavePage
+            confirmationQuestion, cancelDialogAction, leavePage
         } = this.state;
         if (!loaded) {
             return null;
@@ -182,8 +206,8 @@ export default class Invitation extends React.Component {
         return (
             <div className="invitation">
                 <ConfirmationDialog isOpen={confirmationDialogOpen}
-                                    cancel={confirmationDialogAction}
-                                    confirm={() => this.setState({confirmationDialogOpen: false})}
+                                    cancel={cancelDialogAction}
+                                    confirm={confirmationDialogAction}
                                     question={confirmationQuestion}
                                     leavePage={leavePage}/>
                 <h2>{I18n.t("invitation.title")}</h2>

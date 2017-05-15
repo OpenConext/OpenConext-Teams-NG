@@ -33,7 +33,7 @@ export default class Flash extends React.Component {
                 <div className="message-container">
                     <p dangerouslySetInnerHTML={{__html: flash.message}}>
                     </p>
-                    <a className="close" href="#" onClick={clearFlash}>
+                    <a className="close" onClick={clearFlash}>
                         <i className="fa fa-remove"></i>
                     </a>
                 </div>

@@ -20,14 +20,14 @@ public class InvitationRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void countInvitationsByTeamId() throws Exception {
-        List<Object[]> results = invitationRepository.countInvitationsByTeamId(Arrays.asList(1L, 2L, 3L));
+        List<Object[]> results = invitationRepository.countInvitationsByTeamId(Arrays.asList(1L, 2L, 5L));
 
         Object[] r1 = results.get(0);
         assertEquals(1L, Long.class.cast(r1[0]).longValue());
         assertEquals(1L, Long.class.cast(r1[1]).longValue());
 
         Object[] r2 = results.get(1);
-        assertEquals(2L, Long.class.cast(r2[0]).longValue());
+        assertEquals(5L, Long.class.cast(r2[0]).longValue());
         assertEquals(1L, Long.class.cast(r2[1]).longValue());
     }
 

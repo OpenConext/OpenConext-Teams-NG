@@ -6,9 +6,11 @@
 </p>
 
 {{#invitationMessage.containsMessage}}
+<hr/>
 <p>
     <strong>Personal Message from {{invitationMessage.person.name}}:</strong><br>"{{{invitationMessage.htmlMessage}}}"
 </p>
+<hr/>
 {{/invitationMessage.containsMessage}}
 
 <p>
@@ -24,7 +26,7 @@
 
 <table id="invitation-mail-table" cellpadding="10" width="90%" align="center">
     <tr>
-        <td class="invitation-accept" bgcolor="#EDFFDE" align="center" width="50%">
+        <td class="invitation-accept" align="center" width="50%">
             <span><a href="{{baseUrl}}/invitation/accept/{{invitation.invitationHash}}" style="color:#0088CC;">Login to accept this invitation</a></span>
         </td>
         <td class="invitation-deny" align="center" width="50%">
@@ -40,7 +42,8 @@
 </p>
 
 <p>
-    For any other questions, consult the <a href="https://wiki.surfnet.nl/display/conextsupport/SURFconext+teams" style="color:#0088CC;">
+    For any other questions, consult the <a href="https://wiki.surfnet.nl/display/conextsupport/SURFconext+teams"
+                                            style="color:#0088CC;">
     manual for specific information on SURFconext Teams</a> or contact SURFconext Teams support at
     <a href="mailto:help@surfconext.nl" style="color:#0088CC;">help@surfconext.nl</a>.
 </p>
