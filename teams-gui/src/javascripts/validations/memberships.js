@@ -19,11 +19,12 @@ export function allowedToLeave(team, currentUser) {
 }
 
 export function hasOneAdmin(team, currentUser) {
-    const pendingAdminInvitations = (team.invitations || []).filter(invitation => invitation.intendedRole === ROLES.ADMIN.role
-        && !invitation.declined).length > 0;
+    let pendingAdminInvitations = (team.invitations || []).filter(invitation => invitation.intendedRole === ROLES.ADMIN.role
+    && !invitation.declined);
+    const hasPendingAdminInvitations = pendingAdminInvitations.length > 0;
     const admins = team.memberships
         .filter(membership => membership.role === ROLES.ADMIN.role && membership.urnPerson !== currentUser.urn);
-    return admins.length === 0 && !pendingAdminInvitations;
+    return admins.length === 0 && !hasPendingAdminInvitations;
 }
 
 export function currentUserRoleInTeam(team, currentUser) {
