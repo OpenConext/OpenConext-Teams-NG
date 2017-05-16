@@ -19,7 +19,7 @@ export function allowedToLeave(team, currentUser) {
 }
 
 export function hasOneAdmin(team, currentUser) {
-    let pendingAdminInvitations = (team.invitations || []).filter(invitation => invitation.intendedRole === ROLES.ADMIN.role
+    const pendingAdminInvitations = (team.invitations || []).filter(invitation => invitation.intendedRole === ROLES.ADMIN.role
     && !invitation.declined);
     const hasPendingAdminInvitations = pendingAdminInvitations.length > 0;
     const admins = team.memberships
