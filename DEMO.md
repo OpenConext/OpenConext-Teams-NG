@@ -1,57 +1,57 @@
 my_teams:
-    sorteer
-    show
-    information - invitations & join requests
-    actions
-
-    search team - join request
+1. sorteer
+2. show
+3. information - invitations & join requests
+4. actions
+5. search team - join request
 
 riders details
-    copy identifier
-    edit team
-        description
-        personal note
-    accept join request
-    deny join request
-    change role
-    resend invitation
-    delete invitation
-    linked groups
-        add / unlink
-    downgrade warning
-    one admin warning
-    leave team
+1. copy identifier
+2. edit team
+* description
+* personal note
+* change role
+3. accept join request
+4. deny join request
+5. resend invitation
+6. delete invitation
+7. linked groups
+* add / unlink
+8. downgrade warning
+9. one admin warning
+10. leave team
 
 add team
-    riders - duplicate name
-    invalid characters name
-    autocomplete email mary
-    warning "share check"
+1. riders - duplicate name
+2. invalid characters name
+3. autocomplete email mary
+4. warning "share check"
 
 join request wolves
-    resent join request - message is taken from previous join request
-    search wol and join request - message is taken from previous join request
-    delete join request
+1. resent join request - message is taken from previous join request
+2. search wol and join request - message is taken from previous join request
+3. delete join request
 
 clean data
-invite member riders
-    autocomplete email
-    csv file
-    expire date
+1. invite member riders
+* autocomplete email
+* csv file
+* expire date
+
 leave team riders
-accept invitation - deny confirmation, color depending on action
-accept invitation again
-aceppt invitation unknown
+1. accept invitation - deny confirmation, color depending on action
+2. accept invitation again
+3. accept invitation unknown
 
 clean data
-institution teams
-    link team to institution teams
+1. institution teams
+* link team to institution teams
 
 responsive
-    my_teams
-    institution teams
-    invite member
-    join request
+1. my_teams
+2. institution teams
+3. invite member
+4. join request
 
 
 
