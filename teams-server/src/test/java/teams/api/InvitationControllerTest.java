@@ -110,6 +110,17 @@ public class InvitationControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void invitationInfoNotFound() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:unknown")
+                .when()
+                .get("api/teams/invitations/info/{key}", "nope")
+                .then()
+                .statusCode(SC_NOT_FOUND);
+    }
+
+    @Test
     public void resend() throws Exception {
         ClientResendInvitation resendInvitation = new ClientResendInvitation(1L, "Second invitation");
 

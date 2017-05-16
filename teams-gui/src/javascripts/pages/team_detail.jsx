@@ -67,6 +67,7 @@ export default class TeamDetail extends React.Component {
             ],
             loaded: false,
             copiedToClipboard: false,
+            copiedToClipboardPublicLink: false,
             isOnlyAdmin: false,
             roleInTeam: ROLES.MEMBER.role,
             searchQuery: "",
@@ -340,6 +341,11 @@ export default class TeamDetail extends React.Component {
         setTimeout(() => this.setState({copiedToClipboard: false}), 5000);
     };
 
+    copiedToClipboardPublicLink = () => {
+        this.setState({copiedToClipboardPublicLink: true});
+        setTimeout(() => this.setState({copiedToClipboardPublicLink: false}), 5000);
+    };
+
     teamDetailHeader(team, role, currentUser) {
         const myMembershipId =
             team.memberships.filter(membership => membership.urnPerson === currentUser.urn).map(membership => membership.id)[0];
@@ -365,11 +371,15 @@ export default class TeamDetail extends React.Component {
 
     teamDetailAttributes(team, role, currentUser) {
         const isAdmin = role === ROLES.ADMIN.role;
-        const {copiedToClipboard} = this.state;
+        const {copiedToClipboard, copiedToClipboardPublicLink} = this.state;
         const copiedToClipBoardClassName = copiedToClipboard ? "copied" : "";
+        const copiedToClipBoardPublicLinkClassName = copiedToClipboardPublicLink ? "copied" : "";
         const tooltip = I18n.t(copiedToClipboard ? "team_detail.copied" : "team_detail.copy");
+        const tooltipPublicLink = I18n.t(copiedToClipboardPublicLink ? "team_detail.copied" : "team_detail.copy");
 
         const universalUrn = `${currentUser.groupNameContext}${team.urn}`;
+        const location = window.location;
+        const universalPublicLink = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/public-link/${team.publicLink}`;
 
         return (
             <section className="team-attributes">
@@ -385,6 +395,18 @@ export default class TeamDetail extends React.Component {
                     </CopyToClipboard>
 
                 </div>
+                {isAdmin && <div className="team-attribute">
+                    <label>{I18n.t("team_detail.public_link")}</label>
+                    <CopyToClipboard text={universalPublicLink} onCopy={this.copiedToClipboardPublicLink}>
+                        <span>{universalPublicLink}
+                            <a data-for={universalPublicLink} data-tip>
+                                <i className={`fa fa-clone ${copiedToClipBoardPublicLinkClassName}`}></i>
+                            </a>
+                            <ReactTooltip id={universalPublicLink} place="right" getContent={[() => tooltipPublicLink, 500]}/>
+                        </span>
+                    </CopyToClipboard>
+
+                </div>}
                 <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description || ""}
                                 onChange={this.changeDescription}/>
                 {isAdmin &&
@@ -416,7 +438,7 @@ export default class TeamDetail extends React.Component {
             </RolesIconLegend> :
             <TeamsIconLegend currentUser={this.props.currentUser}>
                 {this.renderTabs(tab, team)}
-            </TeamsIconLegend>
+            </TeamsIconLegend>;
 
 
     currentSorted = () => this.state.sortAttributes.filter(attr => attr.current)[0];

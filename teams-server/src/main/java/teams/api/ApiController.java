@@ -50,12 +50,6 @@ public abstract class ApiController {
         return team;
     }
 
-    protected ExternalTeam externalTeamById(Long id) {
-        ExternalTeam externalTeam = externalTeamRepository.findOne(id);
-        assertNotNull("ExternalTeam", externalTeam, id);
-        return externalTeam;
-    }
-
     protected Membership membership(Team team, String urn) {
         return team.member(urn)
                 .orElseThrow(() -> new NotAllowedException(format

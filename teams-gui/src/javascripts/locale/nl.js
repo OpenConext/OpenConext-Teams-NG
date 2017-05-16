@@ -37,7 +37,7 @@ I18n.translations.nl = {
     confirmation_dialog: {
         title: "Bevestig a.u.b.",
         confirm: "Bevestig",
-        cancel: "Annulleer",
+        cancel: "Annuleer",
         leavePage: "Wil je deze pagina verlaten?",
         leavePageSub: "Changes that you made will no be saved.",
         stay: "Blijf",
@@ -245,7 +245,7 @@ I18n.translations.nl = {
         message: "Bericht",
         message_info: "Je persoonlijke bericht",
         submit: "Leden uitnodigen",
-        cancel: "Annulleer",
+        cancel: "Annuleer",
         flash: "Uitnodiging is verstuurd",
         flash_resent: "Herinneringsmail is verstuurd",
         message_placeholder: "Persoonlijk bericht voor de uitnodiging"
@@ -259,7 +259,7 @@ I18n.translations.nl = {
             admins: "Administrateurs",
             role: "De toekomstige rol"
         },
-        cancel: "Annulleer",
+        cancel: "Annuleer",
         deny: "Weiger",
         deny_confirmation: "Weet je zeker dat je deze uitnodiging wilt weigeren?",
         accept: "Accepteer",
@@ -282,6 +282,32 @@ I18n.translations.nl = {
             join_request_2: " versturen als je lid wilt worden van dit team."
         }
     },
+    public_link: {
+        title: "Publieke link voor lidmaatschap van team '{{name}}'",
+        invalid_title: "Publieke link ongeldig",
+        team: {
+            name: "Team naam",
+            description: "Omschrijving",
+            admins: "Administrateurs",
+            role: "De toekomstige rol"
+        },
+        cancel: "Annuleer",
+        accept: "Accepteer",
+        share_info: "Deel deze informatie met de applicaties gebruikt door dit team.",
+        approval_required: "Je moet toestemming verlenen om deze informatie te delen.",
+        flash: {
+            "accept": "Je bent lid geworden van team {{name}}.",
+            "deny": "Je hebt de uitnodiging voor team {{name}} afgewezen."
+        },
+        invalid: {
+            not_found: "Deze publieke link is niet een geldige link voor lidmaatschap van een team.",
+            already_member: "Je bent al lid van dit team",
+            join_request: "toetredingsverzoek",
+            join_request_1: " Je kan een ",
+            join_request_2: " versturen als je lid wilt worden van dit team."
+        }
+    },
+
     institution_teams: {
         name: "Team naam / identificatiecode",
         description: "Omschrijving",

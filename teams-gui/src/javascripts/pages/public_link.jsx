@@ -5,10 +5,10 @@ import {NavLink} from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import ConfirmationDialog from "../components/confirmation_dialog";
 import CheckBox from "../components/checkbox";
-import {getPublicLink, acceptPublicLink} from "../api";
-import { setFlash} from "../utils/flash";
-import {goto, isEmpty, stop} from "../utils/utils";
-import InvitationInfo from "../components/invitation_info";
+import {acceptPublicLink, getPublicLink} from "../api";
+import {setFlash} from "../utils/flash";
+import {goto, stop} from "../utils/utils";
+import PublicLinkInfo from "../components/public_link_info";
 import SelectRole from "../components/select_role";
 import {ROLES} from "../validations/memberships";
 
@@ -30,9 +30,9 @@ export default class PublicLink extends React.Component {
 
     componentDidMount() {
         const {key} = this.props.match.params;
-        getPublicLink(key).then(team => this.setState({team: invitation, loaded: true}))
+        getPublicLink(key).then(team => this.setState({team: team, loaded: true}))
             .catch(err => {
-                if (err.response.status === 404) {
+                if (err.response && err.response.status === 404) {
                     this.setState({notFound: true, loaded: true});
                 } else {
                     throw err;
@@ -62,24 +62,15 @@ export default class PublicLink extends React.Component {
         });
     };
 
-    submit = whatToDo => e => {
+    submit = e => {
         stop(e);
-        const {key, action} = this.props.match.params;
-        if (whatToDo === "accept" && this.isValid()) {
+        const {key} = this.props.match.params;
+        if (this.isValid()) {
             acceptPublicLink(key)
                 .then(() => {
                     this.setState({confirmationDialogOpen: false});
                     goto(`/teams/${this.state.team.id}`, this.props);
                     setFlash(I18n.t("public_link.flash.accept", {name: this.state.team.name}));
-
-                });
-        } else {
-                this.setState({
-                    confirmationDialogOpen: true, leavePage: false,
-                    cancelDialogAction: () => this.setState({confirmationDialogOpen: false}),
-                    confirmationDialogAction: () => {
-                        this.goBack();
-                    }, confirmationQuestion: I18n.t("public_link.deny_confirmation")
                 });
         }
     };
@@ -91,12 +82,12 @@ export default class PublicLink extends React.Component {
     renderTeam = team => {
         return (
             <section className="team">
-                <label >{I18n.t("invitation.team.name")}</label>
+                <label >{I18n.t("public_link.team.name")}</label>
                 <input type="text" value={team.name} disabled="true"/>
-                <label >{I18n.t("invitation.team.description")}</label>
+                <label >{I18n.t("public_link.team.description")}</label>
                 <input type="text" value={team.description} disabled="true"/>
                 <section className="admins">
-                    <label>{I18n.t("invitation.team.admins")}</label>
+                    <label>{I18n.t("public_link.team.admins")}</label>
                     {team.admins.map((admin, index) =>
                         <div key={index}>
                             <input type="text" value={admin} disabled="true"/>
@@ -108,9 +99,9 @@ export default class PublicLink extends React.Component {
         );
     };
 
-    renderInvitationRole = () =>
+    renderPublicLinkRole = () =>
         <section className="form-divider">
-            <label>{I18n.t("invitation.team.role")}</label>
+            <label>{I18n.t("public_link.team.role")}</label>
             <SelectRole onChange={() => 1} role={ROLES.MEMBER.role} disabled={true}/>
         </section>;
 
@@ -118,32 +109,29 @@ export default class PublicLink extends React.Component {
         <section>
             <CheckBox name="approval" value={approval}
                       onChange={this.handleInputChange("approval")}
-                      info={I18n.t("invitation.share_info")}
+                      info={I18n.t("public_link.share_info")}
                       className={approval ? "checkbox" : "checkbox with-error"}/>
-            {!approval && <em className="error with-checkbox">{I18n.t("invitation.approval_required")}</em>}
+            {!approval && <em className="error with-checkbox">{I18n.t("public_link.approval_required")}</em>}
         </section>;
 
-    renderInvalidLink = (team, notFound) => {
-        const i18nMessage = notFound ? "not_found" : invitation.alreadyMember ? "already_member" : "unknown";
+    renderInvalidPublicLink = (team, notFound) => {
+        const i18nMessage = notFound ? "not_found" : team.alreadyMember ? "already_member" : "unknown";
         return <section className="invalid-invitation">
-            <p>{I18n.t(`invitation.invalid.${i18nMessage}`)}
-                {(!notFound && !invitation.alreadyMember) && <span>{I18n.t("invitation.invalid.join_request_1")}
+            <p>{I18n.t(`public_link.invalid.${i18nMessage}`)}
+                {(!notFound && !team.alreadyMember) && <span>{I18n.t("public_link.invalid.join_request_1")}
                     <NavLink
-                        to={`/join-requests/${invitation.teamId}`}>{I18n.t("invitation.invalid.join_request")}</NavLink>
-                    {I18n.t("invitation.invalid.join_request_2")}
+                        to={`/join-requests/${team.id}`}>{I18n.t("public_link.invalid.join_request")}</NavLink>
+                    {I18n.t("public_link.invalid.join_request_2")}
                 </span>}
             </p>
 
         </section>;
     };
 
-    renderValidInvitation = (invitation, approval, action) => {
+    renderValidPublicLink = (team, approval) => {
         let approveClassName = "button";
-        if (action === "accept" && this.isValid()) {
+        if (this.isValid()) {
             approveClassName += " blue";
-        }
-        if (action === "deny") {
-            approveClassName += " grey";
         }
         if (!this.isValid()) {
             approveClassName += " grey disabled";
@@ -153,16 +141,12 @@ export default class PublicLink extends React.Component {
                 {this.renderApproval(approval)}
                 <section className="buttons">
                     <a className="button" onClick={this.cancel}>
-                        {I18n.t("invitation.cancel")}
-                    </a>
-                    <a className={`button ${action === "deny" ? "blue" : "grey"}`}
-                       onClick={this.submit("deny")}>
-                        {I18n.t("invitation.deny")}
+                        {I18n.t("public_link.cancel")}
                     </a>
                     <a className={approveClassName}
                        href="#"
-                       onClick={this.submit("accept")}>
-                        {I18n.t("invitation.accept")}
+                       onClick={this.submit}>
+                        {I18n.t("public_link.accept")}
                     </a>
                 </section>
             </section>
@@ -171,14 +155,15 @@ export default class PublicLink extends React.Component {
 
     render() {
         const {
-            invitation, notFound, approval, loaded, confirmationDialogOpen, confirmationDialogAction,
+            team, notFound, approval, loaded, confirmationDialogOpen, confirmationDialogAction,
             confirmationQuestion, cancelDialogAction, leavePage
         } = this.state;
         if (!loaded) {
             return null;
         }
-        const validInvitation = !notFound && !invitation.accepted && !invitation.expired && !invitation.declined
-            && !invitation.alreadyMember;
+        const validPublicLink = !notFound && !team.alreadyMember;
+        const title = validPublicLink ? I18n.t("public_link.title", {name: team.name}) :
+            I18n.t("public_link.invalid_title");
         return (
             <div className="invitation">
                 <ConfirmationDialog isOpen={confirmationDialogOpen}
@@ -186,21 +171,19 @@ export default class PublicLink extends React.Component {
                                     confirm={confirmationDialogAction}
                                     question={confirmationQuestion}
                                     leavePage={leavePage}/>
-                <h2>{I18n.t("invitation.title", {name: invitation.teamName})}</h2>
-                <div className={`card ${validInvitation ? "" : "with-invalid"}`}>
-                    {!validInvitation && this.renderInvalidInvitation(invitation, notFound)}
+                <h2>{title}</h2>
+                <div className={`card ${validPublicLink ? "" : "with-invalid"}`}>
+                    {!validPublicLink && this.renderInvalidPublicLink(team, notFound)}
                     {!notFound &&
                     <section>
                         <section className="screen-divider">
-                            {this.renderTeam(invitation)}
-                            {this.renderInvitationRole(invitation.intendedRole)}
+                            {this.renderTeam(team)}
+                            {this.renderPublicLinkRole()}
                         </section>
                         <section className="screen-divider" style={{float: "right"}}>
-                            <InvitationInfo locale={I18n.locale} invitation={invitation}/>
+                            <PublicLinkInfo locale={I18n.locale} team={team}/>
                         </section>
-                        {!isEmpty(invitation.latestInvitationMessage.message) &&
-                        this.renderInvitationMessage(invitation.latestInvitationMessage.message)}
-                        {validInvitation && this.renderValidInvitation(invitation, approval, this.props.match.params.action) }
+                        {validPublicLink && this.renderValidPublicLink(team, approval) }
                     </section>}
                 </div>
             </div>

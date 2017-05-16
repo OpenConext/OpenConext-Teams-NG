@@ -20,7 +20,7 @@ public class PublicLinkController implements JoinRequestValidator, TeamValidator
     @Autowired
     private TeamRepository teamRepository;
 
-    @GetMapping("api/teams/public-links/{key}")
+    @GetMapping("api/teams/public-links/{publicLink}")
     public PublicLink publicLinkInfo(@PathVariable("publicLink") String publicLink, FederatedUser federatedUser) throws IOException, MessagingException {
         Team team = teamRepository.findByPublicLink(publicLink).orElseThrow(() ->
                 new ResourceNotFoundException(String.format("PublicLink %s not found", publicLink))
@@ -28,7 +28,7 @@ public class PublicLinkController implements JoinRequestValidator, TeamValidator
         return new PublicLink(team, federatedUser);
     }
 
-    @PutMapping("api/teams/public-links/{key}")
+    @PutMapping("api/teams/public-links/{publicLink}")
     public Object accept(@PathVariable("publicLink") String publicLink, FederatedUser federatedUser) throws IOException, MessagingException {
         Person person = federatedUser.getPerson();
         Team team = teamRepository.findByPublicLink(publicLink).orElseThrow(() ->

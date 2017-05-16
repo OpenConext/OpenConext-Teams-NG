@@ -137,6 +137,14 @@ export function deleteInvitation(id) {
     return fetchDelete("invitations/" + id);
 }
 
+export function getPublicLink(publicLink) {
+    return fetchJson("public-links/" + publicLink, {}, {}, false);
+}
+
+export function acceptPublicLink(publicLink) {
+    return postPutJson("public-links/" + publicLink, {}, "put");
+}
+
 export function linkExternalTeam(teamId, externalTeamIdentifier) {
     return postPutJson("external-teams/link", {id: teamId, externalTeamIdentifier: externalTeamIdentifier});
 }

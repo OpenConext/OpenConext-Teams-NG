@@ -118,6 +118,7 @@ I18n.translations.en = {
         link_to_institution_team: "Add",
         search_members_placeholder: "Search members",
         no_found: "No members found",
+        public_link: "Public Link",
         copy: "Copy to clipboard",
         copied: "Copied",
         one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team.",
@@ -276,6 +277,31 @@ I18n.translations.en = {
             accepted: "You have already accepted this invitation.",
             declined: "You have already declined this invitation.",
             expired: "This invitation is expired.",
+            already_member: "You are already a member of this team",
+            join_request: "join request",
+            join_request_1: " You can sent a ",
+            join_request_2: " if you want to become a member."
+        }
+    },
+    public_link: {
+        title: "Public link to join team '{{name}}'",
+        invalid_title: "Public link invalid",
+        team: {
+            name: "Team name",
+            description: "Description",
+            admins: "Administrators",
+            role: "Your future role"
+        },
+        cancel: "Cancel",
+        accept: "Accept",
+        share_info: "Share this information with the applications used by this team.",
+        approval_required: "You need to approve that the information may be shared",
+        flash: {
+            "accept": "You have successfully joined team {{name}}.",
+            "deny": "You have successfully cancelled the public link membership for team {{name}}."
+        },
+        invalid: {
+            not_found: "This public link is not a valid link for a public team.",
             already_member: "You are already a member of this team",
             join_request: "join request",
             join_request_1: " You can sent a ",

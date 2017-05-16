@@ -72,7 +72,7 @@ public class Team implements HashGenerator {
         this.description = StringUtils.hasText(description) ? description : null;
         this.viewable = viewable;
         this.personalNote = personalNote;
-        this.publicLink = generateHash();
+        this.publicLink = generateHash(32, "UTF-8");
     }
 
     public Optional<Membership> member(String urn) {

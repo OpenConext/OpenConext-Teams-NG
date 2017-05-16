@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
@@ -92,4 +93,30 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
         assertEquals(1, externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:riders").size());
     }
 
+    @Test
+    public void delinkTeamFromExternalTeamOrphanDelete() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:mdoe")
+                .body(new ExternalTeamProperties(2L, "urn:collab:group:example.org:name2"))
+                .when()
+                .put("api/teams/external-teams/delink")
+                .then()
+                .statusCode(SC_OK)
+                .body("externalTeams.size()", equalTo(0));
+
+        assertEquals(0, externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:giants").size());
+    }
+
+    @Test
+    public void delinkTeamFromExternalTeamInvalidExternalTeam() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+                .body(new ExternalTeamProperties(1L, "urn:collab:group:example.org:name9"))
+                .when()
+                .put("api/teams/external-teams/delink")
+                .then()
+                .statusCode(SC_NOT_FOUND);
+    }
 }
