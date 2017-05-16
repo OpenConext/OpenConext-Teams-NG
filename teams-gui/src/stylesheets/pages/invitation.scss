@@ -28,8 +28,11 @@
       background-color: $red;
       color: whitesmoke;
       font-size: 16px;
-      a:hover, a:visited {
+      a {
         color: whitesmoke;
+        &:hover, &:visited {
+          color: whitesmoke;
+        }
       }
     }
 

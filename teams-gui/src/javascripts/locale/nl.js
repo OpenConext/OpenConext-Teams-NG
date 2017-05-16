@@ -16,7 +16,7 @@ I18n.translations.nl = {
     },
 
     date: {
-        month_names: [null, "Januari", "February", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "October", "November", "December"]
+        month_names: ["Januari", "February", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "October", "November", "December"]
     },
 
     header: {
@@ -118,6 +118,7 @@ I18n.translations.nl = {
         link_to_institution_team: "Nieuw",
         search_members_placeholder: "Zoek leden",
         no_found: "Geen leden gevonden",
+        public_link: "Publieke link",
         copy: "Kopieer naar clipboard",
         copied: "Gekopieerd",
         one_admin_warning: "Je bent de enige admin in dit team. Het is beter vanwege back-up redenen om twee administrateurs in elk team te hebben.",
@@ -351,3 +352,5 @@ I18n.translations.nl = {
     }
 
 };
+
+export default I18n.translations.nl;

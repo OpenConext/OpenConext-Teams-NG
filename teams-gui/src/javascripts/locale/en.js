@@ -16,7 +16,7 @@ I18n.translations.en = {
     },
 
     date: {
-        month_names: [null, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        month_names: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     },
 
     header: {
@@ -351,3 +351,5 @@ I18n.translations.en = {
     }
 
 };
+
+export default I18n.translations.en;
