@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static teams.domain.Language.Dutch;
+import static teams.domain.Language.DUTCH;
 import static teams.domain.Role.ADMIN;
 
 public class InvitationTest implements Seed {
@@ -64,7 +64,7 @@ public class InvitationTest implements Seed {
     }
 
     private Invitation invitation(String email) throws UnsupportedEncodingException {
-        Invitation invitation = new Invitation(team(), email, ADMIN, Dutch, null);
+        Invitation invitation = new Invitation(team(), email, ADMIN, DUTCH, null);
         invitation.addInvitationMessage(person(), "Please join");
         return invitation;
     }

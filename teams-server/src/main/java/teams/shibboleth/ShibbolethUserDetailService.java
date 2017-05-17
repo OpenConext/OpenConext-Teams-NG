@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.AuthenticationUserDetailsSe
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import teams.domain.Feature;
 import teams.domain.ExternalTeam;
 import teams.domain.FederatedUser;
 import teams.domain.Person;
@@ -17,9 +18,9 @@ public class ShibbolethUserDetailService implements AuthenticationUserDetailsSer
     private final VootClient vootClient;
     private String groupNameContext;
     private String productName;
-    private Map<String, Boolean> featureToggles;
+    private Map<Feature, Boolean> featureToggles;
 
-    public ShibbolethUserDetailService(String groupNameContext, String  productName, VootClient vootClient, Map<String, Boolean> featureToggles) {
+    public ShibbolethUserDetailService(String groupNameContext, String  productName, VootClient vootClient, Map<Feature, Boolean> featureToggles) {
         this.groupNameContext = groupNameContext;
         this.vootClient = vootClient;
         this.productName = productName;

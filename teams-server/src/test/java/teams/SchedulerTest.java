@@ -41,7 +41,7 @@ public class SchedulerTest extends AbstractApplicationTest {
                 teamRepository.findOne(1L),
                 "test@test.org",
                 Role.ADMIN,
-                Language.Dutch,
+                Language.DUTCH,
                 null).addInvitationMessage(personRepository.findOne(1L), "Please join");
         ReflectionTestUtils.setField(invitation, "timestamp", System.currentTimeMillis() - TWO_WEEKS - (1000L * 3600));//1000L);
         invitationRepository.save(invitation);

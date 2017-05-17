@@ -17,13 +17,13 @@ public class FederatedUser extends User {
     private String productName;
     private Person person;
     private List<ExternalTeam> externalTeams;
-    private Map<String, Boolean> featureToggles;
+    private Map<Feature, Boolean> featureToggles;
 
     public FederatedUser(Person person,
                          String groupNameContext,
                          String productName,
                          List<ExternalTeam> externalTeams,
-                         Map<String, Boolean> featureToggles) {
+                         Map<Feature, Boolean> featureToggles) {
         super(person.getName(), "N/A", person.isGuest() ?
                 singletonList(new SimpleGrantedAuthority("ROLE_USER")) :
                 asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")));
@@ -36,5 +36,9 @@ public class FederatedUser extends User {
 
     public String getUrn() {
         return person.getUrn();
+    }
+
+    public boolean featureEnabled(Feature feature) {
+        return featureToggles.getOrDefault(feature, Boolean.FALSE);
     }
 }

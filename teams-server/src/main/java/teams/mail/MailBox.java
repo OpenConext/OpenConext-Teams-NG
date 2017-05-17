@@ -37,7 +37,7 @@ public class MailBox {
     public void sendInviteMail(Invitation invitation) throws MessagingException, IOException {
         String languageCode = invitation.getLanguage().getLanguageCode();
         String title = String.format("%s %s ",
-                languageCode.equals(Language.Dutch.getLanguageCode()) ? "Uitnodiging voor" : "Invitation for",
+                languageCode.equals(Language.DUTCH.getLanguageCode()) ? "Uitnodiging voor" : "Invitation for",
                 invitation.getTeam().getName());
 
         Map<String, Object> variables = new HashMap<>();

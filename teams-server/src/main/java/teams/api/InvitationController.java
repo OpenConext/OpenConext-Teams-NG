@@ -3,7 +3,6 @@ package teams.api;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import teams.FeatureToggles;
 import teams.api.validations.InvitationValidator;
 import teams.api.validations.MembershipValidator;
 import teams.domain.*;
@@ -15,9 +14,10 @@ import java.time.Instant;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static teams.domain.Feature.EXPIRY_DATE_MEMBERSHIP;
 
 @RestController
-public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator, FeatureToggles {
+public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator {
 
     @GetMapping("api/teams/invitations/{id}")
     public Invitation invitation(@PathVariable("id") Long id, FederatedUser federatedUser){
@@ -105,7 +105,7 @@ public class InvitationController extends ApiController implements MembershipVal
         Invitation invitation = doAcceptOrDeny(key, true, person);
         Team team = invitation.getTeam();
         Role role = person.isGuest() ? Role.MEMBER : invitation.getIntendedRole();
-        Instant expiryDate = isFeatureEnabled(federatedUser, EXPIRY_DATE_MEMBERSHIP) ? invitation.getExpiryDate() : null;
+        Instant expiryDate = federatedUser.featureEnabled(EXPIRY_DATE_MEMBERSHIP) ? invitation.getExpiryDate() : null;
         new Membership(role, team, person, expiryDate);
 
         return teamRepository.save(team);

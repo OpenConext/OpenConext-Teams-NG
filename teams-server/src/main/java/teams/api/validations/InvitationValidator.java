@@ -17,8 +17,6 @@ import static java.util.stream.Collectors.toList;
 
 public interface InvitationValidator {
 
-    Pattern emailPattern = Pattern.compile("\\S+@\\S+");
-
     default void validateClientInvitation(ClientInvitation clientInvitation) {
         List<String> emails = clientInvitation.getEmails();
         if (CollectionUtils.isEmpty(emails) && StringUtils.isEmpty(clientInvitation.getCsvEmails())) {
@@ -85,7 +83,7 @@ public interface InvitationValidator {
         List<String> fromFile = StringUtils.hasText(clientInvitation.getCsvEmails()) ?
                 Stream.of(clientInvitation.getCsvEmails().split(","))
                         .map(email -> email.trim().replaceAll("[\\t\\n\\r]", ""))
-                        .filter(email -> emailPattern.matcher(email).matches())
+                        .filter(email -> Invitation.emailPattern.matcher(email).matches())
                         .collect(toList()) : Collections.emptyList();
         List<String> fromInput = clientInvitation.getEmails();
         fromInput.addAll(fromFile);

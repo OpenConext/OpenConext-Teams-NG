@@ -29,7 +29,7 @@ export default class NewTeam extends React.Component {
             format: true,
             exists: false,
             approval: true,
-            language: "English",
+            language: "ENGLISH",
             confirmationDialogOpen: false,
             confirmationDialogAction: () => {
                 this.setState({confirmationDialogOpen: false});

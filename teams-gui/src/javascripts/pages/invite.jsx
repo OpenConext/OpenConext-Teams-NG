@@ -30,7 +30,7 @@ export default class Invite extends React.Component {
             fileName: "",
             fileInputKey: new Date().getMilliseconds(),
             intendedRole: "MEMBER",
-            language: "English",
+            language: "ENGLISH",
             expiryDate: undefined,
             message: "",
             roleOfCurrentUserInTeam: "MANAGER",
@@ -197,7 +197,7 @@ export default class Invite extends React.Component {
                            htmlFor="invitationLanguage">{I18n.t("invite.invitation_language")}</label>
                     <SelectLanguage onChange={this.handleInputChange("language")} language={language} disabled={readOnly} />
                 </div>
-                {this.props.currentUser.featureToggles["expiryDateMembership"] &&
+                {this.props.currentUser.featureToggles["EXPIRY_DATE_MEMBERSHIP"] &&
                 <div>
                     <label className="expiry-date"
                            htmlFor="expiryDate">{I18n.t("invite.expiry_date")}</label>

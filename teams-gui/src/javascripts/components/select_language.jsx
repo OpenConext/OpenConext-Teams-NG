@@ -6,7 +6,7 @@ import "react-select/dist/react-select.css";
 import nlFlag from "../../images/dutch_flag.png";
 import enFlag from "../../images/british_flag.png";
 
-const languageOptions = [{value: "Dutch", label: "Nederlands"}, {value: "English", label: "English"}];
+const languageOptions = [{value: "DUTCH", label: "Nederlands"}, {value: "ENGLISH", label: "English"}];
 
 export default class SelectLanguage extends React.Component {
 
@@ -14,7 +14,7 @@ export default class SelectLanguage extends React.Component {
     renderOption = option => {
         return (
             <span className="select-option">
-                {option.value === "English" ? <img src={enFlag}/> : <img src={nlFlag}/>}
+                {option.value === "ENGLISH" ? <img src={enFlag}/> : <img src={nlFlag}/>}
                 <span className="select-label">{option.label}</span>
             </span>
         );

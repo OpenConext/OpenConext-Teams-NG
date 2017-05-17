@@ -28,7 +28,8 @@ import static javax.persistence.FetchType.EAGER;
 @NoArgsConstructor
 public class Invitation implements HashGenerator{
 
-    private static final long TWO_WEEKS = 14L * 24L * 60L * 60L * 1000L;
+    private static final transient long TWO_WEEKS = 14L * 24L * 60L * 60L * 1000L;
+    public static final transient java.util.regex.Pattern emailPattern = java.util.regex.Pattern.compile("\\S+@\\S+");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

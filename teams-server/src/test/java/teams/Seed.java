@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
-import static teams.domain.Language.Dutch;
+import static teams.domain.Language.DUTCH;
 import static teams.domain.Role.ADMIN;
 
 public interface Seed {
@@ -50,7 +50,7 @@ public interface Seed {
 
     default InvitationMessage invitationMessage(String message) {
         return new InvitationMessage(
-                new Invitation(team(), "email", ADMIN, Dutch, null), person("urn"), message);
+                new Invitation(team(), "email", ADMIN, DUTCH, null), person("urn"), message);
     }
 
     default ClientInvitation clientInvitation(List<String> emails, String csvEmails) {
@@ -58,7 +58,7 @@ public interface Seed {
     }
 
     default ClientInvitation clientInvitation(List<String> emails, String csvEmails, Instant instant) {
-        return new ClientInvitation(1L, Role.MANAGER, emails, instant, "Message", csvEmails, Language.Dutch);
+        return new ClientInvitation(1L, Role.MANAGER, emails, instant, "Message", csvEmails, Language.DUTCH);
     }
 
     default JoinRequest joinRequest(String personUrn) {

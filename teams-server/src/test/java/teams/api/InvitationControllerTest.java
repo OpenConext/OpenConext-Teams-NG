@@ -50,12 +50,12 @@ public class InvitationControllerTest extends AbstractApplicationTest {
 
     @Test
     public void invitationNl() throws Exception {
-        doInvitation(Language.Dutch);
+        doInvitation(Language.DUTCH);
     }
 
     @Test
     public void invitationEn() throws Exception {
-        doInvitation(Language.English);
+        doInvitation(Language.ENGLISH);
     }
 
     private void doInvitation(Language language) throws UnsupportedEncodingException {
