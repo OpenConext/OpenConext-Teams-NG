@@ -17,7 +17,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
 
     @GetMapping("api/teams/join-requests/{id}")
     public JoinRequest joinRequest(@PathVariable("id") Long id, FederatedUser federatedUser) {
-        JoinRequest joinRequest = notNullGetJoinRequest(id, federatedUser);
+        JoinRequest joinRequest = notNullGetJoinRequest(id);
         validateJoinRequest(joinRequest, federatedUser);
         return joinRequest;
     }
