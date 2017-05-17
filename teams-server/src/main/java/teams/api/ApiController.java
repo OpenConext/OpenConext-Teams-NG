@@ -3,22 +3,21 @@ package teams.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
-import teams.domain.*;
+import teams.domain.Invitation;
+import teams.domain.Membership;
+import teams.domain.Person;
+import teams.domain.Team;
 import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
 import teams.mail.MailBox;
 import teams.repository.*;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.StreamSupport;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 
@@ -71,7 +70,7 @@ public abstract class ApiController {
             try {
                 mailBox.sendInviteMail(invitation);
             } catch (MessagingException | IOException e) {
-                throw new RuntimeException(e);
+                throw new IllegalArgumentException(e);
             }
         });
 

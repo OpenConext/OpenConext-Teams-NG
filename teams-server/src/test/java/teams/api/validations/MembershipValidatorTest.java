@@ -3,13 +3,12 @@ package teams.api.validations;
 import org.junit.Test;
 import teams.Seed;
 import teams.api.MembershipController;
-import teams.domain.*;
+import teams.domain.Membership;
+import teams.domain.Person;
+import teams.domain.Role;
+import teams.domain.Team;
 import teams.exception.IllegalJoinRequestException;
 import teams.exception.IllegalMembershipException;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 public class MembershipValidatorTest implements Seed {
 

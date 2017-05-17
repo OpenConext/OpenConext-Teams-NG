@@ -3,7 +3,7 @@ package teams.domain;
 import org.junit.Test;
 import teams.Seed;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TeamDetailsSummaryTest implements Seed{
 

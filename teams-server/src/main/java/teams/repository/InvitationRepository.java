@@ -8,9 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import teams.domain.Invitation;
-import teams.domain.JoinRequest;
-import teams.domain.Person;
-import teams.domain.Team;
 
 import javax.persistence.OptimisticLockException;
 import java.util.List;

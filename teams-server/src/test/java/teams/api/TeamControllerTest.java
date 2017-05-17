@@ -8,7 +8,6 @@ import teams.exception.IllegalMembershipException;
 import teams.exception.IllegalSearchParamException;
 import teams.exception.NotAllowedException;
 
-import java.util.List;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;

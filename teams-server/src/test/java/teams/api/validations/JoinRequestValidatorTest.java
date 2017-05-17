@@ -12,7 +12,7 @@ import teams.exception.IllegalMembershipException;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class JoinRequestValidatorTest implements Seed{
 

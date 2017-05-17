@@ -15,7 +15,6 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.util.stream.IntStream;
 
 import static com.icegreen.greenmail.util.GreenMailUtil.getBody;
 import static java.util.Collections.singletonList;

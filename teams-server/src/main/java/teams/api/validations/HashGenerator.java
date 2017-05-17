@@ -20,7 +20,7 @@ public interface HashGenerator {
         try {
             return URLEncoder.encode(base64, encoding).replaceAll("%", "");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 

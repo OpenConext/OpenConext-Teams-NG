@@ -9,7 +9,6 @@ import teams.domain.ExternalTeam;
 import teams.domain.ExternalTeamProperties;
 import teams.domain.Team;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +17,6 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.isEmptyString;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 

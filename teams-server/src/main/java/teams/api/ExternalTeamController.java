@@ -2,11 +2,12 @@ package teams.api;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import teams.api.validations.ExternalTeamValidator;
-import teams.api.validations.TeamValidator;
 import teams.domain.*;
-import teams.exception.IllegalLinkExternalTeamException;
 import teams.exception.ResourceNotFoundException;
 
 import java.util.List;

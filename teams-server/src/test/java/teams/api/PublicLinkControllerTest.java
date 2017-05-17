@@ -10,8 +10,7 @@ import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class PublicLinkControllerTest extends AbstractApplicationTest {

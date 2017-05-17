@@ -1,17 +1,14 @@
 package teams.voot;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
 import teams.Mocks;
 import teams.domain.ExternalTeam;
 
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static java.nio.charset.Charset.defaultCharset;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 

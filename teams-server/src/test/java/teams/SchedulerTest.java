@@ -3,13 +3,16 @@ package teams;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
-import teams.domain.*;
+import teams.domain.Invitation;
+import teams.domain.Language;
+import teams.domain.Membership;
+import teams.domain.Role;
 import teams.repository.MembershipRepository;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static teams.Scheduler.TWO_WEEKS;
 

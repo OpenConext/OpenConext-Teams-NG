@@ -5,7 +5,6 @@ import teams.AbstractApplicationTest;
 import teams.domain.*;
 
 import java.util.List;
-import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.*;

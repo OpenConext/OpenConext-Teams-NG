@@ -1,9 +1,7 @@
 package teams.api.validations;
 
 import org.junit.Test;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.multipart.MultipartFile;
 import teams.Seed;
 import teams.api.InvitationController;
 import teams.domain.*;

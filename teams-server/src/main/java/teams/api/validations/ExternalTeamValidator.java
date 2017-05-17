@@ -1,9 +1,10 @@
 package teams.api.validations;
 
-import teams.domain.*;
+import teams.domain.ExternalTeam;
+import teams.domain.FederatedUser;
+import teams.domain.Role;
+import teams.domain.Team;
 import teams.exception.IllegalLinkExternalTeamException;
-
-import java.util.List;
 
 public interface ExternalTeamValidator extends TeamValidator {
 

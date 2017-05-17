@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static javax.persistence.CascadeType.ALL;
 import static org.springframework.util.StringUtils.hasText;
 
 @Entity(name = "persons")

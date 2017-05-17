@@ -25,9 +25,7 @@ import teams.shibboleth.ShibbolethUserDetailService;
 import teams.shibboleth.mock.MockShibbolethFilter;
 import teams.voot.VootClient;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

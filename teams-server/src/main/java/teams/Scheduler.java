@@ -47,7 +47,7 @@ public class Scheduler {
                 int count = removeFunction.apply(argument);
                 LOG.info(String.format("Removed %s %s that were expired", count, clazz.getName()));
                 return count;
-            } catch (Throwable t) {
+            } catch (Throwable t) {//NOSONAR
                 //deliberate swallowing because otherwise the scheduler stops
                 LOG.error(String.format("Unexpected exception in removing expired %s", clazz.getName()), t);
                 return -1;

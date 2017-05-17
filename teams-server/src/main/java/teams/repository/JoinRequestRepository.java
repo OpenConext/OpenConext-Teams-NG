@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import teams.domain.JoinRequest;
 import teams.domain.Person;
-import teams.domain.Team;
 
 import java.util.List;
 

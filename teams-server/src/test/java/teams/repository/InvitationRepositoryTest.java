@@ -2,13 +2,14 @@ package teams.repository;
 
 import org.junit.Test;
 import teams.AbstractApplicationTest;
-import teams.domain.*;
+import teams.domain.Invitation;
+import teams.domain.Language;
+import teams.domain.Role;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 public class InvitationRepositoryTest extends AbstractApplicationTest {
 

@@ -7,10 +7,6 @@ import teams.domain.Team;
 import teams.exception.IllegalJoinRequestException;
 import teams.exception.IllegalMembershipException;
 
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-
 public interface MembershipValidator {
 
     default void membersCanNotChangeRoles(Role roleOfLoggedInPerson) {
