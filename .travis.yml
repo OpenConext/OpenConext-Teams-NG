@@ -1,26 +1,36 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 node_js:
-  - "7"
+- '7'
 services:
-  - mysql
+- mysql
 cache:
   yarn: true
   directories:
-    - node_modules
+  - node_modules
 before_install:
-  - pip install --user codecov
-  - nvm install 7
-  - npm install -g yarn
-  - yarn install
+- pip install --user codecov
+- nvm install 7
+- npm install -g yarn
+- yarn install
 install:
-  - cd teams-gui && yarn install && cd ..
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+- cd teams-gui && yarn install && cd ..
+- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 before_script:
-  - mysql -e "create database IF NOT EXISTS teams_ng; grant all on teams_ng.* to 'root';SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;" -uroot
+- mysql -e "create database IF NOT EXISTS teams_ng; grant all on teams_ng.* to 'root';SET
+  GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;" -uroot
+addons:
+  sonarqube:
+    organization: "oharsta-github" # the key of the org you chose at step #3
+    token:
+      secure: "nSHiOPNuX4Wb7gpR5TbWWShcaCciYit98EQ5gdOQHHBoFjaeyKz1x8z4o3qcxLpe7K8+HUInt/eMzxPZ2x3xgfmTEnEECJdx+41n74hxF2782iZcb7iwIPZ3BIgLPZ/mOMUkPe4rRWNSWuTPPYplose1JEkAisi/nQQbpBzxL5WcC54M/IxDJSnJjMYo3utv4Gtv2YIwWNdJXaU4gClt3p7Lwth/xBvY7lGZX+7LskfRVRo2GTtsPJ05nvoe+gLJ8/20bh/l1zexd8l61BFjXEJhPGNTmirTcbqxK0HHr81ku68wjH2i2oQ0Z1QkOwXBBwsWPAlZGS1eEYDf7vOl/u5O4LQ6BP5DgI+hH78liGXiR0iJ4VN8n3O/GUZDqvQfU+rd0lHqqlBR91IxUstBNu4eHelSkxh0exkKGJFFkCkJIteICuVz3DuP9YtbxdnGZheqiSQ55PV9PgloLsy3Sf1H9PPKQBeaONUO7DEiYzHbpth6dLjeUvPSlHFwq2iw8EPJ7Yr7OxH5Wivpb5Svk5UnrpBJGd7caZkI7CMSJiJQTRyWuzvrftqkshqBP89ttenET+9EuUl13BHqDM10thDFiidp35JEEPlamGTeW0sC1ofSCjQw/uj4h8yvX0zmDI3XWzyCXWDWroM4N2WyhauLyKfMfInSv76YRvBOvwc="
 script:
-  - mvn test
-  - cd teams-gui && yarn install && yarn run lint && yarn test
+- mvn test
+- cd teams-gui && yarn install && yarn run lint && yarn test
+- sonar-scanner
 after_success:
-  - codecov
+- codecov
+env:
+  global:
+    secure: eeO3v8QlhYq9EuJMnZEelJ+RcJF5+2x4tt6fA/qwbOyWSxXVwVyU8ZF5RZDrQlqgClKYwzRXwKq+31k9VCmR/llwkKWvd+mbC1hD4hTLg9NLo5+mc6N+l+KwroviuXUeAXyX34nZrH/EiVliRN47cPSZ4MBA1DO3TsbcE7VfxS52GV4hsIuXK/T0GLrlmtUmr2Hspo8z2t+2AJn48Xw4x94IcPicJ1HRGDjDvN/Hst25fF8ZOgVFnJC4GieUSHYhm0aw9ZkYRBYBDyV7UQsvsxgavVUQGwUVFZT+Xfjuy4d7is1jnLBYjllwDXuUU9cRy9mnsOHbG/RY6NOaiVk1vsr1IXm2Rxnt5cBi2rvLiUYwLstNVL6xZFj6iuCl1FQXlOj4LM15Ua7Ky6mJOi/Fp5w1J3nbvFMSjSF5Md2JIgYV0yQBLVSf1qL/GR/fqVVXgsoIqLYTQpQTi1oIjyAl3VW7I3SgMyTw2xfkB0ucinQxibW5D2xMB6sNgj9MEef+e1benNxQ+tBGVbTWBMQC/Q2Y9DNQda4sRfMGVHQ0dH0CF9RfwGSvvO5GEcCJXEyruwLQ4fJx2r1fqP7yN0/fOhriF3cNSe7V6FmtRS2P17YxCQFBC0ecdFLblyxkzedowKOu9ACiXcDxRfV3a1qSd+d49ANgNRTvbi4rQZEpGRQ=
