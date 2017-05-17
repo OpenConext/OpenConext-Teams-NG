@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/OpenConext/OpenConext-Teams-NG.svg?branch=master)](https://travis-ci.org/OpenConext/OpenConext-Teams-NG)
 [![codecov.io](https://codecov.io/github/OpenConext/OpenConext-Teams-NG/coverage.svg)](https://codecov.io/github/OpenConext/OpenConext-Teams-NG)
-[![Sonar](https://sonarqube.com/api/badges/gate?key=openconext%3Ateams)](https://sonarqube.com/dashboard/index/openconext:teams)
+[![Sonar](https://sonarqube.com/api/badges/gate?key=openconext%3Ateams-ng)](https://sonarqube.com/dashboard/index/openconext:teams-ng)
 
 ## License
 
