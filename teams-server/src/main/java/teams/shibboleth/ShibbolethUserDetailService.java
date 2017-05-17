@@ -10,23 +10,26 @@ import teams.domain.Person;
 import teams.voot.VootClient;
 
 import java.util.List;
+import java.util.Map;
 
 public class ShibbolethUserDetailService implements AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> {
 
     private final VootClient vootClient;
     private String groupNameContext;
     private String productName;
+    private Map<String, Boolean> featureToggles;
 
-    public ShibbolethUserDetailService(String groupNameContext, String  productName, VootClient vootClient) {
+    public ShibbolethUserDetailService(String groupNameContext, String  productName, VootClient vootClient, Map<String, Boolean> featureToggles) {
         this.groupNameContext = groupNameContext;
         this.vootClient = vootClient;
         this.productName = productName;
+        this.featureToggles = featureToggles;
     }
 
     @Override
     public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken authentication) throws UsernameNotFoundException {
         Person person = Person.class.cast(authentication.getPrincipal());
         List<ExternalTeam> externalTeams = vootClient.teams(person.getUrn());
-        return new FederatedUser(person, groupNameContext, productName, externalTeams);
+        return new FederatedUser(person, groupNameContext, productName, externalTeams, featureToggles);
     }
 }

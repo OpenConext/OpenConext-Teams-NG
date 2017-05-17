@@ -7,6 +7,9 @@ logging:
 #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 #    org.hibernate.event: TRACE
 
+feature-toggles:
+  expiry-date-membership: false
+
 security:
   user:
     name: user

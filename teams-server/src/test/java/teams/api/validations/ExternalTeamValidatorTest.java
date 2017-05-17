@@ -68,7 +68,7 @@ public class ExternalTeamValidatorTest implements Seed {
     @Test
     public void externalTeamFromFederatedUser() throws Exception {
         FederatedUser federatedUser = new FederatedUser(person("urn"), "nope", "OC",
-                singletonList(externalTeam("identifier")));
+                singletonList(externalTeam("identifier")), Collections.emptyMap());
         ExternalTeam externalTeam = subject.externalTeamFromFederatedUser(federatedUser, "identifier");
         assertNotNull(externalTeam);
     }
@@ -76,7 +76,7 @@ public class ExternalTeamValidatorTest implements Seed {
     @Test(expected = IllegalLinkExternalTeamException.class)
     public void externalTeamFromFederatedUserNotMember() throws Exception {
         FederatedUser federatedUser = new FederatedUser(person("urn"), "nope", "OC",
-                singletonList(externalTeam("nope")));
+                singletonList(externalTeam("nope")), Collections.emptyMap());
         ExternalTeam externalTeam = subject.externalTeamFromFederatedUser(federatedUser, "identifier");
         assertNotNull(externalTeam);
     }

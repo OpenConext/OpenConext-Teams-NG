@@ -40,7 +40,8 @@ public interface Seed {
     }
 
     default FederatedUser federatedUser(String urn) {
-        return new FederatedUser(person(urn), "urn:collab:group:dev.surfteams.nl:", "OpenConext", Collections.emptyList());
+        return new FederatedUser(person(urn), "urn:collab:group:dev.surfteams.nl:",
+                "OpenConext", Collections.emptyList(), Collections.emptyMap());
     }
 
     default FederatedUser federatedUser() {

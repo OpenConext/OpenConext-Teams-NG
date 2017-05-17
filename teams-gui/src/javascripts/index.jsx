@@ -85,7 +85,7 @@ class App extends React.Component {
                                         render={props => <NewTeam currentUser={currentUser} {...props}/>}/>
                         <ProtectedRoute path="/invite/:teamId/:id?"
                                         guest={currentUser.person.guest}
-                                        render={props => <Invite {...props}/>}/>
+                                        render={props => <Invite currentUser={currentUser} {...props}/>}/>
                         <Route component={NotFound}/>
                     </Switch>
                     <Footer />

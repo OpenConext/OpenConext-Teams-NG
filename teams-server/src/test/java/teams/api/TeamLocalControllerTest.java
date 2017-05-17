@@ -38,7 +38,8 @@ public class TeamLocalControllerTest implements Seed {
 
         List<TeamAutocomplete> teamAutocompletes = teamController.
                 teamSearch("test",
-                        new FederatedUser(person(), "urn:collab:group:dev.surfteams.nl:", "OpenConext", Collections.emptyList()));
+                        new FederatedUser(person(), "urn:collab:group:dev.surfteams.nl:",
+                                "OpenConext", Collections.emptyList(), Collections.emptyMap()));
         assertEquals(seed.size(), teamAutocompletes.size());
 
         IntStream.range(0, seed.size())

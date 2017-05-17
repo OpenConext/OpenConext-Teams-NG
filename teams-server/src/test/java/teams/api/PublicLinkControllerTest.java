@@ -57,4 +57,13 @@ public class PublicLinkControllerTest extends AbstractApplicationTest {
         assertTrue(membership.isPresent());
     }
 
+    @Test
+    public void acceptNotFound() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .when()
+                .put("api/teams/public-links/{publicLink}", "nope")
+                .then()
+                .statusCode(SC_NOT_FOUND);
+    }
 }

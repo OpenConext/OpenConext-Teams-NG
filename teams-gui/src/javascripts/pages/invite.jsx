@@ -197,6 +197,7 @@ export default class Invite extends React.Component {
                            htmlFor="invitationLanguage">{I18n.t("invite.invitation_language")}</label>
                     <SelectLanguage onChange={this.handleInputChange("language")} language={language} disabled={readOnly} />
                 </div>
+                {this.props.currentUser.featureToggles["expiryDateMembership"] &&
                 <div>
                     <label className="expiry-date"
                            htmlFor="expiryDate">{I18n.t("invite.expiry_date")}</label>
@@ -207,7 +208,7 @@ export default class Invite extends React.Component {
                                 minDate={moment().add(1, "days")}
                                 locale={I18n.locale}
                                 disabled={readOnly}/>
-                </div>
+                </div>}
             </section>
         );
     };
@@ -271,5 +272,6 @@ export default class Invite extends React.Component {
 
 Invite.propTypes = {
     match: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired
 };

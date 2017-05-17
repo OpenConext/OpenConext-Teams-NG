@@ -18,13 +18,16 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import teams.FeatureToggles;
 import teams.repository.PersonRepository;
 import teams.shibboleth.ShibbolethPreAuthenticatedProcessingFilter;
 import teams.shibboleth.ShibbolethUserDetailService;
 import teams.shibboleth.mock.MockShibbolethFilter;
 import teams.voot.VootClient;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -60,7 +63,7 @@ public class SecurityConfig {
     }
 
     @Configuration
-    public static class SecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+    public static class SecurityConfigurationAdapter extends WebSecurityConfigurerAdapter implements FeatureToggles {
 
         @Autowired
         private PersonRepository personRepository;
@@ -80,10 +83,14 @@ public class SecurityConfig {
         @Value("${teams.product-name}")
         private String productName;
 
+        @Value("${feature-toggles.expiry-date-membership}")
+        private boolean expiryDateMembership;
+
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             PreAuthenticatedAuthenticationProvider authenticationProvider = new PreAuthenticatedAuthenticationProvider();
-            authenticationProvider.setPreAuthenticatedUserDetailsService(new ShibbolethUserDetailService(groupNameContext,productName, vootClient));
+            authenticationProvider.setPreAuthenticatedUserDetailsService(
+                    new ShibbolethUserDetailService(groupNameContext,productName, vootClient, featureToggles(expiryDateMembership)));
             auth.authenticationProvider(authenticationProvider);
         }
 

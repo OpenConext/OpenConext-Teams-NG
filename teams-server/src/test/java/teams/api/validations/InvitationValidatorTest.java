@@ -68,14 +68,16 @@ public class InvitationValidatorTest implements Seed {
         Invitation invitation = invitation(false, false);
         invitation.addInvitationMessage(person("urn"), "Please join");
         subject.mustBeTeamAdminOrManager(invitation,
-                new FederatedUser(person("urn"), "urn:collab:group:dev.surfteams.nl:", "OpenConext", Collections.emptyList()));
+                new FederatedUser(person("urn"), "urn:collab:group:dev.surfteams.nl:",
+                        "OpenConext", Collections.emptyList(), Collections.emptyMap()));
     }
 
     @Test(expected = NotAllowedException.class)
     public void mustBeTeamAdminOrManager() throws UnsupportedEncodingException {
         Invitation invitation = invitation(false, false);
         FederatedUser federatedUser =
-                new FederatedUser(person("urn"), "urn:collab:group:dev.surfteams.nl:", "OpenConext",Collections.emptyList());
+                new FederatedUser(person("urn"), "urn:collab:group:dev.surfteams.nl:",
+                        "OpenConext",Collections.emptyList(), Collections.emptyMap());
         membership(Role.MEMBER, invitation.getTeam(), federatedUser.getPerson());
         invitation.addInvitationMessage(person("urn"), "Please join");
 
