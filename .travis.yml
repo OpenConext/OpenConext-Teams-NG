@@ -28,7 +28,7 @@ addons:
 script:
 - mvn test
 - cd teams-gui && yarn install && yarn run lint && yarn test
-- sonar-scanner
+- sonar-scanner -Dproject.settings=./sonar-project.properties
 after_success:
 - codecov
 env:
