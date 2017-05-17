@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.toList;
 public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator, FeatureToggles {
 
     @GetMapping("api/teams/invitations/{id}")
-    public Invitation invitation(@PathVariable("id") Long id, FederatedUser federatedUser) throws IOException, MessagingException {
+    public Invitation invitation(@PathVariable("id") Long id, FederatedUser federatedUser){
         Invitation invitation = invitationRepository.findById(id);
 
         assertNotNull(Invitation.class.getSimpleName(), invitation, id);
@@ -64,7 +64,7 @@ public class InvitationController extends ApiController implements MembershipVal
 
         invitationRepository.delete(invitation);
 
-        LOG.info("Deleted invitation for team {} and person {}",
+        log.info("Deleted invitation for team {} and person {}",
                 invitation.getTeam().getUrn(), federatedUser.getUrn());
     }
 
@@ -84,7 +84,7 @@ public class InvitationController extends ApiController implements MembershipVal
 
         mailBox.sendInviteMail(invitation);
 
-        LOG.info("Resend invitation for team {} and person {}",
+        log.info("Resend invitation for team {} and person {}",
                 invitation.getTeam().getUrn(), federatedUser.getUrn());
 
         return invitation;
@@ -112,7 +112,7 @@ public class InvitationController extends ApiController implements MembershipVal
     }
 
     @PutMapping("api/teams/invitations/deny/{key}")
-    public Invitation deny(@PathVariable("key") String key, FederatedUser federatedUser) throws IOException, MessagingException {
+    public Invitation deny(@PathVariable("key") String key, FederatedUser federatedUser) {
         return doAcceptOrDeny(key, false, federatedUser.getPerson());
     }
 
@@ -120,7 +120,7 @@ public class InvitationController extends ApiController implements MembershipVal
         Invitation invitation = getInvitationByHash(key, person);
         invitation.accepted(accepted);
 
-        LOG.info("Invitation {} for team {} and person {}",
+        log.info("Invitation {} for team {} and person {}",
                 accepted ? "Accepted" : "Denied", invitation.getTeam().getUrn(), person.getUrn());
 
         return invitationRepository.save(invitation);

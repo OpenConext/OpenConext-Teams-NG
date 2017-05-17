@@ -18,6 +18,8 @@ import java.util.Map;
 
 public class MailBox {
 
+    private static final String TITLE = "title";
+
     private JavaMailSender mailSender;
     private String baseUrl;
     private String emailFrom;
@@ -39,7 +41,7 @@ public class MailBox {
                 invitation.getTeam().getName());
 
         Map<String, Object> variables = new HashMap<>();
-        variables.put("title", title);
+        variables.put(TITLE, title);
         variables.put("invitation", invitation);
         variables.put("invitationMessage", invitation.getLatestInvitationMessage());
         variables.put("baseUrl", baseUrl);
@@ -52,7 +54,7 @@ public class MailBox {
 
     public void sendJoinRequestMail(JoinRequest joinRequest, List<String> admins) throws MessagingException, IOException {
         Map<String, Object> variables = new HashMap<>();
-        variables.put("title", productName);
+        variables.put(TITLE, productName);
         variables.put("joinRequest", joinRequest);
         variables.put("baseUrl", baseUrl);
         sendMail(
@@ -72,7 +74,7 @@ public class MailBox {
 
     private void doSendJoinRequestAcceptedOrRejected(JoinRequest joinRequest, String subject, String emailTemplate) throws MessagingException, IOException {
         Map<String, Object> variables = new HashMap<>();
-        variables.put("title", productName);
+        variables.put(TITLE, productName);
         variables.put("joinRequest", joinRequest);
         sendMail(
                 String.format("mail_templates/%s", emailTemplate),

@@ -54,7 +54,7 @@ public class ExternalTeamController extends ApiController implements ExternalTea
         team.getExternalTeams().add(externalTeam);
         externalTeam.getTeams().add(team);
 
-        LOG.info("Team {} linked to external team {} by {}", team.getUrn(), externalTeamIdentifier, federatedUserUrn);
+        log.info("Team {} linked to external team {} by {}", team.getUrn(), externalTeamIdentifier, federatedUserUrn);
 
         return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
     }
@@ -81,7 +81,7 @@ public class ExternalTeamController extends ApiController implements ExternalTea
         team.getExternalTeams().remove(externalTeam);
         externalTeam.getTeams().remove(team);
 
-        LOG.info("Team {} de-linked from external team {} by {}", team.getUrn(), externalTeam.getIdentifier(), federatedUserUrn);
+        log.info("Team {} de-linked from external team {} by {}", team.getUrn(), externalTeam.getIdentifier(), federatedUserUrn);
 
         Team teamSaved = teamRepository.save(team);
         if (externalTeam.getTeams().isEmpty()) {

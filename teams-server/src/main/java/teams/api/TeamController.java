@@ -39,7 +39,7 @@ public class TeamController extends ApiController implements TeamValidator {
                 .stream()
                 .map(team -> new TeamSummary(team, federatedUser, false))
                 .collect(toList());
-        List<Long> teamIds = teamSummaries.stream().filter(teamSummary -> isAllowedToAcceptJoinRequest(teamSummary))
+        List<Long> teamIds = teamSummaries.stream().filter(this::isAllowedToAcceptJoinRequest)
                 .map(TeamSummary::getId).collect(toList());
 
         List<JoinRequest> myJoinRequests = joinRequestRepository.findByPerson(federatedUser.getPerson());
@@ -48,7 +48,7 @@ public class TeamController extends ApiController implements TeamValidator {
         joinRequestsCountFromQuery(joinRequestRepository.countJoinRequestsByTeamId(teamIds), teamSummaries);
 
         List<PendingJoinRequest> pendingJoinRequests = myJoinRequests.stream()
-                .map(joinRequest -> new PendingJoinRequest(joinRequest))
+                .map(PendingJoinRequest::new)
                 .collect(toList());
 
         return new MyTeams(pendingJoinRequests, teamSummaries);
@@ -102,7 +102,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
         Team savedTeam = teamRepository.save(team);
 
-        LOG.info("Team {} created by {}", urn, federatedUser.getUrn());
+        log.info("Team {} created by {}", urn, federatedUser.getUrn());
 
         if (StringUtils.hasText(teamProperties.getEmail())) {
             Invitation invitation = new Invitation(
@@ -137,7 +137,7 @@ public class TeamController extends ApiController implements TeamValidator {
         team.setViewable(teamProperties.isViewable());
         team.setPersonalNote(teamProperties.getPersonalNote());
 
-        LOG.info("Team {} updated by {}", team.getUrn(), federatedUserUrn);
+        log.info("Team {} updated by {}", team.getUrn(), federatedUserUrn);
 
         return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
     }
@@ -155,7 +155,7 @@ public class TeamController extends ApiController implements TeamValidator {
         externalTeams.forEach(externalTeam -> removeTeamFromExternalTeam(externalTeam, team));
 
         teamRepository.delete(team);
-        LOG.info("Team {} deleted by {}", team.getUrn(), federatedUserUrn);
+        log.info("Team {} deleted by {}", team.getUrn(), federatedUserUrn);
     }
 
     private void removeTeamFromExternalTeam(ExternalTeam externalTeam, Team team) {

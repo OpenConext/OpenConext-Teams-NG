@@ -13,7 +13,7 @@ public class TeamDetailsSummary extends TeamSummary {
     public TeamDetailsSummary(Team team, FederatedUser user) {
         super(team, user, false);
         team.getMemberships().forEach(membership -> membership.getPerson().isValid());
-        team.getExternalTeams().forEach(externalTeam -> externalTeam.getIdentifier());
+        team.getExternalTeams().forEach(ExternalTeam::getIdentifier);
         this.memberships = team.getMemberships();
         this.externalTeams = team.getExternalTeams();
     }

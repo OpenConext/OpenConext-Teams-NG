@@ -32,13 +32,13 @@ public class MembershipController extends ApiController implements MembershipVal
         canNotUpgradeToMoreImportantThenYourself(roleOfLoggedInPerson, futureRole);
         oneAdminIsRequired(team, person, futureRole);
 
-        LOG.info("Changing current {} membership of {} in team {} to {} by {}",
+        log.info("Changing current {} membership of {} in team {} to {} by {}",
                 membership.getRole(), person.getUrn(), team.getUrn(), futureRole, federatedUser.getUrn());
 
         membership.setRole(futureRole);
         membershipRepository.save(membership);
 
-        LOG.info("Changed membership for team {} and person {} from {} to {}",
+        log.info("Changed membership for team {} and person {} from {} to {}",
                 team.getUrn(), person.getUrn(), membership.getRole(), futureRole);
 
         return membership;
@@ -63,7 +63,7 @@ public class MembershipController extends ApiController implements MembershipVal
         team.getMemberships().remove(membership);
         membershipRepository.delete(membership);
 
-        LOG.info("Deleted current {} membership of {} in team {} by {}",
+        log.info("Deleted current {} membership of {} in team {} by {}",
                 membership.getRole(), person.getUrn(), team.getUrn(), federatedUser.getUrn());
     }
 }

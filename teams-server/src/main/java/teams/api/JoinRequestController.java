@@ -43,7 +43,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
 
         mailBox.sendJoinRequestMail(joinRequest, admins);
 
-        LOG.info("Created joinRequest for team {} and person {}", team.getUrn(), person.getUrn());
+        log.info("Created joinRequest for team {} and person {}", team.getUrn(), person.getUrn());
 
         return joinRequest;
     }
@@ -63,7 +63,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
         mailBox.sendJoinRequestAccepted(joinRequest);
         joinRequestRepository.delete(joinRequest);
 
-        LOG.info("Approved joinRequest for team {} and person {} by {}",
+        log.info("Approved joinRequest for team {} and person {} by {}",
                 team.getUrn(), person.getUrn(), federatedUser.getUrn());
 
         return newMembership;
@@ -76,28 +76,28 @@ public class JoinRequestController extends ApiController implements MembershipVa
         mailBox.sendJoinRequestRejected(joinRequest);
         joinRequestRepository.delete(joinRequest);
 
-        LOG.info("Rejected joinRequest for team {} and person {} by {}",
+        log.info("Rejected joinRequest for team {} and person {} by {}",
                 joinRequest.getTeam().getUrn(), joinRequest.getPerson().getUrn(), federatedUser.getUrn());
     }
 
     @DeleteMapping("api/teams/join-requests/{id}")
     public void delete(@PathVariable("id") Long id, FederatedUser federatedUser) {
-        JoinRequest joinRequest = notNullGetJoinRequest(id, federatedUser);
+        JoinRequest joinRequest = notNullGetJoinRequest(id);
 
         validateJoinRequest(joinRequest, federatedUser);
 
-        LOG.info("Deleted joinRequest for team {} and person {}", joinRequest.getTeam().getUrn(), federatedUser.getUrn());
+        log.info("Deleted joinRequest for team {} and person {}", joinRequest.getTeam().getUrn(), federatedUser.getUrn());
         joinRequestRepository.delete(joinRequest);
     }
 
-    private JoinRequest notNullGetJoinRequest(Long id, FederatedUser federatedUser) {
+    private JoinRequest notNullGetJoinRequest(Long id) {
         JoinRequest joinRequest = joinRequestRepository.findOne(id);
         assertNotNull(JoinRequest.class.getSimpleName(), joinRequest, id);
         return joinRequest;
     }
 
     private JoinRequest notNullGetJoinRequestValidateMembership(Long id, FederatedUser federatedUser) {
-        JoinRequest joinRequest = notNullGetJoinRequest(id, federatedUser);
+        JoinRequest joinRequest = notNullGetJoinRequest(id);
 
         Membership membership = membership(joinRequest.getTeam(), federatedUser.getUrn());
         membersCanNotApproveJoinRequests(membership.getRole());

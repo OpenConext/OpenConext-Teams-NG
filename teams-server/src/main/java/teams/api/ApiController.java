@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toList;
 
 public abstract class ApiController {
 
-    protected final Logger LOG = LoggerFactory.getLogger(getClass());
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     protected TeamRepository teamRepository;
@@ -64,7 +64,7 @@ public abstract class ApiController {
     protected List<Invitation> saveAndSendInvitation(List<Invitation> invitations, Team team, Person person) throws IOException, MessagingException {
         Iterable<Invitation> saved = invitationRepository.save(invitations);
 
-        LOG.info("Created invitation for team {} and person {}", team.getUrn(), person.getUrn());
+        log.info("Created invitation for team {} and person {}", team.getUrn(), person.getUrn());
 
         saved.forEach(invitation -> {
             try {
