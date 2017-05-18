@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import teams.domain.ExternalTeam;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -24,6 +25,9 @@ public class MockVootClient extends VootClient{
 
     @Override
     public List<ExternalTeam> teams(String personUrn) {
+        if (personUrn.equals("urn:collab:person:surfnet.nl:rdoe")) {
+            return Collections.emptyList();
+        }
         List<ExternalTeam> externalTeams = IntStream.range(1, 11).mapToObj(i -> new ExternalTeam(
                 "description " + i,
                 "mock-group-provider",

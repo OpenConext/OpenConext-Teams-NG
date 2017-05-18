@@ -264,6 +264,7 @@ I18n.translations.nl = {
         deny: "Weiger",
         deny_confirmation: "Weet je zeker dat je deze uitnodiging wilt weigeren?",
         accept: "Accepteer",
+        denied: "geweigerd",
         share_info: "Deel deze informatie met de applicaties gebruikt door dit team.",
         approval_required: "Je moet toestemming verlenen om deze informatie te delen.",
         message: "Bericht",

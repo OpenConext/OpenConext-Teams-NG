@@ -261,9 +261,10 @@ I18n.translations.en = {
             role: "Your future role"
         },
         cancel: "Cancel",
-        deny: "Deny",
+        deny: "Decline",
         deny_confirmation: "Are you sure you want to decline this invitation?",
         accept: "Accept",
+        denied: "declined",
         share_info: "Share this information with the applications used by this team.",
         approval_required: "You need to approve that the information may be shared",
         message: "Message",

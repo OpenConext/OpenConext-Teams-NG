@@ -10,6 +10,7 @@ import teams.api.validations.ExternalTeamValidator;
 import teams.domain.*;
 import teams.exception.ResourceNotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,9 @@ public class ExternalTeamController extends ApiController implements ExternalTea
     public Map<String, List<LinkedTeamInfo>> linkedTeams(FederatedUser federatedUser) {
         List<String> externalTeamIdentifiers = federatedUser.getExternalTeams().stream()
                 .map(ExternalTeam::getIdentifier).collect(toList());
+        if (externalTeamIdentifiers.isEmpty()) {
+            return Collections.emptyMap();
+        }
         List<Object[]> teamsByExternalTeamIdentifiers = externalTeamRepository
                 .findTeamsByExternalTeamIdentifiers(externalTeamIdentifiers);
 

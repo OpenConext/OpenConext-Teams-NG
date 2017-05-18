@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import static java.lang.String.format;
+import static java.util.stream.Collectors.toList;
 
 public interface TeamValidator {
 
@@ -33,8 +34,11 @@ public interface TeamValidator {
         if (role.equals(Role.MEMBER)) {
             return new TeamDetailsSummary(team, user);
         }
-        team.getInvitations().forEach(
-                invitation -> invitation.getInvitationMessages().forEach(InvitationMessage::getMessage));
+        team.getInvitations().stream()
+                .filter(invitation -> !invitation.isAccepted())
+                .collect(toList())
+                //lazy load messages
+                .forEach(invitation -> invitation.getInvitationMessages().forEach(InvitationMessage::getMessage));
         team.getJoinRequests().forEach(joinRequest -> joinRequest.getPerson().isValid());
         team.getExternalTeams().forEach(ExternalTeam::getIdentifier);
         return team;

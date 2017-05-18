@@ -15,8 +15,7 @@ import java.util.Set;
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
@@ -36,6 +35,16 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
                 .statusCode(SC_OK)
                 .body("'urn:collab:group:example.org:name1'.name", hasItems("riders"))
                 .body("'urn:collab:group:example.org:name2'.name", hasItems("riders", "giants"));
+    }
+
+    @Test
+    public void linkedTeamsWithNoExternalTeams() throws Exception {
+        String body = given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:rdoe")
+                .when()
+                .get("api/teams/external-teams/linked-teams").asString();
+        assertEquals("{}", body);
     }
 
     @Test

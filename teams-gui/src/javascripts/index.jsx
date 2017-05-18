@@ -118,19 +118,20 @@ App.propTypes = {
     moment.locale(I18n.locale);
 })();
 
-getUser().catch(e => {
-    if (document.location.href.indexOf("guid") > -1) {
-        render(<ServerError />, document.getElementById("app"));
-        throw e;
-    }
-    //302 redirects from Shib are cached by the browser. We force a one-time reload
-    const guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
-    document.location = document.location + "?guid=" + guid;
-    throw e;
-}).then(currentUser => {
-    if (!currentUser) {
-        render(<ServerError />, document.getElementById("app"));
-    } else {
-        render(<App currentUser={currentUser}/>, document.getElementById("app"));
-    }
-});
+getUser()
+    .catch(() => {
+        if (document.location.href.indexOf("guid") > -1) {
+            render(<ServerError />, document.getElementById("app"));
+        } else {
+            //302 redirects from Shib are cached by the browser. We force a one-time reload
+            const guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+            document.location = document.location + "?guid=" + guid;
+        }
+    })
+    .then(currentUser => {
+        if (!currentUser) {
+            render(<ServerError />, document.getElementById("app"));
+        } else {
+            render(<App currentUser={currentUser}/>, document.getElementById("app"));
+        }
+    });
