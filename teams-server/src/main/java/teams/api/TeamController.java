@@ -75,7 +75,7 @@ public class TeamController extends ApiController implements TeamValidator {
                 .map(arr -> new TeamAutocomplete(
                         arr[0].toString(),
                         Long.valueOf(arr[1].toString()),
-                        arr[2].toString(),
+                        arr[2] != null ? arr[2].toString() : "",
                         (arr.length == 4 && arr[3] != null) ? arr[3].toString() : null))
                 .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), query.toLowerCase()))
                 .collect(toList());

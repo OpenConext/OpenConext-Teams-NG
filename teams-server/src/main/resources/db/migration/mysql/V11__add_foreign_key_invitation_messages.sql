@@ -19,10 +19,18 @@ ALTER TABLE invitations
 ALTER TABLE invitation_message
   ADD person_id MEDIUMINT;
 
+UPDATE invitation_message im INNER JOIN persons p
+    ON p.name = im.inviter
+SET im.inviter = p.urn;
+
 UPDATE invitation_message AS invitation_message
 SET invitation_message.person_id = (SELECT persons.id
-                           FROM persons
-                           WHERE persons.urn = invitation_message.inviter);
+                                    FROM persons
+                                    WHERE persons.urn = invitation_message.inviter);
+
+DELETE FROM invitation_message
+WHERE person_id IS NULL;
+
 ALTER TABLE invitation_message
   MODIFY COLUMN person_id MEDIUMINT NOT NULL;
 ALTER TABLE invitation_message

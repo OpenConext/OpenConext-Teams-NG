@@ -11,6 +11,7 @@ SET requests.team_id = (SELECT teams.id
                         FROM persons
                         WHERE persons.urn = requests.uuid);
 
+DELETE FROM requests WHERE team_id IS NULL OR person_id IS NULL;
 
 ALTER TABLE requests
   MODIFY COLUMN team_id MEDIUMINT NOT NULL;
