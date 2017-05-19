@@ -34,9 +34,7 @@ public interface TeamValidator {
         if (role.equals(Role.MEMBER)) {
             return new TeamDetailsSummary(team, user);
         }
-        team.getInvitations().stream()
-                .filter(invitation -> !invitation.isAccepted())
-                .collect(toList())
+        team.getInvitations()
                 //lazy load messages
                 .forEach(invitation -> invitation.getInvitationMessages().forEach(InvitationMessage::getMessage));
         team.getJoinRequests().forEach(joinRequest -> joinRequest.getPerson().isValid());

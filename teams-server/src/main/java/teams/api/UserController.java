@@ -11,8 +11,10 @@ import teams.exception.IllegalSearchParamException;
 import teams.repository.PersonRepository;
 
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @RestController
 public class UserController {
@@ -27,13 +29,13 @@ public class UserController {
     }
 
     @GetMapping("api/teams/users")
-    public List<PersonAutocomplete> autocomplete(@RequestParam("query") String query) {
+    public Set<PersonAutocomplete> autocomplete(@RequestParam("query") String query) {
         if (query.trim().length() < 2) {
             throw new IllegalSearchParamException("Minimal query length is 2");
         }
         List<Person> persons = personRepository.findFirst10ByNameStartingWithOrEmailStartingWithAllIgnoreCase(query, query);
         return persons.stream()
                 .map(person -> new PersonAutocomplete(person.getName(), person.getEmail()))
-                .collect(toList());
+                .collect(toSet());
     }
 }

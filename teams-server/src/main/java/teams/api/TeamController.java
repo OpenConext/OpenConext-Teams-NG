@@ -44,8 +44,10 @@ public class TeamController extends ApiController implements TeamValidator {
 
         List<JoinRequest> myJoinRequests = joinRequestRepository.findByPerson(federatedUser.getPerson());
 
-        invitationsCountFromQuery(invitationRepository.countInvitationsByTeamId(teamIds), teamSummaries);
-        joinRequestsCountFromQuery(joinRequestRepository.countJoinRequestsByTeamId(teamIds), teamSummaries);
+        if (!teamIds.isEmpty()) {
+            invitationsCountFromQuery(invitationRepository.countInvitationsByTeamId(teamIds), teamSummaries);
+            joinRequestsCountFromQuery(joinRequestRepository.countJoinRequestsByTeamId(teamIds), teamSummaries);
+        }
 
         List<PendingJoinRequest> pendingJoinRequests = myJoinRequests.stream()
                 .map(PendingJoinRequest::new)

@@ -101,7 +101,9 @@ export default class TeamDetail extends React.Component {
             };
         });
 
-        const invitations = (team.invitations || []).map(invitation => {
+        const invitations = (team.invitations || [])
+            .filter(invitation => !invitation.accepted)
+            .map(invitation => {
             return {
                 ...invitation,
                 role: invitation.intendedRole, isInvitation: true, person: {name: "", email: invitation.email},

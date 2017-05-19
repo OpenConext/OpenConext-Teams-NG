@@ -4,6 +4,7 @@ import {polyfill} from "es6-promise";
 import "isomorphic-fetch";
 import "lodash";
 import moment from "moment";
+import PropTypes from "prop-types";
 
 import React from "react";
 import {render} from "react-dom";
@@ -32,7 +33,6 @@ import ProtectedRoute from "./components/protected_route";
 
 import "./locale/en";
 import "./locale/nl";
-import PropTypes from "prop-types";
 polyfill();
 
 const S4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
@@ -42,12 +42,31 @@ class App extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            loading: true
+            loading: true,
+            currentUser: {}
         };
     }
 
     componentDidMount() {
-        this.setState({loading: false});
+        getUser()
+            .catch(() => {
+                if (document.location.href.indexOf("guid") > -1) {
+                    this.setState({loading: false});
+                    this.props.history.push("/error");
+                } else {
+                    //302 redirects from Shib are cached by the browser. We force a one-time reload
+                    const guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+                    document.location = document.location + "?guid=" + guid;
+                }
+            })
+            .then(currentUser => {
+                if (!currentUser) {
+                    this.setState({loading: false});
+                    this.props.history.push("/error");
+                } else {
+                    this.setState({loading: false, currentUser: currentUser});
+                }
+            });
     }
 
     render() {
@@ -57,7 +76,7 @@ class App extends React.Component {
             return null; // render null when app is not ready yet
         }
 
-        const {currentUser} = this.props;
+        const {currentUser} = this.state;
         return (
             <Router>
                 <div>
@@ -80,12 +99,15 @@ class App extends React.Component {
                                render={props => <Invitation {...props}/>}/>
                         <Route path="/public-link/:key"
                                render={props => <PublicLink {...props}/>}/>
+                        <Route path="/error"
+                               render={props => <ServerError {...props}/>}/>
                         <ProtectedRoute path="/new-team"
                                         guest={currentUser.person.guest}
                                         render={props => <NewTeam currentUser={currentUser} {...props}/>}/>
                         <ProtectedRoute path="/invite/:teamId/:id?"
                                         guest={currentUser.person.guest}
                                         render={props => <Invite currentUser={currentUser} {...props}/>}/>
+
                         <Route component={NotFound}/>
                     </Switch>
                     <Footer />
@@ -97,7 +119,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-    currentUser: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired
 };
 
 (() => {
@@ -118,20 +140,4 @@ App.propTypes = {
     moment.locale(I18n.locale);
 })();
 
-getUser()
-    .catch(() => {
-        if (document.location.href.indexOf("guid") > -1) {
-            render(<ServerError />, document.getElementById("app"));
-        } else {
-            //302 redirects from Shib are cached by the browser. We force a one-time reload
-            const guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
-            document.location = document.location + "?guid=" + guid;
-        }
-    })
-    .then(currentUser => {
-        if (!currentUser) {
-            render(<ServerError />, document.getElementById("app"));
-        } else {
-            render(<App currentUser={currentUser}/>, document.getElementById("app"));
-        }
-    });
+render(<App />, document.getElementById("app"));

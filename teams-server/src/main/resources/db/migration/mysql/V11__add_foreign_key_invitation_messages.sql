@@ -39,6 +39,7 @@ ALTER TABLE invitation_message
 ALTER TABLE invitation_message
   DROP COLUMN inviter;
 
+DELETE im FROM invitation_message im WHERE NOT EXISTS (SELECT NULL FROM invitations i WHERE i.id = im.invitation_id);
 ALTER TABLE invitation_message
   ADD CONSTRAINT fk_invitation_message_invitation_id FOREIGN KEY (invitation_id) REFERENCES invitations (id)
   ON DELETE CASCADE;

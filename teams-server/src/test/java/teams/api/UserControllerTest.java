@@ -44,7 +44,7 @@ public class UserControllerTest extends AbstractApplicationTest {
                 .get("api/teams/users")
                 .then()
                 .statusCode(SC_OK)
-                .body("size()", is(3))
+                .body("size()", is(2))
                 .body("name", hasItems("John Doe"))
                 .body("email", hasItems("john.doe@example.org", "junior@domain.net"));
     }

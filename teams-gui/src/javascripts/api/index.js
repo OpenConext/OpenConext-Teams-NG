@@ -15,7 +15,7 @@ function validateResponse(redirectTo404) {
         if (!res.ok) {
             if (redirectTo404) {
                 const location = window.location;
-                window.location.href = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/404?page=${location.href}`;
+                window.location.href = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/error`;
             }
             const error = new Error(res.statusText);
             error.response = res;
@@ -78,7 +78,7 @@ export function getTeamDetail(id) {
 }
 
 export function getUser() {
-    return fetchJson("users/me");
+    return fetchJson("users/me", {}, {}, false);
 }
 
 export function autoCompleteTeam(query) {
