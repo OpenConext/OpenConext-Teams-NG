@@ -20,7 +20,7 @@ public interface InvitationRepository extends CrudRepository<Invitation, Long> {
             attributePaths = {"invitationMessages", "team", "team.memberships"})
     Optional<Invitation> findFirstByInvitationHash(String invitationHash);
 
-    @Query(value = "select i.team.id, count(i.id) from teams.domain.Invitation i where i.team.id in :teamIds group by i.team")
+    @Query(value = "select i.team.id, count(i.id) from teams.domain.Invitation i where i.team.id in :teamIds and i.accepted = false group by i.team")
     List<Object[]> countInvitationsByTeamId(@Param("teamIds") List<Long> teamIds);
 
     @Transactional(noRollbackFor = OptimisticLockException.class)

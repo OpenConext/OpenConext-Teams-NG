@@ -26,7 +26,6 @@ export default class MyTeams extends React.Component {
             teams: [],
             filteredTeams: [],
             joinRequests: [],
-            invitationsSend: [],
             sorted: {name: "name", order: "down"},
             actions: {show: false, id: ""},
             sortAttributes: [
