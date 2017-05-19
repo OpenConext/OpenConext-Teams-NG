@@ -19,7 +19,7 @@ import {
     rejectJoinRequest,
     saveTeam
 } from "../api";
-import { setFlash} from "../utils/flash";
+import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 
 import LinkedInstitutionTeams from "../components/linked_institution_teams";
@@ -104,12 +104,12 @@ export default class TeamDetail extends React.Component {
         const invitations = (team.invitations || [])
             .filter(invitation => !invitation.accepted)
             .map(invitation => {
-            return {
-                ...invitation,
-                role: invitation.intendedRole, isInvitation: true, person: {name: "", email: invitation.email},
-                filterAttribute: ROLES.INVITATION.role, order: 2
-            };
-        });
+                return {
+                    ...invitation,
+                    role: invitation.intendedRole, isInvitation: true, person: {name: "", email: invitation.email},
+                    filterAttribute: ROLES.INVITATION.role, order: 2
+                };
+            });
 
         const members = team.memberships.map(member => {
             return {...member, isMembership: true, filterAttribute: member.role, order: 3};
@@ -404,7 +404,8 @@ export default class TeamDetail extends React.Component {
                             <a data-for={universalPublicLink} data-tip>
                                 <i className={`fa fa-clone ${copiedToClipBoardPublicLinkClassName}`}></i>
                             </a>
-                            <ReactTooltip id={universalPublicLink} place="right" getContent={[() => tooltipPublicLink, 500]}/>
+                            <ReactTooltip id={universalPublicLink} place="right"
+                                          getContent={[() => tooltipPublicLink, 500]}/>
                         </span>
                     </CopyToClipboard>
 
