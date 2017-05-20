@@ -1,0 +1,18 @@
+yarn webpack | sed '1,2d' | sed '$d' | webpack-bundle-size-analyzer
+
+1) gzip - apache
+2) css en sccs are included
+
+https://github.com/lodash/babel-plugin-lodash
+https://github.com/moment/moment/issues/1435
+https://github.com/webpack/webpack/issues/1205
+loaders: [{
+  test: /\.css$/,
+  loader: ExtractTextPlugin.extract('style-loader', 'css-loader?' + JSON.stringify({discardComments: {removeAll: true}}))
+}]
+
+babili-webpack-plugin
+
+const BabiliPlugin = require("babili-webpack-plugin");
+
+new BabiliPlugin({}, {comments: false, test: /\.jsx($|\?)/i})
