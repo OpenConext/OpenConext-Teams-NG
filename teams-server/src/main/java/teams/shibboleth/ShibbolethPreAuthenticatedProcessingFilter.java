@@ -47,8 +47,7 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
 
     private Person provision(Person person) {
         Optional<Person> personOptional = personRepository.findByUrnIgnoreCase(person.getUrn());
-        if (personOptional.isPresent()) {
-            Person personFromDatabase = personOptional.get();
+        personOptional.ifPresent(personFromDatabase -> {
             if (person.needsUpdate(personFromDatabase)) {
                 personFromDatabase.setGuest(person.isGuest());
                 personFromDatabase.setEmail(person.getEmail());
@@ -56,12 +55,10 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
 
                 LOG.info("Updating person after detecting change after login {}", person);
 
-                return personRepository.save(personFromDatabase);
+                personRepository.save(personFromDatabase);
             }
-            return personFromDatabase;
-        } else {
-            return personRepository.save(person);
-        }
+        });
+        return personOptional.orElseGet(() -> personRepository.save(person));
     }
 
 }
