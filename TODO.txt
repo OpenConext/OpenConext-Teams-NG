@@ -1,6 +1,0 @@
-cd teams-gui
-rm -fr dist && yarn webpack-analyze | sed '1,4d' | sed '$d' | webpack-bundle-size-analyzer
-
-https://github.com/lodash/babel-plugin-lodash
-https://github.com/moment/moment/issues/1435
-https://github.com/webpack/webpack/issues/1205

@@ -54,7 +54,7 @@ Initial setup if you do:
 
 Add new dependencies to `devDependencies`:
 
-    yarn install --save-dev ${dep}
+    yarn add ${dep} --dev
 
 To build:
 
@@ -62,7 +62,25 @@ To build:
 
 To run locally:
 
-    yarn run webpack-dev-server
+    yarn local
 
 Browse to the [application homepage](http://localhost:8001/).
 
+## Testing
+
+To run the tests, just install both server and client:
+
+    mvn clean install
+    
+To run only the JS tests:
+    
+    cd teams-gui
+    yarn test
+    
+## Miscellaneous
+
+If you add dependencies to the teams-gui with yarn you can see the impact on the production bundle:
+
+    cd teams-gui
+    rm -fr dist && yarn webpack-analyze | sed '1,6d' | sed '$d' | webpack-bundle-size-analyzer
+    

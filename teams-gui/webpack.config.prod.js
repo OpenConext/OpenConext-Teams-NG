@@ -8,7 +8,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const BabiliPlugin = require("babili-webpack-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const extractCSS = new ExtractTextPlugin("application-[contenthash].css");
 
 const PATHS = {
@@ -53,7 +53,7 @@ module.exports = {
         }),
         new BabiliPlugin({}, {comments: false, test: /\.js(x?)($|\?)/i}),
         new OptimizeCssAssetsPlugin({
-            assetNameRegExp: /\.min\.css$/,
+            assetNameRegExp: /\.css$/,
             cssProcessorOptions: { discardComments: { removeAll: true } }
         }),
         new webpack.DefinePlugin({
@@ -61,6 +61,8 @@ module.exports = {
                 NODE_ENV: JSON.stringify('production')
             }
         }),
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/),
+        new LodashModuleReplacementPlugin(),
         new UglifyJSPlugin()
     ]
 };
