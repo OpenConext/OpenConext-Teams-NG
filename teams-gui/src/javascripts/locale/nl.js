@@ -33,6 +33,11 @@ I18n.translations.nl = {
         my_teams: "Mijn Teams",
         institution_teams: "Institutie Teams"
     },
+    error_dialog: {
+        title: "Onverwachte fout",
+        body: "Dit is genant. Er is een onverwachte fout opgetreden. De fout is gerapporteerd.",
+        ok: "Sluiten"
+    },
 
     confirmation_dialog: {
         title: "Bevestig a.u.b.",

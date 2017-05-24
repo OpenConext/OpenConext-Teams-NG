@@ -4,7 +4,8 @@ import Modal from "react-modal";
 import I18n from "i18n-js";
 import {stop} from "../utils/utils";
 
-export default function ConfirmationDialog({isOpen = false, cancel, confirm, question = "", leavePage = false}) {
+export default function ConfirmationDialog({isOpen = false, cancel, confirm, question = "",
+                                               leavePage = false, isError = false}) {
     return (
         <Modal
             isOpen={isOpen}
@@ -17,7 +18,7 @@ export default function ConfirmationDialog({isOpen = false, cancel, confirm, que
                 {I18n.t("confirmation_dialog.title")}
             </section>
             {leavePage ?
-                <section className="dialog-content">
+                <section className={`dialog-content ${isError ? " error" : ""}`}>
                     <h2>{I18n.t("confirmation_dialog.leavePage")}</h2>
                     <p>{I18n.t("confirmation_dialog.leavePageSub")}</p>
                 </section> :
@@ -48,7 +49,8 @@ ConfirmationDialog.propTypes = {
     cancel: PropTypes.func.isRequired,
     confirm: PropTypes.func.isRequired,
     question: PropTypes.string,
-    leavePage: PropTypes.bool
+    leavePage: PropTypes.bool,
+    isError: PropTypes.bool
 };
 
 

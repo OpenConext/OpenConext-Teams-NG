@@ -30,6 +30,9 @@
     background-color: $blue;
     color: white;
     border: none;
+    &.error {
+      background-color: $red;
+    }
     i {
       color: white;
     }

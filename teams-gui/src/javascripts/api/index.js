@@ -8,20 +8,20 @@ function apiUrl(path) {
     return apiPath + path;
 }
 
-function validateResponse(redirectTo404) {
+function validateResponse(throwErrorOnInvalidResponse) {
     return res => {
         spinner.stop();
 
         if (!res.ok) {
-            if (redirectTo404) {
-                const location = window.location;
-                window.location.href = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/error`;
+            if (throwErrorOnInvalidResponse) {
+                setTimeout(() => {
+                    const error = new Error(res.statusText);
+                    error.response = res;
+                    throw error;
+                }, 50);
             }
-            const error = new Error(res.statusText);
-            error.response = res;
-            throw error;
+            return res;
         }
-
         csrfToken = res.headers.get("x-csrf-token");
 
         const sessionAlive = res.headers.get("x-session-alive");
@@ -29,12 +29,12 @@ function validateResponse(redirectTo404) {
         if (sessionAlive !== "true") {
             window.location.reload(true);
         }
-
         return res;
+
     };
 }
 
-function validFetch(path, options, headers = {}, redirectTo404 = true) {
+function validFetch(path, options, headers = {}, throwErrorOnInvalidResponse = true) {
     const contentHeaders = {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -51,11 +51,11 @@ function validFetch(path, options, headers = {}, redirectTo404 = true) {
             spinner.stop();
             throw err;
         })
-        .then(validateResponse(redirectTo404));
+        .then(validateResponse(throwErrorOnInvalidResponse));
 }
 
-function fetchJson(path, options = {}, headers = {}, redirectTo404 = true) {
-    return validFetch(path, options, headers, redirectTo404)
+function fetchJson(path, options = {}, headers = {}, throwErrorOnInvalidResponse = true) {
+    return validFetch(path, options, headers, throwErrorOnInvalidResponse)
         .then(res => res.json());
 }
 
@@ -183,4 +183,8 @@ export function changeRole(membershipProperties) {
 
 export function deleteMember(memberId) {
     return fetchDelete("memberships/" + memberId);
+}
+
+export function reportError(error) {
+    return postPutJson("error", error);
 }

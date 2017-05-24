@@ -34,6 +34,12 @@ I18n.translations.en = {
         institution_teams: "Institution Teams"
     },
 
+    error_dialog: {
+        title: "Unexpected error",
+        body: "This is embarrassing. An unexpected error has occurred. It has been logged and reported.",
+        ok: "Close"
+    },
+
     confirmation_dialog: {
         title: "Please confirm",
         confirm: "Confirm",

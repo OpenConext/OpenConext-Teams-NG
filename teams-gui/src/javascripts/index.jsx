@@ -4,7 +4,6 @@ import {polyfill} from "es6-promise";
 import "isomorphic-fetch";
 import "lodash";
 import moment from "moment";
-import PropTypes from "prop-types";
 
 import React from "react";
 import {render} from "react-dom";
@@ -30,6 +29,8 @@ import PublicLink from "./pages/public_link";
 import NewTeam from "./pages/new_team";
 import Invite from "./pages/invite";
 import ProtectedRoute from "./components/protected_route";
+import ErrorDialog from "./components/error_dialog";
+import {reportError} from "./api";
 
 import "./locale/en";
 import "./locale/nl";
@@ -43,34 +44,57 @@ class App extends React.Component {
         super(props, context);
         this.state = {
             loading: true,
-            currentUser: {}
+            currentUser: {person: {guest: true}},
+            error: false,
+            errorDialogOpen: false,
+            errorDialogAction: () => {
+                this.setState({errorDialogOpen: false});
+            }
+        };
+        window.onerror = (msg, url, line, col, error) => {
+            this.setState({errorDialogOpen: true});
+            reportError({
+                userAgent: navigator.userAgent,
+                message: msg,
+                url: url,
+                line: line,
+                col: col,
+                error: error
+            });
         };
     }
 
+    handleBackendDown = () => {
+        const location = window.location;
+        const alreadyRetried = location.href.indexOf("guid") > -1;
+        if (alreadyRetried) {
+            window.location.href = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/error`;
+        } else {
+            //302 redirects from Shib are cached by the browser. We force a one-time reload
+            const guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+            window.location.href = `${location.href}?guid=${guid}`;
+        }
+    };
+
     componentDidMount() {
-        getUser()
-            .catch(() => {
-                if (document.location.href.indexOf("guid") > -1) {
-                    this.setState({loading: false});
-                    this.props.history.push("/error");
-                } else {
-                    //302 redirects from Shib are cached by the browser. We force a one-time reload
-                    const guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
-                    document.location = document.location + "?guid=" + guid;
-                }
-            })
-            .then(currentUser => {
-                if (!currentUser) {
-                    this.setState({loading: false});
-                    this.props.history.push("/error");
-                } else {
-                    this.setState({loading: false, currentUser: currentUser});
-                }
-            });
+        const location = window.location;
+        if (location.href.indexOf("error") > -1) {
+            this.setState({loading: false});
+        } else {
+            getUser()
+                .catch(() => this.handleBackendDown())
+                .then(currentUser => {
+                    if (!currentUser || !currentUser.person) {
+                        this.handleBackendDown();
+                    } else {
+                        this.setState({loading: false, currentUser: currentUser});
+                    }
+                });
+        }
     }
 
     render() {
-        const {loading} = this.state;
+        const {loading, errorDialogAction, errorDialogOpen} = this.state;
 
         if (loading) {
             return null; // render null when app is not ready yet
@@ -84,6 +108,8 @@ class App extends React.Component {
                         <Flash/>
                         <Header currentUser={currentUser}/>
                         <Navigation currentUser={currentUser}/>
+                        <ErrorDialog isOpen={errorDialogOpen}
+                                     close={errorDialogAction}/>
                     </div>
                     <Switch>
                         <Route exact path="/" render={() => <Redirect to="/my-teams"/>}/>
@@ -117,10 +143,6 @@ class App extends React.Component {
     }
 
 }
-
-App.propTypes = {
-    history: PropTypes.object.isRequired
-};
 
 (() => {
     // DetermineLanguage based on parameter, navigator and finally cookie

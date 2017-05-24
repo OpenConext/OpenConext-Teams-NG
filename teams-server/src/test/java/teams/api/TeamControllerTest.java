@@ -97,6 +97,16 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void teamExistsByNameError() throws Exception {
+        given()
+                .param("name", "malpura")
+                .when()
+                .get("api/teams/team-exists-by-name")
+                .then()
+                .statusCode(SC_INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
     public void teamExistsByNameTrue() throws Exception {
         boolean exists = given()
                 .param("name", "RIdErS")

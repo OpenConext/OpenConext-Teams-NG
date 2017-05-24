@@ -39,6 +39,9 @@
       text-transform: uppercase;
       font-size: large;
       font-weight: bold;
+      &.error {
+        background-color: $red;
+      }
     }
     .dialog-content {
       margin-top: auto;

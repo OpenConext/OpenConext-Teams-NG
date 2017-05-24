@@ -5,10 +5,15 @@ import org.springframework.beans.factory.annotation.Value;
 import teams.AbstractApplicationTest;
 import teams.exception.IllegalSearchParamException;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.*;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class UserControllerTest extends AbstractApplicationTest {
 
@@ -58,5 +63,16 @@ public class UserControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_BAD_REQUEST)
                 .body("exception", equalTo(IllegalSearchParamException.class.getName()));
+    }
+
+    @Test
+    public void error() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .when()
+                .body(Collections.singletonMap("error", "message"))
+                .post("api/teams/error")
+                .then()
+                .statusCode(SC_OK);
     }
 }
