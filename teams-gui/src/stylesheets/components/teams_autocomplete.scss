@@ -1,7 +1,7 @@
 section.teams-autocomplete {
 
   position: absolute;
-  z-index: 100;
+  z-index: 3;
   top: 45px;
   width: 100%;
   border-radius: $br;
@@ -45,7 +45,7 @@ section.teams-autocomplete {
           span {
             background-color: $blue;
             color: white;
-            z-index: 99;
+            z-index: 2;
             &.join {
               background-color: $green;
             }

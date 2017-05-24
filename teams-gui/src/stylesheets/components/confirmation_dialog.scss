@@ -5,7 +5,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(95, 95, 95, 0.7);
-  z-index: 9999;
+  z-index: 4;
 
   .confirmation-dialog-content {
     top: 25%;
@@ -17,7 +17,7 @@
     overflow: auto;
     border-radius: 3px;
     outline: none;
-    z-index: 99999;
+    z-index: 5;
     display: flex;
     flex-direction: column;
     box-shadow: 1px 1px 6px 0 rgb(95, 95, 95);

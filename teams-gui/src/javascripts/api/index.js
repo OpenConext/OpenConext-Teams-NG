@@ -8,19 +8,21 @@ function apiUrl(path) {
     return apiPath + path;
 }
 
-function validateResponse(throwErrorOnInvalidResponse) {
+function validateResponse(showErrorDialog) {
     return res => {
         spinner.stop();
 
         if (!res.ok) {
-            if (throwErrorOnInvalidResponse) {
+            const error = new Error(res.statusText);
+            error.response = res;
+            if (showErrorDialog) {
                 setTimeout(() => {
                     const error = new Error(res.statusText);
                     error.response = res;
                     throw error;
-                }, 50);
+                }, 5);
             }
-            return res;
+            throw error;
         }
         csrfToken = res.headers.get("x-csrf-token");
 
@@ -34,7 +36,7 @@ function validateResponse(throwErrorOnInvalidResponse) {
     };
 }
 
-function validFetch(path, options, headers = {}, throwErrorOnInvalidResponse = true) {
+function validFetch(path, options, headers = {}, showErrorDialog = true) {
     const contentHeaders = {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -51,11 +53,11 @@ function validFetch(path, options, headers = {}, throwErrorOnInvalidResponse = t
             spinner.stop();
             throw err;
         })
-        .then(validateResponse(throwErrorOnInvalidResponse));
+        .then(validateResponse(showErrorDialog));
 }
 
-function fetchJson(path, options = {}, headers = {}, throwErrorOnInvalidResponse = true) {
-    return validFetch(path, options, headers, throwErrorOnInvalidResponse)
+function fetchJson(path, options = {}, headers = {}, showErrorDialog = true) {
+    return validFetch(path, options, headers, showErrorDialog)
         .then(res => res.json());
 }
 

@@ -260,6 +260,7 @@ I18n.translations.en = {
     },
     invitation: {
         title: "Invitation received for team '{{name}}'",
+        invalid_title: "Invalid invitation",
         team: {
             name: "Team name",
             description: "Description",
@@ -317,6 +318,7 @@ I18n.translations.en = {
     },
     institution_teams: {
         name: "Team name / identifier",
+        help: "Explain",
         description: "Description",
         linked_teams: "Linked teams",
         searchPlaceHolder: "SEARCH TEAMS",
@@ -324,6 +326,12 @@ I18n.translations.en = {
         institution_team: "Institutional team",
         no_teams: "Your institution either does not provide teams or you don't have any team memberships within your institution",
 
+    },
+    linked_institution_example: {
+        title: "Institutional teams explained",
+        institution_name: "UvA",
+        institution_team_name: "Teachers",
+        surf_name: "Admins"
     },
     profile: {
         email: "Email",

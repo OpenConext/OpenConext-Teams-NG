@@ -110,6 +110,7 @@ public class Invitation implements HashGenerator{
     public Invitation addInvitationMessage(Person person, String message) {
         InvitationMessage invitationMessage = new InvitationMessage(this, person, message);
         this.invitationMessages.add(invitationMessage);
+        this.declined = false;
         return this;
     }
 

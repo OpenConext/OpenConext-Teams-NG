@@ -102,7 +102,7 @@ I18n.translations.nl = {
         actions: "...",
         leave: "Verlaat",
         team_members: "LEDEN ({{count}})",
-        team_groups: "VERBONDEN GROUPS ({{count}})",
+        team_groups: "GEKOPPELDE GROEPEN ({{count}})",
         membership: {
             name: "naam",
             email: "email",
@@ -259,6 +259,7 @@ I18n.translations.nl = {
     },
     invitation: {
         title: "Uitnodiging ontvangen voor team '{{name}}'",
+        invalid_title: "Ongeldige uitnodiging",
         team: {
             name: "Team naam",
             description: "Omschrijving",
@@ -317,6 +318,7 @@ I18n.translations.nl = {
 
     institution_teams: {
         name: "Team naam / identificatiecode",
+        help: "Uitleg",
         description: "Omschrijving",
         linked_teams: "Verbonden teams",
         searchPlaceHolder: "ZOEK TEAMS",
@@ -325,6 +327,13 @@ I18n.translations.nl = {
         no_teams: "Je institutie levert geen teams of je ben geen lid van een team binnen je institutie",
 
     },
+    linked_institution_example: {
+        title: "Institutie teams uitgelegd",
+        institution_name: "UvA",
+        institution_team_name: "Leraren",
+        surf_name: "Admins"
+    },
+
     profile: {
         email: "Email",
         role: "Rol",

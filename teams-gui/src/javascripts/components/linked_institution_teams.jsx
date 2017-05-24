@@ -9,6 +9,7 @@ import CheckBox from "./checkbox";
 import TeamsIconLegend from "./teams_icon_legend";
 import {isEmpty} from "../utils/utils";
 import {currentUserRoleInTeam, ROLES} from "../validations/memberships";
+import LinkedInstitutionTeamsExplain from "../components/linked_institution_teams_explain";
 
 export default class LinkedInstitutionTeams extends React.Component {
 
@@ -19,6 +20,7 @@ export default class LinkedInstitutionTeams extends React.Component {
             filteredTeams: institutionTeams,
             hasInstitutionsTeams: institutionTeams.length > 0,
             copiedToClipboard: {},
+            showExplanation: false
         };
     }
 
@@ -150,16 +152,25 @@ export default class LinkedInstitutionTeams extends React.Component {
     }
 
     render() {
-        const {filteredTeams} = this.state;
-        const {team, linkedTeams, includeLegend} = this.props;
+        const {filteredTeams, showExplanation} = this.state;
+        const {team, linkedTeams, includeLegend, currentUser} = this.props;
         const filteredSortedTeams = isEmpty(team) ? filteredTeams : [...filteredTeams].sort(this.sort(team));
 
         return (
             <div className="institution_teams">
+                <LinkedInstitutionTeamsExplain
+                    locale={I18n.locale}
+                    productName={currentUser.productName}
+                    close={() => this.setState({showExplanation: false})}
+                    isVisible={showExplanation}/>
                 {includeLegend && <TeamsIconLegend currentUser={this.props.currentUser}/>}
                 <section className="card-institution-teams">
                     <section className="options-institution-teams">
                         <section className="search-institution-teams">
+                            <div className="help" onClick={() => this.setState({showExplanation: true})}>
+                                <i className="fa fa-graduation-cap"></i>
+                                <span>{I18n.t("institution_teams.help")}</span>
+                            </div>
                             <input placeholder={I18n.t("institution_teams.searchPlaceHolder")} type="text"
                                    onChange={this.search}/>
                             <i className="fa fa-search"></i>

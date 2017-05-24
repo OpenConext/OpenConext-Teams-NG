@@ -30,8 +30,13 @@ export default class PublicLink extends React.Component {
 
     componentDidMount() {
         const {key} = this.props.match.params;
-        getPublicLink(key).then(team => this.setState({team: team, loaded: true}))
+        getPublicLink(key)
+            .then(team => {
+                debugger;
+                this.setState({team: team, loaded: true});
+            })
             .catch(err => {
+                debugger;
                 if (err.response && err.response.status === 404) {
                     this.setState({notFound: true, loaded: true});
                 } else {

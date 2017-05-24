@@ -194,6 +194,9 @@
         span {
           position: relative;
           padding: 15px 10px 0 0;
+          &.declined {
+            color: $orange;
+          }
         }
         div.tool-tip {
           @include tool-tip;
@@ -219,6 +222,9 @@
           }
           &.fa-clock-o {
             color: $dark-green;
+            &.declined {
+              color: $orange;
+            }
           }
           &.fa-envelope {
             color: $green;

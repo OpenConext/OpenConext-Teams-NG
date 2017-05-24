@@ -471,10 +471,10 @@ export default class TeamDetail extends React.Component {
             const label = labelForRole(ROLES.INVITATION.role);
             const toolTipId = `invitation_${member.id}`;
             const latestMessage = member.invitationMessages.sort((m1, m2) => m1.id < m2.id ? 1 : -1)[0];
-            const className = `invitation ${member.declined ? "declined" : ""}`;
+            const className = member.declined ? "declined" : "";
             return (
-                <span className={className} data-for={toolTipId} data-tip>
-                    <i className={iconForRole(ROLES.INVITATION.role)}></i>
+                <span className={`invitation ${className}`} data-for={toolTipId} data-tip>
+                    <i className={`${iconForRole(ROLES.INVITATION.role)} ${className}`}></i>
                     {label}
                     <i className="fa fa-info-circle"></i>
                 <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
