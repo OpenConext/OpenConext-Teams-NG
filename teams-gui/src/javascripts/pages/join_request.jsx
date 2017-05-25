@@ -88,7 +88,7 @@ export default class JoinRequest extends React.Component {
                     <label>{I18n.t("join_request.team.admins")}</label>
                     {(team.admins || []).map((admin, index) =>
                         <div key={index}>
-                            <input type="text" value={admin.name} disabled="true"/>
+                            <input type="text" value={`${admin.name} <${admin.email}>`} disabled="true"/>
                         </div>
                     )}
                 </section>
