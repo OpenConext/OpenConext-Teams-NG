@@ -53,7 +53,7 @@ export default class Invite extends React.Component {
                     emails: [invitation.email],
                     intendedRole: invitation.intendedRole,
                     language: invitation.language,
-                    expiryDate: moment(invitation.expiryDate),
+                    expiryDate: invitation.expiryDate ? moment(invitation.expiryDate * 1000) : null,
                     message: invitation.invitationMessages.sort((m1, m2) => m1.id < m2.id ? 1 : -1)[0].message,
                     invitation: invitation,
                     readOnly: true,
@@ -219,7 +219,7 @@ export default class Invite extends React.Component {
                 <label className="invitation-message"
                        htmlFor="message">{I18n.t("invite.message")}</label>
                 <em>{I18n.t("invite.message_info")}</em>
-                <textarea id="message" name="message" value={message}
+                <textarea id="message" name="message" value={message || ""}
                           rows={5}
                           onChange={this.handleInputChange("message")}
                           placeholder={I18n.t("invite.message_placeholder")}/>
