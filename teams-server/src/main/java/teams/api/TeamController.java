@@ -141,6 +141,7 @@ public class TeamController extends ApiController implements TeamValidator {
         team.setDescription(teamProperties.getDescription());
         team.setViewable(teamProperties.isViewable());
         team.setPersonalNote(teamProperties.getPersonalNote());
+        team.setPublicLinkDisabled(teamProperties.isPublicLinkDisabled());
 
         log.info("Team {} updated by {}", team.getUrn(), federatedUserUrn);
 

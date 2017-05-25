@@ -16,6 +16,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 public class PublicLinkControllerTest extends AbstractApplicationTest {
 
     private static final String PUBLIC_LINK_SECRET = "wZiomLDTk3CU2FR9bRy1IFCfYSqt5AFwSAs74M1EuIQs3D";
+    private static final String PUBLIC_LINK_SECRET_DISABLED = "ErtOpeSiYdEluAMd53CXs4TnN3RyrHUIHdaxImw3q1A3D";
 
     @Test
     public void publicLinkNotFound() {

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 @Getter
 public class PublicLink {
 
-    private List<String> admins;
+    private List<AdminMember> admins;
     private Long id;
     private String name;
     private String description;
@@ -21,7 +21,7 @@ public class PublicLink {
         this.alreadyMember = team.member(federatedUser.getUrn()).isPresent();
         this.admins = team.getMemberships().stream()
                 .filter(membership -> membership.getRole().equals(Role.ADMIN))
-                .map(membership -> membership.getPerson().getName())
+                .map(membership -> new AdminMember(membership.getPerson()))
                 .collect(Collectors.toList());
 
     }

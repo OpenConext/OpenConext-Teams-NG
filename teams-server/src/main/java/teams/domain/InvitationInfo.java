@@ -21,7 +21,7 @@ public class InvitationInfo {
     private String invitationEmail;
     private Role intendedRole;
     private int daysValid;
-    private List<String> admins;
+    private List<AdminMember> admins;
 
 
     public InvitationInfo(Invitation invitation, FederatedUser federatedUser) {
@@ -41,7 +41,7 @@ public class InvitationInfo {
         this.daysValid = invitation.daysValid();
         this.admins = team.getMemberships().stream()
                 .filter(membership -> membership.getRole().equals(Role.ADMIN))
-                .map(membership -> membership.getPerson().getName())
+                .map(membership -> new AdminMember(membership.getPerson()))
                 .collect(Collectors.toList());
     }
 }

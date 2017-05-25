@@ -91,7 +91,7 @@ export default class PublicLink extends React.Component {
                     <label>{I18n.t("public_link.team.admins")}</label>
                     {team.admins.map((admin, index) =>
                         <div key={index}>
-                            <input type="text" value={admin} disabled="true"/>
+                            <input type="text" value={`${admin.name} <${admin.email}>`} disabled="true"/>
                         </div>
                     )}
                 </section>

@@ -15,6 +15,7 @@ import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class TeamControllerTest extends AbstractApplicationTest {
@@ -235,7 +236,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
-                .body(new TeamProperties(1L, "changed", "personalNote", false))
+                .body(new TeamProperties(1L, "changed", "personalNote", false, true))
                 .when()
                 .put("api/teams/teams")
                 .then()
@@ -247,6 +248,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         //name is immutable
         assertEquals("riders", team.getName());
         assertFalse(team.isViewable());
+        assertTrue(team.isPublicLinkDisabled());
     }
 
     @Test
@@ -255,7 +257,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .header("is-member-of", "guest-org")
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(2L, null, null, true))
+                .body(new TeamProperties(2L, null, null, true, false))
                 .when()
                 .put("api/teams/teams")
                 .then()
@@ -268,7 +270,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(2L, null, null, true))
+                .body(new TeamProperties(2L, null, null, true, false))
                 .when()
                 .put("api/teams/teams")
                 .then()
@@ -280,7 +282,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     public void updateTeamWithoutBeingMember() throws Exception {
         given()
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(2L, null, null, true))
+                .body(new TeamProperties(2L, null, null, true, false))
                 .when()
                 .put("api/teams/teams")
                 .then()

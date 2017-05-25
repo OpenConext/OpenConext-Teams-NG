@@ -107,7 +107,7 @@ export default class Invitation extends React.Component {
                     <label>{I18n.t("invitation.team.admins")}</label>
                     {invitation.admins.map((admin, index) =>
                         <div key={index}>
-                            <input type="text" value={admin} disabled="true"/>
+                            <input type="text" value={`${admin.name} <${admin.email}>`} disabled="true"/>
                         </div>
                     )}
                 </section>

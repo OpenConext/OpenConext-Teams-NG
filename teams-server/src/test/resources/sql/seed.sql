@@ -1,7 +1,7 @@
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
 VALUES (1, 'nl:surfnet:diensten:riders', 'riders', 'we are riders', 1, 'wZiomLDTk3CU2FR9bRy1IFCfYSqt5AFwSAs74M1EuIQs3D');
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `personal_note`, `public_link`)
-VALUES (2, 'nl:surfnet:diensten:giants', 'giants', 'we are giants', 1, 'Why did I create this team', 'ErtOpeSiYdEluAMd53CXs4TnN3RyrHUIHdaxImw3q1A3D');
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `personal_note`, `public_link`, `public_link_disabled`)
+VALUES (2, 'nl:surfnet:diensten:giants', 'giants', 'we are giants', 1, 'Why did I create this team', 'ErtOpeSiYdEluAMd53CXs4TnN3RyrHUIHdaxImw3q1A3D', 1);
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
 VALUES (3, 'nl:surfnet:diensten:gliders', 'gliders', 'we are gliders', 1, '72MpWBjvo2F753r2ff960VMgwx113svKq9u4js8MBu303D');
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
