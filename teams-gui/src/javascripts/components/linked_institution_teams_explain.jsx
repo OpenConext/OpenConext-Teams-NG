@@ -34,7 +34,7 @@ export default class LinkedInstitutionTeamsExplain extends React.Component {
             <section className="explanation">
                 <p>Your institutional teams are the teams provided by your institution to {productName} where you are a
                     member of.</p>
-                <p>These teams can be linked to {productName} to allow for virtual memberships.</p>
+                <p>These teams can be linked to {productName} to create virtual memberships.</p>
             </section> :
             <section className="explanation">
                 <p>Je institutie teams zijn de teams aangeleverd vanuit je institutie aan {productName} waar je lid van

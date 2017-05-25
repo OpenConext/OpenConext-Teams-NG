@@ -4,7 +4,7 @@
   padding: 15px;
 
   .team-attribute, .inline-editable {
-    label {
+    label.title {
       display: block;
       color: $medium-grey;
       font-size: 16px;
@@ -20,7 +20,7 @@
       font-size: 11px;
     }
 
-    span {
+    span.attribute {
       display: block;
       border-bottom: 1px solid $lighter-grey;
       border-top-left-radius: $br;
@@ -28,6 +28,10 @@
       padding: 5px 0 5px 10px;
       word-wrap: break-word;
       overflow-wrap: break-word;
+
+      &.disabled {
+        color: $lighter-grey;
+      }
 
       i {
         color: $blue;

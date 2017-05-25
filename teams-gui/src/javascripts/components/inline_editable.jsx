@@ -34,7 +34,7 @@ export default class InlineEditable extends React.Component {
     renderEditable(name, value) {
         return (
             <div className="inline-editable">
-                <label htmlFor={name}>{I18n.t(name)}</label>
+                <label className="title" htmlFor={name}>{I18n.t(name)}</label>
                 <input ref={ref => this.input = ref} type="text" name={name} id={name} value={value}
                        onChange={this.onChangeInternal} onKeyUp={this.onKeyUp} onBlur={this.save}/>
             </div>);
@@ -48,13 +48,13 @@ export default class InlineEditable extends React.Component {
     renderNonEditable(name, value, mayEdit) {
         const toolTipId = `edit-${name}`;
         const span = mayEdit ?
-            <span onClick={this.toggleEditable}>{value}<i className="fa fa-pencil" data-for={toolTipId} data-tip></i>
+            <span className="attribute" onClick={this.toggleEditable}>{value}<i className="fa fa-pencil" data-for={toolTipId} data-tip></i>
                 <ReactTooltip id={toolTipId} place="top">{I18n.t("team_detail.edit")}</ReactTooltip>
             </span> :
             <span>{value}</span>;
         return (
             <div className="inline-editable">
-                <label>{I18n.t(name)}</label>
+                <label className="title">{I18n.t(name)}</label>
                 {span}
             </div>
         );

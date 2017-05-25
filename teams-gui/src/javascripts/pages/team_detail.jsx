@@ -338,6 +338,10 @@ export default class TeamDetail extends React.Component {
         this.saveTeamProperties({viewable: !this.state.team.viewable});
     };
 
+    changePublicLinkDisabled = () => {
+        this.saveTeamProperties({publicLinkDisabled: !this.state.team.publicLinkDisabled});
+    };
+
     copiedToClipboard = () => {
         this.setState({copiedToClipboard: true});
         setTimeout(() => this.setState({copiedToClipboard: false}), 5000);
@@ -382,13 +386,12 @@ export default class TeamDetail extends React.Component {
         const universalUrn = `${currentUser.groupNameContext}${team.urn}`;
         const location = window.location;
         const universalPublicLink = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/public-link/${team.publicLink}`;
-
         return (
             <section className="team-attributes">
                 <div className="team-attribute">
-                    <label>{I18n.t("team_detail.urn")}</label>
+                    <label className="title">{I18n.t("team_detail.urn")}</label>
                     <CopyToClipboard text={universalUrn} onCopy={this.copiedToClipboard}>
-                        <span>{universalUrn}
+                        <span className="attribute">{universalUrn}
                             <a data-for="copy-to-clipboard" data-tip>
                                 <i className={`fa fa-clone ${copiedToClipBoardClassName}`}></i>
                             </a>
@@ -398,17 +401,22 @@ export default class TeamDetail extends React.Component {
 
                 </div>
                 {isAdmin && <div className="team-attribute">
-                    <label>{I18n.t("team_detail.public_link")}</label>
-                    <CopyToClipboard text={universalPublicLink} onCopy={this.copiedToClipboardPublicLink}>
-                        <span>{universalPublicLink}
+                    <label className="title info-after">{I18n.t("team_detail.public_link")}</label>
+                    <em className="info">{I18n.t("team_detail.public_link_disabled")}</em>
+                    <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}
+                              onChange={this.changePublicLinkDisabled}/>
+                    {!team.publicLinkDisabled && <CopyToClipboard text={universalPublicLink} onCopy={this.copiedToClipboardPublicLink}>
+                        <span className="attribute">{universalPublicLink}
                             <a data-for={universalPublicLink} data-tip>
                                 <i className={`fa fa-clone ${copiedToClipBoardPublicLinkClassName}`}></i>
                             </a>
                             <ReactTooltip id={universalPublicLink} place="right"
                                           getContent={[() => tooltipPublicLink, 500]}/>
                         </span>
-                    </CopyToClipboard>
-
+                    </CopyToClipboard>}
+                    {team.publicLinkDisabled &&
+                        <span className="attribute disabled">{universalPublicLink}
+                        </span>}
                 </div>}
                 <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description || ""}
                                 onChange={this.changeDescription}/>
@@ -416,7 +424,7 @@ export default class TeamDetail extends React.Component {
                 <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
                                 onChange={this.changePersonalNote}/>}
                 <div className="team-attribute">
-                    <label className="info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
+                    <label className="title info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
                     <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>
                 </div>
                 <CheckBox name="viewable" value={team.viewable || false} readOnly={!isAdmin}

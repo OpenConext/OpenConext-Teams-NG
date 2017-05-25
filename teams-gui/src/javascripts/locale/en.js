@@ -125,6 +125,7 @@ I18n.translations.en = {
         search_members_placeholder: "Search members",
         no_found: "No members found",
         public_link: "Public Link",
+        public_link_disabled: "If enabled people who are sent the public link can join the team as member without any need for approval by admins.",
         copy: "Copy to clipboard",
         copied: "Copied",
         one_admin_warning: "You are the only admin in the team. It is best practice for back-up purposes to have at least two administrators for each team.",

@@ -124,6 +124,7 @@ I18n.translations.nl = {
         search_members_placeholder: "Zoek leden",
         no_found: "Geen leden gevonden",
         public_link: "Publieke link",
+        public_link_disabled: "Indien geactiveerd kunnen mensen die de publieke link hebben ontvangen lid worden van dit team zonder verdere goedkeuring van de administrateurs.",
         copy: "Kopieer naar clipboard",
         copied: "Gekopieerd",
         one_admin_warning: "Je bent de enige admin in dit team. Het is beter vanwege back-up redenen om twee administrateurs in elk team te hebben.",
