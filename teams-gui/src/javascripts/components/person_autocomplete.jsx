@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import scrollIntoView from "scroll-into-view";
 
-export default class PersonAutocomplete extends React.Component {
+export default class PersonAutocomplete extends React.PureComponent {
 
     componentDidUpdate(prevProps) {
         if (this.selectedRow && prevProps.selectedPerson !== this.props.selectedPerson) {

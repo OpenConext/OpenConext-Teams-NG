@@ -3,7 +3,7 @@ import React from "react";
 import {emitter, getFlash, clearFlash} from "../utils/flash";
 import {isEmpty} from "../utils/utils";
 
-export default class Flash extends React.Component {
+export default class Flash extends React.PureComponent {
 
     constructor() {
         super();

@@ -2,7 +2,7 @@ import React from "react";
 import I18n from "i18n-js";
 import PropTypes from "prop-types";
 
-export default class DropDownActions extends React.Component {
+export default class DropDownActions extends React.PureComponent {
 
     render() {
         const {options, i18nPrefix, className} = this.props;

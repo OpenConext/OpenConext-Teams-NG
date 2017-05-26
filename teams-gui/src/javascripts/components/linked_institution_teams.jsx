@@ -11,7 +11,7 @@ import {isEmpty} from "../utils/utils";
 import {currentUserRoleInTeam, ROLES} from "../validations/memberships";
 import LinkedInstitutionTeamsExplain from "../components/linked_institution_teams_explain";
 
-export default class LinkedInstitutionTeams extends React.Component {
+export default class LinkedInstitutionTeams extends React.PureComponent {
 
     constructor(props) {
         super(props);

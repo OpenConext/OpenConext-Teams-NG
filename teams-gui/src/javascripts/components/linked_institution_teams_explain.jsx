@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import I18n from "i18n-js";
 
-export default class LinkedInstitutionTeamsExplain extends React.Component {
+export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.isVisible === false && nextProps.isVisible === true) {

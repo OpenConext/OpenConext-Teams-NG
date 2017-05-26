@@ -8,7 +8,7 @@ import enFlag from "../../images/british_flag.png";
 
 const languageOptions = [{value: "DUTCH", label: "Nederlands"}, {value: "ENGLISH", label: "English"}];
 
-export default class SelectLanguage extends React.Component {
+export default class SelectLanguage extends React.PureComponent {
 
 
     renderOption = option => {

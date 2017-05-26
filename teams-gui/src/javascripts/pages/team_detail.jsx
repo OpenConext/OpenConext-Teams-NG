@@ -43,7 +43,7 @@ import {
 } from "../validations/memberships";
 import SelectRole from "../components/select_role";
 
-export default class TeamDetail extends React.Component {
+export default class TeamDetail extends React.PureComponent {
 
     constructor(props, context) {
         super(props, context);

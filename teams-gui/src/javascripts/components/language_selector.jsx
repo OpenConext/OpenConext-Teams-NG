@@ -5,7 +5,7 @@ import {replaceQueryParameter} from "../utils/query-parameters";
 import {stop} from "../utils/utils";
 import moment from "moment";
 
-export default class LanguageSelector extends React.Component {
+export default class LanguageSelector extends React.PureComponent {
 
     render() {
         return (

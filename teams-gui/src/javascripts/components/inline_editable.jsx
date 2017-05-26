@@ -3,7 +3,7 @@ import I18n from "i18n-js";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 
-export default class InlineEditable extends React.Component {
+export default class InlineEditable extends React.PureComponent {
 
     constructor(props) {
         super(props);

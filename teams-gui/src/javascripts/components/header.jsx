@@ -8,7 +8,7 @@ import LanguageSelector from "./language_selector";
 import UserProfile from "./user_profile";
 import Logout from "../pages/logout";
 
-export default class Header extends React.Component {
+export default class Header extends React.PureComponent {
 
     constructor() {
         super();

@@ -12,7 +12,7 @@ import PublicLinkInfo from "../components/public_link_info";
 import SelectRole from "../components/select_role";
 import {ROLES} from "../validations/memberships";
 
-export default class PublicLink extends React.Component {
+export default class PublicLink extends React.PureComponent {
 
     constructor(props, context) {
         super(props, context);

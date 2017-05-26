@@ -12,7 +12,7 @@ import {setFlash} from "../utils/flash";
 import {goto, isEmpty, stop} from "../utils/utils";
 
 
-export default class JoinRequest extends React.Component {
+export default class JoinRequest extends React.PureComponent {
 
     constructor(props, context) {
         super(props, context);

@@ -14,7 +14,7 @@ import {isEmpty, stop} from "../utils/utils";
 
 import {validNameRegExp} from "../validations/regular_exp";
 
-export default class NewTeam extends React.Component {
+export default class NewTeam extends React.PureComponent {
 
     constructor(props, context) {
         super(props, context);

@@ -18,7 +18,7 @@ import moment from "moment";
 
 import {validEmailRegExp} from "../validations/regular_exp";
 
-export default class Invite extends React.Component {
+export default class Invite extends React.PureComponent {
 
     constructor(props, context) {
         super(props, context);

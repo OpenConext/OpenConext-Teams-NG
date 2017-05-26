@@ -12,7 +12,7 @@ import {isEmpty, stop} from "../utils/utils";
 
 import {validEmailRegExp} from "../validations/regular_exp";
 
-export default class EmailInput extends React.Component {
+export default class EmailInput extends React.PureComponent {
 
     constructor(props, context) {
         super(props, context);

@@ -5,7 +5,7 @@ import "react-select/dist/react-select.css";
 import {iconForRole, ROLES} from "../validations/memberships";
 import I18n from "i18n-js";
 
-export default class SelectRole extends React.Component {
+export default class SelectRole extends React.PureComponent {
 
     constructor(props) {
         super(props);

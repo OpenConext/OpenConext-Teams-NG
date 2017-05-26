@@ -11,7 +11,7 @@ import {goto, isEmpty, stop} from "../utils/utils";
 import InvitationInfo from "../components/invitation_info";
 import SelectRole from "../components/select_role";
 
-export default class Invitation extends React.Component {
+export default class Invitation extends React.PureComponent {
 
     constructor(props, context) {
         super(props, context);

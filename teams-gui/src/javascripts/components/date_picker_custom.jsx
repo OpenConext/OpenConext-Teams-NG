@@ -3,7 +3,7 @@ import I18n from "i18n-js";
 import PropTypes from "prop-types";
 import {isEmpty} from "../utils/utils";
 
-export default class DatePickerCustom extends React.Component {
+export default class DatePickerCustom extends React.PureComponent {
 
     render() {
         const value = this.props.value || I18n.t("invite.expiry_date_none");

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import LinkedInstitutionTeams from "../components/linked_institution_teams";
 import {linkedTeams} from "../api";
 
-export default class InstitutionTeams extends React.Component {
+export default class InstitutionTeams extends React.PureComponent {
 
     constructor(props) {
         super(props);

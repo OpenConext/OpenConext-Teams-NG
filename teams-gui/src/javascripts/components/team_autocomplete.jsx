@@ -6,7 +6,7 @@ import scrollIntoView from "scroll-into-view";
 
 import {isEmpty} from "../utils/utils";
 
-export default class TeamAutocomplete extends React.Component {
+export default class TeamAutocomplete extends React.PureComponent {
 
     componentDidUpdate(prevProps) {
         if (this.selectedRow && prevProps.selectedTeam !== this.props.selectedTeam) {

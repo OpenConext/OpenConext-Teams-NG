@@ -17,7 +17,7 @@ import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
 
-export default class MyTeams extends React.Component {
+export default class MyTeams extends React.PureComponent {
 
     constructor(props) {
         super(props);
