@@ -201,6 +201,7 @@
                     <excludes>
                         <exclude>**/MockMailBox.*</exclude>
                         <exclude>**/MockShibbolethFilter.*</exclude>
+                        <exclude>**/migration/**/*.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

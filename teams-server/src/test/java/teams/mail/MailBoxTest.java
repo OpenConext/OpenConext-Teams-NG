@@ -85,7 +85,9 @@ public class MailBoxTest extends AbstractApplicationTest {
     }
 
     private void validateJoinRequestStatusMail(String status) throws IOException, MessagingException, InterruptedException {
-        assertTrue(mailBody().contains(String.format("has been <strong>%s</strong>", status)));
+        String mailBody = mailBody();
+        assertTrue(mailBody.contains(String.format("has been <strong>%s</strong>", status)));
+        assertTrue(mailBody.contains("http://localhost:8001/teams/"));
     }
 
     private String mailBody() throws InterruptedException, MessagingException {

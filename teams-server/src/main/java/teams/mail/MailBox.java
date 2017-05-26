@@ -76,6 +76,7 @@ public class MailBox {
         Map<String, Object> variables = new HashMap<>();
         variables.put(TITLE, productName);
         variables.put("joinRequest", joinRequest);
+        variables.put("baseUrl", this.baseUrl);
         sendMail(
                 String.format("mail_templates/%s", emailTemplate),
                 subject,
