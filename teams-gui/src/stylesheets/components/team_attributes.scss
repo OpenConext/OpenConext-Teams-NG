@@ -16,8 +16,10 @@
         margin-bottom: 0;
       }
     }
+
     em {
       font-size: 11px;
+      margin-left: 8px;
     }
 
     span.attribute {
@@ -35,6 +37,7 @@
 
       i {
         color: $blue;
+        margin-top: 3px;
         margin-right: 20px;
         font-size: larger;
         cursor: pointer;
@@ -55,8 +58,12 @@
 
   .inline-editable {
     span {
-      background-color: $light-blue;
       min-height: 28px;
+      padding: 5px 0 5px 10px;
+
+      &.edit-editable {
+        background-color: $light-blue;
+      }
     }
 
     input[type=text] {
@@ -68,4 +75,12 @@
     }
 
   }
+
+  .checkbox {
+    em {
+      font-size: 11px;
+      margin-left: 8px;
+    }
+  }
+
 }

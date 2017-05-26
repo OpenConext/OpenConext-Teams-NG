@@ -48,10 +48,10 @@ export default class InlineEditable extends React.PureComponent {
     renderNonEditable(name, value, mayEdit) {
         const toolTipId = `edit-${name}`;
         const span = mayEdit ?
-            <span className="attribute" onClick={this.toggleEditable}>{value}<i className="fa fa-pencil" data-for={toolTipId} data-tip></i>
+            <span className="attribute edit-editable" onClick={this.toggleEditable}>{value}<i className="fa fa-pencil" data-for={toolTipId} data-tip></i>
                 <ReactTooltip id={toolTipId} place="top">{I18n.t("team_detail.edit")}</ReactTooltip>
             </span> :
-            <span>{value}</span>;
+            <span className="read-only-editable">{value}</span>;
         return (
             <div className="inline-editable">
                 <label className="title">{I18n.t(name)}</label>

@@ -402,9 +402,8 @@ export default class TeamDetail extends React.PureComponent {
                 </div>
                 {isAdmin && <div className="team-attribute">
                     <label className="title info-after">{I18n.t("team_detail.public_link")}</label>
-                    <em className="info">{I18n.t("team_detail.public_link_disabled")}</em>
                     <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}
-                              onChange={this.changePublicLinkDisabled}/>
+                              info={I18n.t("team_detail.public_link_disabled")} onChange={this.changePublicLinkDisabled}/>
                     {!team.publicLinkDisabled && <CopyToClipboard text={universalPublicLink} onCopy={this.copiedToClipboardPublicLink}>
                         <span className="attribute">{universalPublicLink}
                             <a data-for={universalPublicLink} data-tip>
@@ -425,10 +424,9 @@ export default class TeamDetail extends React.PureComponent {
                                 onChange={this.changePersonalNote}/>}
                 <div className="team-attribute">
                     <label className="title info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
-                    <em className="info" htmlFor="viewable">{I18n.t("team_detail.viewable_info")}</em>
                 </div>
-                <CheckBox name="viewable" value={team.viewable || false} readOnly={!isAdmin}
-                          onChange={this.changeViewable}/>
+                <CheckBox name="viewable" value={team.viewable} readOnly={!isAdmin}
+                          info={I18n.t("team_detail.viewable_info")} onChange={this.changeViewable}/>
             </section>
         );
     }

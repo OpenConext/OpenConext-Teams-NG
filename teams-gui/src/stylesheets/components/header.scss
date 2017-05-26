@@ -32,6 +32,10 @@
       position: absolute;
       top: 13px;
 
+      @include small-phone {
+        display: none;
+      }
+
       img {
         height: 60px;
       }
