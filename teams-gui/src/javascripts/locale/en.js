@@ -256,8 +256,8 @@ I18n.translations.en = {
         cancel: "Cancel",
         flash: "Invitation has been sent",
         flash_resent: "Reminder email has been sent",
-        message_placeholder: "Personal message to be included in the invitation email"
-
+        message_placeholder: "Personal message to be included in the invitation email",
+        expiry_data_info: "The expiry date is the expiry date of the membership if this invitation is accepted. When you specify an expiry date the membership will be temporary until it expires. It is NOT the expiry date of this invitation."
     },
     invitation: {
         title: "Invitation received for team '{{name}}'",

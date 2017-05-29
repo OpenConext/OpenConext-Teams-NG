@@ -161,7 +161,7 @@ I18n.translations.nl = {
         }
 
     },
-    join_request : {
+    join_request: {
         title: "Toetredingsverzoek",
         team: {
             name: "Team naam",
@@ -255,8 +255,8 @@ I18n.translations.nl = {
         cancel: "Annuleer",
         flash: "Uitnodiging is verstuurd",
         flash_resent: "Herinneringsmail is verstuurd",
-        message_placeholder: "Persoonlijk bericht voor de uitnodiging"
-
+        message_placeholder: "Persoonlijk bericht voor de uitnodiging",
+        expiry_data_info: "De vervaldatum is de vervaldatum voor het lidmaatschap als deze uitnodiging wordt geaccepteerd. Als je een vervaldatum opgeeft dan is het eventuele lidmaatschap tijdelijk tot het verloopt. Het is NIET de vervaldatum van deze uitnodiging."
     },
     invitation: {
         title: "Uitnodiging ontvangen voor team '{{name}}'",

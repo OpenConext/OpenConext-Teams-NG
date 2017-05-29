@@ -38,6 +38,19 @@
             margin-top: 15px;
           }
         }
+        div.__react_component_tooltip {
+          width: 350px;
+        }
+        .expiry-date-container {
+          position: relative;
+          .fa-info-circle {
+            color: $blue;
+            position: absolute;
+            top: -2px;
+            right: 67px;
+            cursor: pointer;
+          }
+        }
       }
 
       @include phone {

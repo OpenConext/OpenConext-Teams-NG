@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import I18n from "i18n-js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ReactTooltip from "react-tooltip";
 
 import EmailInput from "../components/email_input";
 import ConfirmationDialog from "../components/confirmation_dialog";
@@ -199,8 +200,13 @@ export default class Invite extends React.PureComponent {
                 </div>
                 {this.props.currentUser.featureToggles["EXPIRY_DATE_MEMBERSHIP"] &&
                 <div>
-                    <label className="expiry-date"
-                           htmlFor="expiryDate">{I18n.t("invite.expiry_date")}</label>
+                    <div  className="expiry-date-container">
+                        <label className="expiry-date"
+                               htmlFor="expiryDate">{I18n.t("invite.expiry_date")}</label>
+                        <i className="fa fa-info-circle" data-for="tool-tip-expiry-date" data-tip></i>
+                    </div>
+                    <ReactTooltip id="tool-tip-expiry-date"
+                                  place="top">{I18n.t("invite.expiry_data_info")}</ReactTooltip>
                     <DatePicker selected={expiryDate}
                                 isClearable={false}
                                 onChange={this.handleInputChange("expiryDate")}
@@ -208,6 +214,7 @@ export default class Invite extends React.PureComponent {
                                 minDate={moment().add(1, "days")}
                                 locale={I18n.locale}
                                 disabled={readOnly}/>
+
                 </div>}
             </section>
         );
