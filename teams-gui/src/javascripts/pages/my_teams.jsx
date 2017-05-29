@@ -170,7 +170,11 @@ export default class MyTeams extends React.PureComponent {
         this.setState({filteredTeams: sortedTeams, sortAttributes: newSortAttributes});
     };
 
-    sortByAttribute = (name, reverse = false) => (a, b) => a[name].toString().localeCompare(b[name].toString()) * (reverse ? -1 : 1);
+    sortByAttribute = (name, reverse = false) => (a, b) => {
+        const aSafe = a[name] || "";
+        const bSafe = b[name] || "";
+        return aSafe.toString().localeCompare(bSafe.toString()) * (reverse ? -1 : 1);
+    };
 
     currentSortedAttribute = () => this.state.sortAttributes.filter(attr => attr.current)[0];
 

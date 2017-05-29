@@ -51,16 +51,19 @@ class App extends React.PureComponent {
                 this.setState({errorDialogOpen: false});
             }
         };
-        window.onerror = (msg, url, line, col, error) => {
+        window.onerror = (msg, url, line, col, err) => {
             this.setState({errorDialogOpen: true});
-            reportError({
+            const info = err || {};
+            const error = {
                 userAgent: navigator.userAgent,
                 message: msg,
                 url: url,
                 line: line,
                 col: col,
-                error: error
-            });
+                error: info.message,
+                stack: info.stack
+            };
+            reportError(error);
         };
     }
 
