@@ -35,7 +35,7 @@ I18n.translations.nl = {
     },
     error_dialog: {
         title: "Onverwachte fout",
-        body: "Dit is genant. Er is een onverwachte fout opgetreden. De fout is gerapporteerd.",
+        body: "Dit is gênant. Er is een onverwachte fout opgetreden. De fout is gerapporteerd.",
         ok: "Sluiten"
     },
 
@@ -338,8 +338,8 @@ I18n.translations.nl = {
     profile: {
         email: "Email",
         role: "Rol",
-        true: "{{ productName }} gast",
-        false: "{{ productName }} lid"
+        true: "{{productName}} gast",
+        false: "{{productName}} lid"
     },
 
     auto_complete: {
