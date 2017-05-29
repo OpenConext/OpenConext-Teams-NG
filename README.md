@@ -84,3 +84,14 @@ If you add dependencies to the teams-gui with yarn you can see the impact on the
     cd teams-gui
     rm -fr dist && yarn webpack-analyze | sed '1,6d' | sed '$d' | webpack-bundle-size-analyzer
     
+## API
+    
+The teams application has two API:
+    
+1. Internal Teams API on `api/teams` for the teams GUI
+2. VOOT API on `api/voot` for the VOOT server app  
+  
+The first one is secured with shibboleth and CSRF and the second one is secured with basic auth. For an example call:
+  
+    curl  -u voot:secret https://teams.test2.surfconext.nl/api/voot/user/urn:collab:person:example.com:admin/groups  
+    
