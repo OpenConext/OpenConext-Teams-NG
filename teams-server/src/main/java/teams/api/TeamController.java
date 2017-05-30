@@ -96,6 +96,7 @@ public class TeamController extends ApiController implements TeamValidator {
     @PostMapping("api/teams/teams")
     public Object createTeam(HttpServletRequest request, @Validated @RequestBody NewTeamProperties teamProperties, FederatedUser federatedUser) throws IOException, MessagingException {
         String name = teamProperties.getName();
+
         String urn = constructUrn(name);
         List<Object> urns = teamRepository.existsByUrn(urn);
 

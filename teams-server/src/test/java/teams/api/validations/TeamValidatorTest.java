@@ -6,11 +6,15 @@ import teams.api.TeamController;
 import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
+import teams.exception.InvalidTeamNameException;
 
+import javax.validation.ConstraintViolation;
 import java.util.Collections;
+import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TeamValidatorTest implements Seed {
 
@@ -60,7 +64,17 @@ public class TeamValidatorTest implements Seed {
         assertEquals(false, subject.isAllowedToAcceptJoinRequest(new TeamSummary(team(), federatedUser(), false)));
     }
 
-    public void doIsAllowedToAcceptJoinRequest(Role role, boolean expected) {
+    @Test
+    public void validName() throws Exception {
+        subject.validateTeamName("Name - allowed's");
+    }
+
+    @Test(expected = InvalidTeamNameException.class)
+    public void invalidName() throws Exception {
+        subject.validateTeamName("^ ");
+    }
+
+    private void doIsAllowedToAcceptJoinRequest(Role role, boolean expected) {
         Team team = team();
         FederatedUser federatedUser = federatedUser("urn");
         membership(role, team, federatedUser.getPerson());

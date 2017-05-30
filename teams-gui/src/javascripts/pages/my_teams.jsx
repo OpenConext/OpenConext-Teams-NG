@@ -75,11 +75,11 @@ export default class MyTeams extends React.PureComponent {
 
     showTeam = team => () => {
         if (team.isJoinRequest) {
-            const possibleExistingJoinRequest = this.state.teams.filter(t => t.isJoinRequest && t.teamId === team.id);
+            const possibleExistingJoinRequest = this.state.teams.filter(t => t.isJoinRequest && t.teamId === team.teamId);
             if (possibleExistingJoinRequest.length > 0) {
-                this.props.history.push(`/join-requests/${team.id}/${possibleExistingJoinRequest[0].id}`);
+                this.props.history.push(`/join-requests/${team.teamId}/${possibleExistingJoinRequest[0].id}`);
             } else {
-                this.props.history.push(`/join-requests/${team.id}`);
+                this.props.history.push(`/join-requests/${team.teamId}`);
             }
         } else {
             this.props.history.push("/teams/" + team.id);
@@ -193,7 +193,7 @@ export default class MyTeams extends React.PureComponent {
         this.setState({filteredTeams: sortedTeams, filterAttributes: newFilterAttributes});
     };
 
-    itemSelected = team => this.showTeam({...team, isJoinRequest: isEmpty(team.role)})();
+    itemSelected = team => this.showTeam({...team, isJoinRequest: isEmpty(team.role), teamId: team.id})();
 
     addTeam = e => {
         stop(e);

@@ -15,21 +15,6 @@ import static org.junit.Assert.*;
 
 public class TeamTest implements Seed {
 
-    private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-
-    @Test
-    public void validName() throws Exception {
-        List<ConstraintViolation<Team>> violations = teamViolations("Name - allowed's");
-        assertTrue(violations.isEmpty());
-    }
-
-    @Test
-    public void invalidName() throws Exception {
-        List<ConstraintViolation<Team>> violations = teamViolations("^ ");
-        assertEquals(1, violations.size());
-        assertEquals("must match \"[\\w \\-']{1,255}\"", violations.get(0).getMessage());
-    }
-
     @Test
     public void containsMessage() {
         Team team = new Team("urn", "name", " ", true, null);
@@ -52,10 +37,6 @@ public class TeamTest implements Seed {
 
         assertTrue(team.equals(team));
 
-    }
-
-    private List<ConstraintViolation<Team>> teamViolations(String name) {
-        return new ArrayList<>(this.validator.validate(new Team("urn", name, "Description", true, null)));
     }
 
 }

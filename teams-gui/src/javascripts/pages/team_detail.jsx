@@ -323,7 +323,9 @@ export default class TeamDetail extends React.PureComponent {
         if (a[name] && b[name]) {
             return a[name].toString().localeCompare(b[name].toString()) * (reverse ? -1 : 1);
         }
-        return a.toString().localeCompare(b.toString()) * (reverse ? -1 : 1);
+        const aSafe = a || "";
+        const bSafe = b || "";
+        return aSafe.toString().localeCompare(bSafe.toString()) * (reverse ? -1 : 1);
     };
 
     changePersonalNote = personalNote => {

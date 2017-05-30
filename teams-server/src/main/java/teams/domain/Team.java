@@ -10,6 +10,7 @@ import org.springframework.web.util.HtmlUtils;
 import teams.api.validations.HashGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.Instant;
 import java.util.HashSet;
@@ -33,7 +34,7 @@ public class Team implements HashGenerator {
     private String urn;
 
     @Column
-    @Pattern(regexp = "[\\w \\-']{1,255}")
+    @NotNull
     private String name;
 
     @Column
