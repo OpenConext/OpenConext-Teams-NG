@@ -33,7 +33,7 @@ em {
   }
 }
 
-input[type=text], textarea {
+input[type=text], input[type=email], textarea {
   display: block;
   width: 100%;
   border: 1px solid $lighter-grey;
@@ -49,7 +49,6 @@ input[type=text], textarea {
 .button {
   min-width: 200px;
 }
-
 
 div.checkbox {
   display: flex;

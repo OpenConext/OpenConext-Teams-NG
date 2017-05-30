@@ -13,12 +13,15 @@ export default class PersonAutocomplete extends React.PureComponent {
     matchedPart = (value, query, index, email = false) => {
         const toLower = value.toLowerCase();
         const indexOf = toLower.indexOf(query.toLowerCase());
+        const first = value.substring(0, indexOf);
+        const middle = value.substring(indexOf, indexOf + query.length);
+        const last = value.substring(indexOf + query.length);
 
         return indexOf > -1 ?
             <span key={`${email ? "email" : "name"}_${index}`}>
-                {(email ? "<" : "") + value.substring(0, indexOf)}
-                <span className="matched">{query}</span>
-                {value.substring(indexOf + query.length) + (email ? ">" : "")}
+                {(email ? "<" : "") + first}
+                <span className="matched">{middle}</span>
+                {last + (email ? ">" : "")}
             </span> :
             <span key={`${email ? "email" : "name"}_${index}`}>{(email ? " <" : "") + value + (email ? ">" : "")}</span>;
     };
