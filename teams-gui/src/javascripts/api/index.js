@@ -190,3 +190,7 @@ export function deleteMember(memberId) {
 export function reportError(error) {
     return postPutJson("error", error);
 }
+
+export function logOut() {
+    return fetchDelete("users/logout");
+}

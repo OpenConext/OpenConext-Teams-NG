@@ -18,11 +18,10 @@ export default class TeamAutocomplete extends React.PureComponent {
         const name = item.name;
         const nameToLower = name.toLowerCase();
         const indexOf = nameToLower.indexOf(query.toLowerCase());
-        return (
-            <span>{name.substring(0, indexOf)}
-                <span className="matched">{query}</span>{name.substring(indexOf + query.length)}
-        </span>
-        );
+        const first = name.substring(0, indexOf);
+        const middle = name.substring(indexOf, indexOf + query.length);
+        const last = name.substring(indexOf + query.length);
+        return  <span>{first}<span className="matched">{middle}</span>{last}</span>;
     };
 
     itemDescription = (item, index) => {

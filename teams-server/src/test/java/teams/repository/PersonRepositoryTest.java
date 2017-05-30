@@ -18,14 +18,14 @@ public class PersonRepositoryTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void findByNameStartingWithIgnoreCase() throws Exception {
-        List<Person> persons = personRepository.findFirst10ByNameStartingWithOrEmailStartingWithAllIgnoreCase("JOHN", "JOHN");
+    public void findByNameContainingIgnoreCase() throws Exception {
+        List<Person> persons = personRepository.findFirst10ByNameContainingOrEmailContainingAllIgnoreCase("OHN", "OHN");
         assertEquals(2, persons.size());
     }
 
     @Test
-    public void findByEmailStartingWithIgnoreCase() throws Exception {
-        List<Person> persons = personRepository.findFirst10ByNameStartingWithOrEmailStartingWithAllIgnoreCase("RONA", "RONA");
-        assertEquals(1, persons.size());
+    public void findByEmailContainingIgnoreCase() throws Exception {
+        List<Person> persons = personRepository.findFirst10ByNameContainingOrEmailContainingAllIgnoreCase("EXA", "EXA");
+        assertEquals(5, persons.size());
     }
 }

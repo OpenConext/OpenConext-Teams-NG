@@ -140,7 +140,7 @@ export default class EmailInput extends React.PureComponent {
                 {!disabled && <div className="validity-input-wrapper">
                     <input ref={self => this.emailInput = self}
                            placeholder={placeholder}
-                           type="text"
+                           type="email"
                            onChange={this.autocomplete}
                            onFocus={this.onFocus}
                            onBlur={this.validateEmail}

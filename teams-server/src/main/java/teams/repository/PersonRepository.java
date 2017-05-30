@@ -12,6 +12,6 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     Optional<Person> findByUrnIgnoreCase(String urn);
 
-    List<Person> findFirst10ByNameStartingWithOrEmailStartingWithAllIgnoreCase(String name, String email);
+    List<Person> findFirst10ByNameContainingOrEmailContainingAllIgnoreCase(String name, String email);
 
 }

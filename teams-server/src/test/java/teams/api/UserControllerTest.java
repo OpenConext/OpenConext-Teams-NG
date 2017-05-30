@@ -66,6 +66,15 @@ public class UserControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void logout() throws Exception {
+        given()
+                .when()
+                .delete("api/teams/users/logout")
+                .then()
+                .statusCode(SC_OK);
+    }
+
+    @Test
     public void error() throws Exception {
         given()
                 .header(CONTENT_TYPE, "application/json")

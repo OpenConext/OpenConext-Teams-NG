@@ -1,4 +1,7 @@
 .logout {
-    max-width: $medium;
-    margin: 0 auto;
+  @include card;
+  @include page;
+
+  padding: 40px;
+  font-size: larger;
 }
