@@ -21,10 +21,11 @@ cron:
   expression: "0 0/15 * * * ?"
 
 teams:
-  default-stem-name: "nl:surfnet:diensten"
-  group-name-context: "urn:collab:group:dev.surfteams.nl:"
-  product-name: "SURFconext Teams"
+  default-stem-name: "demo:openconext:org"
+  group-name-context: "urn:collab:group:demo.openconext.org:"
+  product-name: "OpenConext Teams"
   non-guest-member-of: "urn:collab:org:surf.nl"
+  openconext-mails: true
 
 voot:
   serviceUrl: "https://voot.vm.openconext.org"

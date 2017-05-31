@@ -19,7 +19,7 @@ public class ExternalTeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByTeamsUrnIn() throws Exception {
-        List<ExternalTeam> externalTeams = externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:riders");
+        List<ExternalTeam> externalTeams = externalTeamRepository.findByTeamsUrn("demo:openconext:org:riders");
         assertEquals(2, externalTeams.size());
     }
 

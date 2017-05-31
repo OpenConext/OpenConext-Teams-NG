@@ -31,4 +31,9 @@
         </td>
     </tr>
 </table>
-{{> footer.html}}
+{{#mailParameters.openConextMail}}
+    {{> footer_openconext.html}}
+{{/mailParameters.openConextMail}}
+{{^mailParameters.openConextMail}}
+    {{> footer.html}}
+{{/mailParameters.openConextMail}}

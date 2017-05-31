@@ -22,7 +22,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ExternalTeamControllerTest extends AbstractApplicationTest implements Mocks, Seed {
 
-    private String teamUrn = "nl:surfnet:diensten:gliders";
+    private String teamUrn = "demo:openconext:org:gliders";
 
     @Test
     public void linkedTeams() throws Exception {
@@ -82,7 +82,7 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
                 .statusCode(SC_OK)
                 .body("externalTeams.size()", equalTo(0));
 
-        assertEquals(0, externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:giants").size());
+        assertEquals(0, externalTeamRepository.findByTeamsUrn("demo:openconext:org:giants").size());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
                 .statusCode(SC_OK)
                 .body("externalTeams.size()", equalTo(1));
 
-        assertEquals(1, externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:riders").size());
+        assertEquals(1, externalTeamRepository.findByTeamsUrn("demo:openconext:org:riders").size());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
                 .statusCode(SC_OK)
                 .body("externalTeams.size()", equalTo(0));
 
-        assertEquals(0, externalTeamRepository.findByTeamsUrn("nl:surfnet:diensten:giants").size());
+        assertEquals(0, externalTeamRepository.findByTeamsUrn("demo:openconext:org:giants").size());
     }
 
     @Test

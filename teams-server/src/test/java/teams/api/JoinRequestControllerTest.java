@@ -113,7 +113,7 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
         assertEquals("Join request<br/>", joinRequest.getHtmlMessage());
 
         assertEquals("urn:collab:person:surfnet.nl:tdoe", joinRequest.getPerson().getUrn());
-        assertEquals("nl:surfnet:diensten:riders", joinRequest.getTeam().getUrn());
+        assertEquals("demo:openconext:org:riders", joinRequest.getTeam().getUrn());
     }
 
     @Test

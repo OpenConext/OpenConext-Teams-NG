@@ -22,7 +22,7 @@ I18n.translations.en = {
     header: {
         title: "Teams",
         links: {
-            help_html: "<a href=\"https://github.com/OpenConext/OpenConext-teams-NG\" target=\"_blank\">Help</a>",
+            help_html: "<a href=\"https://openconext.org/teams\" target=\"_blank\">Help</a>",
             logout: "Logout",
             exit: "Exit"
         },

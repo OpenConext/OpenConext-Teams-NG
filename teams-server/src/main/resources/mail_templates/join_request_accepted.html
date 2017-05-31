@@ -3,5 +3,11 @@
     Your <strong>request</strong> to join team <a href="{{baseUrl}}/teams/{{joinRequest.team.id}}" style="color:#0088CC;"><strong>{{joinRequest.team.name}}</strong></a> has been <strong>accepted</strong> by the
     administrator of the team.
 </p>
-{{> footer.html}}
+{{#mailParameters.openConextMail}}
+    {{> footer_openconext.html}}
+{{/mailParameters.openConextMail}}
+{{^mailParameters.openConextMail}}
+    {{> footer.html}}
+{{/mailParameters.openConextMail}}
+
 

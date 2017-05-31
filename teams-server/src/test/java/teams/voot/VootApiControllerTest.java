@@ -26,13 +26,13 @@ public class VootApiControllerTest extends AbstractApplicationTest {
 
     @Test
     public void findByLocalGroupId() throws Exception {
-        start("group/nl:surfnet:diensten:giants")
+        start("group/demo:openconext:org:giants")
                 .body("displayName", equalTo("giants"));
     }
 
     @Test
     public void findByLocalGroupIdNonExistent() throws Exception {
-        start("group/nl:surfnet:diensten:nope", SC_NOT_FOUND);
+        start("group/demo:openconext:org:nope", SC_NOT_FOUND);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
 
     @Test
     public void linkedExternalGroupIds() throws Exception {
-        String[] params = {"teamId", "nl:surfnet:diensten:riders"};
+        String[] params = {"teamId", "demo:openconext:org:riders"};
         start("linked-externals", Optional.of(params), SC_OK)
                 .body("size()", equalTo(2))
                 .body("", hasItems("urn:collab:group:example.org:name1", "urn:collab:group:example.org:name2"));
@@ -53,7 +53,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
 
     @Test
     public void getMembers() throws Exception {
-        start("members/nl:surfnet:diensten:giants")
+        start("members/demo:openconext:org:giants")
                 .body("size()", equalTo(4))
                 .body("name", hasItems("Tracey Doe", "Mary Doe", "John Doe", "William Doe"));
     }
@@ -74,7 +74,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
 
     @Test
     public void getGroupsForMemberAndTeamUrn() throws Exception {
-        start("user/urn:collab:person:surfnet.nl:tdoe/groups/nl:surfnet:diensten:giants")
+        start("user/urn:collab:person:surfnet.nl:tdoe/groups/demo:openconext:org:giants")
                 //four properties, not elements
                 .body("size()", equalTo(4))
                 .body("displayName", equalTo("giants"));
@@ -82,7 +82,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
 
     @Test
     public void getGroupsForMemberAndTeamUrnNotExists() throws Exception {
-        start("user/urn:collab:person:surfnet.nl:nope/groups/nl:surfnet:diensten:nope", SC_NOT_FOUND);
+        start("user/urn:collab:person:surfnet.nl:nope/groups/demo:openconext:org:nope", SC_NOT_FOUND);
     }
 
     private ValidatableResponse start(String path) {

@@ -146,7 +146,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
 
     @Test
     public void createTeam() throws Exception {
-        String urn = "nl:surfnet:diensten:new_team_name";
+        String urn = "demo:openconext:org:new_team_name";
         given()
                 .body(new NewTeamProperties("new team name", "Team champions ", null, true,
                         null, null, Language.DUTCH))
@@ -167,7 +167,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
 
     @Test
     public void createTeamWithAdminInvitation() throws Exception {
-        String urn = "nl:surfnet:diensten:new_team_name";
+        String urn = "demo:openconext:org:new_team_name";
         String email = "second_admin@test.org";
         String invitationMessage = "Please join";
 
@@ -242,7 +242,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_OK);
 
-        Team team = teamRepository.findByUrn("nl:surfnet:diensten:riders").get();
+        Team team = teamRepository.findByUrn("demo:openconext:org:riders").get();
         assertEquals("changed", team.getDescription());
         assertEquals("personalNote", team.getPersonalNote());
         //name is immutable
@@ -300,7 +300,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_OK);
 
-        assertFalse(teamRepository.findByUrn("nl:surfnet:diensten:riders").isPresent());
+        assertFalse(teamRepository.findByUrn("demo:openconext:org:riders").isPresent());
     }
 
 }

@@ -24,14 +24,16 @@ public class MailBox {
     private String baseUrl;
     private String emailFrom;
     private String productName;
+    private MailParameters mailParameters;
 
     private final MustacheFactory mustacheFactory = new DefaultMustacheFactory();
 
-    public MailBox(JavaMailSender mailSender, String emailFrom, String baseUrl, String productName) {
+    public MailBox(JavaMailSender mailSender, String emailFrom, String baseUrl, String productName, boolean openConextMail) {
         this.mailSender = mailSender;
         this.emailFrom = emailFrom;
         this.baseUrl = baseUrl;
         this.productName = productName;
+        this.mailParameters = new MailParameters(openConextMail);
     }
 
     public void sendInviteMail(Invitation invitation) throws MessagingException, IOException {
@@ -45,6 +47,7 @@ public class MailBox {
         variables.put("invitation", invitation);
         variables.put("invitationMessage", invitation.getLatestInvitationMessage());
         variables.put("baseUrl", baseUrl);
+        variables.put("mailParameters", mailParameters);
         sendMail(
                 String.format("mail_templates/invitation_%s.html", languageCode),
                 title,
@@ -57,6 +60,7 @@ public class MailBox {
         variables.put(TITLE, productName);
         variables.put("joinRequest", joinRequest);
         variables.put("baseUrl", baseUrl);
+        variables.put("mailParameters", mailParameters);
         sendMail(
                 "mail_templates/join_request.html",
                 String.format("Membership request for %s", joinRequest.getTeam().getName()),
@@ -77,6 +81,7 @@ public class MailBox {
         variables.put(TITLE, productName);
         variables.put("joinRequest", joinRequest);
         variables.put("baseUrl", this.baseUrl);
+        variables.put("mailParameters", mailParameters);
         sendMail(
                 String.format("mail_templates/%s", emailTemplate),
                 subject,

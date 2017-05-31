@@ -53,7 +53,7 @@ public class PublicLinkControllerTest extends AbstractApplicationTest {
                 .put("api/teams/public-links/{publicLink}", PUBLIC_LINK_SECRET)
                 .then()
                 .statusCode(SC_OK);
-        Optional<Membership> membership = membershipRepository.findByUrnTeamAndUrnPerson("nl:surfnet:diensten:riders", personUrn);
+        Optional<Membership> membership = membershipRepository.findByUrnTeamAndUrnPerson("demo:openconext:org:riders", personUrn);
         assertTrue(membership.isPresent());
     }
 

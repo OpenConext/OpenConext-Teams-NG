@@ -54,7 +54,7 @@ public class MembershipControllerTest extends AbstractApplicationTest {
                 .statusCode(SC_OK);
 
         Membership membership = membershipRepository.findByUrnTeamAndUrnPerson(
-                "nl:surfnet:diensten:giants", "urn:collab:person:surfnet.nl:tdoe").get();
+                "demo:openconext:org:giants", "urn:collab:person:surfnet.nl:tdoe").get();
         assertEquals(Role.ADMIN, membership.getRole());
     }
 
@@ -83,7 +83,7 @@ public class MembershipControllerTest extends AbstractApplicationTest {
                 .statusCode(SC_OK);
 
         Optional<Membership> membershipOptional = membershipRepository.findByUrnTeamAndUrnPerson(
-                "nl:surfnet:diensten:giants", "urn:collab:person:surfnet.nl:tdoe");
+                "demo:openconext:org:giants", "urn:collab:person:surfnet.nl:tdoe");
         assertFalse(membershipOptional.isPresent());
     }
 

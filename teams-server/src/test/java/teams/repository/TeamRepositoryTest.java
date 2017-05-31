@@ -27,7 +27,7 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByUrn() throws Exception {
-        Team team = teamRepository.findByUrn("nl:surfnet:diensten:giants").get();
+        Team team = teamRepository.findByUrn("demo:openconext:org:giants").get();
 
         assertTrue(areMembershipLoaded(team));
         assertEquals("giants", team.getName());
@@ -36,7 +36,7 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByUrnOrderById() throws Exception {
-        Team team = teamRepository.findByUrnOrderById("nl:surfnet:diensten:giants").get();
+        Team team = teamRepository.findByUrnOrderById("demo:openconext:org:giants").get();
         assertFalse(areMembershipLoaded(team));
     }
 
@@ -60,7 +60,7 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void existsByUrn() throws Exception {
-        List<Object> urns = teamRepository.existsByUrn("nl:surfnet:diensten:giants");
+        List<Object> urns = teamRepository.existsByUrn("demo:openconext:org:giants");
         assertEquals(1, urns.size());
     }
 

@@ -1,13 +1,13 @@
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
-VALUES (1, 'nl:surfnet:diensten:riders', 'riders', 'we are riders', 1, 'wZiomLDTk3CU2FR9bRy1IFCfYSqt5AFwSAs74M1EuIQs3D');
+VALUES (1, 'demo:openconext:org:riders', 'riders', 'we are riders', 1, 'wZiomLDTk3CU2FR9bRy1IFCfYSqt5AFwSAs74M1EuIQs3D');
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `personal_note`, `public_link`, `public_link_disabled`)
-VALUES (2, 'nl:surfnet:diensten:giants', 'giants', 'we are giants', 1, 'Why did I create this team', 'ErtOpeSiYdEluAMd53CXs4TnN3RyrHUIHdaxImw3q1A3D', 1);
+VALUES (2, 'demo:openconext:org:giants', 'giants', 'we are giants', 1, 'Why did I create this team', 'ErtOpeSiYdEluAMd53CXs4TnN3RyrHUIHdaxImw3q1A3D', 1);
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
-VALUES (3, 'nl:surfnet:diensten:gliders', 'gliders', 'we are gliders', 1, '72MpWBjvo2F753r2ff960VMgwx113svKq9u4js8MBu303D');
+VALUES (3, 'demo:openconext:org:gliders', 'gliders', 'we are gliders', 1, '72MpWBjvo2F753r2ff960VMgwx113svKq9u4js8MBu303D');
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
-VALUES (4, 'nl:surfnet:diensten:masters', 'masters', 'we are masters', 1, 'n78zCdrYZJ3SeZuD9OKNNzdHU2BkHusBn3ywL2FjVnGg3D');
+VALUES (4, 'demo:openconext:org:masters', 'masters', 'we are masters', 1, 'n78zCdrYZJ3SeZuD9OKNNzdHU2BkHusBn3ywL2FjVnGg3D');
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
-VALUES (5, 'nl:surfnet:diensten:wolves', 'wolves', 'we are wolves', 1, '2FZL8C58WtmVqOot12Fz2FJLMCZk5PzFq4tbOl5sm3Z7hk3D');
+VALUES (5, 'demo:openconext:org:wolves', 'wolves', 'we are wolves', 1, '2FZL8C58WtmVqOot12Fz2FJLMCZk5PzFq4tbOl5sm3Z7hk3D');
 
 
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)
@@ -24,27 +24,27 @@ INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)
 VALUES (6, 'urn:collab:person:example.com:john.doe', 'John Doe Junior', 'junior@domain.net', 1);
 
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (1, 'ADMIN', 1, 'nl:surfnet:diensten:riders', 1, 'urn:collab:person:surfnet.nl:jdoe');
+VALUES (1, 'ADMIN', 1, 'demo:openconext:org:riders', 1, 'urn:collab:person:surfnet.nl:jdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (2, 'MANAGER', 2, 'nl:surfnet:diensten:giants', 1, 'urn:collab:person:surfnet.nl:jdoe');
+VALUES (2, 'MANAGER', 2, 'demo:openconext:org:giants', 1, 'urn:collab:person:surfnet.nl:jdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (3, 'MEMBER', 3, 'nl:surfnet:diensten:gliders', 1, 'urn:collab:person:surfnet.nl:jdoe');
+VALUES (3, 'MEMBER', 3, 'demo:openconext:org:gliders', 1, 'urn:collab:person:surfnet.nl:jdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (4, 'ADMIN', 2, 'nl:surfnet:diensten:giants', 2, 'urn:collab:person:surfnet.nl:mdoe');
+VALUES (4, 'ADMIN', 2, 'demo:openconext:org:giants', 2, 'urn:collab:person:surfnet.nl:mdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (5, 'ADMIN', 2, 'nl:surfnet:diensten:giants', 3, 'urn:collab:person:surfnet.nl:wdoe');
+VALUES (5, 'ADMIN', 2, 'demo:openconext:org:giants', 3, 'urn:collab:person:surfnet.nl:wdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (6, 'MANAGER', 2, 'nl:surfnet:diensten:giants', 4, 'urn:collab:person:surfnet.nl:tdoe');
+VALUES (6, 'MANAGER', 2, 'demo:openconext:org:giants', 4, 'urn:collab:person:surfnet.nl:tdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (7, 'ADMIN', 3, 'nl:surfnet:diensten:gliders', 4, 'urn:collab:person:surfnet.nl:tdoe');
+VALUES (7, 'ADMIN', 3, 'demo:openconext:org:gliders', 4, 'urn:collab:person:surfnet.nl:tdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (8, 'ADMIN', 3, 'nl:surfnet:diensten:gliders', 5, 'urn:collab:person:surfnet.nl:rdoe');
+VALUES (8, 'ADMIN', 3, 'demo:openconext:org:gliders', 5, 'urn:collab:person:surfnet.nl:rdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (9, 'ADMIN', 4, 'nl:surfnet:diensten:masters', 5, 'urn:collab:person:surfnet.nl:rdoe');
+VALUES (9, 'ADMIN', 4, 'demo:openconext:org:masters', 5, 'urn:collab:person:surfnet.nl:rdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (11, 'ADMIN', 5, 'nl:surfnet:diensten:wolves', 3, 'urn:collab:person:surfnet.nl:wdoe');
+VALUES (11, 'ADMIN', 5, 'demo:openconext:org:wolves', 3, 'urn:collab:person:surfnet.nl:wdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (10, 'MEMBER', 1, 'nl:surfnet:diensten:riders', 5, 'urn:collab:person:surfnet.nl:rdoe');
+VALUES (10, 'MEMBER', 1, 'demo:openconext:org:riders', 5, 'urn:collab:person:surfnet.nl:rdoe');
 
 
 INSERT INTO `external_groups` (`id`, `description`, `group_provider`, `identifier`, `name`)

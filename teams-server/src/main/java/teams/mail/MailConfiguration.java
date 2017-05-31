@@ -23,13 +23,16 @@ public class MailConfiguration {
     @Value("${teams.product-name}")
     private String productName;
 
+    @Value("${teams.openconext-mails}")
+    private boolean openConextMail;
+
     @Autowired
     private JavaMailSender mailSender;
 
     @Bean
     @Profile({"!dev"})
     public MailBox mailSenderProd() {
-        return new MailBox(mailSender, emailFrom, baseUrl, productName);
+        return new MailBox(mailSender, emailFrom, baseUrl, productName, openConextMail);
     }
 
     @Bean
