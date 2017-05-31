@@ -4,10 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.util.StringUtils;
 import teams.domain.Person;
 import teams.repository.PersonRepository;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedProcessingFilter {
@@ -27,11 +29,11 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
     }
 
     @Override
-    protected Object getPreAuthenticatedPrincipal(final HttpServletRequest request) {
-        String nameId = request.getHeader("name-id");
-        String name = request.getHeader("displayName");
-        String email = request.getHeader("Shib-InetOrgPerson-mail");
-        String memberOf = request.getHeader("is-member-of");
+    protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
+        String nameId = getHeader("name-id", request);
+        String name = getHeader("displayName", request);
+        String email = getHeader("Shib-InetOrgPerson-mail", request);
+        String memberOf = getHeader("is-member-of", request);
 
         Person person = new Person(nameId, name, email, !nonGuestsMemberOf.equals(memberOf));
 
@@ -59,6 +61,16 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
             }
         });
         return personOptional.orElseGet(() -> personRepository.save(person));
+    }
+
+    private String getHeader(String name, HttpServletRequest request) {
+        String header = request.getHeader(name);
+        try {
+            return StringUtils.hasText(header) ?
+                    new String(header.getBytes("ISO8859-1"), "UTF-8") : header;
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
 }

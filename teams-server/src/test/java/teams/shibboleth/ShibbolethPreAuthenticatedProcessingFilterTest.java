@@ -41,15 +41,19 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
 
         when(personRepository.findByUrnIgnoreCase("urn")).thenReturn(Optional.empty());
         when(personRepository.save(any(Person.class))).thenReturn(person);
-        Person principal = Person.class.cast(subject.getPreAuthenticatedPrincipal(populateServletRequest()));
+        Person principal = Person.class.cast(subject.getPreAuthenticatedPrincipal(populateServletRequest("Name")));
         assertEquals(person, principal);
     }
 
     @Test
     public void getPreAuthenticatedPrincipalDoesNotExists() throws Exception {
-        Person person = new Person("urn", "Name", "mail", false);
+        Person person = new Person("urn", "Ã¤Ã¼-test-Ã¯Ã«", "mail", false);
         Person principal = doGetPreAuthenticatedPrincipal(person);
+
         assertEquals(person, principal);
+        assertEquals("äü-test-ïë", person.getName());
+
+        //Phùng Thị Lệ Tư
     }
 
     @Test
@@ -63,7 +67,7 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
     }
 
     private Person doGetPreAuthenticatedPrincipal(Person person) {
-        MockHttpServletRequest request = populateServletRequest();
+        MockHttpServletRequest request = populateServletRequest(person.getName());
 
         when(personRepository.findByUrnIgnoreCase("urn")).thenReturn(Optional.of(person));
         return Person.class.cast(subject.getPreAuthenticatedPrincipal(request));
@@ -71,10 +75,10 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
 
     }
 
-    private MockHttpServletRequest populateServletRequest() {
+    private MockHttpServletRequest populateServletRequest(String displayName) {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("name-id", "urn");
-        request.addHeader("displayName", "Name");
+        request.addHeader("displayName", displayName);
         request.addHeader("Shib-InetOrgPerson-mail", "mail");
         request.addHeader("is-member-of", "urn:collab:org:surf.nl");
         return request;

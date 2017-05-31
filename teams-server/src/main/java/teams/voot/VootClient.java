@@ -12,7 +12,10 @@ import org.springframework.security.oauth2.client.token.grant.client.ClientCrede
 import org.springframework.stereotype.Component;
 import teams.domain.ExternalTeam;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +50,9 @@ public class VootClient {
     }
 
     public List<ExternalTeam> teams(String personUrn) {
+        String personUrnEncoded = encodeUrn(personUrn);
         List<ExternalTeam> externalTeams = vootService.exchange(
-                RequestEntity.get(URI.create(String.format("%s/internal/external-groups/%s", serviceUrl, personUrn))).build(),
+                RequestEntity.get(URI.create(String.format("%s/internal/external-groups/%s", serviceUrl, personUrnEncoded))).build(),
                 new ParameterizedTypeReference<List<Map<String, Object>>>() {
                 })
                 .getBody()
@@ -65,6 +69,14 @@ public class VootClient {
         return externalTeams;
     }
 
+    public String encodeUrn(String personUrn) {
+        try {
+            return URLEncoder.encode(personUrn, Charset.defaultCharset().name());
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Unexpected error in encoding urn: " + personUrn);
+        }
+    }
+
     private OAuth2ProtectedResourceDetails vootConfiguration() {
         ClientCredentialsResourceDetails details = new ClientCredentialsResourceDetails();
         details.setId("voot");
@@ -74,5 +86,6 @@ public class VootClient {
         details.setScope(Arrays.asList(spaceDelimitedScopes.split(" ")));
         return details;
     }
+
 
 }

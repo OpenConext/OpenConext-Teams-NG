@@ -33,7 +33,7 @@
       top: 13px;
 
       @include small-phone {
-        display: none;
+        position: inherit;
       }
 
       img {
@@ -46,10 +46,6 @@
       align-items: center;
       font-size: larger;
       list-style: none;
-
-      @include phone {
-        flex-direction: row-reverse;
-      }
 
       li {
         display: inline-block;
@@ -74,7 +70,7 @@
           color: $blue;
 
           @include phone {
-            display: none;
+            margin-left: 0;
           }
         }
 

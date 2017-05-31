@@ -1,12 +1,12 @@
 import React from "react";
 import I18n from "i18n-js";
 import PropTypes from "prop-types";
-import {render, unmountComponentAtNode} from "react-dom";
+import {unmountComponentAtNode} from "react-dom";
 import {Link} from "react-router-dom";
 import logo from "../../images/logo@2x.png";
 import LanguageSelector from "./language_selector";
 import UserProfile from "./user_profile";
-import Logout from "../pages/logout";
+import {logOut} from "../api";
 
 export default class Header extends React.PureComponent {
 
@@ -44,7 +44,8 @@ export default class Header extends React.PureComponent {
         e.preventDefault();
         const node = document.getElementById("app");
         unmountComponentAtNode(node);
-        render(<Logout />, node);
+        logOut();
+        window.location.href = "/Shibboleth.sso/Logout";
     };
 
     handleToggle(e) {
