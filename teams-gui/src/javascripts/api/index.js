@@ -13,6 +13,10 @@ function validateResponse(showErrorDialog) {
         spinner.stop();
 
         if (!res.ok) {
+            if (res.type === "opaqueredirect") {
+                setTimeout(() => window.location.reload(true), 100);
+                return res;
+            }
             const error = new Error(res.statusText);
             error.response = res;
             if (showErrorDialog) {
@@ -20,7 +24,7 @@ function validateResponse(showErrorDialog) {
                     const error = new Error(res.statusText);
                     error.response = res;
                     throw error;
-                }, 5);
+                }, 100);
             }
             throw error;
         }
@@ -45,7 +49,8 @@ function validFetch(path, options, headers = {}, showErrorDialog = true) {
     };
 
     const fetchOptions = Object.assign({}, {headers: contentHeaders}, options, {
-        credentials: "same-origin"
+        credentials: "same-origin",
+        redirect: "manual"
     });
     spinner.start();
     return fetch(apiUrl(path), fetchOptions)

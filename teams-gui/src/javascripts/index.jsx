@@ -54,6 +54,7 @@ class App extends React.PureComponent {
         window.onerror = (msg, url, line, col, err) => {
             this.setState({errorDialogOpen: true});
             const info = err || {};
+            const response = err.response || {};
             const error = {
                 userAgent: navigator.userAgent,
                 message: msg,
@@ -61,7 +62,9 @@ class App extends React.PureComponent {
                 line: line,
                 col: col,
                 error: info.message,
-                stack: info.stack
+                stack: info.stack,
+                targetUrl: response.url,
+                status: response.status
             };
             reportError(error);
         };

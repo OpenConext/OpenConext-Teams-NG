@@ -33,7 +33,7 @@
       top: 13px;
 
       @include small-phone {
-        position: inherit;
+        position: initial;
       }
 
       img {
