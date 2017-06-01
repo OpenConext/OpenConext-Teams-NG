@@ -19,6 +19,8 @@ import java.util.Map;
 public class MailBox {
 
     private static final String TITLE = "title";
+    private static final String BASE_URL = "baseUrl";
+    private static final String MAIL_PARAMETERS = "mailParameters";
 
     private JavaMailSender mailSender;
     private String baseUrl;
@@ -46,8 +48,8 @@ public class MailBox {
         variables.put(TITLE, title);
         variables.put("invitation", invitation);
         variables.put("invitationMessage", invitation.getLatestInvitationMessage());
-        variables.put("baseUrl", baseUrl);
-        variables.put("mailParameters", mailParameters);
+        variables.put(BASE_URL, baseUrl);
+        variables.put(MAIL_PARAMETERS, mailParameters);
         sendMail(
                 String.format("mail_templates/invitation_%s.html", languageCode),
                 title,
@@ -59,8 +61,8 @@ public class MailBox {
         Map<String, Object> variables = new HashMap<>();
         variables.put(TITLE, productName);
         variables.put("joinRequest", joinRequest);
-        variables.put("baseUrl", baseUrl);
-        variables.put("mailParameters", mailParameters);
+        variables.put(BASE_URL, baseUrl);
+        variables.put(MAIL_PARAMETERS, mailParameters);
         sendMail(
                 "mail_templates/join_request.html",
                 String.format("Membership request for %s", joinRequest.getTeam().getName()),
@@ -80,8 +82,8 @@ public class MailBox {
         Map<String, Object> variables = new HashMap<>();
         variables.put(TITLE, productName);
         variables.put("joinRequest", joinRequest);
-        variables.put("baseUrl", this.baseUrl);
-        variables.put("mailParameters", mailParameters);
+        variables.put(BASE_URL, this.baseUrl);
+        variables.put(MAIL_PARAMETERS, mailParameters);
         sendMail(
                 String.format("mail_templates/%s", emailTemplate),
                 subject,

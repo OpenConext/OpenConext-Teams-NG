@@ -21,6 +21,8 @@ public class InvitationMessageTest implements Seed {
 
         assertTrue(invitationMessage.isContainsMessage());
         assertEquals("hoi<br/>newLine", invitationMessage.getHtmlMessage());
+
+        assertNotNull(invitationMessage.getInvitation());
     }
 
 }

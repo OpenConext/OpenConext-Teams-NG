@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
+import static java.util.Collections.singletonList;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.*;
@@ -71,7 +72,7 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
     }
 
     @Test
-    public void delinkTeamFromExternalTeamOrphanExternalTeam() throws Exception {
+    public void delinkTeamFromExternalTeamNoExternalTeamLeft() throws Exception {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
@@ -84,6 +85,23 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
 
         assertEquals(0, externalTeamRepository.findByTeamsUrn("demo:openconext:org:giants").size());
     }
+
+    @Test
+    public void delinkTeamFromExternalTeamOrphanExternalTeam() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+                .body(new ExternalTeamProperties(1L, "urn:collab:group:example.org:name1"))
+                .when()
+                .put("api/teams/external-teams/delink")
+                .then()
+                .statusCode(SC_OK)
+                .body("externalTeams.size()", equalTo(1));
+
+        assertEquals(0,
+                externalTeamRepository.findByIdentifierIn(singletonList("urn:collab:group:example.org:name1")).size());
+    }
+
 
     @Test
     public void delinkTeamFromExternalTeam() throws Exception {
