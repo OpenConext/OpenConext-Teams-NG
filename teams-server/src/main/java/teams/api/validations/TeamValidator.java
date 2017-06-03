@@ -5,13 +5,11 @@ import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
 import teams.exception.InvalidTeamNameException;
 
-
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
 import static java.lang.String.format;
-import static java.util.stream.Collectors.toList;
 
 public interface TeamValidator {
 

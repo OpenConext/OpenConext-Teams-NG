@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-
-export default function InviteInfo({locale = "en"}) {
+export default function InviteInfo({locale = "en", personEmailPickerEnabled = true}) {
+    const text = personEmailPickerEnabled ? "Search and add " : "Add ";
     return locale === "en" ?
         <div className="invitation_info">
-            <p className="info">Search and add the email addresses of colleagues you would like to invite for this team.</p>
+            <p className="info">{text}the email addresses of colleagues you would like to invite for this team.</p>
             <p className="by-email">You can invite one or more people by their email address.</p>
             <span className="by-file">To send multiple invitations, simply add more email
                 addresses or upload a csv file with comma- separated email addresses.</span>
@@ -20,6 +20,7 @@ export default function InviteInfo({locale = "en"}) {
 }
 
 InviteInfo.propTypes = {
-    locale: PropTypes.string.isRequired
+    locale: PropTypes.string,
+    personEmailPickerEnabled: PropTypes.bool
 };
 

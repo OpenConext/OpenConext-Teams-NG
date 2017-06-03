@@ -15,17 +15,12 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.util.concurrent.Callable;
 
 import static com.icegreen.greenmail.util.GreenMailUtil.getBody;
 import static java.util.Collections.singletonList;
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.awaitility.Awaitility.*;
-import static org.awaitility.Duration.*;
-import static java.util.concurrent.TimeUnit.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, value = {"spring.profiles.active=prod"})
 public class MailBoxTest extends AbstractApplicationTest {

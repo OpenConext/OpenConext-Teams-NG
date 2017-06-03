@@ -115,7 +115,9 @@ export default class NewTeam extends React.PureComponent {
             <p className="current-user-name">{I18n.t("new_team.current_user", {name: currentUser.username})}</p>
             <EmailInput emails={isEmpty(email) ? [] : [email]} emailRequired={false}
                         onChangeEmails={this.onChangeEmails}
-                        multipleEmails={false} placeholder={I18n.t("new_team.admins_email_placeholder")}/>
+                        multipleEmails={false}
+                        placeholder={I18n.t("new_team.admins_email_placeholder")}
+                        currentUser={currentUser}/>
             <label className="invitation-message"
                    htmlFor="invitationMessage">{I18n.t("new_team.invitation_message")}</label>
             <em>{I18n.t("new_team.invitation_message_info")}</em>

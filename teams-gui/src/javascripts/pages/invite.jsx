@@ -236,6 +236,7 @@ export default class Invite extends React.PureComponent {
     };
 
     render() {
+        const {currentUser} = this.props;
         const {
             emails, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message,
             roleOfCurrentUserInTeam, mailsImported, readOnly, confirmationDialogOpen, confirmationDialogAction
@@ -254,12 +255,15 @@ export default class Invite extends React.PureComponent {
                                     onChangeEmails={this.onChangeEmails}
                                     multipleEmails={true} placeholder={I18n.t("invite.emails_placeholder")}
                                     autoFocus={true}
-                                    disabled={readOnly}/>
+                                    disabled={readOnly}
+                                    currentUser={currentUser}/>
                         {!readOnly && this.renderEmailFile(fileName, fileTypeError, mailsImported)}
                         {this.renderInvitationRole(intendedRole, roleOfCurrentUserInTeam, readOnly)}
                     </section>
                     <section className="screen-divider" style={{float: "right"}}>
-                        {readOnly ? <InviteResentInfo locale={I18n.locale}/> : <InviteInfo locale={I18n.locale}/>}
+                        {readOnly ? <InviteResentInfo locale={I18n.locale}/> :
+                            <InviteInfo locale={I18n.locale}
+                                        personEmailPickerEnabled={currentUser.featureToggles["PERSON_EMAIL_PICKER"]}/>}
                     </section>
                     {this.renderInvitationLanguageExpiryDate(language, expiryDate, readOnly)}
                     {this.renderInvitationMessage(message)}

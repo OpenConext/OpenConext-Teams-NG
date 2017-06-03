@@ -25,9 +25,9 @@ import teams.shibboleth.ShibbolethUserDetailService;
 import teams.shibboleth.mock.MockShibbolethFilter;
 import teams.voot.VootClient;
 
+import java.util.HashMap;
 import java.util.List;
-
-import static java.util.Collections.singletonMap;
+import java.util.Map;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -86,6 +86,10 @@ public class SecurityConfig {
         @Value("${feature-toggles.expiry-date-membership}")
         private boolean expiryDateMembership;
 
+        @Value("${feature-toggles.person-email-picker}")
+        private boolean personEmailPicker;
+
+
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             PreAuthenticatedAuthenticationProvider authenticationProvider = new PreAuthenticatedAuthenticationProvider();
@@ -94,8 +98,15 @@ public class SecurityConfig {
                             groupNameContext,
                             productName,
                             vootClient,
-                            singletonMap(Feature.EXPIRY_DATE_MEMBERSHIP, expiryDateMembership)));
+                            featureToggles()));
             auth.authenticationProvider(authenticationProvider);
+        }
+
+        private Map<Feature, Boolean> featureToggles() {
+            Map<Feature, Boolean> toggles = new HashMap<>();
+            toggles.put(Feature.EXPIRY_DATE_MEMBERSHIP, expiryDateMembership);
+            toggles.put(Feature.PERSON_EMAIL_PICKER, personEmailPicker);
+            return toggles;
         }
 
         @Override

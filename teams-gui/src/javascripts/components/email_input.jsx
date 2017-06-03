@@ -94,7 +94,7 @@ export default class EmailInput extends React.PureComponent {
         this.setState({email: email, selectedPerson: -1, eventFromSelectedPerson: false});
         if (isEmpty(email)) {
             this.setState({initial: true});
-        } else if (email.trim().length > 1) {
+        } else if (email.trim().length > 1 && this.props.currentUser.featureToggles["PERSON_EMAIL_PICKER"]) {
             this.delayedAutocomplete();
         }
     };
@@ -182,7 +182,8 @@ EmailInput.propTypes = {
     onChangeEmails: PropTypes.func.isRequired,
     multipleEmails: PropTypes.bool,
     autoFocus: PropTypes.bool,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    currentUser: PropTypes.object.isRequired
 };
 
 

@@ -5,7 +5,8 @@ import teams.Seed;
 
 import java.time.Instant;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class InvitationInfoTest implements Seed{
 

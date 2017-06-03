@@ -13,9 +13,7 @@ import java.util.Set;
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class TeamControllerTest extends AbstractApplicationTest {

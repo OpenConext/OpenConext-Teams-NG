@@ -17,12 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.stream.Collectors.toSet;
+import static teams.domain.Feature.PERSON_EMAIL_PICKER;
 
 @RestController
 public class UserController {
@@ -47,9 +45,12 @@ public class UserController {
     }
 
     @GetMapping("api/teams/users")
-    public Set<PersonAutocomplete> autocomplete(@RequestParam("query") String query) {
+    public Set<PersonAutocomplete> autocomplete(@RequestParam("query") String query, FederatedUser federatedUser) {
         if (query.trim().length() < 2) {
             throw new IllegalSearchParamException("Minimal query length is 2");
+        }
+        if (!federatedUser.featureEnabled(PERSON_EMAIL_PICKER)) {
+            return Collections.emptySet();
         }
         List<Person> persons = personRepository.findFirst10ByNameContainingOrEmailContainingAllIgnoreCase(query, query);
         return persons.stream()
