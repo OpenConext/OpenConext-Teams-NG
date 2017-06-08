@@ -31,7 +31,7 @@ I18n.translations.nl = {
 
     navigation: {
         my_teams: "Mijn Teams",
-        institution_teams: "Institutie Teams"
+        institution_teams: "Instellingsteams"
     },
     error_dialog: {
         title: "Onverwachte fout",
@@ -53,7 +53,7 @@ I18n.translations.nl = {
         title: "Mijn teams",
         name: "Team naam",
         description: "Omschrijving",
-        searchPlaceHolder: "ZOEK / WORDT LID ALLE PUBLIEKE TEAMS...",
+        searchPlaceHolder: "ZOEK IN ALLE PUBLIEKE TEAMS...",
         role: "Mijn rol",
         membershipCount: "Leden",
         actions: "",
@@ -105,12 +105,12 @@ I18n.translations.nl = {
         team_groups: "GEKOPPELDE GROEPEN ({{count}})",
         membership: {
             name: "naam",
-            email: "email",
+            email: "e-mail",
             status: "status",
             role: "rol",
             actions: "",
         },
-        email: "Email",
+        email: "E-mail",
         intended_role: "Toekomstige rol",
         actions_phone: "Acties",
         status: "Status",
@@ -137,7 +137,7 @@ I18n.translations.nl = {
             invite_delete: "Verwijder uitnodiging",
             member_delete: "Verwijder lid",
             member_leave: "Verlaat team",
-            member_send_email: "Verstuur email"
+            member_send_email: "Verstuur e-mail"
         },
         confirmations: {
             delete_team: "Weet je zeker dat je team {{name}} wilt verwijderen?",
@@ -156,8 +156,8 @@ I18n.translations.nl = {
             deleted_invitation: "Succesvol de uitnodiging voor {{name}} verwijderd.",
             accepted_join_request: "Succesvol het toetredingsverzoek voor {{name}} verwijderd.",
             rejected_join_request: "Succesvol het toetredingsverzoek voor {{name}} geweigerd.",
-            linked_institutional_team: "Succesvol institutie team {{team}} verbonden aan {{name}}.",
-            unlinked_institutional_team: "Succesvol institutie team {{team}} ontkoppeld aan {{name}}.."
+            linked_institutional_team: "Succesvol instellingsteam {{team}} verbonden aan {{name}}.",
+            unlinked_institutional_team: "Succesvol instellingsteam {{team}} ontkoppeld aan {{name}}.."
         }
 
     },
@@ -177,7 +177,7 @@ I18n.translations.nl = {
         share_info: "Deel deze informatie met de applicaties gebruikt door dit team.",
         approval_required: "Je moet toestemming verlenen om deze informatie te delen.",
         message: "Bericht",
-        message_info: "Je persoonlijke bericht voor je mede administrateur van dit team",
+        message_info: "Je persoonlijke bericht voor je mede-administrateur van dit team",
         message_placeholder: "Je persoonlijke bericht",
     },
     icon_legend: {
@@ -191,7 +191,7 @@ I18n.translations.nl = {
         label: "SORTEER OP",
         name: "Naam",
         status: "Status",
-        email: "Email",
+        email: "E-mail",
         role: "Rol",
         description: "Omschrijving",
         membershipCount: "Leden",
@@ -201,7 +201,7 @@ I18n.translations.nl = {
         ADMIN: "Admins",
         MANAGER: "Managers",
         MEMBER: "Leden",
-        JOIN_REQUEST: "Toetredingsverzoeks",
+        JOIN_REQUEST: "Toetredingsverzoeken",
         INVITATION: "UITNODIGINGEN",
         label: "TOON",
         all: "ALLE",
@@ -211,39 +211,39 @@ I18n.translations.nl = {
 
     new_team: {
         title: "Nieuw team",
-        name: "Team naam",
+        name: "Teamnaam",
         name_info: "De naam van een team kan niet meer veranderd worden als het eenmaal is aangemaakt.",
-        format_error: "De toegestaande karakters voor een team zin woorden, spaties, minussen en het ' teken. De maximale lengte is 255 karakters",
+        format_error: "De toegestane karakters voor een team zin woorden, spaties, minussen en het ' teken. De maximale lengte is 255 karakters",
         already_exists_error: "Er bestaat al team met deze naam",
         required: "De naam is verplicht",
         description: "Omschrijving",
         description_info: "De omschrijving van een team is zichtbaar voor iedereen als je het team publiek maakt. Anders kunnen alleen leden de omschrijving zien.",
         viewable_info: "Maak dit team publiek zodat iedereen dit team kan zien en verzoeken om lid te worden kunnen versturen naar de administrateurs.",
         personal_note: "Persoonlijke notitie",
-        personal_note_info: "Dit is alleen zichtbaar voor jezelf en collega administrateurs van het team. Indien mogelijke adviseren we je om hier te beschrijven wat het doel van dit team is.",
+        personal_note_info: "Dit is alleen zichtbaar voor jezelf en collega-administrateurs van het team. We adviseren je om hier te beschrijven wat het doel van dit team is.",
         admins: "Administrateurs",
         admins_info: "We adviseren je om een mede administrateur uit te nodigen.",
-        admins_email_placeholder: "Email adres voor een collega administrateur...",
-        invalid_email: "Ongeldige email",
+        admins_email_placeholder: "E-mail adres voor een collega-administrateur...",
+        invalid_email: "Ongeldige e-mail",
         invitation_message: "Bericht",
-        invitation_message_info: "Persoonlijk bericht voor je collega administrateur",
+        invitation_message_info: "Persoonlijk bericht voor je collega-administrateur",
         invitation_language: "Taal van de uitnodiging",
         current_user: "{{name}} (Jij dus)",
         share_info: "Deel deze informatie met de applicaties gebruikt door dit team.",
         approval_required: "Je moet toestemming verlenen om deze informatie te delen.",
-        submit: "CREATE",
-        cancel: "ANNULEER",
-        cancel_confirmation: "Are you sure you want to leave this page?"
+        submit: "BEWAREN",
+        cancel: "ANNULEREN",
+        cancel_confirmation: "Weet je zeker dat je deze pagina wilt verlaten?"
     },
     invite: {
         title: "Uitnodiging versturen",
-        email: "Voeg email adressen van leden toe",
-        emails_placeholder: "Voeg 1 of meer email adressen toe...",
-        email_required: "Email is verplicht - voeg een een emailadres toe of selecteer een CSV bestand met emailadressen",
+        email: "Voeg e-mail adressen van leden toe",
+        emails_placeholder: "Voeg 1 of meer e-mail adressen toe...",
+        email_required: "Email is verplicht - voeg een een e-mailadres toe of selecteer een CSV bestand met e-mailadressen",
         email_invalid: "Email formaat is ongeldig.",
-        file_import: "Voeg emails toe uit een CSV bestand",
+        file_import: "Voeg e-mails toe uit een CSV bestand",
         file_placeholder: "Selecteer een csv bestanf...",
-        file_import_result: "{{nbr}} emails toegevoegd uit {{fileName}}",
+        file_import_result: "{{nbr}} e-mails toegevoegd uit {{fileName}}",
         file_extension_error: "Alleen geldige csv bestanden zijn toegestaan",
         role: "Rol in het team",
         invitation_language: "Taal van de uitnodiging",
@@ -324,20 +324,20 @@ I18n.translations.nl = {
         description: "Omschrijving",
         linked_teams: "Verbonden teams",
         searchPlaceHolder: "ZOEK TEAMS",
-        filtered: "Geen institutie teams gevonden",
-        institution_team: "Institutie team",
-        no_teams: "Je institutie levert geen teams of je ben geen lid van een team binnen je institutie",
+        filtered: "Geen intstellingsteams gevonden",
+        institution_team: "Instellingsteam",
+        no_teams: "Je instelling levert geen teams of je ben geen lid van een team binnen je instelling",
 
     },
     linked_institution_example: {
-        title: "Institutie teams uitgelegd",
+        title: "Instellingteams uitgelegd",
         institution_name: "UvA",
         institution_team_name: "Leraren",
         surf_name: "Admins"
     },
 
     profile: {
-        email: "Email",
+        email: "E-mail",
         role: "Rol",
         true: "{{productName}} gast",
         false: "{{productName}} lid"
@@ -363,7 +363,7 @@ I18n.translations.nl = {
     },
 
     footer: {
-        surfnet_html: "<a href=\"https://www.surfnet.nl/nl\" target=\"_blank\">SURFnet</a>",
+        surfnet_html: "<a href=\"https://www.surfnet.nl/nl\" target=\"_blank\">{{productName}}</a>",
         terms_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28EN%29\" target=\"_blank\">Terms of Service</a>",
         contact_html: "<a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>"
     }

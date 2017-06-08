@@ -142,7 +142,7 @@ class App extends React.PureComponent {
 
                         <Route component={NotFound}/>
                     </Switch>
-                    <Footer />
+                    <Footer currentUser={currentUser}/>
                 </div>
             </Router>
         );

@@ -120,7 +120,10 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
 
     linkOrUnlink = institutionTeam => e => {
         const value = e.target.checked;
-        this.props.institutionTeamLinked(institutionTeam, value);
+        this.props.institutionTeamLinked(institutionTeam, value).then(() => {
+            const currentSorted = this.currentSortedAttribute();
+            this.setState({filteredTeams: [...this.state.filteredTeams.sort(this.sortByAttribute(currentSorted.name, currentSorted.order === "up"))]});
+        });
     };
 
     isInstitutionalTeamLinked = (institutionTeam, team) => {

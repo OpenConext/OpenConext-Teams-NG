@@ -203,7 +203,7 @@ export default class TeamDetail extends React.PureComponent {
         const teamId = this.state.team.id;
         const identifier = institutionTeam.identifier;
         const promise = value ? linkExternalTeam(teamId, identifier) : delinkExternalTeam(teamId, identifier);
-        promise.then(team => {
+        return promise.then(team => {
             this.stateTeam(team, false);
             const message = I18n.t(`team_detail.flash.${value ? "linked_institutional_team" : "unlinked_institutional_team"}`,
                 {team: institutionTeam.name, name: team.name});
@@ -395,6 +395,11 @@ export default class TeamDetail extends React.PureComponent {
         const universalPublicLink = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/public/${team.publicLink}`;
         return (
             <section className="team-attributes">
+                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description || ""}
+                                onChange={this.changeDescription}/>
+                {isAdmin &&
+                <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
+                                onChange={this.changePersonalNote}/>}
                 <div className="team-attribute">
                     <label className="title">{I18n.t("team_detail.urn")}</label>
                     <CopyToClipboard text={universalUrn} onCopy={this.copiedToClipboard}>
@@ -405,13 +410,7 @@ export default class TeamDetail extends React.PureComponent {
                             <ReactTooltip id="copy-to-clipboard" place="right" getContent={[() => tooltip, 500]}/>
                         </span>
                     </CopyToClipboard>
-
                 </div>
-                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description || ""}
-                                onChange={this.changeDescription}/>
-                {isAdmin &&
-                <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
-                                onChange={this.changePersonalNote}/>}
                 {isAdmin && <div className="team-attribute">
                     <label className="title info-after">{I18n.t("team_detail.public_link")}</label>
                     <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}

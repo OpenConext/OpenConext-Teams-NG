@@ -54,7 +54,7 @@ I18n.translations.en = {
         title: "My teams",
         name: "Team name",
         description: "Description",
-        searchPlaceHolder: "SEARCH / JOIN ALL PUBLIC TEAMS...",
+        searchPlaceHolder: "SEARCH ALL PUBLIC TEAMS...",
         role: "My role",
         membershipCount: "Members",
         actions: "",
@@ -362,7 +362,7 @@ I18n.translations.en = {
     },
 
     footer: {
-        surfnet_html: "<a href=\"https://www.surfnet.nl/en\" target=\"_blank\">SURFnet</a>",
+        surfnet_html: "<a href=\"https://www.surfnet.nl/en\" target=\"_blank\">{{productName}}</a>",
         terms_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28EN%29\" target=\"_blank\">Terms of Service</a>",
         contact_html: "<a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>"
     }
