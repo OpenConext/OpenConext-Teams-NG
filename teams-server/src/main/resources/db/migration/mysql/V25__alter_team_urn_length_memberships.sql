@@ -1,1 +1,0 @@
-ALTER TABLE memberships MODIFY urn_team VARCHAR(355) NOT NULL;
