@@ -194,7 +194,8 @@ I18n.translations.nl = {
         email: "Email",
         role: "Rol",
         description: "Omschrijving",
-        membershipCount: "Leden"
+        membershipCount: "Leden",
+        linked: "Gekoppeld"
     },
     filter: {
         ADMIN: "Admins",
@@ -212,7 +213,7 @@ I18n.translations.nl = {
         title: "Nieuw team",
         name: "Team naam",
         name_info: "De naam van een team kan niet meer veranderd worden als het eenmaal is aangemaakt.",
-        format_error: "De toegestaande karakters voor een team zin woorden, spaties, minussen en het ' teken",
+        format_error: "De toegestaande karakters voor een team zin woorden, spaties, minussen en het ' teken. De maximale lengte is 255 karakters",
         already_exists_error: "Er bestaat al team met deze naam",
         required: "De naam is verplicht",
         description: "Omschrijving",

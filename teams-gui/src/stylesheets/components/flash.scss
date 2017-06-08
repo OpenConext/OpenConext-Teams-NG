@@ -10,11 +10,11 @@ div.flash {
   transition: top 150ms ease-in-out;
 
   &.hide {
-    transition: top 500ms ease-in-out;
-    top: -40px;
+    transition: top 1000ms ease-in-out;
+    top: -80px;
 
     @include phone {
-      top: -85px;
+      top: -160px;
     }
   }
 

@@ -74,6 +74,8 @@
 
   table.teams {
     width: 100%;
+    word-break: break-all;
+
     tr {
       border-bottom: 1px solid $light-grey;
     }
@@ -112,14 +114,11 @@
     }
     tbody {
       tr {
-        &.team_member{
-          cursor: pointer;
-        }
+        cursor: pointer;
         &:hover {
           background-color: $hover;
           td.actions i.fa-ellipsis-h {
             color: $blue;
-            font-size: 26px;
           }
         }
       }

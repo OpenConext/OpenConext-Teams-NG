@@ -129,7 +129,7 @@ class App extends React.PureComponent {
                                render={props => <JoinRequest {...props}/>}/>
                         <Route path="/invitation/:action/:key"
                                render={props => <Invitation {...props}/>}/>
-                        <Route path="/public-link/:key"
+                        <Route path="/public/:key"
                                render={props => <PublicLink {...props}/>}/>
                         <Route path="/error"
                                render={props => <ServerError {...props}/>}/>

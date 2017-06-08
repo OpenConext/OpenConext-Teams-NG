@@ -3,4 +3,19 @@
   margin: 0 auto;
   padding: 0 15px;
 
+  span.identifier {
+    position: relative;
+
+    a.identifier-copy-link {
+      position: absolute;
+      right: 25px;
+      top: -10px;
+
+      @include phone {
+        position: initial;
+      }
+
+    }
+  }
+
 }

@@ -16,6 +16,7 @@ section.teams-autocomplete {
 
   table.result {
     width: 100%;
+    word-break: break-all;
 
     thead th {
       color: $medium-grey;

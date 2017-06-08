@@ -195,7 +195,8 @@ I18n.translations.en = {
         email: "Email",
         role: "Role",
         description: "Description",
-        membershipCount: "Members"
+        membershipCount: "Members",
+        linked: "Linked"
     },
     filter: {
         ADMIN: "Admins",
@@ -213,7 +214,7 @@ I18n.translations.en = {
         title: "New team",
         name: "Team name",
         name_info: "The name of the team cannot be changed once the team has been created.",
-        format_error: "The allowed characters for a team name are words, spaces, minuses and the ' separator",
+        format_error: "The allowed characters for a team name are words, spaces, minuses and the ' separator. The maximum length is 255 characters.",
         already_exists_error: "There is already a team with this name",
         required: "The name is required",
         description: "Description",

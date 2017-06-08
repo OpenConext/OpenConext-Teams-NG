@@ -6,6 +6,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import {NavLink} from "react-router-dom";
 
 import CheckBox from "./checkbox";
+import SortDropDown from "./sort_drop_down";
 import TeamsIconLegend from "./teams_icon_legend";
 import {isEmpty} from "../utils/utils";
 import {currentUserRoleInTeam, ROLES} from "../validations/memberships";
@@ -15,39 +16,73 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        const institutionTeams = [...(props.institutionTeams || [])].sort(this.sort(props.team));
+        const institutionTeams = [...(props.institutionTeams || [])].sort(this.sortByAttribute("linked"));
         this.state = {
             filteredTeams: institutionTeams,
+            sortAttributes: [
+                {name: "name", order: "down", current: false},
+                {name: "description", order: "down", current: false},
+                {name: "linked", order: "down", current: true}
+            ],
             hasInstitutionsTeams: institutionTeams.length > 0,
             copiedToClipboard: {},
             showExplanation: false
         };
     }
 
-    sort = team => (a, b) => {
-        if (isEmpty(team)) {
-            return a.name.localeCompare(b.name);
+    currentSortedAttribute = () => this.state.sortAttributes.filter(attr => attr.current)[0];
+
+    sortByAttribute = (name, reverse = false) => (a, b) => {
+        if (name === "linked") {
+            const team = this.props.team;
+            if (isEmpty(team)) {
+                const linkedTeams = this.props.linkedTeams;
+                const l1 = linkedTeams[a.identifier] ? linkedTeams[a.identifier].length : 0;
+                const l2 = linkedTeams[b.identifier] ? linkedTeams[b.identifier].length : 0;
+                return (l1 > l2 ? -1 : l1 < l2 ? 1 : 0) * (reverse ? -1 : 1);
+            }
+            const linkedA = this.isInstitutionalTeamLinked(a, team);
+            const linkedB = this.isInstitutionalTeamLinked(b, team);
+            if ((linkedA && linkedB) || (!linkedA && !linkedB)) {
+                return a.name.localeCompare(b.name);
+            }
+            return (linkedA ? -1 : 1) * (reverse ? -1 : 1);
         }
-        const linkedA = this.isInstitutionalTeamLinked(a, team);
-        const linkedB = this.isInstitutionalTeamLinked(b, team);
-        if ((linkedA && linkedB) || (!linkedA && !linkedB)) {
-            return a.name.localeCompare(b.name);
-        }
-        return linkedA ? -1 : 1;
+        const aSafe = a[name] || "";
+        const bSafe = b[name] || "";
+        return aSafe.toString().localeCompare(bSafe.toString()) * (reverse ? -1 : 1);
     };
+
+    sort = item => {
+        const {filteredTeams, sortAttributes} = this.state;
+        const sortedTeams = [...filteredTeams.sort(this.sortByAttribute(item.name, item.current && item.order === "down"))];
+        const newSortAttributes = [...sortAttributes];
+        newSortAttributes.forEach(attr => {
+            if (attr.name === item.name) {
+                attr.order = item.current ? (item.order === "down" ? "up" : "down") : "down";
+                attr.current = true;
+            } else {
+                attr.order = "down";
+                attr.current = false;
+            }
+        });
+        this.setState({filteredTeams: sortedTeams, sortAttributes: newSortAttributes});
+    };
+
 
     search = e => {
         const query = e.target.value;
         const {institutionTeams} = this.props;
+        const currentSorted = this.currentSortedAttribute();
         if (isEmpty(query)) {
-            this.setState({filteredTeams: [...institutionTeams]});
+            this.setState({filteredTeams: [...institutionTeams.sort(this.sortByAttribute(currentSorted.name, currentSorted.order === "up"))]});
         } else {
             const input = query.toLowerCase();
             const filteredTeams = institutionTeams.filter(team => {
                 const description = team.description || "";
                 return team.name.toLowerCase().indexOf(input) > -1 || description.toLowerCase().indexOf(input) > -1;
             });
-            this.setState({filteredTeams: [...filteredTeams.sort(this.sort(this.props.team))]});
+            this.setState({filteredTeams: [...filteredTeams.sort(this.sortByAttribute(currentSorted.name, currentSorted.order === "up"))]});
         }
 
     };
@@ -72,7 +107,7 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
                 <span className="name"><i className="fa fa-building-o"></i>{team.name}</span>
                 <CopyToClipboard text={team.identifier} onCopy={this.copiedToClipboard(team.identifier)}>
                                     <span className="identifier">{team.identifier}
-                                        <a data-for={tooltipId} data-tip>
+                                        <a className="identifier-copy-link" data-for={tooltipId} data-tip>
                                             <i className={`fa fa-clone ${copiedToClipBoardClassName}`}></i>
                                         </a>
                                         <ReactTooltip id={tooltipId} place="right"
@@ -118,9 +153,12 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
 
     renderTeamsTable(filteredTeams, linkedTeams, team) {
         const columns = ["name", "description", "linked"];
+        const currentSorted = this.currentSortedAttribute();
+        const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
+
         const th = index => (
             <th key={index} className={columns[index]}>
-                <span>{I18n.t(`team_detail.${columns[index]}`)}</span>
+                <span className={sortColumnClassName(columns[index])}>{I18n.t(`team_detail.${columns[index]}`)}</span>
             </th>
         );
         if (filteredTeams.length !== 0) {
@@ -152,9 +190,8 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
     }
 
     render() {
-        const {filteredTeams, showExplanation} = this.state;
+        const {filteredTeams, showExplanation, sortAttributes} = this.state;
         const {team, linkedTeams, includeLegend, currentUser} = this.props;
-        const filteredSortedTeams = isEmpty(team) ? filteredTeams : [...filteredTeams].sort(this.sort(team));
 
         return (
             <div className="institution_teams">
@@ -164,6 +201,7 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
                     close={() => this.setState({showExplanation: false})}
                     isVisible={showExplanation}/>
                 {includeLegend && <TeamsIconLegend currentUser={this.props.currentUser}/>}
+
                 <section className="card-institution-teams">
                     <section className="options-institution-teams">
                         <section className="search-institution-teams">
@@ -171,12 +209,13 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
                                 <i className="fa fa-graduation-cap"></i>
                                 <span>{I18n.t("institution_teams.help")}</span>
                             </div>
+                            <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                             <input placeholder={I18n.t("institution_teams.searchPlaceHolder")} type="text"
                                    onChange={this.search}/>
                             <i className="fa fa-search"></i>
                         </section>
                     </section>
-                    {this.renderTeamsTable(filteredSortedTeams, linkedTeams, team)}
+                    {this.renderTeamsTable(filteredTeams, linkedTeams, team)}
                 </section>
             </div>
         );

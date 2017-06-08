@@ -23,6 +23,8 @@
       h2 {
         font-size: 26px;
         margin-right: auto;
+        word-break: break-all;
+        line-height: 26px;
       }
     }
   }
@@ -55,6 +57,7 @@
     input {
       padding: 10px;
       border: 2px solid $light-grey;
+      height: 44px;
       border-radius: 2px;
       font-size: medium;
       width: 100%;
@@ -130,6 +133,8 @@
 
   table.members {
     width: 100%;
+    word-break: break-all;
+
     tr {
       border-bottom: 1px solid $light-grey;
     }
@@ -171,7 +176,6 @@
           background-color: #F9FCFD;
           td.actions i.fa-ellipsis-h {
             color: $blue;
-            font-size: 26px;
           }
         }
         &.me {
@@ -181,8 +185,11 @@
       td {
         font-weight: inherit;
       }
-      td.name {
-        color: $blue;
+      td.email {
+        cursor: pointer;
+        a {
+          color: $blue;
+        }
       }
       td.actions {
         cursor: pointer;

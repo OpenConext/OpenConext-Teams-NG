@@ -241,7 +241,8 @@ export default class TeamDetail extends React.PureComponent {
             id: team.id,
             description: team.description,
             personalNote: team.personalNote,
-            viewable: team.viewable
+            viewable: team.viewable,
+            publicLinkDisabled: team.publicLinkDisabled
         };
         saveTeam({...teamProperties, ...changedAttribute})
             .then(team => {
@@ -340,8 +341,12 @@ export default class TeamDetail extends React.PureComponent {
         this.saveTeamProperties({viewable: !this.state.team.viewable});
     };
 
-    changePublicLinkDisabled = () => {
-        this.saveTeamProperties({publicLinkDisabled: !this.state.team.publicLinkDisabled});
+    changePublicLinkDisabled = e => {
+        const newTeamProperties = {publicLinkDisabled: !this.state.team.publicLinkDisabled};
+        if (e.target.checked) {
+            newTeamProperties.viewable = true;
+        }
+        this.saveTeamProperties(newTeamProperties);
     };
 
     copiedToClipboard = () => {
@@ -387,7 +392,7 @@ export default class TeamDetail extends React.PureComponent {
 
         const universalUrn = `${currentUser.groupNameContext}${team.urn}`;
         const location = window.location;
-        const universalPublicLink = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/public-link/${team.publicLink}`;
+        const universalPublicLink = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/public/${team.publicLink}`;
         return (
             <section className="team-attributes">
                 <div className="team-attribute">
@@ -402,6 +407,11 @@ export default class TeamDetail extends React.PureComponent {
                     </CopyToClipboard>
 
                 </div>
+                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description || ""}
+                                onChange={this.changeDescription}/>
+                {isAdmin &&
+                <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
+                                onChange={this.changePersonalNote}/>}
                 {isAdmin && <div className="team-attribute">
                     <label className="title info-after">{I18n.t("team_detail.public_link")}</label>
                     <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}
@@ -416,14 +426,9 @@ export default class TeamDetail extends React.PureComponent {
                         </span>
                     </CopyToClipboard>}
                     {team.publicLinkDisabled &&
-                        <span className="attribute disabled">{universalPublicLink}
+                    <span className="attribute disabled">{universalPublicLink}
                         </span>}
                 </div>}
-                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description || ""}
-                                onChange={this.changeDescription}/>
-                {isAdmin &&
-                <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
-                                onChange={this.changePersonalNote}/>}
                 <div className="team-attribute">
                     <label className="title info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
                 </div>
@@ -598,7 +603,9 @@ export default class TeamDetail extends React.PureComponent {
                     <td data-label={I18n.t("team_detail.name")} className="name">
                         {member.person.name}
                     </td>
-                    <td data-label={I18n.t("team_detail.email")} className="email">{member.person.email}</td>
+                    <td data-label={I18n.t("team_detail.email")} className="email">
+                        <a href={`mailto:${member.person.email}`}>{member.person.email}</a>
+                    </td>
                     <td data-label={I18n.t("team_detail.status")} className="status">
                         {this.statusOfMembership(member)}
                     </td>

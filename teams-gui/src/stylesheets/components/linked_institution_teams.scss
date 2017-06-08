@@ -12,15 +12,28 @@
       position: relative;
       margin: 10px 0 25px 0;
 
+      @include phone {
+        flex-direction: column;
+      }
+
+      section.sort-drop-down {
+        margin-top: 0;
+        margin-left: auto;
+
+        @include phone {
+          margin-left: 0;
+        }
+      }
+
       input {
         padding: 10px;
-        margin-left: auto;
         border: 2px solid $light-grey;
         border-radius: 2px;
         font-size: medium;
         width: 100%;
         @include desktop {
           width: 50%;
+          margin-left: 10px;
         }
       }
 
@@ -30,6 +43,11 @@
         right: 10px;
         top: 6px;
         font-size: 24px;
+
+        @include phone {
+          display: none;
+        }
+
       }
       .help {
         display: flex;
@@ -63,6 +81,7 @@
 
   table.institution_teams {
     width: 100%;
+    word-break: break-all;
     tr {
       border-bottom: 1px solid $light-grey;
     }
