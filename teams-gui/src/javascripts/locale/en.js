@@ -45,7 +45,7 @@ I18n.translations.en = {
         confirm: "Confirm",
         cancel: "Cancel",
         leavePage: "Do you want to leave this page?",
-        leavePageSub: "Changes that you made will no be saved.",
+        leavePageSub: "Changes that you made will not be saved.",
         stay: "Stay",
         leave: "Leave"
     },
@@ -214,7 +214,7 @@ I18n.translations.en = {
         title: "New team",
         name: "Team name",
         name_info: "The name of the team cannot be changed once the team has been created.",
-        format_error: "The allowed characters for a team name are words, spaces, minuses and the ' separator. The maximum length is 255 characters.",
+        format_error: "The allowed characters for a team name are alphanumerics, spaces, minuses and the ' separator. The maximum length is 255 characters.",
         already_exists_error: "There is already a team with this name",
         required: "The name is required",
         description: "Description",
@@ -239,7 +239,7 @@ I18n.translations.en = {
     invite: {
         title: "Invite member",
         email: "Add members by email address",
-        emails_placeholder: "Enter one or more email address...",
+        emails_placeholder: "Enter one or more email addresses...",
         email_required: "Email is required - either add an email or select a file containing comma separated emails",
         email_invalid: "Email format is invalid.",
         file_import: "Add members by file import",
@@ -289,7 +289,7 @@ I18n.translations.en = {
             expired: "This invitation is expired.",
             already_member: "You are already a member of this team",
             join_request: "join request",
-            join_request_1: " You can sent a ",
+            join_request_1: " You can send a ",
             join_request_2: " if you want to become a member."
         }
     },
@@ -314,7 +314,7 @@ I18n.translations.en = {
             not_found: "This public link is not a valid link for a public team.",
             already_member: "You are already a member of this team",
             join_request: "join request",
-            join_request_1: " You can sent a ",
+            join_request_1: " You can send a ",
             join_request_2: " if you want to become a member."
         }
     },
@@ -331,7 +331,7 @@ I18n.translations.en = {
     },
     linked_institution_example: {
         title: "Institutional teams explained",
-        institution_name: "UvA",
+        institution_name: "UvH",
         institution_team_name: "Teachers",
         surf_name: "Admins"
     },

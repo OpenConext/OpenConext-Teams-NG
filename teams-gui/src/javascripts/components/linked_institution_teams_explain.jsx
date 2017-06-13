@@ -37,7 +37,7 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
                 <p>These teams can be linked to {productName} to create virtual memberships.</p>
             </section> :
             <section className="explanation">
-                <p>Je institutie teams zijn de teams aangeleverd vanuit je institutie aan {productName} waar je lid van
+                <p>Je instellingsteams zijn de teams aangeleverd vanuit je instelling aan {productName} waar je lid van
                     bent.</p>
                 <p>Deze teams kunnen worden gekoppeld aan {productName} om virtuele lidmaatschappen te realiseren.</p>
             </section>;
