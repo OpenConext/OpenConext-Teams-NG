@@ -44,7 +44,7 @@ I18n.translations.nl = {
         confirm: "Bevestig",
         cancel: "Annuleer",
         leavePage: "Wil je deze pagina verlaten?",
-        leavePageSub: "Changes that you made will no be saved.",
+        leavePageSub: "Wijzigingen worden niet opgeslagen.",
         stay: "Blijf",
         leave: "Weg"
     },
