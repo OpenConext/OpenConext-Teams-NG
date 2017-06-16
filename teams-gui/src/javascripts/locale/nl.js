@@ -22,7 +22,7 @@ I18n.translations.nl = {
     header: {
         title: "Teams",
         links: {
-            help_html: "<a href=\"https://openconext.org/teams\" target=\"_blank\">Help</a>",
+            help_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/SURFconext+Teams\" target=\"_blank\">Help</a>",
             logout: "Logout",
             exit: "Exit"
         },
@@ -35,7 +35,7 @@ I18n.translations.nl = {
     },
     error_dialog: {
         title: "Onverwachte fout",
-        body: "Dit is gênant. Er is een onverwachte fout opgetreden. De fout is gerapporteerd.",
+        body: "Dit is gênant; er is een onverwachte fout opgetreden. De fout is gerapporteerd. Probeer het nogmaals. Blijft de fout aan? Klik op 'Help'.",
         ok: "Sluiten"
     },
 
@@ -50,10 +50,10 @@ I18n.translations.nl = {
     },
 
     teams: {
-        title: "Mijn teams",
+        title: "Mijn Teams",
         name: "Teamnaam",
         description: "Omschrijving",
-        searchPlaceHolder: "ZOEK IN ALLE PUBLIEKE TEAMS...",
+        searchPlaceHolder: "Zoek in alle publieke Teams...",
         role: "Mijn rol",
         membershipCount: "Leden",
         actions: "",
@@ -63,31 +63,31 @@ I18n.translations.nl = {
         join: "WORD LID",
         received_join_request: "1 ontvangen toetredingsverzoek",
         received_join_requests: "{{count}} received toetredingsverzoeken",
-        pending_invitation: "1 open uitnodiging",
-        pending_invitations: "{{count}} open uitnodigingen",
-        no_found: "Je bent geen lid van een team",
-        filtered: "Je hebt al je teams uitgefilterd",
+        pending_invitation: "1 openstaande uitnodiging",
+        pending_invitations: "{{count}} openstaande uitnodigingen",
+        no_found: "Je bent nog geen lid van een Team",
+        filtered: "Je hebt al je Teams uitgefilterd",
         add: "NIEUW",
         join_request: "Toetredingsverzoek: ",
         created: "Datum: ",
         message: "Bericht: ",
         action_options: {
-            join_request_resend: "Nogmaals toetredingsverzoek versturen",
+            join_request_resend: "Verstuur toetredingsverzoek nogmaals",
             join_request_remove: "Verwijder toetredingsverzoek",
             invite_member: "Lid uitnodigen",
-            team_delete: "Verwijder team",
+            team_delete: "Verwijder Team",
             team_details: "Team details"
         },
         confirmations: {
-            team_delete: "Weet je zeker dat je team {{name}} wilt verwijderen?",
-            join_request_delete: "Weet je zeker dat je je toetredingsverzoek voor team {{name}} wilt verwijderen?",
+            team_delete: "Weet je zeker dat je Team {{name}} wilt verwijderen?",
+            join_request_delete: "Weet je zeker dat je het toetredingsverzoek voor Team {{name}} wilt verwijderen?",
         },
         flash: {
             team: "Team {{name}} is succesvol {{action}}",
             updated: "bijgewerkt",
             created: "aangemaakt",
             deleted: "verwijderd",
-            join_request_deleted: "Toetredingsverzoek voor team {{name}} is verwijderd"
+            join_request_deleted: "Toetredingsverzoek voor Team {{name}} is verwijderd"
         }
     },
 
@@ -95,14 +95,14 @@ I18n.translations.nl = {
         back: "TERUG NAAR MIJN TEAMS",
         urn: "Identificatiecode",
         description: "Omschrijving",
-        personalNote: "Persoonlijk bericht",
-        viewable: "Publiek team",
-        viewable_info: "Iedereen kan dit team bekijken en toetredingsverzoeken indienen. Niet-publieke teams zijn alleen maar zichtbaar voor leden.",
+        personalNote: "Persoonlijk notitie",
+        viewable: "Publiek Team",
+        viewable_info: "Iedereen kan dit Team bekijken en toetredingsverzoeken indienen. Niet-publieke teams zijn alleen maar zichtbaar voor leden van het Team.",
         name: "Naam",
         actions: "...",
         leave: "Verlaat",
         team_members: "LEDEN ({{count}})",
-        team_groups: "GEKOPPELDE GROEPEN ({{count}})",
+        team_groups: "GEKOPPELDE INSTELLINGSTEAMS ({{count}})",
         membership: {
             name: "naam",
             email: "e-mail",
@@ -117,47 +117,47 @@ I18n.translations.nl = {
         role: "Rol",
         pending: "OPEN",
         resend_invitation: "Uitnodiging opnieuw versturen",
-        delete: "Verwijderen",
+        delete: "Verwijder Team",
         edit: "Bewerken",
         invite: "Uitnodigen",
         link_to_institution_team: "Nieuw",
         search_members_placeholder: "Zoek leden",
         no_found: "Geen leden gevonden",
         public_link: "Publieke link",
-        public_link_disabled: "Indien geactiveerd kunnen mensen die de publieke link hebben ontvangen lid worden van dit team zonder verdere goedkeuring van de administrateurs.",
+        public_link_disabled: "Indien geactiveerd kunnen mensen die de publieke link hebben ontvangen lid worden van dit team zonder verdere goedkeuring van de beheerders.",
         copy: "Kopieer naar clipboard",
         copied: "Gekopieerd",
-        one_admin_warning: "Je bent de enige admin in dit team. Het is vanwege back-up-redenen beter om twee administrateurs in elk team te hebben.",
+        one_admin_warning: "Je bent de enige beheerder (admin) in dit team. Het is vanwege back-up-redenen beter om twee beheerders in elk team te hebben.",
         add: "UITNODIGEN",
-        linked: "Verbonden",
+        linked: "Gekoppeld",
         action_options: {
             join_request_accept: "Accepteer toetredingsverzoek",
             join_request_reject: "Weiger toetredingsverzoek",
-            invite_resend: "Opnieuw uitnodiging versturen",
+            invite_resend: "Verstuur uitnodiging opnieuw",
             invite_delete: "Verwijder uitnodiging",
             member_delete: "Verwijder lid",
-            member_leave: "Verlaat team",
+            member_leave: "Verlaat Team",
             member_send_email: "Verstuur e-mail"
         },
         confirmations: {
-            delete_team: "Weet je zeker dat je team {{name}} wilt verwijderen?",
-            leave_team: "Weet je zeker dat je team {{name}} wilt verlaten?",
+            delete_team: "Weet je zeker dat je Team {{name}} wilt verwijderen?",
+            leave_team: "Weet je zeker dat je Team {{name}} wilt verlaten?",
             delete_member: "Weet je zeker dat je het lidmaatschap van {{name}} wilt verwijderen?",
             accept_join_request: "Weet je zeker dat je het toetredingsverzoek van {{name}} wilt accepteren?",
             reject_join_request: "Weet je zeker dat je het toetredingsverzoek van {{name}} wilt afkeuren?",
             delete_invitation: "Weet je zeker dat je de uitnodiging voor {{name}} wilt verwijderen?",
-            downgrade_current_user: "Weet je zeker dat je geen administrateur meer wilt zijn in team {{name}}? Je kan deze beslissing niet meer ongedaan maken.",
+            downgrade_current_user: "Weet je zeker dat je geen beheerder meer wilt zijn in team {{name}}? Je kan deze beslissing niet meer ongedaan maken.",
         },
         flash: {
             deleted: "Team {{name}} is succesvol verwijderd.",
             role_changed: "Rol voor {{name}} veranderd in {{role}}.",
-            left: "Succesvol team {{name}} verlaten.",
-            deleted_member: "Succesvol het lidmaatschap van {{name}} verwijderd.",
-            deleted_invitation: "Succesvol de uitnodiging voor {{name}} verwijderd.",
-            accepted_join_request: "Succesvol het toetredingsverzoek voor {{name}} verwijderd.",
-            rejected_join_request: "Succesvol het toetredingsverzoek voor {{name}} geweigerd.",
-            linked_institutional_team: "Succesvol instellingsteam {{team}} verbonden aan {{name}}.",
-            unlinked_institutional_team: "Succesvol instellingsteam {{team}} ontkoppeld van {{name}}."
+            left: "Team {{name}} succesvol verlaten.",
+            deleted_member: "Lidmaatschap van {{name}} succesvol verwijderd.",
+            deleted_invitation: "De uitnodiging voor {{name}} succesvol verwijderd.",
+            accepted_join_request: "Het toetredingsverzoek voor {{name}} succesvol verwijderd.",
+            rejected_join_request: "Het toetredingsverzoek voor {{name}} succesvol geweigerd.",
+            linked_institutional_team: "Instellingsteam {{team}} succesvol verbonden aan {{name}}.",
+            unlinked_institutional_team: "Instellingsteam {{team}} succesvol ontkoppeld van {{name}}."
         }
 
     },
@@ -166,18 +166,18 @@ I18n.translations.nl = {
         team: {
             name: "Teamnaam",
             description: "Omschrijving",
-            admins: "Administrateur",
+            admins: "Admin",
         },
         cancel: "Annuleer",
         submit: "Toetredingsverzoek",
         resubmit: "Opnieuw versturen",
-        flash: "Je verzoek om lid te worden van {{name}} is verstuurd naar de administrateurs",
-        previous: "Open toetredingsverzoek",
-        previous_message: "Je hebt een toetredingsverzoek voor dit team verstuurd op {{date}}",
-        share_info: "Deel deze informatie met de applicaties gebruikt door dit team.",
+        flash: "Je verzoek om lid te worden van {{name}} is verstuurd naar de beheerders",
+        previous: "Openstaand toetredingsverzoek",
+        previous_message: "Je hebt een toetredingsverzoek voor dit Team verstuurd op {{date}}",
+        share_info: "Deel deze informatie met de applicaties gebruikt door dit Team.",
         approval_required: "Je moet toestemming verlenen om deze informatie te delen.",
         message: "Bericht",
-        message_info: "Je persoonlijke bericht voor je mede-administrateur van dit team",
+        message_info: "Je persoonlijke bericht voor je mede-beheerder(s) van dit Team",
         message_placeholder: "Je persoonlijke bericht",
     },
     icon_legend: {
@@ -210,23 +210,23 @@ I18n.translations.nl = {
     },
 
     new_team: {
-        title: "Nieuw team",
+        title: "Nieuw Team",
         name: "Teamnaam",
-        name_info: "De naam van een team kan niet meer veranderd worden als het eenmaal is aangemaakt.",
+        name_info: "De naam van een Team kan niet meer worden gewijzigd als het Team eenmaal is aangemaakt.",
         format_error: "De toegestane karakters voor een team zijn letters en cijfers, spaties, minussen en het ' teken. De maximale lengte is 255 karakters",
-        already_exists_error: "Er bestaat al team met deze naam",
+        already_exists_error: "Er bestaat al Team met deze naam",
         required: "De naam is verplicht",
         description: "Omschrijving",
-        description_info: "De omschrijving van een team is zichtbaar voor iedereen als je het team publiek maakt. Anders kunnen alleen leden de omschrijving zien.",
-        viewable_info: "Maak dit team publiek zodat iedereen dit team kan zien en een verzoek om lid te worden kan versturen naar de administrateurs.",
+        description_info: "De omschrijving van een Team is zichtbaar voor iedereen als je het Team publiek maakt. Anders kunnen alleen leden van het Team de omschrijving zien.",
+        viewable_info: "Maak dit Team publiek zodat iedereen dit Team kan zien en een verzoek om lid te worden kan versturen naar de beheerders.",
         personal_note: "Persoonlijke notitie",
-        personal_note_info: "Dit is alleen zichtbaar voor jezelf en collega-administrateurs van het team. Hier kun je beschrijven wat het doel van dit team is.",
-        admins: "Administrateurs",
-        admins_info: "We adviseren je om een mede-administrateur uit te nodigen.",
-        admins_email_placeholder: "E-mailadres van een collega-administrateur...",
+        personal_note_info: "Deze notitie is alleen zichtbaar voor jezelf en mede-beheerders van het Team. Hier kun je bijvoorbeeld beschrijven waar het Team voor wordt gebruikt.",
+        admins: "Admins",
+        admins_info: "We adviseren je om een mede-beheerder uit te nodigen.",
+        admins_email_placeholder: "E-mailadres van een collega-beheerder...",
         invalid_email: "Ongeldig e-mailadres",
         invitation_message: "Bericht",
-        invitation_message_info: "Persoonlijk bericht voor je collega-administrateur",
+        invitation_message_info: "Persoonlijk bericht voor je collega-beheerder",
         invitation_language: "Taal van de uitnodiging",
         current_user: "{{name}} (jij dus)",
         share_info: "Deel deze informatie met de applicaties gebruikt door dit team.",
@@ -241,11 +241,11 @@ I18n.translations.nl = {
         emails_placeholder: "Voeg 1 of meer e-mailadressen toe...",
         email_required: "E-mail is verplicht - voeg een e-mailadres toe of selecteer een CSV-bestand met e-mailadressen",
         email_invalid: "E-mailformaat is ongeldig.",
-        file_import: "Voeg e-mails toe uit een CSV-bestand",
+        file_import: "Voeg e-mailadressen toe uit een CSV-bestand",
         file_placeholder: "Selecteer een CSV-bestand...",
         file_import_result: "{{nbr}} e-mailadressen toegevoegd uit {{fileName}}",
         file_extension_error: "Alleen CSV-bestanden zijn toegestaan",
-        role: "Rol in het team",
+        role: "Rol in het Team",
         invitation_language: "Taal van de uitnodiging",
         expiry_date: "Vervaldatum",
         expiry_date_placeholder: "Vervaldatum voor lidmaatschap",
@@ -257,15 +257,15 @@ I18n.translations.nl = {
         flash: "Uitnodiging is verstuurd",
         flash_resent: "Herinneringsmail is verstuurd",
         message_placeholder: "Persoonlijk bericht voor de uitnodiging",
-        expiry_data_info: "De vervaldatum is de vervaldatum voor het lidmaatschap als deze uitnodiging wordt geaccepteerd. Als je een vervaldatum opgeeft dan is het eventuele lidmaatschap tijdelijk tot het verloopt. Het is NIET de vervaldatum van deze uitnodiging."
+        expiry_data_info: "De vervaldatum is de vervaldatum voor het lidmaatschap (als deze uitnodiging wordt geaccepteerd). Als je een vervaldatum opgeeft dan wordt dit lid automatisch uit het Team verwijderd op de vervaldatum. Het is NIET de vervaldatum van deze uitnodiging."
     },
     invitation: {
-        title: "Uitnodiging ontvangen voor team '{{name}}'",
+        title: "Uitnodiging ontvangen voor Team '{{name}}'",
         invalid_title: "Ongeldige uitnodiging",
         team: {
             name: "Teamnaam",
             description: "Omschrijving",
-            admins: "Administrateurs",
+            admins: "Admins",
             role: "De toekomstige rol"
         },
         cancel: "Annuleer",
@@ -278,59 +278,59 @@ I18n.translations.nl = {
         message: "Bericht",
         message_info: "Het persoonlijke bericht in deze uitnodiging",
         flash: {
-            "accept": "Je bent lid geworden van team {{name}}.",
-            "deny": "Je hebt de uitnodiging voor team {{name}} afgewezen."
+            "accept": "Je bent lid geworden van Team {{name}}.",
+            "deny": "Je hebt de uitnodiging voor Team {{name}} afgewezen."
         },
         invalid: {
-            not_found: "De uitnodiging is niet meer geldig en is verwijderd of je bent niet uitgenodigd.",
+            not_found: "De uitnodiging is niet meer geldig en is verwijderd, of je bent niet uitgenodigd.",
             accepted: "Je hebt deze uitnodiging al geaccepteerd.",
             declined: "Je hebt deze uitnodiging al afgewezen.",
             expired: "Deze uitnodiging is niet meer geldig.",
-            already_member: "Je bent al lid van dit team",
+            already_member: "Je bent al lid van dit Team",
             join_request: "toetredingsverzoek",
             join_request_1: " Je kan een ",
-            join_request_2: " versturen als je lid wilt worden van dit team."
+            join_request_2: " versturen als je lid wilt worden van dit Team."
         }
     },
     public_link: {
-        title: "Publieke link voor lidmaatschap van team '{{name}}'",
+        title: "Publieke link voor lidmaatschap van Team '{{name}}'",
         invalid_title: "Publieke link ongeldig",
         team: {
             name: "Teamnaam",
             description: "Omschrijving",
-            admins: "Administrateurs",
+            admins: "Admins",
             role: "De toekomstige rol"
         },
         cancel: "Annuleer",
         accept: "Accepteer",
-        share_info: "Deel deze informatie met de applicaties gebruikt door dit team.",
+        share_info: "Deel deze informatie met de applicaties gebruikt door dit Team.",
         approval_required: "Je moet toestemming verlenen om deze informatie te delen.",
         flash: {
-            "accept": "Je bent lid geworden van team {{name}}.",
-            "deny": "Je hebt de uitnodiging voor team {{name}} afgewezen."
+            "accept": "Je bent lid geworden van Team {{name}}.",
+            "deny": "Je hebt de uitnodiging voor Team {{name}} afgewezen."
         },
         invalid: {
-            not_found: "Deze publieke link is niet ongeldige link voor lidmaatschap van een team.",
+            not_found: "Deze publieke link is een ongeldige link.",
             already_member: "Je bent al lid van dit team",
             join_request: "toetredingsverzoek",
             join_request_1: " Je kan een ",
-            join_request_2: " versturen als je lid wilt worden van dit team."
+            join_request_2: " versturen als je lid wilt worden van dit Team."
         }
     },
 
     institution_teams: {
-        name: "Teamnaam / identificatiecode",
+        name: "Teamnaam / Identificatiecode",
         help: "Uitleg",
         description: "Omschrijving",
         linked_teams: "Verbonden teams",
         searchPlaceHolder: "ZOEK TEAMS",
-        filtered: "Geen intstellingsteams gevonden",
+        filtered: "Geen instellingsteams gevonden",
         institution_team: "Instellingsteam",
-        no_teams: "Je instelling levert geen teams of je ben geen lid van een team binnen je instelling",
+        no_teams: "Je instelling levert geen teams of je ben geen lid van een Team binnen je instelling",
 
     },
     linked_institution_example: {
-        title: "Instellingteams uitgelegd",
+        title: "Instellingsteams uitgelegd",
         institution_name: "UvH",
         institution_team_name: "Leraren",
         surf_name: "Admins"
