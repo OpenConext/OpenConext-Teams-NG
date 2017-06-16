@@ -363,7 +363,7 @@ I18n.translations.nl = {
     },
 
     footer: {
-        surfnet_html: "<a href=\"https://www.surfnet.nl/nl\" target=\"_blank\">{{productName}}</a>",
+        surfnet_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/SURFconext+Teams\" target=\"_blank\">{{productName}}</a>",
         terms_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29\" target=\"_blank\">Terms of Service</a>",
         contact_html: "<a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>"
     }
