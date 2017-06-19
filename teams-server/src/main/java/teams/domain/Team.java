@@ -52,7 +52,7 @@ public class Team implements HashGenerator {
     private String publicLink;
 
     @Column
-    private boolean publicLinkDisabled;
+    private boolean publicLinkDisabled = true;
 
     @Formula("(select count(*) from memberships m where m.team_id = id)")
     private int membershipCount;

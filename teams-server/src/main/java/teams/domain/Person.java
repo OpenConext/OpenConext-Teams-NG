@@ -37,6 +37,9 @@ public class Person {
     private Instant created;
 
     @Column
+    private Instant lastLoginDate;
+
+    @Column
     private boolean guest;
 
     @OneToMany(mappedBy = "person", orphanRemoval = true)
@@ -66,13 +69,13 @@ public class Person {
         this.guest = guest;
     }
 
+    public void setLastLoginDate(Instant lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+    }
+
     @JsonIgnore
     public boolean isValid() {
         return hasText(urn) && hasText(name) && hasText(email);
-    }
-
-    public boolean needsUpdate(Person person) {
-        return Objects.hash(name, email, guest) != Objects.hash(person.getName(), person.getEmail(), person.isGuest());
     }
 
     @Override

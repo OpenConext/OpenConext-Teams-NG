@@ -91,6 +91,10 @@ I18n.translations.nl = {
         }
     },
 
+    teams_autocomplete: {
+        name: "naam"
+    },
+
     team_detail: {
         back: "TERUG NAAR MIJN TEAMS",
         urn: "Identificatiecode",
@@ -107,6 +111,7 @@ I18n.translations.nl = {
             name: "naam",
             email: "e-mail",
             status: "status",
+            expiry_date: "vervaldatum",
             role: "rol",
             actions: "",
         },
@@ -114,6 +119,7 @@ I18n.translations.nl = {
         intended_role: "Toekomstige rol",
         actions_phone: "Acties",
         status: "Status",
+        expiry_date: "Vervaldatum",
         role: "Rol",
         pending: "OPEN",
         resend_invitation: "Uitnodiging opnieuw versturen",
@@ -194,6 +200,7 @@ I18n.translations.nl = {
         email: "E-mail",
         role: "Rol",
         description: "Omschrijving",
+        expiryDate: "Vervaldatum",
         membershipCount: "Leden",
         linked: "Gekoppeld"
     },

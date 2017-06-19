@@ -56,6 +56,7 @@ export default class TeamDetail extends React.PureComponent {
                 {name: "name", order: "down", current: false},
                 {name: "email", order: "down", current: false},
                 {name: "status", order: "down", current: true},
+                {name: "expiryDate", order: "down", current: false},
                 {name: "role", order: "down", current: false}
             ],
             filterAttributes: [
@@ -321,8 +322,10 @@ export default class TeamDetail extends React.PureComponent {
         if (a["person"][name] && b["person"][name]) {
             return a["person"][name].toString().localeCompare(b["person"][name].toString()) * (reverse ? -1 : 1);
         }
-        if (a[name] && b[name]) {
-            return a[name].toString().localeCompare(b[name].toString()) * (reverse ? -1 : 1);
+        if (a[name] || b[name]) {
+            const aNameSafe = a[name] ? a[name].toString() : "";
+            const bNameSafe = b[name] ? b[name].toString() : "";
+            return aNameSafe.localeCompare(bNameSafe) * (reverse ? -1 : 1);
         }
         const aSafe = a || "";
         const bSafe = b || "";
@@ -588,7 +591,7 @@ export default class TeamDetail extends React.PureComponent {
     renderMembersTable(currentUser, visibleMembers, actions, team) {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
-        const columns = ["name", "email", "status", "role", "actions"];
+        const columns = ["name", "email", "status", "expiry_date", "role", "actions"];
         const th = index => (
             <th key={index} className={columns[index]}>
                 <span
@@ -607,6 +610,9 @@ export default class TeamDetail extends React.PureComponent {
                     </td>
                     <td data-label={I18n.t("team_detail.status")} className="status">
                         {this.statusOfMembership(member)}
+                    </td>
+                    <td data-label={I18n.t("team_detail.expiry_date")} className="expiry_date">
+                        {member.expiryDate ? moment.unix(member.expiryDate).format("LLL") : ""}
                     </td>
                     <td data-label={I18n.t("team_detail.role")} className="role">
                         {this.roleCell(member)}

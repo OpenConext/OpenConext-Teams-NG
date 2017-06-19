@@ -55,7 +55,7 @@ export default class TeamAutocomplete extends React.PureComponent {
                 {showSuggestions && <table className="result">
                     <thead>
                     <tr>
-                        <th className="name">{I18n.t("teams.name")}</th>
+                        <th className="name">{I18n.t("teams_autocomplete.name")}</th>
                         <th className="description">{I18n.t("teams.description")}</th>
                         <th className="role"></th>
                     </tr>

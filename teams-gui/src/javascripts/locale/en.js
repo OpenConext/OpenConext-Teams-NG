@@ -92,6 +92,10 @@ I18n.translations.en = {
         }
     },
 
+    teams_autocomplete: {
+        name: "name"
+    },
+
     team_detail: {
         back: "BACK TO MY TEAMS",
         urn: "Identifier",
@@ -108,6 +112,7 @@ I18n.translations.en = {
             name: "name",
             email: "email",
             status: "status",
+            expiry_date: "expiry date",
             role: "role",
             actions: "",
         },
@@ -115,6 +120,7 @@ I18n.translations.en = {
         intended_role: "Intended role",
         actions_phone: "Actions",
         status: "Status",
+        expiry_date: "Expiry date",
         role: "Role",
         pending: "PENDING",
         resend_invitation: "Resend invitation",
@@ -195,6 +201,7 @@ I18n.translations.en = {
         email: "Email",
         role: "Role",
         description: "Description",
+        expiryDate: "Expiry date",
         membershipCount: "Members",
         linked: "Linked"
     },

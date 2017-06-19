@@ -9,8 +9,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import teams.domain.Invitation;
 import teams.domain.Membership;
+import teams.domain.Person;
 import teams.repository.InvitationRepository;
 import teams.repository.MembershipRepository;
+import teams.repository.PersonRepository;
 
 import java.util.function.Function;
 
@@ -21,6 +23,9 @@ public class Scheduler {
     public static final long TWO_WEEKS = 14L * 24L * 60L * 60L * 1000L;
 
     private static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
+
+    @Autowired
+    private PersonRepository personRepository;
 
     @Autowired
     private MembershipRepository membershipRepository;
@@ -39,6 +44,11 @@ public class Scheduler {
     @Scheduled(cron = "${cron.expression}")
     public int removeExpiredInvitations() {
         return this.removeExpired(invitationRepository::deleteExpiredInvitations, System.currentTimeMillis() - TWO_WEEKS, Invitation.class);
+    }
+
+    @Scheduled(cron = "${cron.expression}")
+    public int removeOrphanPersons() {
+        return this.removeExpired(personRepository::deleteOrphanPersons, 1L, Person.class);
     }
 
     private int removeExpired(Function<Long, Integer> removeFunction, Long argument, Class clazz) {

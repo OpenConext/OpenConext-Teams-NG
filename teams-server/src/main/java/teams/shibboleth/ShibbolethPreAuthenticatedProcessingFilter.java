@@ -10,6 +10,7 @@ import teams.repository.PersonRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.time.Instant;
 import java.util.Optional;
 
 public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedProcessingFilter {
@@ -50,15 +51,14 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
     private Person provision(Person person) {
         Optional<Person> personOptional = personRepository.findByUrnIgnoreCase(person.getUrn());
         personOptional.ifPresent(personFromDatabase -> {
-            if (person.needsUpdate(personFromDatabase)) {
-                personFromDatabase.setGuest(person.isGuest());
-                personFromDatabase.setEmail(person.getEmail());
-                personFromDatabase.setName(person.getName());
+            personFromDatabase.setGuest(person.isGuest());
+            personFromDatabase.setEmail(person.getEmail());
+            personFromDatabase.setName(person.getName());
+            personFromDatabase.setLastLoginDate(Instant.now());
 
-                LOG.info("Updating person after detecting change after login {}", person);
+            LOG.info("Updating existing person after login {}", person);
 
-                personRepository.save(personFromDatabase);
-            }
+            personRepository.save(personFromDatabase);
         });
         return personOptional.orElseGet(() -> personRepository.save(person));
     }

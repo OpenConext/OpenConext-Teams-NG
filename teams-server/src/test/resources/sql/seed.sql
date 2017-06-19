@@ -1,13 +1,13 @@
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
-VALUES (1, 'demo:openconext:org:riders', 'riders', 'we are riders', 1, 'wZiomLDTk3CU2FR9bRy1IFCfYSqt5AFwSAs74M1EuIQs3D');
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`, `public_link_disabled`)
+VALUES (1, 'demo:openconext:org:riders', 'riders', 'we are riders', 1, 'wZiomLDTk3CU2FR9bRy1IFCfYSqt5AFwSAs74M1EuIQs3D', 0);
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `personal_note`, `public_link`, `public_link_disabled`)
 VALUES (2, 'demo:openconext:org:giants', 'giants', 'we are giants', 1, 'Why did I create this team', 'ErtOpeSiYdEluAMd53CXs4TnN3RyrHUIHdaxImw3q1A3D', 1);
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
-VALUES (3, 'demo:openconext:org:gliders', 'gliders', 'we are gliders', 1, '72MpWBjvo2F753r2ff960VMgwx113svKq9u4js8MBu303D');
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
-VALUES (4, 'demo:openconext:org:masters', 'masters', 'we are masters', 1, 'n78zCdrYZJ3SeZuD9OKNNzdHU2BkHusBn3ywL2FjVnGg3D');
-INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`)
-VALUES (5, 'demo:openconext:org:wolves', 'wolves', 'we are wolves', 1, '2FZL8C58WtmVqOot12Fz2FJLMCZk5PzFq4tbOl5sm3Z7hk3D');
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`, `public_link_disabled`)
+VALUES (3, 'demo:openconext:org:gliders', 'gliders', 'we are gliders', 1, '72MpWBjvo2F753r2ff960VMgwx113svKq9u4js8MBu303D', 0);
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`, `public_link_disabled`)
+VALUES (4, 'demo:openconext:org:masters', 'masters', 'we are masters', 1, 'n78zCdrYZJ3SeZuD9OKNNzdHU2BkHusBn3ywL2FjVnGg3D', 0);
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`, `public_link_disabled`)
+VALUES (5, 'demo:openconext:org:wolves', 'wolves', 'we are wolves', 1, '2FZL8C58WtmVqOot12Fz2FJLMCZk5PzFq4tbOl5sm3Z7hk3D', 0);
 
 
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)

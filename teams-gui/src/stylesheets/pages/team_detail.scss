@@ -140,16 +140,19 @@
     }
     thead {
       th.name {
-        width: 25%;
+        width: 19%;
       }
       th.email {
-        width: 25%;
+        width: 19%;
       }
       th.status {
-        width: 25%;
+        width: 19%;
+      }
+      th.expiry_date {
+        width: 19%;
       }
       th.role {
-        width: 20%;
+        width: 19%;
       }
       th.actions {
         text-align: right;

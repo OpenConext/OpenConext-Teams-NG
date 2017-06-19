@@ -45,7 +45,8 @@ export default class MyTeams extends React.PureComponent {
             query: "",
             confirmationDialogOpen: false,
             confirmationDialogQuestion: "",
-            confirmationDialogAction: () => false
+            confirmationDialogAction: () => false,
+            loadingAutoComplete: false
         };
     }
 
@@ -147,12 +148,15 @@ export default class MyTeams extends React.PureComponent {
         const query = e.target.value;
         this.setState({query: query, selectedTeam: -1});
         if (!isEmpty(query) && query.trim().length > 1) {
+            this.setState({loadingAutoComplete: true});
             this.delayedAutocomplete();
         }
     };
 
     delayedAutocomplete = debounce(() =>
-        autoCompleteTeam(this.state.query).then(results => this.setState({suggestions: results})), 200);
+        autoCompleteTeam(this.state.query).then(results => this.setState({
+            suggestions: results,
+            loadingAutoComplete: false})), 200);
 
     sort = item => {
         const {filteredTeams, sortAttributes} = this.state;
@@ -347,9 +351,9 @@ export default class MyTeams extends React.PureComponent {
         const {currentUser} = this.props;
         const {
             filteredTeams, actions, sortAttributes, filterAttributes, selectedTeam, suggestions, query,
-            isMemberOfTeam, confirmationDialogOpen, confirmationDialogAction, confirmationDialogQuestion
+            isMemberOfTeam, confirmationDialogOpen, confirmationDialogAction, confirmationDialogQuestion, loadingAutoComplete
         } = this.state;
-        const showAutoCompletes = query.length > 1 && !isEmpty(suggestions);
+        const showAutoCompletes = query.length > 1 && !loadingAutoComplete;
         return (
             <div className="my_teams">
                 <ConfirmationDialog isOpen={confirmationDialogOpen}
