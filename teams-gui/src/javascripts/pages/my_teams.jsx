@@ -264,9 +264,9 @@ export default class MyTeams extends React.PureComponent {
 
     onBlurSearch = suggestions => () => {
         if (!isEmpty(suggestions)) {
-            setTimeout(() => this.setState({suggestions: []}), 500);
+            setTimeout(() => this.setState({suggestions: [], loadingAutoComplete: true}), 500);
         } else {
-            this.setState({suggestions: []});
+            this.setState({suggestions: [], loadingAutoComplete: true});
         }
     };
 
