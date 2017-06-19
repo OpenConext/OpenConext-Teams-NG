@@ -99,7 +99,7 @@ I18n.translations.nl = {
         back: "TERUG NAAR MIJN TEAMS",
         urn: "Identificatiecode",
         description: "Omschrijving",
-        personalNote: "Persoonlijk notitie",
+        personalNote: "Persoonlijke notitie",
         viewable: "Publiek Team",
         viewable_info: "Iedereen kan dit Team bekijken en toetredingsverzoeken indienen. Niet-publieke teams zijn alleen maar zichtbaar voor leden van het Team.",
         name: "Naam",
