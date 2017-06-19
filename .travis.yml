@@ -3,8 +3,6 @@ jdk:
 - oraclejdk8
 node_js:
 - '7'
-services:
-- mysql
 cache:
   yarn: true
   directories:
@@ -25,6 +23,7 @@ addons:
     organization: "surfnet" # the key of the org you chose at step #3
     token:
       secure: "kY4WEFO+PcuCqkMwL2QiPw7Om7PIkBM5hUw1w/qA6H1UJEjDtzAuFp7qvc6hrSLTVT7Bj1bVYUXrTEyupZo16KTcIPYY/NW+M7VssjYYOtO8xLnqkhmZ+ssCmPHRGOp5D41IBE40CEKkx9Gu+M3ePVjysIP0QG5zmAuE52tCxb6jhwDxdIp/nkGsjpi4sDGC10vtzEM7/3k7qFAdUX5KKTa7wKl/cBWiqrTASs00EBk7sCcVUt7/2a0V9GZUGDFeZ+NrD8kTT8cFNCDFIpbbTcvfKuzTiO5xfRrpI+BHF+b246/M/fZQREZOkuas1gYRC/8hMiipn+RsGe37ARI1M+0Zmc7b5eYGCCJPVi5PQ7nVpdH9YFGtHHk89nTwe3PY2a4lD6P2azYXzfH7lgtQEV4HoU+TOIHsVcnimNam7maJLA2Xi+fNBEJLh1NEOzry0obGRVSA7GQpfIAhJTHuZwGBQAh4OUmL06P7Nux/TO7biv6cF7Sx+tv3yC+Mv434tkcKF5+M2942mF3v/0uQ0j1inV+91Pt6D0zAeWztHqXTPho4ogMktvWFQwH70XVKyzKjgDqk4Gb4F2p59Fkr8QlT/b/WEon2MnEf0K6mU8bpE0/GfN/ESygYiJMTDk4MUXo4HMoXPHDHisseIFC97qu+kehwFc7+dzuvAVJlTmY="
+  mariadb: "10.0"
 script:
 - mvn test
 - cd teams-gui && yarn install && yarn run lint && yarn test
