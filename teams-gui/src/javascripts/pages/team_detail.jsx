@@ -340,8 +340,12 @@ export default class TeamDetail extends React.PureComponent {
         this.saveTeamProperties({description: description});
     };
 
-    changeViewable = () => {
-        this.saveTeamProperties({viewable: !this.state.team.viewable});
+    changeViewable = e => {
+        const newTeamProperties = {viewable: !this.state.team.viewable};
+        if (!e.target.checked) {
+            newTeamProperties.publicLinkDisabled = true;
+        }
+        this.saveTeamProperties(newTeamProperties);
     };
 
     changePublicLinkDisabled = e => {
