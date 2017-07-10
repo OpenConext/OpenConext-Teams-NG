@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import teams.api.validations.TeamValidator;
 import teams.domain.*;
 import teams.exception.IllegalSearchParamException;
+import teams.exception.NotAllowedException;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -62,6 +63,9 @@ public class TeamController extends ApiController implements TeamValidator {
         Team team = teamById(id, true);
         assertNotNull("Team", team, id);
         Optional<Membership> membershipOptional = team.member(federatedUser.getUrn());
+        if (!membershipOptional.isPresent() && !team.isViewable()) {
+            throw new NotAllowedException(String.format("Team %s is private and %s is not a member", id, federatedUser.getUrn()));
+        }
         return membershipOptional.map(membership -> lazyLoadTeam(team, membership.getRole(), federatedUser))
                 .orElse(new TeamSummary(team, federatedUser, true));
     }
