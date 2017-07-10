@@ -63,6 +63,7 @@ public class VootApiController {
     @GetMapping("api/voot/groups")
     public List<Group> getAllGroups() {
         return StreamSupport.stream(teamRepository.findAll().spliterator(), false)
+                .filter(Team::isViewable)
                 .map(this::convertTeamToGroup).collect(toList());
     }
 

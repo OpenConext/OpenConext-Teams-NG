@@ -8,6 +8,8 @@ INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_lin
 VALUES (4, 'demo:openconext:org:masters', 'masters', 'we are masters', 1, 'n78zCdrYZJ3SeZuD9OKNNzdHU2BkHusBn3ywL2FjVnGg3D', 0);
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`, `public_link_disabled`)
 VALUES (5, 'demo:openconext:org:wolves', 'wolves', 'we are wolves', 1, '2FZL8C58WtmVqOot12Fz2FJLMCZk5PzFq4tbOl5sm3Z7hk3D', 0);
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`, `public_link_disabled`)
+VALUES (6, 'demo:openconext:org:private', 'private', 'we are private', 0, 'secret', 1);
 
 
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)

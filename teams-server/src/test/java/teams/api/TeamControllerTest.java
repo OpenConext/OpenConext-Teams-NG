@@ -47,6 +47,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .body("myJoinRequests.teamName", hasItems("riders"))
                 .body("myJoinRequests.teamDescription", hasItems("we are riders"));
     }
+
     @Test
     public void teamById() throws Exception {
         given()
@@ -59,6 +60,16 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .body("invitations.intendedRole", hasItems("MANAGER"))
                 .body("joinRequests.message", hasItems("Please let me join"))
                 .body("externalTeams.name", hasItems("name1", "name2"));
+    }
+
+    @Test
+    public void privateTeamById() throws Exception {
+        given()
+                .when()
+                .get("api/teams/teams/{id}", 6L)
+                .then()
+                .statusCode(SC_BAD_REQUEST)
+                .body("message", isEmptyOrNullString());
     }
 
     @Test
@@ -226,7 +237,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .post("api/teams/teams")
                 .then()
                 .statusCode(SC_FORBIDDEN)
-                .body("message", equalTo("Access is denied"));
+                .body("message", nullValue());
     }
 
     @Test
@@ -259,8 +270,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .when()
                 .put("api/teams/teams")
                 .then()
-                .statusCode(SC_FORBIDDEN)
-                .body("message", equalTo("Access is denied"));
+                .statusCode(SC_FORBIDDEN);
     }
 
     @Test
