@@ -33,7 +33,7 @@ export default class TeamAutocomplete extends React.PureComponent {
             const id = `description${index}`;
             return (
                 <span data-for={id} data-tip>
-                {`${description.substring(0, Math.min(description.substring(30).indexOf(" ") + 30, 40))}...`}
+                {`${description.substring(0, Math.min(description.substring(25).indexOf(" ") + 25, 50))}  `}
                     <i className="fa fa-info-circle"></i>
                 <ReactTooltip id={id} type="light" class="tool-tip" effect="solid">
                     <span>{description}</span>

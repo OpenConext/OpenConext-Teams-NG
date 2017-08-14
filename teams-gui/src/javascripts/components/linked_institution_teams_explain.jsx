@@ -24,6 +24,20 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
 
     organization = name => <span className="organization">{name}</span>
 
+    memberships = (institutionName, institutionTeamName, productName, surfName) =>
+        <div className="memberships">
+            <div className="membership">
+                {this.organization(institutionName)}
+                {this.institution(institutionTeamName)}
+                {this.member("Mary")}
+            </div>
+            <div className="membership">
+                {this.organization(productName)}
+                {this.surf(surfName)}
+                {this.member("Joe")}
+            </div>
+        </div>;
+
     render() {
         const {close, productName, locale, isVisible} = this.props;
         const institutionName = I18n.t("linked_institution_example.institution_name");
@@ -45,18 +59,7 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
         const example = locale === "en" ?
             <section className="example">
                 <p>Given the following memberships:</p>
-                <div className="memberships">
-                    <div className="membership">
-                        {this.organization(institutionName)}
-                        {this.institution(institutionTeamName)}
-                        {this.member("Mary")}
-                    </div>
-                    <div className="membership">
-                        {this.organization(productName)}
-                        {this.surf(surfName)}
-                        {this.member("Joe")}
-                    </div>
-                </div>
+                {this.memberships(institutionName, institutionTeamName, productName, surfName)}
                 <p>When the team <span className="emphasize">{institutionTeamName}</span> is linked to the team <span
                     className="emphasize">{surfName}</span> all members of <span
                     className="emphasize">{` ${institutionTeamName} `}</span>
@@ -73,18 +76,7 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
             </section> :
             <section className="example">
                 <p>Gegeven de volgende lidmaatschappen:</p>
-                <div className="memberships">
-                    <div className="membership">
-                        {this.organization(institutionName)}
-                        {this.institution(institutionTeamName)}
-                        {this.member("Mary")}
-                    </div>
-                    <div className="membership">
-                        {this.organization(productName)}
-                        {this.surf(surfName)}
-                        {this.member("Joe")}
-                    </div>
-                </div>
+                {this.memberships(institutionName, institutionTeamName, productName, surfName)}
                 <p>Als het team <span className="emphasize">{institutionTeamName}</span> wordt gekoppeld aan het team
                     <span
                         className="emphasize">{surfName}</span> dan worden alle leden van <span
