@@ -366,7 +366,7 @@ export default class MyTeams extends React.PureComponent {
                         <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                         <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
                         <section className="search"
-                                 tabIndex="1" onBlur={this.onBlurSearch(suggestions)}>
+                                 tabIndex="1" /*onBlur={this.onBlurSearch(suggestions)}*/>
                             <input className={currentUser.person.guest ? "" : "allowed"}
                                    placeholder={I18n.t("teams.searchPlaceHolder")}
                                    type="text"

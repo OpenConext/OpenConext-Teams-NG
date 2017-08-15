@@ -60,6 +60,8 @@ section.teams-autocomplete {
       td {
         padding: 5px 10px;
         vertical-align: middle;
+        word-break: keep-all;
+
         &.role {
           padding: 10px;
           text-align: right;

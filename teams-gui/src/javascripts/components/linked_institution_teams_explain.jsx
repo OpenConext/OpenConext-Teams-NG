@@ -46,49 +46,63 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
 
         const explanation = locale === "en" ?
             <section className="explanation">
-                <p>Your institutional teams are the teams provided by your institution to {productName} where you are a
-                    member of.</p>
-                <p>These teams can be linked to {productName} to create virtual memberships.</p>
+                <p>Your institutional Teams are the teams or groups provided by your institution to {productName}.
+                    Only those you are a member of are shown.</p>
             </section> :
             <section className="explanation">
-                <p>Je instellingsteams zijn de teams aangeleverd vanuit je instelling aan {productName} waar je lid van
-                    bent.</p>
-                <p>Deze teams kunnen worden gekoppeld aan {productName} om virtuele lidmaatschappen te realiseren.</p>
+                <p>Je instellingsteams zijn de teams of groepen die vanuit je instelling aan {productName} worden aangeleverd.
+                    Alleen de Teams waar jij lid van bent worden getoond.</p>
             </section>;
+
+         const details = locale === "en" ?
+             <section className="details">
+                 You can link these institutional Teams to any Team you manage within {productName}.
+                 By doing so, the {productName}  team will contain all members who have individually joined this Team directly,
+                 plus all members who already belong to the institutional Team. This creates virtual memberships.
+                 Consider the example below
+             </section> :
+             <section className="details">
+                 Je kunt deze Teams koppelen aan een Team die je binnen {productName} beheert.
+                 Hierdoor zal het {productName} team niet alleen de leden bevatten die rechtstreeks zijn lid geworden,
+                 maar ook alle leden van het Team van je instelling. Hierdoor ontstaan er als het ware virtuele
+                 lidmaatschappen. Bekijk het voorbeeld hieronder.
+             </section>
 
         const example = locale === "en" ?
             <section className="example">
                 <p>Given the following memberships:</p>
                 {this.memberships(institutionName, institutionTeamName, productName, surfName)}
-                <p>When the team <span className="emphasize">{institutionTeamName}</span> is linked to the team <span
-                    className="emphasize">{surfName}</span> all members of <span
-                    className="emphasize">{` ${institutionTeamName} `}</span>
-                    will become virtual members of <span className="emphasize">{` ${surfName}`}</span>.</p>
+                <p>When the (institutional) Team '<span className="emphasize">{institutionTeamName}</span>' is linked to
+                    the ({productName}) Team <span
+                    className="emphasize">{surfName}</span> all members of '<span
+                    className="emphasize">{` ${institutionTeamName} `}</span>'
+                    will also become (indirect) members of '<span className="emphasize">{` ${surfName}`}</span>'.</p>
 
-                <p>As a result <span className="emphasize">Mary</span> is an implicit member of the team <span
-                    className="emphasize">{surfName}</span>.
+                <p>As a result, <span className="emphasize">Mary</span> is also an (indirect) member of the Team '<span
+                    className="emphasize">{surfName}</span>'.
                     <span className="emphasize"> Joe</span> however did <span className="strong">not</span> became a
                     member of the
-                    team <span className="emphasize">{institutionTeamName}</span> as the virtual membership is
-                    unidirectional.
+                    Team '<span className="emphasize">{institutionTeamName}</span>' as the virtual membership is
+                    unidirectional. Only members from institutional Teams will be included in {productName};
+                    not the other way around.
                 </p>
 
             </section> :
             <section className="example">
                 <p>Gegeven de volgende lidmaatschappen:</p>
                 {this.memberships(institutionName, institutionTeamName, productName, surfName)}
-                <p>Als het team <span className="emphasize">{institutionTeamName}</span> wordt gekoppeld aan het team
-                    <span
-                        className="emphasize">{surfName}</span> dan worden alle leden van <span
-                        className="emphasize">{` ${institutionTeamName} `}</span>
-                    virtuele leden van <span className="emphasize">{` ${surfName}`}</span>.</p>
+                <p>Als het team (instellings) Team '<span className="emphasize">{institutionTeamName}</span>'
+                    wordt gekoppeld aan het (SURFconext) Team
+                    '<span className="emphasize">{surfName}</span>', dan worden alle leden van '<span
+                        className="emphasize">{` ${institutionTeamName} `}</span>' virtuele leden van
+                    '<span className="emphasize">{` ${surfName}`}</span>'.</p>
 
-                <p>Ofwel <span className="emphasize">Mary</span> is een impliciet lid van het team <span
-                    className="emphasize">{surfName}</span>.
-                    <span className="emphasize"> Joe</span> daarentegen is <span className="strong">geen</span> lid
-                    geworden van
-                    team <span className="emphasize">{institutionTeamName}</span> aangezien de virtuele lidmaatschappen
-                    unidirectioneel zijn.
+                <p>Het resultaat is dus dat '<span className="emphasize">Mary</span>' ook (virtueel) lid wordt van het Team
+                    '<span className="emphasize">{surfName}</span>'.
+                    '<span className="emphasize"> Joe</span>' daarentegen is <span className="strong">geen</span> lid
+                    geworden van het Team '<span className="emphasize">{institutionTeamName}</span>',
+                    aangezien de virtuele lidmaatschappen maar één kan opgaan. Alleen leden van een instellingsteam
+                    kunnen op deze manier onderdeel worden van een {productName}; niet andersom.
                 </p>
 
             </section>;
@@ -105,6 +119,7 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
                         </a>
                     </section>
                     {explanation}
+                    {details}
                     {example}
                 </section>
             </div>
