@@ -338,7 +338,7 @@ I18n.translations.nl = {
     },
     linked_institution_example: {
         title: "Instellingsteams uitgelegd",
-        institution_name: "UvH",
+        institution_name: "Univ Harderwijk",
         institution_team_name: "Leraren",
         surf_name: "Admins"
     },

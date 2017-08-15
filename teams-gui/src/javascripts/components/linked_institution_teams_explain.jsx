@@ -61,10 +61,10 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
                 By doing so, the {productName} team will contain all members who have individually joined this Team
                 directly,
                 plus all members who already belong to the institutional Team. This creates virtual memberships.
-                Consider the example below
+                Consider the example below.
             </section> :
             <section className="details">
-                Je kunt deze Teams koppelen aan een Team die je binnen {productName} beheert.
+                Je kunt deze Teams koppelen aan een Team dat je binnen {productName} beheert.
                 Hierdoor zal het {productName} team niet alleen de leden bevatten die rechtstreeks zijn lid geworden,
                 maar ook alle leden van het Team van je instelling. Hierdoor ontstaan er als het ware virtuele
                 lidmaatschappen. Bekijk het voorbeeld hieronder.
@@ -82,7 +82,7 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
 
                 <p>As a result, <span className="emphasize">Mary</span> is also an (indirect) member of the Team '<span
                     className="emphasize">{surfName}</span>'.
-                    <span className="emphasize"> Joe</span> however did <span className="strong">not</span> became a
+                    <span className="emphasize"> Joe</span> however did <span className="strong">not</span> become a
                     member of the
                     Team '<span className="emphasize">{institutionTeamName}</span>' as the virtual membership is
                     unidirectional. Only members from institutional Teams will be included in {productName};
@@ -93,8 +93,8 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
             <section className="example">
                 <p>Gegeven de volgende lidmaatschappen:</p>
                 {this.memberships(institutionName, institutionTeamName, productName, surfName)}
-                <p>Als het team (instellings) Team '<span className="emphasize">{institutionTeamName}</span>'
-                    wordt gekoppeld aan het (SURFconext) Team
+                <p>Als het (instellings) Team '<span className="emphasize">{institutionTeamName}</span>'
+                    wordt gekoppeld aan het ({productName}) Team
                     '<span className="emphasize">{surfName}</span>', dan worden alle leden van '<span
                         className="emphasize">{` ${institutionTeamName} `}</span>' virtuele leden van
                     '<span className="emphasize">{` ${surfName}`}</span>'.</p>
@@ -104,8 +104,8 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
                     '<span className="emphasize">{surfName}</span>'.
                     '<span className="emphasize"> Joe</span>' daarentegen is <span className="strong">geen</span> lid
                     geworden van het Team '<span className="emphasize">{institutionTeamName}</span>',
-                    aangezien de virtuele lidmaatschappen maar één kan opgaan. Alleen leden van een instellingsteam
-                    kunnen op deze manier onderdeel worden van een {productName}; niet andersom.
+                    aangezien de virtuele lidmaatschappen maar één kant opgaan. Alleen leden van een instellingsteam
+                    kunnen op deze manier onderdeel worden van een {productName} Team; niet andersom.
                 </p>
 
             </section>;

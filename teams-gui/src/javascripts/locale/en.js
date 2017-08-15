@@ -338,7 +338,7 @@ I18n.translations.en = {
     },
     linked_institution_example: {
         title: "Institutional Teams explained",
-        institution_name: "UvH",
+        institution_name: "Univ Harderwijk",
         institution_team_name: "Teachers",
         surf_name: "Admins"
     },
