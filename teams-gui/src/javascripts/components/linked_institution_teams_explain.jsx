@@ -75,17 +75,17 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
                 <p>Given the following memberships:</p>
                 {this.memberships(institutionName, institutionTeamName, productName, surfName)}
                 <p>When the (institutional) Team '<span className="emphasize">{institutionTeamName}</span>' is linked to
-                    the ({productName}) Team <span
-                        className="emphasize">{surfName}</span> all members of '<span
-                        className="emphasize">{` ${institutionTeamName} `}</span>'
-                    will also become (indirect) members of '<span className="emphasize">{` ${surfName}`}</span>'.</p>
+                    the ({productName}) Team '<span
+                        className="emphasize">{surfName}</span>' all members of '<span
+                        className="emphasize">{`${institutionTeamName}`}</span>'
+                    will also become (indirect) members of '<span className="emphasize">{`${surfName}`}</span>'.</p>
 
-                <p>As a result, <span className="emphasize">Mary</span> is also an (indirect) member of the Team '<span
+                <p>As a result, '<span className="emphasize">Mary</span>' is also an (indirect) member of the Team '<span
                     className="emphasize">{surfName}</span>'.
-                    <span className="emphasize"> Joe</span> however did <span className="strong">not</span> become a
+                    '<span className="emphasize">Joe</span>' however did <span className="strong">not</span> become a
                     member of the
-                    Team '<span className="emphasize">{institutionTeamName}</span>' as the virtual membership is
-                    unidirectional. Only members from institutional Teams will be included in {productName};
+                    Team '<span className="emphasize">{institutionTeamName}</span>' as the virtual membership
+                    only goes one way. Only members from institutional Teams will be included in {productName};
                     not the other way around.
                 </p>
 
@@ -96,16 +96,16 @@ export default class LinkedInstitutionTeamsExplain extends React.PureComponent {
                 <p>Als het (instellings) Team '<span className="emphasize">{institutionTeamName}</span>'
                     wordt gekoppeld aan het ({productName}) Team
                     '<span className="emphasize">{surfName}</span>', dan worden alle leden van '<span
-                        className="emphasize">{` ${institutionTeamName} `}</span>' virtuele leden van
-                    '<span className="emphasize">{` ${surfName}`}</span>'.</p>
+                        className="emphasize">{`${institutionTeamName}`}</span>' virtuele leden van
+                    '<span className="emphasize">{`${surfName}`}</span>'.</p>
 
                 <p>Het resultaat is dus dat '<span className="emphasize">Mary</span>' ook (virtueel) lid wordt van het
                     Team
                     '<span className="emphasize">{surfName}</span>'.
-                    '<span className="emphasize"> Joe</span>' daarentegen is <span className="strong">geen</span> lid
+                    '<span className="emphasize">Joe</span>' daarentegen is <span className="strong">geen</span> lid
                     geworden van het Team '<span className="emphasize">{institutionTeamName}</span>',
                     aangezien de virtuele lidmaatschappen maar één kant opgaan. Alleen leden van een instellingsteam
-                    kunnen op deze manier onderdeel worden van een {productName} Team; niet andersom.
+                    kunnen op deze manier onderdeel worden van een {productName} team; niet andersom.
                 </p>
 
             </section>;
