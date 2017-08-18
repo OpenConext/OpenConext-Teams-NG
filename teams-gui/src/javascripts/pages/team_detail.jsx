@@ -596,6 +596,11 @@ export default class TeamDetail extends React.PureComponent {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
         const columns = ["name", "email", "status", "expiry_date", "role", "actions"];
+
+        if (!this.props.currentUser.featureToggles["EXPIRY_DATE_MEMBERSHIP"]) {
+            columns.splice(3,1);
+        }
+
         const th = index => (
             <th key={index} className={columns[index]}>
                 <span
@@ -615,9 +620,10 @@ export default class TeamDetail extends React.PureComponent {
                     <td data-label={I18n.t("team_detail.status")} className="status">
                         {this.statusOfMembership(member)}
                     </td>
+                    {this.props.currentUser.featureToggles["EXPIRY_DATE_MEMBERSHIP"] &&
                     <td data-label={I18n.t("team_detail.expiry_date")} className="expiry_date">
                         {member.expiryDate ? moment.unix(member.expiryDate).format("LLL") : ""}
-                    </td>
+                    </td>}
                     <td data-label={I18n.t("team_detail.role")} className="role">
                         {this.roleCell(member)}
                     </td>

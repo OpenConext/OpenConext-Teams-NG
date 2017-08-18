@@ -8,7 +8,7 @@ logging:
 #    org.hibernate.event: TRACE
 
 feature-toggles:
-  expiry-date-membership: true
+  expiry-date-membership: false
   person-email-picker: true
 
 security:

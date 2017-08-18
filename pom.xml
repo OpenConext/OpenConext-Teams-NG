@@ -4,7 +4,7 @@
 
     <groupId>org.openconext</groupId>
     <artifactId>teams</artifactId>
-    <version>7.0.4</version>
+    <version>7.0.5</version>
     <packaging>pom</packaging>
 
     <name>teams</name>
