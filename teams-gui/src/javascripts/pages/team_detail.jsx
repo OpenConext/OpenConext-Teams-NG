@@ -612,7 +612,8 @@ export default class TeamDetail extends React.PureComponent {
             return (
                 <tr key={`${index}`} className={member.person.id === currentUser.person.id ? "me" : ""}>
                     <td data-label={I18n.t("team_detail.name")} className="name">
-                        {member.person.name}
+                        <span className="person-name">{member.person.name}</span>
+                        <span className="person-urn">{member.person.urn}</span>
                     </td>
                     <td data-label={I18n.t("team_detail.email")} className="email">
                         <a href={`mailto:${member.person.email}`}>{member.person.email}</a>
