@@ -180,7 +180,7 @@ I18n.translations.en = {
         resubmit: "Resent",
         flash: "Your request to join {{name}} has been sent to the administrators",
         previous: "Pending join request",
-        previous_message: "You have alreadt sent a join request for this Team on {{date}}",
+        previous_message: "You have already sent a join request for this Team on {{date}}",
         share_info: "Share this information with the applications used by this Team.",
         approval_required: "You must approve that the information may be shared",
         message: "Message",
