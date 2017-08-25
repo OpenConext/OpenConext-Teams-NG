@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static org.springframework.util.StringUtils.hasText;
 
@@ -76,6 +74,20 @@ public class Person {
     @JsonIgnore
     public boolean isValid() {
         return hasText(urn) && hasText(name) && hasText(email);
+    }
+
+    public String invalidAttributes() {
+        List<String> invalidAttributes = new ArrayList<>();
+        if (!hasText(urn)) {
+            invalidAttributes.add("urn");
+        }
+        if (!hasText(name)) {
+            invalidAttributes.add("name");
+        }
+        if (!hasText(email)) {
+            invalidAttributes.add("email");
+        }
+        return String.join(",", invalidAttributes);
     }
 
     @Override

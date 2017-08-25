@@ -1,14 +1,26 @@
 .mod-not-found, .mod-server-error {
-    padding: 50px;
-    text-align: center;
-    margin: 50px 100px;
-    background-color: white;
-    box-shadow: 1px 4px 12px 1px $medium-grey;
-    border-radius: $br;
+  padding: 50px;
+  text-align: center;
+  margin: 50px 100px;
+  background-color: white;
+  box-shadow: 1px 4px 12px 1px $medium-grey;
+  border-radius: $br;
 
-    h1 {
-        font-size: 200%;
-        margin-bottom: 50px;
-    }
+  h1 {
+    font-size: 200%;
+    margin-bottom: 50px;
+    line-height: 32px;
+  }
 
+  h3 {
+      font-size: 125%;
+      margin-bottom: 25px;
+      line-height: 26px;
+      &.not-provided {
+        margin-bottom: 5px;
+      }
+  }
+  ul.missing_attributes {
+    list-style: circle;
+  }
 }

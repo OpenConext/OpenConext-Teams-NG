@@ -294,7 +294,7 @@ export default class TeamDetail extends React.PureComponent {
             searchedMembers = members;
         } else {
             searchedMembers = members.filter(member => member.person.name.toLowerCase().indexOf(input) > -1 ||
-            member.person.email.toLowerCase().indexOf(input) > -1);
+                member.person.email.toLowerCase().indexOf(input) > -1);
         }
         return searchedMembers;
     };
@@ -421,8 +421,10 @@ export default class TeamDetail extends React.PureComponent {
                 {isAdmin && <div className="team-attribute">
                     <label className="title info-after">{I18n.t("team_detail.public_link")}</label>
                     <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}
-                              info={I18n.t("team_detail.public_link_disabled")} onChange={this.changePublicLinkDisabled}/>
-                    {!team.publicLinkDisabled && <CopyToClipboard text={universalPublicLink} onCopy={this.copiedToClipboardPublicLink}>
+                              info={I18n.t("team_detail.public_link_disabled")}
+                              onChange={this.changePublicLinkDisabled}/>
+                    {!team.publicLinkDisabled &&
+                    <CopyToClipboard text={universalPublicLink} onCopy={this.copiedToClipboardPublicLink}>
                         <span className="attribute">{universalPublicLink}
                             <a data-for={universalPublicLink} data-tip>
                                 <i className={`fa fa-clone ${copiedToClipBoardPublicLinkClassName}`}></i>
@@ -598,7 +600,7 @@ export default class TeamDetail extends React.PureComponent {
         const columns = ["name", "email", "status", "expiry_date", "role", "actions"];
 
         if (!this.props.currentUser.featureToggles["EXPIRY_DATE_MEMBERSHIP"]) {
-            columns.splice(3,1);
+            columns.splice(3, 1);
         }
 
         const th = index => (
@@ -611,9 +613,13 @@ export default class TeamDetail extends React.PureComponent {
             const options = this.actionOptions(currentUser, member, team);
             return (
                 <tr key={`${index}`} className={member.person.id === currentUser.person.id ? "me" : ""}>
-                    <td data-label={I18n.t("team_detail.name")} className="name">
-                        <span className="person-name">{member.person.name}</span>
-                        <span className="person-urn">{member.person.urn}</span>
+                    <td data-label={I18n.t("team_detail.name")} className="name" data-for={member.person.urn} data-tip>
+                        <span className="person-name">
+                            {member.person.name}
+                        </span>
+                        <ReactTooltip id={member.person.urn} class="tool-tip" effect="solid">
+                            <span className="person-urn">{member.person.urn}</span>
+                        </ReactTooltip>
                     </td>
                     <td data-label={I18n.t("team_detail.email")} className="email">
                         <a href={`mailto:${member.person.email}`}>{member.person.email}</a>

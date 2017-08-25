@@ -10,7 +10,7 @@ import {render} from "react-dom";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import I18n from "i18n-js";
 import Cookies from "js-cookie";
-import {getUser} from "./api";
+import {getUser, reportError} from "./api";
 import {getParameterByName} from "./utils/query-parameters";
 import {isEmpty} from "./utils/utils";
 
@@ -28,12 +28,13 @@ import Invitation from "./pages/invitation";
 import PublicLink from "./pages/public_link";
 import NewTeam from "./pages/new_team";
 import Invite from "./pages/invite";
+import MissingAttributes from "./pages/missing_attributes";
 import ProtectedRoute from "./components/protected_route";
 import ErrorDialog from "./components/error_dialog";
-import {reportError} from "./api";
 
 import "./locale/en";
 import "./locale/nl";
+
 polyfill();
 
 const S4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
@@ -105,8 +106,10 @@ class App extends React.PureComponent {
         if (loading) {
             return null; // render null when app is not ready yet
         }
-
         const {currentUser} = this.state;
+        if (!currentUser.person.id) {
+            return <MissingAttributes currentUser={currentUser}/>;
+        }
         return (
             <Router>
                 <div>
@@ -168,4 +171,4 @@ class App extends React.PureComponent {
     moment.locale(I18n.locale);
 })();
 
-render(<App />, document.getElementById("app"));
+render(<App/>, document.getElementById("app"));

@@ -344,6 +344,7 @@ I18n.translations.en = {
     },
     profile: {
         email: "Email",
+        name: "Name",
         role: "Role",
         true: "{{productName}} guest",
         false: "{{productName}} member"
@@ -360,7 +361,10 @@ I18n.translations.en = {
 
     server_error: {
         title: "The Teams application is currently unavailable.",
-        description_html: "Please try again later or contact <a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>."
+        description_html: "Please try again later or contact <a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>.",
+        missing_attribute: "Your organization did not provide all required information in order for teams to function correctly.",
+        missing_attribute_description_html: "Please contact SURFnet for more information by sending a mail to <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>.",
+        missing_attribute_not_provided: "Not provided information:"
     },
 
     logout: {

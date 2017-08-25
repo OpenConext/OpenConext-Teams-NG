@@ -39,8 +39,11 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
         Person person = new Person(nameId, name, email, !nonGuestsMemberOf.equals(memberOf));
 
         LOG.info("Person {} is attempting authentication", person);
-        //this is the Spring security contract. Returning null results in AuthenticationException 403
-        return person.isValid() ? provision(person) : null;
+        if ( person.isValid()) {
+            return provision(person);
+        } else {
+            return person;
+        }
     }
 
     @Override

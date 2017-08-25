@@ -345,6 +345,7 @@ I18n.translations.nl = {
 
     profile: {
         email: "E-mailadres",
+        name: "Naam",
         role: "Rol",
         true: "{{productName}} gast",
         false: "{{productName}} lid"
@@ -361,7 +362,10 @@ I18n.translations.nl = {
 
     server_error: {
         title: "De Teams-applicatie is momenteel niet beschikbaar.",
-        description_html: "Probeer het later opnieuw of neem contact op met <a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>."
+        description_html: "Probeer het later opnieuw of neem contact op met <a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>.",
+        missing_attribute: "Je organisatie geeft onvoldoende informatie terug om teams te kunnen laten werken.",
+        missing_attribute_description_html: "Neem contact op met SURFnet voor meer informatie door een mail te sturen naar <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>.",
+        missing_attribute_not_provided: "Missende informatie:"
     },
 
     logout: {
