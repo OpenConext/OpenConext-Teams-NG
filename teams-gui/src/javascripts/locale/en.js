@@ -22,7 +22,7 @@ I18n.translations.en = {
     header: {
         title: "Teams",
         links: {
-            help_html: "<a href=\"https://wiki.surfnet.nl/pages/viewpage.action?pageId=35422637\" target=\"_blank\">Help</a>",
+            help_html: "<a href=\"https://wiki.surfnet.nl/x/rYEcAg\" target=\"_blank\">Help</a>",
             logout: "Logout",
             exit: "Exit"
         },
@@ -356,15 +356,15 @@ I18n.translations.en = {
 
     not_found: {
         title: "The requested page could not be found.",
-        description_html: "Please try again later or contact <a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>."
+        description_html: "Please try again later or send an email to <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>."
     },
 
     server_error: {
-        title: "The Teams application is currently unavailable.",
-        description_html: "Please try again later or contact <a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>.",
-        missing_attribute: "Your organization did not provide all required information in order for teams to function correctly.",
-        missing_attribute_description_html: "Please contact SURFnet for more information by sending a mail to <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>.",
-        missing_attribute_not_provided: "Not provided information:"
+        title: "SURFconext Teams is currently unavailable due to a technical problem.",
+        description_html: "Please try again later or send an email to <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>.",
+        missing_attribute: "You have successfully logged in, however, SURFconext Teams did not receive all the necessary attributes to function properly.",
+        missing_attribute_description_html: "Please visit the <a href=\"https://wiki.surfnet.nl/x/uIAtAw\">SURFconext help pages</a> to see what you can do about this.",
+        missing_attribute_not_provided: "Attribute(s) missing:"
     },
 
     logout: {
@@ -373,9 +373,9 @@ I18n.translations.en = {
     },
 
     footer: {
-        surfnet_html: "<a href=\"https://wiki.surfnet.nl/pages/viewpage.action?pageId=35422637\" target=\"_blank\">{{productName}}</a>",
+        surfnet_html: "<a href=\"https://wiki.surfnet.nl/x/rYEcAg\" target=\"_blank\">{{productName}}</a>",
         terms_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28EN%29\" target=\"_blank\">Terms of Service</a>",
-        contact_html: "<a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>"
+        contact_html: "<a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>"
     }
 
 };

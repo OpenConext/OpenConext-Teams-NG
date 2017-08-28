@@ -22,7 +22,7 @@ I18n.translations.nl = {
     header: {
         title: "Teams",
         links: {
-            help_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/SURFconext+Teams\" target=\"_blank\">Help</a>",
+            help_html: "<a href=\"https://wiki.surfnet.nl/x/aYIeAw\" target=\"_blank\">Help</a>",
             logout: "Logout",
             exit: "Exit"
         },
@@ -357,26 +357,26 @@ I18n.translations.nl = {
 
     not_found: {
         title: "Deze pagina kan niet worden gevonden.",
-        description_html: "Probeer het later opnieuw of neem contact op met <a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>."
+        description_html: "Probeer het later opnieuw of neem contact op met <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>."
     },
 
     server_error: {
-        title: "De Teams-applicatie is momenteel niet beschikbaar.",
-        description_html: "Probeer het later opnieuw of neem contact op met <a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>.",
-        missing_attribute: "Je organisatie geeft onvoldoende informatie terug om teams te kunnen laten werken.",
-        missing_attribute_description_html: "Neem contact op met SURFnet voor meer informatie door een mail te sturen naar <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>.",
-        missing_attribute_not_provided: "Missende informatie:"
+        title: "SURFconext Teams is momenteel niet beschikbaar wegens een technisch probleem.",
+        description_html: "Probeer het later opnieuw of neem contact op met <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>.",
+        missing_attribute: "Je bent succesvol ingelogd, maar helaas heeft SURFconext Teams tijdens het inloggen niet alle benodigde attributen ontvangen om correct te functioneren.",
+        missing_attribute_description_html: "Ga naar de <a href=\"https://support.surfconext.nl/\">SURFconext helppagina's</a> om te bekijken hoe je dit probleem kunt oplossen.",
+        missing_attribute_not_provided: "Ontbrekend attribuut:"
     },
 
     logout: {
-        title: "Logout succesvol.",
-        description_html: "Je <strong>moet</strong> je browser sluiten om het logoutproces te voltooien."
+        title: "Uitloggen succesvol.",
+        description_html: "Je <strong>moet</strong> je browser volledig afsluiten om het uitlogproces te voltooien."
     },
 
     footer: {
-        surfnet_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/SURFconext+Teams\" target=\"_blank\">{{productName}}</a>",
+        surfnet_html: "<a href=\"https://wiki.surfnet.nl/x/aYIeAw\" target=\"_blank\">{{productName}}</a>",
         terms_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29\" target=\"_blank\">Terms of Service</a>",
-        contact_html: "<a href=\"mailto:support@surfconext.nl\">support@surfconext.nl</a>"
+        contact_html: "<a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>"
     }
 
 };
