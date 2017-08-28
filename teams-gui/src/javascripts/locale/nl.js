@@ -361,10 +361,10 @@ I18n.translations.nl = {
     },
 
     server_error: {
-        title: "SURFconext Teams is momenteel niet beschikbaar wegens een technisch probleem.",
+        title: "{{productName}} is momenteel niet beschikbaar wegens een technisch probleem.",
         description_html: "Probeer het later opnieuw of neem contact op met <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>.",
-        missing_attribute: "Je bent succesvol ingelogd, maar helaas heeft SURFconext Teams tijdens het inloggen niet alle benodigde attributen ontvangen om correct te functioneren.",
-        missing_attribute_description_html: "Ga naar de <a href=\"https://support.surfconext.nl/\">SURFconext helppagina's</a> om te bekijken hoe je dit probleem kunt oplossen.",
+        missing_attribute: "Je bent succesvol ingelogd, maar helaas heeft {{productName}} tijdens het inloggen niet alle benodigde attributen ontvangen om correct te functioneren.",
+        missing_attribute_description_html: "Ga naar de <a href=\"https://support.surfconext.nl/\">{{productName}} helppagina's</a> om te bekijken hoe je dit probleem kunt oplossen.",
         missing_attribute_not_provided: "Ontbrekend attribuut:"
     },
 
