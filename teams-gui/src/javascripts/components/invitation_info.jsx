@@ -9,7 +9,7 @@ export default function InvitationInfo({invitation, locale = "en"}) {
                 `will expire in ${invitation.daysValid} days`} .</span>
         </div> :
         <div className="invitation_info">
-            <p className="info">je bent door {invitation.inviter} uitgenodigd om lid te worden van het
+            <p className="info">Je bent door {invitation.inviter} uitgenodigd om lid te worden van het
                 team {invitation.teamName}.</p>
             <p className="by-file">Deze uitnodiging verloopt over {invitation.daysValid} dagen.</p>
         </div>;
