@@ -4,6 +4,7 @@ import teams.domain.*;
 
 import java.time.Instant;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static teams.domain.Language.DUTCH;
@@ -41,7 +42,7 @@ public interface Seed {
 
     default FederatedUser federatedUser(String urn) {
         return new FederatedUser(person(urn), "urn:collab:group:demo.openconext.org:",
-                "OpenConext", Collections.emptyList(), Collections.emptyMap());
+                "OpenConext", Collections.emptyList(), Collections.emptyMap(), new HashMap<>());
     }
 
     default FederatedUser federatedUser() {

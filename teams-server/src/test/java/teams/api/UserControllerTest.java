@@ -10,6 +10,7 @@ import teams.domain.PersonAutocomplete;
 import teams.exception.IllegalSearchParamException;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
@@ -19,7 +20,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
-public class UserControllerTest extends AbstractApplicationTest implements Seed{
+public class UserControllerTest extends AbstractApplicationTest implements Seed {
 
     @Value("${teams.group-name-context}")
     private String groupNameContext;
@@ -62,7 +63,7 @@ public class UserControllerTest extends AbstractApplicationTest implements Seed{
     public void autoCompleteFeatureToggle() {
         UserController userController = new UserController();
         FederatedUser federatedUser = new FederatedUser(person("urn"), "urn:collab:group:demo.openconext.org:",
-                "OpenConext", Collections.emptyList(), Collections.singletonMap(Feature.PERSON_EMAIL_PICKER, false));
+                "OpenConext", Collections.emptyList(), Collections.singletonMap(Feature.PERSON_EMAIL_PICKER, false), new HashMap<>());
 
         Set<PersonAutocomplete> personAutocompletes = userController.autocomplete("john", federatedUser);
         assertEquals(0, personAutocompletes.size());

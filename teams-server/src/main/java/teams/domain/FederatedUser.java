@@ -13,6 +13,7 @@ import static java.util.Collections.singletonList;
 @Getter
 public class FederatedUser extends User {
 
+    private final Map<String, String> config;
     private String groupNameContext;
     private String productName;
     private Person person;
@@ -23,7 +24,8 @@ public class FederatedUser extends User {
                          String groupNameContext,
                          String productName,
                          List<ExternalTeam> externalTeams,
-                         Map<Feature, Boolean> featureToggles) {
+                         Map<Feature, Boolean> featureToggles,
+                         Map<String, String> config) {
         super(person.getName(), "N/A", person.isGuest() ?
                 singletonList(new SimpleGrantedAuthority("ROLE_USER")) :
                 asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")));
@@ -32,6 +34,7 @@ public class FederatedUser extends User {
         this.productName = productName;
         this.externalTeams = externalTeams;
         this.featureToggles = featureToggles;
+        this.config = config;
     }
 
     public String getUrn() {

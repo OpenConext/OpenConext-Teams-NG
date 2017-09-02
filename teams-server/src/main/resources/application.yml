@@ -11,6 +11,13 @@ feature-toggles:
   expiry-date-membership: false
   person-email-picker: true
 
+config:
+  support-email: help@surfconext.nl
+  help-link-en: https://wiki.surfnet.nl/pages/viewpage.action?pageId=35422637
+  help-link-nl: https://wiki.surfnet.nl/display/conextsupport/SURFconext+teams
+  help-tos-en: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28EN%29
+  help-tos-nl: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29
+
 security:
   user:
     name: user

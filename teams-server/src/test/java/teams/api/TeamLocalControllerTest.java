@@ -12,6 +12,7 @@ import teams.repository.TeamRepository;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -39,7 +40,7 @@ public class TeamLocalControllerTest implements Seed {
         List<TeamAutocomplete> teamAutocompletes = teamController.
                 teamSearch("test",
                         new FederatedUser(person(), "urn:collab:group:demo.openconext.org:",
-                                "OpenConext", Collections.emptyList(), Collections.emptyMap()));
+                                "OpenConext", Collections.emptyList(), Collections.emptyMap(), new HashMap<>()));
         assertEquals(seed.size(), teamAutocompletes.size());
 
         IntStream.range(0, seed.size())

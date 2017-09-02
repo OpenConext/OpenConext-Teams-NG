@@ -11,6 +11,7 @@ import teams.domain.Team;
 import teams.exception.IllegalLinkExternalTeamException;
 
 import java.util.Collections;
+import java.util.HashMap;
 
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertNotNull;
@@ -66,7 +67,7 @@ public class ExternalTeamValidatorTest implements Seed {
     @Test
     public void externalTeamFromFederatedUser() throws Exception {
         FederatedUser federatedUser = new FederatedUser(person("urn"), "nope", "OC",
-                singletonList(externalTeam("identifier")), Collections.emptyMap());
+                singletonList(externalTeam("identifier")), Collections.emptyMap(), new HashMap<>());
         ExternalTeam externalTeam = subject.externalTeamFromFederatedUser(federatedUser, "identifier");
         assertNotNull(externalTeam);
     }
@@ -74,7 +75,7 @@ public class ExternalTeamValidatorTest implements Seed {
     @Test(expected = IllegalLinkExternalTeamException.class)
     public void externalTeamFromFederatedUserNotMember() throws Exception {
         FederatedUser federatedUser = new FederatedUser(person("urn"), "nope", "OC",
-                singletonList(externalTeam("nope")), Collections.emptyMap());
+                singletonList(externalTeam("nope")), Collections.emptyMap(), new HashMap<>());
         ExternalTeam externalTeam = subject.externalTeamFromFederatedUser(federatedUser, "identifier");
         assertNotNull(externalTeam);
     }

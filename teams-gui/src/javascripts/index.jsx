@@ -145,7 +145,7 @@ class App extends React.PureComponent {
 
                         <Route component={NotFound}/>
                     </Switch>
-                    <Footer currentUser={currentUser}/>
+                    {currentUser.config && <Footer currentUser={currentUser} isEn={I18n.locale === "en"}/>}
                 </div>
             </Router>
         );

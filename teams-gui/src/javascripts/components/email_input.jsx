@@ -39,7 +39,12 @@ export default class EmailInput extends React.PureComponent {
     };
 
     persistEmailIfValid = email => {
-        if (!isEmpty(email) && validEmailRegExp.test(email.trim())) {
+        const delimiters = [",", " ", ";"];
+        if (!isEmpty(email) && delimiters.some(delimiter => email.indexOf(delimiter) > -1)) {
+            const emails = email.replace(/[;\s]/g, ",").split(",").filter(part => part.trim().length > 0 && validEmailRegExp.test(part));
+            const uniqueEmails = [...new Set(emails)];
+            this.multipleEmailsEntered(uniqueEmails);
+        } else if (!isEmpty(email) && validEmailRegExp.test(email.trim())) {
             this.personSelected({email: email});
         } else {
             this.setState({suggestions: [], selectedPerson: -1, initial: isEmpty(email)});
@@ -70,13 +75,25 @@ export default class EmailInput extends React.PureComponent {
 
     };
 
+    multipleEmailsEntered = multipleEmails => {
+        const {emails, onChangeEmails} = this.props;
+        this.setState({
+            email: "", suggestions: [], selectedPerson: -1,
+            initial: false, eventFromSelectedPerson: true
+        });
+        const newMails = [...emails].concat(multipleEmails);
+        onChangeEmails(newMails);
+    };
+
     personSelected = personAutocomplete => {
         const {emails, onChangeEmails, multipleEmails} = this.props;
         const email = personAutocomplete.email;
 
         const newEmail = emails.indexOf(email) < 0;
-        this.setState({email: multipleEmails ? "" : email, suggestions: [], selectedPerson: -1,
-            initial: !newEmail, eventFromSelectedPerson: true});
+        this.setState({
+            email: multipleEmails ? "" : email, suggestions: [], selectedPerson: -1,
+            initial: !newEmail, eventFromSelectedPerson: true
+        });
         if (newEmail) {
             onChangeEmails([...emails, email]);
         }
@@ -146,7 +163,7 @@ export default class EmailInput extends React.PureComponent {
                            onBlur={this.validateEmail}
                            value={email}
                            onKeyDown={this.onAutocompleteKeyDown}
-                           />
+                    />
                     {initial && <i className="fa fa-search"></i>}
                     {showAutoCompletes && <PersonAutocomplete suggestions={suggestions}
                                                               query={email}
@@ -166,7 +183,7 @@ export default class EmailInput extends React.PureComponent {
                             <span>{mail}</span>
                             {disabled ?
                                 <span className="disabled"><i className="fa fa-envelope"></i></span> :
-                                <span onClick={this.removeMail(mail)}><i className="fa fa-remove"></i></span> }
+                                <span onClick={this.removeMail(mail)}><i className="fa fa-remove"></i></span>}
                         </div>)}
                 </section>}
             </section>

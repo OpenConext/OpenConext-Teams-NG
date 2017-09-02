@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -67,7 +68,7 @@ public class InvitationValidatorTest implements Seed {
         invitation.addInvitationMessage(person("urn"), "Please join");
         subject.mustBeTeamAdminOrManager(invitation,
                 new FederatedUser(person("urn"), "urn:collab:group:demo.openconext.org:",
-                        "OpenConext", Collections.emptyList(), Collections.emptyMap()));
+                        "OpenConext", Collections.emptyList(), Collections.emptyMap(), new HashMap<>()));
     }
 
     @Test(expected = NotAllowedException.class)
@@ -75,7 +76,7 @@ public class InvitationValidatorTest implements Seed {
         Invitation invitation = invitation(false, false);
         FederatedUser federatedUser =
                 new FederatedUser(person("urn"), "urn:collab:group:demo.openconext.org:",
-                        "OpenConext",Collections.emptyList(), Collections.emptyMap());
+                        "OpenConext",Collections.emptyList(), Collections.emptyMap(), new HashMap<>());
         membership(Role.MEMBER, invitation.getTeam(), federatedUser.getPerson());
         invitation.addInvitationMessage(person("urn"), "Please join");
 

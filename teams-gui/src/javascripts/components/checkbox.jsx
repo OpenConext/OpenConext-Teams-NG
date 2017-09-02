@@ -9,7 +9,7 @@ export default function CheckBox({name, value, readOnly = false, onChange, info 
             <label htmlFor={name}>
                 <span><i className="fa fa-check"></i></span>
             </label>
-            {info && <em>{info}</em>}
+            {info && <label htmlFor={name}><em>{info}</em></label>}
         </div>
     );
 

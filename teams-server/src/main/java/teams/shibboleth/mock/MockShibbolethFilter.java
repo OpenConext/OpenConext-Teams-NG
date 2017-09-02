@@ -28,7 +28,7 @@ public class MockShibbolethFilter extends GenericFilterBean {
         wrapper.setHeader("name-id", nameId == null ? "urn:collab:person:example.com:john.doe" : nameId);
 
         wrapper.setHeader("displayName", "John Doe");
-        wrapper.setHeader("Shib-InetOrgPerson-mail", "john.doe@example.org");
+        wrapper.setHeader("Shib-InetOrgPerson-mail", "john.doe@example.org ; test@example.com");
 
         String isMemberOf = request.getHeader("is-member-of");
         wrapper.setHeader("is-member-of", isMemberOf == null ? "urn:collab:org:surf.nl" : isMemberOf);

@@ -4,6 +4,7 @@ package teams.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -51,8 +52,15 @@ public class Person {
     public Person(String urn, String name, String email, boolean isGuest) {
         this.urn = urn;
         this.name = name;
-        this.email = email;
+        this.email = pickFirstMailEmail(email);
         this.guest = isGuest;
+    }
+
+    private String pickFirstMailEmail(String aMail) {
+        if (StringUtils.hasText(aMail) && aMail.contains(";")) {
+            return aMail.split(";")[0].trim();
+        }
+        return aMail;
     }
 
     public void setName(String name) {
@@ -60,7 +68,7 @@ public class Person {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = pickFirstMailEmail(email);
     }
 
     public void setGuest(boolean guest) {

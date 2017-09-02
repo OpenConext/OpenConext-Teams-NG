@@ -56,18 +56,19 @@ export default class Header extends React.PureComponent {
 
     render() {
         const currentUser = this.props.currentUser;
+        const validCurrentUser = currentUser.person.id && currentUser.person.email && currentUser.person.name && currentUser.productName;
         return (
             <div className="header-container">
                 <div className="header">
                     <Link to="/" className="logo"><img src={logo}/></Link>
                     <ul className="links">
                         <li className="title"><span>Teams</span></li>
-                        <li className="profile"
+                        {validCurrentUser && <li className="profile"
                             tabIndex="1" onBlur={() => this.setState({dropDownActive: false})}>
                             {this.renderProfileLink(currentUser)}
                             {this.renderDropDown(currentUser)}
-                        </li>
-                        <li dangerouslySetInnerHTML={{__html: I18n.t("header.links.help_html")}}></li>
+                        </li>}
+                        {currentUser.config && <li><a href={I18n.locale === "en" ? currentUser.config.helpLinkEn : currentUser.config.helpLinkNl} target="_blank">Help</a></li>}
                         {this.renderExitLogout()}
                         <li>
                             <LanguageSelector />

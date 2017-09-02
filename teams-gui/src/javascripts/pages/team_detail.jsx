@@ -617,9 +617,9 @@ export default class TeamDetail extends React.PureComponent {
                         <span className="person-name">
                             {member.person.name}
                         </span>
-                        <ReactTooltip id={member.person.urn} class="tool-tip" effect="solid">
+                        {!isEmpty(member.person.name) && <ReactTooltip id={member.person.urn} class="tool-tip" effect="solid">
                             <span className="person-urn">{member.person.urn}</span>
-                        </ReactTooltip>
+                        </ReactTooltip>}
                     </td>
                     <td data-label={I18n.t("team_detail.email")} className="email">
                         <a href={`mailto:${member.person.email}`}>{member.person.email}</a>

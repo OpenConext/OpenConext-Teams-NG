@@ -89,6 +89,20 @@ public class SecurityConfig {
         @Value("${feature-toggles.person-email-picker}")
         private boolean personEmailPicker;
 
+        @Value("${config.support-email}")
+        private String supportEmail;
+
+        @Value("${config.help-link-en}")
+        private String helpLinkEn;
+
+        @Value("${config.help-link-nl}")
+        private String helpLinkNl;
+
+        @Value("${config.help-tos-en}")
+        private String helpTosEn;
+
+        @Value("${config.help-tos-nl}")
+        private String helpTosNl;
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -98,8 +112,19 @@ public class SecurityConfig {
                             groupNameContext,
                             productName,
                             vootClient,
-                            featureToggles()));
+                            featureToggles(),
+                            config()));
             auth.authenticationProvider(authenticationProvider);
+        }
+
+        private Map<String, String> config() {
+            Map<String, String> config = new HashMap<>();
+            config.put("supportEmail", supportEmail);
+            config.put("helpLinkEn", helpLinkEn);
+            config.put("helpLinkNl", helpLinkNl);
+            config.put("helpTosEn", helpTosEn);
+            config.put("helpTosNl", helpTosNl);
+            return config;
         }
 
         private Map<Feature, Boolean> featureToggles() {

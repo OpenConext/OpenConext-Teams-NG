@@ -64,14 +64,19 @@ export default class Invitation extends React.PureComponent {
     submit = whatToDo => e => {
         stop(e);
         const {key, action} = this.props.match.params;
-        if (whatToDo === "accept" && this.isValid()) {
-            acceptInvitation(key)
-                .then(() => {
-                    this.setState({confirmationDialogOpen: false});
-                    goto(`/teams/${this.state.invitation.teamId}`, this.props);
-                    setFlash(I18n.t("invitation.flash.accept", {name: this.state.invitation.teamName}));
+        const valid = this.isValid();
+        if (whatToDo === "accept") {
+            if (valid) {
+                acceptInvitation(key)
+                    .then(() => {
+                        this.setState({confirmationDialogOpen: false});
+                        goto(`/teams/${this.state.invitation.teamId}`, this.props);
+                        setFlash(I18n.t("invitation.flash.accept", {name: this.state.invitation.teamName}));
 
-                });
+                    });
+            } else {
+                // do nothing
+            }
         } else {
             const promise = () => {
                 denyInvitation(key)

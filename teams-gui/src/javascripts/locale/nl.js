@@ -22,7 +22,6 @@ I18n.translations.nl = {
     header: {
         title: "Teams",
         links: {
-            help_html: "<a href=\"https://wiki.surfnet.nl/x/aYIeAw\" target=\"_blank\">Help</a>",
             logout: "Logout",
             exit: "Exit"
         },
@@ -374,9 +373,7 @@ I18n.translations.nl = {
     },
 
     footer: {
-        surfnet_html: "<a href=\"https://wiki.surfnet.nl/x/aYIeAw\" target=\"_blank\">{{productName}}</a>",
-        terms_html: "<a href=\"https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29\" target=\"_blank\">Terms of Service</a>",
-        contact_html: "<a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>"
+        terms: "Algemene voorwaarden"
     }
 
 };
