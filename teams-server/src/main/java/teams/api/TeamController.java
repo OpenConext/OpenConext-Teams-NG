@@ -122,7 +122,7 @@ public class TeamController extends ApiController implements TeamValidator {
                     teamProperties.getLanguage(),
                     null);
             invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
-            Invitation saved = saveAndSendInvitation(Collections.singletonList(invitation), team, person).get(0);
+            Invitation saved = saveAndSendInvitation(Collections.singletonList(invitation), team, person, federatedUser).get(0);
             savedTeam.getInvitations().add(saved);
         }
 

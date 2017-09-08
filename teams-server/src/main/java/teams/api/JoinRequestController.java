@@ -41,7 +41,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
 
         joinRequestRepository.delete(existingJoinRequestForTheSameTeam);
 
-        mailBox.sendJoinRequestMail(joinRequest, admins);
+        mailBox.sendJoinRequestMail(joinRequest, admins, federatedUser);
 
         log.info("Created joinRequest for team {} and person {}", team.getUrn(), person.getUrn());
 
@@ -60,7 +60,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
         Membership newMembership = new Membership(Role.MEMBER, team, person);
         membershipRepository.save(newMembership);
 
-        mailBox.sendJoinRequestAccepted(joinRequest);
+        mailBox.sendJoinRequestAccepted(joinRequest, federatedUser);
         joinRequestRepository.delete(joinRequest);
 
         log.info("Approved joinRequest for team {} and person {} by {}",
@@ -73,7 +73,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
     public void reject(@PathVariable("id") Long id, FederatedUser federatedUser) throws MessagingException, IOException {
         JoinRequest joinRequest = notNullGetJoinRequestValidateMembership(id, federatedUser);
 
-        mailBox.sendJoinRequestRejected(joinRequest);
+        mailBox.sendJoinRequestRejected(joinRequest, federatedUser);
         joinRequestRepository.delete(joinRequest);
 
         log.info("Rejected joinRequest for team {} and person {} by {}",

@@ -12,7 +12,7 @@ import java.io.IOException;
 public class MockMailBox extends MailBox {
 
     public MockMailBox(JavaMailSender mailSender, String emailFrom, String baseUrl, String productName) {
-        super(mailSender, emailFrom, baseUrl, productName, true);
+        super(mailSender, emailFrom, baseUrl, productName);
     }
 
     @Override

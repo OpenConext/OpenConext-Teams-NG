@@ -355,14 +355,14 @@ I18n.translations.en = {
 
     not_found: {
         title: "The requested page could not be found.",
-        description_html: "Please try again later or send an email to <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>."
+        description_html: "Please try again later or send an email to <a href=\"mailto:{{helpMail}}\">{{helpMail}}</a>."
     },
 
     server_error: {
         title: "{{productName}} is currently unavailable due to a technical problem.",
-        description_html: "Please try again later or send an email to <a href=\"mailto:help@surfconext.nl\">help@surfconext.nl</a>.",
+        description_html: "Please try again later or send an email to <a href=\"mailto:{{helpMail}}\">{{helpMail}}</a>.",
         missing_attribute: "You have successfully logged in, however, {{productName}} did not receive all the necessary attributes to function properly.",
-        missing_attribute_description_html: "Please visit the <a href=\"https://wiki.surfnet.nl/x/uIAtAw\">{{productName}} help pages</a> to see what you can do about this.",
+        missing_attribute_description_html: "Please visit the <a href=\"{{helpUrl}}\">{{productName}} help pages</a> to see what you can do about this.",
         missing_attribute_not_provided: "Attribute(s) missing:"
     },
 

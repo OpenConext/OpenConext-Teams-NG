@@ -3,10 +3,7 @@ package teams.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import teams.domain.Invitation;
-import teams.domain.Membership;
-import teams.domain.Person;
-import teams.domain.Team;
+import teams.domain.*;
 import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
 import teams.mail.MailBox;
@@ -61,14 +58,14 @@ public abstract class ApiController {
         }
     }
 
-    protected List<Invitation> saveAndSendInvitation(List<Invitation> invitations, Team team, Person person) throws IOException, MessagingException {
+    protected List<Invitation> saveAndSendInvitation(List<Invitation> invitations, Team team, Person person, FederatedUser federatedUser) throws IOException, MessagingException {
         Iterable<Invitation> saved = invitationRepository.save(invitations);
 
         log.info("Created invitation for team {} and person {}", team.getUrn(), person.getUrn());
 
         saved.forEach(invitation -> {
             try {
-                mailBox.sendInviteMail(invitation);
+                mailBox.sendInviteMail(invitation, federatedUser);
             } catch (MessagingException | IOException e) {
                 throw new IllegalArgumentException(e);
             }

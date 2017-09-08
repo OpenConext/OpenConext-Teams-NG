@@ -47,7 +47,7 @@ public class MailBoxTest extends AbstractApplicationTest {
         Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.DUTCH, null);
         invitation.addInvitationMessage(person, "Please join");
 
-        mailBox.sendInviteMail(invitation);
+        mailBox.sendInviteMail(invitation, federatedUser());
 
         String body = mailBody();
         assertTrue(body.contains("Uitnodiging voor Champions"));
@@ -58,7 +58,7 @@ public class MailBoxTest extends AbstractApplicationTest {
     @Test
     public void sendJoinRequestMail() throws Exception {
         JoinRequest joinRequest = joinRequest();
-        mailBox.sendJoinRequestMail(joinRequest, singletonList(EMAIL));
+        mailBox.sendJoinRequestMail(joinRequest, singletonList(EMAIL), federatedUser());
 
         String body = mailBody();
         assertTrue(body.contains(String.format("\"%s\"", joinRequest.getTeam().getHtmlDescription())));
@@ -69,13 +69,13 @@ public class MailBoxTest extends AbstractApplicationTest {
 
     @Test
     public void sendJoinRequestAcceptedMail() throws Exception {
-        mailBox.sendJoinRequestAccepted(joinRequest());
+        mailBox.sendJoinRequestAccepted(joinRequest(), federatedUser());
         validateJoinRequestStatusMail("accepted");
     }
 
     @Test
     public void sendJoinRequestDeclinedMail() throws Exception {
-        mailBox.sendJoinRequestRejected(joinRequest());
+        mailBox.sendJoinRequestRejected(joinRequest(), federatedUser());
         validateJoinRequestStatusMail("declined");
     }
 

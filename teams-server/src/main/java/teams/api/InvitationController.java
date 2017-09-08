@@ -50,7 +50,7 @@ public class InvitationController extends ApiController implements MembershipVal
                 clientInvitation.getExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
                 .collect(toList());
 
-        return saveAndSendInvitation(invitations, team, person);
+        return saveAndSendInvitation(invitations, team, person, federatedUser);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -82,7 +82,7 @@ public class InvitationController extends ApiController implements MembershipVal
 
         invitationRepository.save(invitation);
 
-        mailBox.sendInviteMail(invitation);
+        mailBox.sendInviteMail(invitation, federatedUser);
 
         log.info("Resend invitation for team {} and person {}",
                 invitation.getTeam().getUrn(), federatedUser.getUrn());

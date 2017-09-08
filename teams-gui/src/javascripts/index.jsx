@@ -135,7 +135,7 @@ class App extends React.PureComponent {
                         <Route path="/public/:key"
                                render={props => <PublicLink {...props}/>}/>
                         <Route path="/error"
-                               render={props => <ServerError {...props}/>}/>
+                               render={props => <ServerError currentUser={currentUser} {...props}/>}/>
                         <ProtectedRoute path="/new-team"
                                         guest={currentUser.person.guest}
                                         render={props => <NewTeam currentUser={currentUser} {...props}/>}/>
@@ -143,7 +143,7 @@ class App extends React.PureComponent {
                                         guest={currentUser.person.guest}
                                         render={props => <Invite currentUser={currentUser} {...props}/>}/>
 
-                        <Route component={NotFound}/>
+                        <Route render={() => <NotFound currentUser={currentUser}/> }/>
                     </Switch>
                     {currentUser.config && <Footer currentUser={currentUser} isEn={I18n.locale === "en"}/>}
                 </div>

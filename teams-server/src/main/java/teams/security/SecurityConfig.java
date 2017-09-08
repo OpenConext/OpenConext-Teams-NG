@@ -98,11 +98,20 @@ public class SecurityConfig {
         @Value("${config.help-link-nl}")
         private String helpLinkNl;
 
+        @Value("${config.main-link}")
+        private String mainLink;
+
         @Value("${config.help-tos-en}")
         private String helpTosEn;
 
         @Value("${config.help-tos-nl}")
         private String helpTosNl;
+
+        @Value("${config.organization}")
+        private String organization;
+
+        @Value("${config.sponsor}")
+        private String sponsor;
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -124,6 +133,9 @@ public class SecurityConfig {
             config.put("helpLinkNl", helpLinkNl);
             config.put("helpTosEn", helpTosEn);
             config.put("helpTosNl", helpTosNl);
+            config.put("mainLink", mainLink);
+            config.put("organization", organization);
+            config.put("sponsor", sponsor);
             return config;
         }
 

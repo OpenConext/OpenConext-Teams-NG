@@ -17,6 +17,9 @@ config:
   help-link-nl: https://wiki.surfnet.nl/display/conextsupport/SURFconext+teams
   help-tos-en: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28EN%29
   help-tos-nl: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29
+  main-link: https://www.surfconext.nl
+  organization: SURFconext
+  sponsor: SURFnet
 
 security:
   user:
@@ -33,7 +36,6 @@ teams:
   group-name-context: "urn:collab:group:demo.openconext.org:"
   product-name: "OpenConext Teams"
   non-guest-member-of: "urn:collab:org:surf.nl"
-  openconext-mails: true
 
 voot:
   serviceUrl: "https://voot.vm.openconext.org"
