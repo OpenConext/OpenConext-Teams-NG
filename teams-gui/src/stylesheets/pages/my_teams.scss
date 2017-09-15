@@ -82,13 +82,13 @@
     }
     thead {
       th.name {
-        width: 30%;
+        width: 20%;
       }
       th.description {
-        width: 30%;
+        width: 35%;
       }
       th.role {
-        width: 15%;
+        width: 20%;
       }
       th.membershipCount {
         text-align: right;
@@ -97,6 +97,26 @@
       th.actions {
         text-align: right;
         width: 5%;
+      }
+
+      @include desktop {
+        th.name {
+          width: 25%;
+        }
+        th.description {
+          width: 40%;
+        }
+        th.role {
+          width: 15%;
+        }
+        th.membershipCount {
+          text-align: right;
+          width: 15%;
+        }
+        th.actions {
+          text-align: right;
+          width: 5%;
+        }
       }
       span {
         position: relative;
@@ -127,7 +147,8 @@
         i.fa-info-circle {
           @include info-icon;
         }
-        word-break: keep-all;
+        word-break: break-word;
+        word-wrap: break-word;
 
         div.tool-tip {
           @include tool-tip;
