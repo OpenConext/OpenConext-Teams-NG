@@ -133,13 +133,19 @@ public class InvitationValidatorTest implements Seed {
     @Test
     public void emailsEmails() throws Exception {
         List<String> emails = subject.emails(clientInvitation(Collections.singletonList("test@org"), null));
-        assertEquals(emails.size(), 1);
+        assertEquals(1, emails.size());
     }
 
     @Test
     public void emailsFile() throws Exception {
         List<String> emails = subject.emails(clientInvitation(new ArrayList<>(), "test@org , test2@org"));
-        assertEquals(emails.size(), 2);
+        assertEquals(2, emails.size());
+    }
+
+    @Test
+    public void emailsFileWithLineFeed() throws Exception {
+        List<String> emails = subject.emails(clientInvitation(new ArrayList<>(), "a@a\n\rb@b\rc@c\nd@d"));
+        assertEquals(4, emails.size());
     }
 
     private void doDetermineFutureRole(Role role, Role intendedRole) {

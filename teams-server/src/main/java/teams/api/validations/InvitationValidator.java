@@ -80,7 +80,7 @@ public interface InvitationValidator {
     default List<String> emails(ClientInvitation clientInvitation) throws IOException {
         validateClientInvitation(clientInvitation);
         List<String> fromFile = StringUtils.hasText(clientInvitation.getCsvEmails()) ?
-                Stream.of(clientInvitation.getCsvEmails().split(","))
+                Stream.of(clientInvitation.getCsvEmails().split("[,\\n\\r]"))
                         .map(email -> email.trim().replaceAll("[\\t\\n\\r]", ""))
                         .filter(email -> Invitation.emailPattern.matcher(email).matches())
                         .collect(toList()) : Collections.emptyList();
