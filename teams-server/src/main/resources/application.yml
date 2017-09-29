@@ -55,9 +55,10 @@ spring:
     url: jdbc:mysql://localhost/teams_ng?autoReconnect=true&useSSL=false
     username: root
     password:
-    dbcp2:
-      test-while-idle: true
+    tomcat:
+      test-on-borrow: true
       validation-query: SELECT 1
+      remove-abandoned: true
   mail:
     host: localhost
     port: 3025
