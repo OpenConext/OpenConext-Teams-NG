@@ -76,7 +76,7 @@ public class InvitationValidatorTest implements Seed {
         Invitation invitation = invitation(false, false);
         FederatedUser federatedUser =
                 new FederatedUser(person("urn"), "urn:collab:group:demo.openconext.org:",
-                        "OpenConext",Collections.emptyList(), Collections.emptyMap(), new HashMap<>());
+                        "OpenConext", Collections.emptyList(), Collections.emptyMap(), new HashMap<>());
         membership(Role.MEMBER, invitation.getTeam(), federatedUser.getPerson());
         invitation.addInvitationMessage(person("urn"), "Please join");
 

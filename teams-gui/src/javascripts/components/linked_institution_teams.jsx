@@ -209,7 +209,7 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
                     <section className="options-institution-teams">
                         <section className="search-institution-teams">
                             <div className="help" onClick={() => this.setState({showExplanation: true})}>
-                                <i className="fa fa-graduation-cap"></i>
+                                <i className="fa fa-question-circle"></i>
                                 <span>{I18n.t("institution_teams.help")}</span>
                             </div>
                             <SortDropDown items={sortAttributes} sortBy={this.sort}/>

@@ -56,7 +56,6 @@ export default class TeamDetail extends React.PureComponent {
                 {name: "name", order: "down", current: false},
                 {name: "email", order: "down", current: false},
                 {name: "status", order: "down", current: true},
-                {name: "expiryDate", order: "down", current: false},
                 {name: "role", order: "down", current: false}
             ],
             filterAttributes: [
