@@ -156,7 +156,8 @@ export default class MyTeams extends React.PureComponent {
     delayedAutocomplete = debounce(() =>
         autoCompleteTeam(this.state.query).then(results => this.setState({
             suggestions: results,
-            loadingAutoComplete: false})), 200);
+            loadingAutoComplete: false
+        })), 200);
 
     sort = item => {
         const {filteredTeams, sortAttributes} = this.state;
@@ -179,11 +180,10 @@ export default class MyTeams extends React.PureComponent {
             const aSafe = a[name] || 0;
             const bSafe = b[name] || 0;
             return (aSafe < bSafe ? -1 : aSafe === bSafe ? 0 : 1) * (reverse ? -1 : 1);
-        } else {
-            const aSafe = a[name] || "";
-            const bSafe = b[name] || "";
-            return aSafe.toString().localeCompare(bSafe.toString()) * (reverse ? -1 : 1);
         }
+        const aSafe = a[name] || "";
+        const bSafe = b[name] || "";
+        return aSafe.toString().localeCompare(bSafe.toString()) * (reverse ? -1 : 1);
     };
 
     currentSortedAttribute = () => this.state.sortAttributes.filter(attr => attr.current)[0];
