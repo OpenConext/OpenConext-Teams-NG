@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>teams-gui</artifactId>
+    <version>7.0.12</version>
     <packaging>pom</packaging>
 
     <name>teams-gui</name>

@@ -80,10 +80,18 @@ export default class TeamDetail extends React.PureComponent {
 
     componentWillMount = () => this.refreshTeamState(this.props.match.params.id);
 
-    refreshTeamState = (teamId, callback = () => 1, displayOneAdminWarning = true) => getTeamDetail(teamId).then(team => {
-        this.stateTeam(team, displayOneAdminWarning);
-        callback();
-    });
+    refreshTeamState = (teamId, callback = () => 1, displayOneAdminWarning = true) => getTeamDetail(teamId, false)
+        .then(team => {
+            this.stateTeam(team, displayOneAdminWarning);
+            callback();
+        })
+        .catch(err => {
+            if (err.response.status === 404) {
+                this.props.history.push("/404");
+            } else {
+                throw err;
+            }
+        });
 
     stateTeam(team, displayOneAdminWarning) {
         //url guessing

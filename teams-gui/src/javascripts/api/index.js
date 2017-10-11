@@ -80,8 +80,8 @@ export function getMyTeams() {
     return fetchJson("my-teams");
 }
 
-export function getTeamDetail(id) {
-    return fetchJson("teams/" + id);
+export function getTeamDetail(id, showErrorDialog = true) {
+    return fetchJson("teams/" + id, {}, {}, showErrorDialog);
 }
 
 export function getUser() {
