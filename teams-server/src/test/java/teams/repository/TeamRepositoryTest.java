@@ -84,7 +84,6 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
         Long idByUrn = teamRepository.findIdByUrn("demo:openconext:org:wolves").get();
         assertEquals(5L, idByUrn.longValue());
 
-
         Optional<Long> nope = teamRepository.findIdByUrn("nope");
         assertFalse(nope.isPresent());
     }
