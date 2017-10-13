@@ -84,6 +84,10 @@ export function getTeamDetail(id, showErrorDialog = true) {
     return fetchJson("teams/" + id, {}, {}, showErrorDialog);
 }
 
+export function teamIdFromUrn(urn) {
+    return fetchJson(`teamIdFromUrn/${urn}`, {}, {}, false);
+}
+
 export function getUser() {
     return fetchJson("users/me", {}, {}, false);
 }

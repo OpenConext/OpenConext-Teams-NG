@@ -17,7 +17,8 @@ import {
     leaveTeam,
     linkExternalTeam,
     rejectJoinRequest,
-    saveTeam
+    saveTeam,
+    teamIdFromUrn
 } from "../api";
 import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
@@ -78,20 +79,35 @@ export default class TeamDetail extends React.PureComponent {
         };
     }
 
-    componentWillMount = () => this.refreshTeamState(this.props.match.params.id);
+    handleNotFound = err => {
+        if (err.response.status === 404) {
+            this.props.history.push("/404");
+        } else {
+            throw err;
+        }
+    };
+
+    componentWillMount = () => {
+        const params = this.props.match.params;
+        if (params.id) {
+            this.refreshTeamState(params.id);
+        } else if (params.name) {
+            teamIdFromUrn(params.name)
+                .then(id => this.refreshTeamState(id))
+                .catch(this.handleNotFound);
+        } else {
+            this.props.history.push("/404");
+        }
+
+    };
+
 
     refreshTeamState = (teamId, callback = () => 1, displayOneAdminWarning = true) => getTeamDetail(teamId, false)
         .then(team => {
             this.stateTeam(team, displayOneAdminWarning);
             callback();
         })
-        .catch(err => {
-            if (err.response.status === 404) {
-                this.props.history.push("/404");
-            } else {
-                throw err;
-            }
-        });
+        .catch(this.handleNotFound);
 
     stateTeam(team, displayOneAdminWarning) {
         //url guessing
@@ -624,7 +640,8 @@ export default class TeamDetail extends React.PureComponent {
                         <span className="person-name">
                             {member.person.name}
                         </span>
-                        {!isEmpty(member.person.name) && <ReactTooltip id={member.person.urn} class="tool-tip" effect="solid">
+                        {!isEmpty(member.person.name) &&
+                        <ReactTooltip id={member.person.urn} class="tool-tip" effect="solid">
                             <span className="person-urn">{member.person.urn}</span>
                         </ReactTooltip>}
                     </td>

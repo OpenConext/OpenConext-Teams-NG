@@ -3,6 +3,7 @@ package teams.repository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import teams.domain.Team;
 
@@ -40,4 +41,8 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
     @EntityGraph(value = "findFirstById", type = EntityGraph.EntityGraphType.LOAD,
             attributePaths = {"memberships.person"})
     Team findFirstById(Long id);
+
+    @Query(value = "select t.id from teams.domain.Team t where t.urn = :urn")
+    Optional<Long> findIdByUrn(@Param("urn") String urn);
+
 }

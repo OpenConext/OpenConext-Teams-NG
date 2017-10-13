@@ -9,6 +9,7 @@ import teams.domain.Team;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceUnitUtil;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
@@ -76,6 +77,16 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
         Team team = teamRepository.findFirstById(1L);
         assertTrue(areMembershipLoaded(team));
         assertTrue(arePersonsLoaded(team));
+    }
+
+    @Test
+    public void findIdByUrn() {
+        Long idByUrn = teamRepository.findIdByUrn("demo:openconext:org:wolves").get();
+        assertEquals(5L, idByUrn.longValue());
+
+
+        Optional<Long> nope = teamRepository.findIdByUrn("nope");
+        assertFalse(nope.isPresent());
     }
 
     private boolean areMembershipLoaded(Team team) {

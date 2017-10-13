@@ -9,6 +9,7 @@ import teams.api.validations.TeamValidator;
 import teams.domain.*;
 import teams.exception.IllegalSearchParamException;
 import teams.exception.NotAllowedException;
+import teams.exception.ResourceNotFoundException;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -68,6 +69,11 @@ public class TeamController extends ApiController implements TeamValidator {
         }
         return membershipOptional.map(membership -> lazyLoadTeam(team, membership.getRole(), federatedUser))
                 .orElse(new TeamSummary(team, federatedUser, true));
+    }
+
+    @GetMapping("api/teams/teamIdFromUrn/{urn:.+}")
+    public Long teamIdFromUrn(@PathVariable("urn") String urn) {
+        return teamRepository.findIdByUrn(urn).orElseThrow(() -> new ResourceNotFoundException(String.format("Team with urn %s does not exists", urn)));
     }
 
     @GetMapping("api/teams/teams")
