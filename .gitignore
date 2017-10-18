@@ -27,3 +27,4 @@ backlog.txt
 MockData.java
 .scannerwork/
 deploy.txt
+build-tmp.sh

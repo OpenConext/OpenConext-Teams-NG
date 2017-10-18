@@ -2,7 +2,6 @@ import "../favicon.ico";
 import "../stylesheets/application.scss";
 import {polyfill} from "es6-promise";
 import "isomorphic-fetch";
-import "lodash";
 import moment from "moment";
 
 import React from "react";

@@ -17,8 +17,16 @@ See the NOTICE file
 - Java 8
 - Maven 3
 - MySQL
+- npm 5.2.0 (higher will break the build)
 - node 6.6.2 (use for example nvm to manage it - latest version of node does not work) 
 - yarn 1.1.0 (note that later versions break the sass compiler)
+
+If you use nvm the ensure you have the correct npm installed locally in that version
+
+```
+cd ~/.nvm/versions/node/v6.2.2/lib/
+npm install npm@5.2.0
+```
 
 ## Building and running
 
