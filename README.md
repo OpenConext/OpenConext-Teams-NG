@@ -28,6 +28,8 @@ cd ~/.nvm/versions/node/v6.2.2/lib/
 npm install npm@5.2.0
 ```
 
+See https://stackoverflow.com/questions/9755841/how-can-i-change-the-version-of-npm-using-nvm
+
 ## Building and running
 
 [Maven 3](http://maven.apache.org) is needed to build and run this project.
