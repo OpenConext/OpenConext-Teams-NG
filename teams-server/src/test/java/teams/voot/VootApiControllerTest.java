@@ -70,7 +70,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
         start("user/urn:collab:person:surfnet.nl:tdoe/groups")
                 .body("size()", equalTo(2))
                 .body("displayName", hasItems("giants", "gliders"))
-                .body("membership", hasItems("admin", "member"));
+                .body("membership", hasItems("admin", "admin"));
     }
 
     @Test
