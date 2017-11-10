@@ -104,7 +104,7 @@ public class VootApiController {
                                 String.format("Expected team %s to have a member with personUrn %s",
                                         team.getUrn(), urnPerson)));
 
-        String role = membership.getRole().equals(Role.ADMIN) ? "admin" : "member";
+        String role = membership.getRole().equals(Role.MEMBER) ? "member" : "admin";
         return new Group(team.getUrn(), team.getName(), team.getDescription(), role);
     }
 
