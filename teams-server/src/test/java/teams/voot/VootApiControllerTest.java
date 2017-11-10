@@ -69,15 +69,17 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     public void getGroupsForMember() throws Exception {
         start("user/urn:collab:person:surfnet.nl:tdoe/groups")
                 .body("size()", equalTo(2))
-                .body("displayName", hasItems("giants", "gliders"));
+                .body("displayName", hasItems("giants", "gliders"))
+                .body("membership", hasItems("admin", "member"));
     }
 
     @Test
     public void getGroupsForMemberAndTeamUrn() throws Exception {
-        start("user/urn:collab:person:surfnet.nl:tdoe/groups/demo:openconext:org:giants")
+        start("user/urn:collab:person:surfnet.nl:tdoe/groups/demo:openconext:org:gliders")
                 //four properties, not elements
                 .body("size()", equalTo(4))
-                .body("displayName", equalTo("giants"));
+                .body("displayName", equalTo("gliders"))
+                .body("membership", equalTo("admin"));
     }
 
     @Test

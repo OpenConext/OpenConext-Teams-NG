@@ -1,5 +1,6 @@
 package teams.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,6 +14,8 @@ import java.util.Optional;
 @Repository
 public interface MembershipRepository extends CrudRepository<Membership, Long> {
 
+    @EntityGraph(value = "findByUrnTeamAndUrnPerson", type = EntityGraph.EntityGraphType.LOAD,
+            attributePaths = "team.memberships")
     Optional<Membership> findByUrnTeamAndUrnPerson(String teamUrn, String personUrn);
 
     @Transactional(noRollbackFor = OptimisticLockException.class)

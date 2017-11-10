@@ -24,8 +24,6 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
     @EntityGraph(value = "findByMembershipsUrnPerson", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "memberships")
     List<Team> findByMembershipsUrnPerson(String personUrn);
 
-    List<Team> findByMembershipsUrnPersonOrderById(String personUrn);
-
     @Query(value = "select distinct(teams.name), teams.id, teams.description, (select memberships.role from memberships " +
             "where memberships.person_id = ?1 and memberships.team_id = teams.id) as role " +
             "from teams as teams left outer join memberships on memberships.team_id = teams.id " +

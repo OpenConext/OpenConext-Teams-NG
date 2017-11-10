@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import teams.domain.ExternalTeam;
 import teams.domain.Membership;
+import teams.domain.Role;
 import teams.domain.Team;
 import teams.exception.ResourceNotFoundException;
 import teams.repository.ExternalTeamRepository;
@@ -69,9 +70,9 @@ public class VootApiController {
 
     @GetMapping("api/voot/user/{uid}/groups")
     public List<Group> getGroupsForMember(@PathVariable("uid") String uid) {
-        return teamRepository.findByMembershipsUrnPersonOrderById(uid)
+        return teamRepository.findByMembershipsUrnPerson(uid)
                 .stream()
-                .map(this::convertTeamToGroup)
+                .map(team -> this.convertTeamToGroupIncludingMembership(team, uid))
                 .collect(toList());
     }
 
@@ -80,7 +81,7 @@ public class VootApiController {
         Optional<Membership> membershipOptional = membershipRepository.findByUrnTeamAndUrnPerson(groupId, uid);
         Membership membership = membershipOptional.orElseThrow(
                 () -> new ResourceNotFoundException(String.format("Membership for team %s and Person %s not found", groupId, uid)));
-        return this.convertTeamToGroup(membership.getTeam());
+        return this.convertTeamToGroupIncludingMembership(membership.getTeam(), uid);
     }
 
     private Member convertMembershipToMember(Membership membership) {
@@ -93,6 +94,18 @@ public class VootApiController {
 
     private Group convertTeamToGroup(Team team) {
         return new Group(team.getUrn(), team.getName(), team.getDescription(), "member");
+    }
+
+    private Group convertTeamToGroupIncludingMembership(Team team, String urnPerson) {
+        Membership membership = team.getMemberships().stream()
+                .filter(mb -> mb.getUrnPerson().equals(urnPerson))
+                .findFirst().orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                String.format("Expected team %s to have a member with personUrn %s",
+                                        team.getUrn(), urnPerson)));
+
+        String role = membership.getRole().equals(Role.ADMIN) ? "admin" : "member";
+        return new Group(team.getUrn(), team.getName(), team.getDescription(), role);
     }
 
 }
