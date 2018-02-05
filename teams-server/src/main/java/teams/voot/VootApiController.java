@@ -1,6 +1,8 @@
 package teams.voot;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,8 +34,12 @@ public class VootApiController {
     @Autowired
     private ExternalTeamRepository externalTeamRepository;
 
-    @GetMapping("api/voot/group/{localGroupId}")
+    @Value("${teams.group-name-context}")
+    private String groupNameContext;
+
+    @GetMapping("api/voot/group/{localGroupId:.+}")
     public Group findByLocalGroupId(@PathVariable("localGroupId") String localGroupId) {
+        localGroupId = stripGroupNameContext(localGroupId);
         Team team = resolveOptionalOrThrow(teamRepository.findByUrnOrderById(localGroupId), localGroupId);
         return convertTeamToGroup(team);
     }
@@ -49,14 +55,16 @@ public class VootApiController {
 
     @GetMapping("api/voot/linked-externals")
     public List<String> linkedExternalGroupIds(@RequestParam("teamId") String localGroupUrn) {
+        localGroupUrn = stripGroupNameContext(localGroupUrn);
         return externalTeamRepository.findByTeamsUrn(localGroupUrn)
                 .stream()
                 .map(ExternalTeam::getIdentifier)
                 .collect(toList());
     }
 
-    @GetMapping("api/voot/members/{localGroupId}")
+    @GetMapping("api/voot/members/{localGroupId:.+}")
     public List<Member> getMembers(@PathVariable("localGroupId") String localGroupId) {
+        localGroupId = stripGroupNameContext(localGroupId);
         Team team = resolveOptionalOrThrow(teamRepository.findByUrn(localGroupId), localGroupId);
         return team.getMemberships().stream().map(this::convertMembershipToMember).collect(toList());
     }
@@ -68,7 +76,7 @@ public class VootApiController {
                 .map(this::convertTeamToGroup).collect(toList());
     }
 
-    @GetMapping("api/voot/user/{uid}/groups")
+    @GetMapping("api/voot/user/{uid:.+}/groups")
     public List<Group> getGroupsForMember(@PathVariable("uid") String uid) {
         return teamRepository.findByMembershipsUrnPerson(uid)
                 .stream()
@@ -76,11 +84,12 @@ public class VootApiController {
                 .collect(toList());
     }
 
-    @GetMapping("api/voot/user/{uid}/groups/{groupId}")
+    @GetMapping("api/voot/user/{uid:.+}/groups/{groupId:.+}")
     public Group getGroupsForMemberAndTeamUrn(@PathVariable("uid") String uid, @PathVariable("groupId") String groupId) {
-        Optional<Membership> membershipOptional = membershipRepository.findByUrnTeamAndUrnPerson(groupId, uid);
+        final String strippedGroupId = stripGroupNameContext(groupId);
+        Optional<Membership> membershipOptional = membershipRepository.findByUrnTeamAndUrnPerson(strippedGroupId, uid);
         Membership membership = membershipOptional.orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Membership for team %s and Person %s not found", groupId, uid)));
+                () -> new ResourceNotFoundException(String.format("Membership for team %s and Person %s not found", strippedGroupId, uid)));
         return this.convertTeamToGroupIncludingMembership(membership.getTeam(), uid);
     }
 
@@ -106,6 +115,11 @@ public class VootApiController {
 
         String role = membership.getRole().equals(Role.MEMBER) ? "member" : "admin";
         return new Group(team.getUrn(), team.getName(), team.getDescription(), role);
+    }
+
+    private String stripGroupNameContext(String fullyQualifiedTeamName) {
+        return StringUtils.hasText(fullyQualifiedTeamName) ? fullyQualifiedTeamName.
+                replace(groupNameContext, "") : fullyQualifiedTeamName;
     }
 
 }

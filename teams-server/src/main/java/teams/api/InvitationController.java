@@ -29,7 +29,6 @@ public class InvitationController extends ApiController implements MembershipVal
         return invitation;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/invitations")
     public List<Invitation> invite(@Validated @RequestBody ClientInvitation clientInvitation,
                                    FederatedUser federatedUser) throws IOException, MessagingException {
@@ -53,7 +52,6 @@ public class InvitationController extends ApiController implements MembershipVal
         return saveAndSendInvitation(invitations, team, person, federatedUser);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("api/teams/invitations/{id}")
     public void delete(@PathVariable("id") Long id,
                        FederatedUser federatedUser) throws IOException, MessagingException {
@@ -68,7 +66,6 @@ public class InvitationController extends ApiController implements MembershipVal
                 invitation.getTeam().getUrn(), federatedUser.getUrn());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("api/teams/invitations")
     public Invitation resend(@Validated @RequestBody ClientResendInvitation resendInvitation,
                              FederatedUser federatedUser) throws IOException, MessagingException {
@@ -104,9 +101,8 @@ public class InvitationController extends ApiController implements MembershipVal
         Person person = federatedUser.getPerson();
         Invitation invitation = doAcceptOrDeny(key, true, person);
         Team team = invitation.getTeam();
-        Role role = person.isGuest() ? Role.MEMBER : invitation.getIntendedRole();
         Instant expiryDate = federatedUser.featureEnabled(EXPIRY_DATE_MEMBERSHIP) ? invitation.getExpiryDate() : null;
-        new Membership(role, team, person, expiryDate);
+        new Membership(invitation.getIntendedRole(), team, person, expiryDate);
 
         return teamRepository.save(team);
     }

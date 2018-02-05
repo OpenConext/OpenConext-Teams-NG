@@ -31,6 +31,12 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void findByFullyQualifiedGroupId() throws Exception {
+        start("group/urn:collab:group:demo.openconext.org:demo:openconext:org:giants")
+                .body("displayName", equalTo("giants"));
+    }
+
+    @Test
     public void findByLocalGroupIdNonExistent() throws Exception {
         start("group/demo:openconext:org:nope", SC_NOT_FOUND);
     }
@@ -54,6 +60,13 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     @Test
     public void getMembers() throws Exception {
         start("members/demo:openconext:org:giants")
+                .body("size()", equalTo(4))
+                .body("name", hasItems("Tracey Doe", "Mary Doe", "John Doe", "William Doe"));
+    }
+
+    @Test
+    public void getMembersWithFullyQualifiedGroupName() throws Exception {
+        start("members/urn:collab:group:demo.openconext.org:demo:openconext:org:giants")
                 .body("size()", equalTo(4))
                 .body("name", hasItems("Tracey Doe", "Mary Doe", "John Doe", "William Doe"));
     }

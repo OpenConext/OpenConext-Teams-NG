@@ -3,6 +3,7 @@ package teams.domain;
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class FederatedUser extends User {
                          List<ExternalTeam> externalTeams,
                          Map<Feature, Boolean> featureToggles,
                          Map<String, String> config) {
-        super(person.getName(), "N/A", person.isGuest() ?
+        super(StringUtils.hasText(person.getName()) ? person.getName() : "No display name provided", "N/A", person.isGuest() ?
                 singletonList(new SimpleGrantedAuthority("ROLE_USER")) :
                 asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")));
         this.person = person;

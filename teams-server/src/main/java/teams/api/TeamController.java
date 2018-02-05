@@ -25,9 +25,6 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class TeamController extends ApiController implements TeamValidator {
 
-    @Value("${teams.group-name-context}")
-    private String groupNameContext;
-
     @Value("${teams.default-stem-name}")
     private String defaultStemName;
 
