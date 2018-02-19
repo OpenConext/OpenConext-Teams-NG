@@ -22,8 +22,7 @@ I18n.translations.en = {
     header: {
         title: "Teams",
         links: {
-            logout: "Logout",
-            exit: "Exit"
+            logout: "Logout"
         },
         role: "Role"
     },

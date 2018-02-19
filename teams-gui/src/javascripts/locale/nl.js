@@ -22,8 +22,7 @@ I18n.translations.nl = {
     header: {
         title: "Teams",
         links: {
-            logout: "Logout",
-            exit: "Exit"
+            logout: "Uitloggen"
         },
         role: "Rol"
     },
@@ -237,7 +236,7 @@ I18n.translations.nl = {
         current_user: "{{name}} (jij dus)",
         share_info: "Deel deze informatie met de applicaties gebruikt door dit team.",
         approval_required: "Je moet toestemming verlenen om deze informatie te delen.",
-        submit: "BEWAREN",
+        submit: "TEAM MAKEN",
         cancel: "ANNULEREN",
         cancel_confirmation: "Weet je zeker dat je deze pagina wilt verlaten?"
     },
