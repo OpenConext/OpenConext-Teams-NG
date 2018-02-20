@@ -9,7 +9,7 @@ cache:
   - node_modules
 before_install:
 - pip install --user codecov
-- nvm install 6.6.2
+- nvm install v6.6.2
 - npm install -g yarn
 - yarn install
 install:
