@@ -59,7 +59,7 @@ export default class NewTeam extends React.PureComponent {
             .then(exists => this.setState({exists: exists})), 350);
 
     onChangeEmails = emails => {
-        this.setState({email: isEmpty(emails) ? "" : emails[0]});
+        this.setState({email: isEmpty(emails) ? "" : emails[emails.length - 1]});
     };
 
     handleInputChange = attributeName => e => {
