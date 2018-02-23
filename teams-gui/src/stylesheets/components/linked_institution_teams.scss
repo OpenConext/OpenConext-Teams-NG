@@ -23,6 +23,16 @@
         @include phone {
           margin-left: 0;
         }
+
+        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+          margin-left: 60px;
+
+          @include phone {
+            margin-left: 0;
+          }
+
+        }
+
       }
 
       input {

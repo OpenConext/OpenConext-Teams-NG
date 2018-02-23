@@ -32,6 +32,13 @@
       right: 35%;
     }
 
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      left: 20%;
+      right: 20%;
+      top: 20%;
+      bottom: 20%;
+    }
+
     .dialog-header {
       background-color: $blue;
       padding: 15px;
