@@ -660,7 +660,7 @@ export default class TeamDetail extends React.PureComponent {
                     </td>
                     <td data-label={I18n.t("team_detail.actions_phone")} className="actions"
                         onClick={this.toggleActions(member, actions)}
-                        tabIndex="1" onBlur={() => this.setState({actions: {show: false, id: ""}})}>
+                        tabIndex="1" onBlur={() => setTimeout(() => this.setState({actions: {show: false, id: ""}}), 350)}>
                         {!isEmpty(options) && <i className="fa fa-ellipsis-h"></i>}
                         {this.renderActions(options, member, actions)}
                     </td>

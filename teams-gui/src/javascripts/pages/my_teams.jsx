@@ -340,7 +340,7 @@ export default class MyTeams extends React.PureComponent {
                             {this.membershipCountCell(team)}
                             <td data-label={I18n.t("teams.actions_phone")} className="actions"
                                 onClick={this.toggleActions(team, actions)}
-                                tabIndex="1" onBlur={() => this.setState({actions: {show: false, id: ""}})}>
+                                tabIndex="1" onBlur={() => setTimeout(() => this.setState({actions: {show: false, id: ""}}), 250)}>
                                 <i className="fa fa-ellipsis-h"></i>
                                 {this.renderActions(team, actions)}
                             </td>

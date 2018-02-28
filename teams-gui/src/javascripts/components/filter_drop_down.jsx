@@ -38,7 +38,7 @@ export default class FilterDropDown extends React.PureComponent {
         const name = filtered.length === items.length ? I18n.t("filter.all", {count: count}) : I18n.t("filter.selected", {count: count});
 
         return (
-            <section className="filter-drop-down" tabIndex="1" onBlur={() => this.setState({dropDownActive: false})}>
+            <section className="filter-drop-down" tabIndex="1" onBlur={() => setTimeout(() => this.setState({dropDownActive: false}), 350)}>
                 <div className="filtered" onClick={() => this.setState({dropDownActive: !dropDownActive})}>
                     <span className="filter-label">{I18n.t("filter.label")}</span>
                     <span className="filter-label-divider">:</span>

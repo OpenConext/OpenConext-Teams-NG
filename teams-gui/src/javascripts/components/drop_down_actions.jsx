@@ -23,5 +23,3 @@ DropDownActions.propTypes = {
     i18nPrefix: PropTypes.string.isRequired,
     className: PropTypes.string
 };
-
-
