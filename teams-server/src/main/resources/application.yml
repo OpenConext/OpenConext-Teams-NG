@@ -11,6 +11,11 @@ feature-toggles:
   expiry-date-membership: false
   person-email-picker: true
 
+api:
+  lifecycle:
+    username: life
+    password: secret
+
 config:
   support-email: help@surfconext.nl
   help-link-en: https://wiki.surfnet.nl/pages/viewpage.action?pageId=35422637

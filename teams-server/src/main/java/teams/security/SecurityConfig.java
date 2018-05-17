@@ -62,6 +62,34 @@ public class SecurityConfig {
         }
     }
 
+    @Order(2)
+    @Configuration
+    public static class LifeCycleSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+        @Value("${api.lifecycle.username}")
+        private String user;
+
+        @Value("${api.lifecycle.password}")
+        private String password;
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.inMemoryAuthentication().withUser(user).password(password).authorities("ROLE_USER");
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .antMatcher("/deprovision/**")
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                    .csrf().disable()
+                    .addFilterBefore(new BasicAuthenticationFilter(authenticationManager()), BasicAuthenticationFilter.class)
+                    .authorizeRequests()
+                    .antMatchers("/**").hasRole("USER");
+        }
+    }
+
     @Configuration
     public static class SecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 

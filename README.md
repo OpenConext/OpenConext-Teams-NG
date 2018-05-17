@@ -97,12 +97,24 @@ If you add dependencies to the teams-gui with yarn you can see the impact on the
     
 ## API
     
-The teams application has two API's:
+The teams application has three API's:
     
 1. Internal Teams API on `api/teams` for the teams GUI
-2. VOOT API on `api/voot` for the VOOT server app  
+2. VOOT API on `api/voot` for the VOOT server app
+3. LifeCycle user management  
   
-The first one is secured with shibboleth and CSRF and the second one is secured with basic auth. For an example call:
+The first one is secured with shibboleth and CSRF and the second and third one are secured with basic auth. For an example call:
   
     curl  -u voot:secret https://teams.demo.openconext.org/api/voot/user/urn:collab:person:example.com:admin/groups  
+    
+## LifeCycle Deprovisioning
+
+Authz-Server has a LifeCycle API to deprovision users. The preview endpoint:
+```
+curl -u life:secret http://localhost:8080/deprovision/urn:collab:person:surfnet.nl:jdoe | jq 
+```
+And the actual `Deprovisioning` of the user:
+```
+curl -X DELETE -u life:secret http://localhost:8080/deprovision/urn:collab:person:surfnet.nl:jdoe | jq
+```
     

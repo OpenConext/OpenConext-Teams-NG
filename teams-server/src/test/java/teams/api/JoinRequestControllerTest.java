@@ -100,7 +100,7 @@ public class JoinRequestControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_BAD_REQUEST);
 
-        assertEquals(3L, joinRequestRepository.count());
+        assertEquals(4L, joinRequestRepository.count());
     }
 
 
