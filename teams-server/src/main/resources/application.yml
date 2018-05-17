@@ -31,7 +31,7 @@ security:
     name: user
     password: secret
 
-# Is this node in a load-balanced topology responsible for cleaning up resources (See ExpiredInvitationsRemover)
+# Is this node in a load-balanced topology responsible for cleaning up resources (See Scheduler)
 cron:
   node-cron-job-responsible: true
   expression: "0 0/15 * * * ?"

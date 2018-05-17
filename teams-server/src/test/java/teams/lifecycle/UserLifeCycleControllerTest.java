@@ -71,7 +71,7 @@ public class UserLifeCycleControllerTest extends AbstractApplicationTest {
         assertEquals(6 ,map.size());
         assertEquals(map.get("email"), "unhappy@domain.net");
         assertEquals(map.get("joinRequest"), "orphans");
-        assertEquals(map.get("lastLoginDate"), "2018-05-17T07:32:12Z");
+        assertEquals(map.get("lastLoginDate").substring(0,10), "2018-05-17");
         assertEquals(map.get("membership"), "orphans");
         assertEquals(map.get("name"), "Unhappy User");
         assertEquals(map.get("urn"), "urn:collab:person:example.com:unhappy");
