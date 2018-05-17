@@ -6,9 +6,11 @@ import teams.AbstractApplicationTest;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static org.junit.Assert.*;
 
 public class UserLifeCycleControllerTest extends AbstractApplicationTest {
@@ -24,9 +26,7 @@ public class UserLifeCycleControllerTest extends AbstractApplicationTest {
                 .when()
                 .get("deprovision/{user}", personUrn)
                 .as(LifeCycleResult.class);
-        LifeCycleResult expected = getExpectedLifeCycleResult();
-
-        assertEquals(expected, result);
+        assertLifeCycleResult(result);
     }
 
     @Test
@@ -44,22 +44,16 @@ public class UserLifeCycleControllerTest extends AbstractApplicationTest {
     @Test
     public void dryRun() {
         LifeCycleResult result = doDeprovision(true);
-        LifeCycleResult expected = getExpectedLifeCycleResult();
-
-        assertEquals(expected, result);
+        assertLifeCycleResult(result);
     }
 
     @Test
     public void deprovision() {
         LifeCycleResult result = doDeprovision(false);
-        LifeCycleResult expected = getExpectedLifeCycleResult();
-
-        assertEquals(expected, result);
+        assertLifeCycleResult(result);
 
         result = doDeprovision(false);
-        expected = new LifeCycleResult();
-
-        assertEquals(expected, result);
+        assertEquals(0, result.getData().size());
     }
 
     private LifeCycleResult doDeprovision(boolean dryRun) {
@@ -72,20 +66,15 @@ public class UserLifeCycleControllerTest extends AbstractApplicationTest {
                 .as(LifeCycleResult.class);
     }
 
-    private LifeCycleResult getExpectedLifeCycleResult() {
-        LifeCycleResult expected = new LifeCycleResult();
-        List<Attribute> attributes = Arrays.asList(
-                new Attribute("email", "unhappy@domain.net"),
-                new Attribute("joinRequest", "orphans"),
-                new Attribute("lastLoginDate", "2018-05-17T07:32:12Z"),
-                new Attribute("membership", "orphans"),
-                new Attribute("name", "Unhappy User"),
-                new Attribute("urn", "urn:collab:person:example.com:unhappy"))
-                .stream()
-                .sorted(Comparator.comparing(Attribute::getName))
-                .collect(toList());
-        expected.setData(attributes);
-        return expected;
+    private void assertLifeCycleResult(LifeCycleResult result) {
+        Map<String, String> map = result.getData().stream().collect(toMap(attr -> attr.getName(), attr -> attr.getValue()));
+        assertEquals(6 ,map.size());
+        assertEquals(map.get("email"), "unhappy@domain.net");
+        assertEquals(map.get("joinRequest"), "orphans");
+        assertEquals(map.get("lastLoginDate"), "2018-05-17T07:32:12Z");
+        assertEquals(map.get("membership"), "orphans");
+        assertEquals(map.get("name"), "Unhappy User");
+        assertEquals(map.get("urn"), "urn:collab:person:example.com:unhappy");
     }
 
 }
