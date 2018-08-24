@@ -100,7 +100,7 @@ I18n.translations.en = {
         description: "Description",
         personalNote: "Personal note",
         viewable: "Public Team",
-        viewable_info: "Everyone can see Team information and request membership for this Team. Non-public Teams are only visible for other Team members.",
+        viewable_info: "By making your Team public, other users can find the Team and request membership for it. The names and email addresses of the admins are also visible.",
         name: "Name",
         actions: "...",
         leave: "Leave",

@@ -99,7 +99,7 @@ I18n.translations.nl = {
         description: "Omschrijving",
         personalNote: "Persoonlijke notitie",
         viewable: "Publiek Team",
-        viewable_info: "Iedereen kan dit Team bekijken en toetredingsverzoeken indienen. Niet-publieke teams zijn alleen maar zichtbaar voor leden van het Team.",
+        viewable_info: "Door je Team publiek te maken kunnen andere gebruikers het Team vinden en vervolgens een toetredingsverzoek insturen. Ook de namen en e-mailadressen van de beheerders zijn zichtbaar.",
         name: "Naam",
         actions: "...",
         leave: "Verlaat",
