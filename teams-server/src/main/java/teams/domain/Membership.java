@@ -64,5 +64,6 @@ public class Membership {
         this.person = person;
         this.urnPerson = person.getUrn();
         this.expiryDate = expiryDate;
+        this.created = Instant.now();
     }
 }

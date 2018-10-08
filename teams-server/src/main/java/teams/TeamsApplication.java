@@ -17,7 +17,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         TraceRepositoryAutoConfiguration.class,
         MetricRepositoryAutoConfiguration.class,
         PublicMetricsAutoConfiguration.class})
-
 public class TeamsApplication {
 
     public static void main(String[] args) {

@@ -18,7 +18,7 @@ See the NOTICE file
 - Maven 3
 - MySQL
 - npm 5.2.0 (higher will break the build)
-- node 6.2.2 (use for example nvm to manage it - latest version of node does not work) 
+- node 6.2.2 (use for example `nvm use` to manage it - latest version of node does not work) 
 - yarn 1.1.0 (note that later versions break the sass compiler)
 
 If you use nvm the ensure you have the correct npm installed locally in that version

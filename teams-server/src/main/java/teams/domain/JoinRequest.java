@@ -40,6 +40,7 @@ public class JoinRequest {
         this.person = person;
         this.team = team;
         this.message = StringUtils.hasText(message) ? message : null;
+        this.created = Instant.now();
     }
 
     @JsonIgnore

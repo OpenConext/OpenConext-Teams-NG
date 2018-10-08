@@ -88,7 +88,9 @@ class App extends React.PureComponent {
             this.setState({loading: false});
         } else {
             getUser()
-                .catch(() => this.handleBackendDown())
+                .catch(() => {
+                    this.handleBackendDown();
+                })
                 .then(currentUser => {
                     if (!currentUser || !currentUser.person) {
                         this.handleBackendDown();

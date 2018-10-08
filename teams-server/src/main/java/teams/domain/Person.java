@@ -54,6 +54,8 @@ public class Person {
         this.name = name;
         this.email = pickFirstMailEmail(email);
         this.guest = isGuest;
+        this.created = Instant.now();
+        this.lastLoginDate = Instant.now();
     }
 
     private String pickFirstMailEmail(String aMail) {
