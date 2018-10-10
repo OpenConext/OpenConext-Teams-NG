@@ -60,10 +60,10 @@ spring:
     url: jdbc:mysql://localhost/teams_ng?autoReconnect=true&useSSL=false
     username: root
     password:
-    tomcat:
-      test-on-borrow: true
-      validation-query: SELECT 1
-      remove-abandoned: true
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-test-query: SELECT 1
+      leak-detection-threshold: 2000
   mail:
     host: localhost
     port: 3025
