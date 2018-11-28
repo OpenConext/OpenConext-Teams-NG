@@ -22,7 +22,8 @@ I18n.translations.nl = {
     header: {
         title: "Teams",
         links: {
-            logout: "Uitloggen"
+            logout: "Uitloggen",
+            help: "Help"
         },
         role: "Rol"
     },
