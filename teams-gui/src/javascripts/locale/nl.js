@@ -91,7 +91,8 @@ I18n.translations.nl = {
     },
 
     teams_autocomplete: {
-        name: "naam"
+        name: "naam",
+        results_limited: "Meer teams dan kunnen worden getoond matchen, verfijn je zoekterm voor accuratere resultaten..."
     },
 
     team_detail: {

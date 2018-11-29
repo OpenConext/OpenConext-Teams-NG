@@ -9,7 +9,7 @@ section.teams-autocomplete {
   box-shadow: 1px 4px 12px 1px $medium-grey;
   margin-bottom: 25px;
 
-  div.no-results {
+  div.no-results, div.has-more-reesults {
     padding: 10px 15px;
     font-style: italic;
   }

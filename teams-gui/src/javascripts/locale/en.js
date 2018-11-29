@@ -92,7 +92,8 @@ I18n.translations.en = {
     },
 
     teams_autocomplete: {
-        name: "name"
+        name: "name",
+        results_limited: "More entries matched than can be shown, please narrow your search term..."
     },
 
     team_detail: {

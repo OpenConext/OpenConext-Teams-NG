@@ -380,10 +380,11 @@ export default class MyTeams extends React.PureComponent {
                                    value={query}
                                    onKeyDown={this.onSearchKeyDown}/>
                             <i className="fa fa-search"></i>
-                            {showAutoCompletes && <TeamAutocomplete suggestions={suggestions}
+                            {showAutoCompletes && <TeamAutocomplete suggestions={suggestions.slice(0, 10)}
                                                                     query={query}
                                                                     selectedTeam={selectedTeam}
                                                                     itemSelected={this.itemSelected}
+                                                                    hasMoreResults={suggestions.length === 11}
                             />}
                         </section>
                         {!currentUser.person.guest &&

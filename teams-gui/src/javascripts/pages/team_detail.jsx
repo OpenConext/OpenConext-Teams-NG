@@ -338,11 +338,13 @@ export default class TeamDetail extends React.PureComponent {
         return member.order > otherMember.order ? 1 : member.order === otherMember.order ? 0 : -1;
     };
 
+    isNotNull = attr => attr !== undefined && attr !== null;
+
     sortByAttribute = (name, reverse = false) => (a, b) => {
         if (name === "status") {
             return this.sortByStatus(a, b) * (reverse ? -1 : 1);
         }
-        if (a["person"][name] && b["person"][name]) {
+        if (this.isNotNull(a["person"][name]) && this.isNotNull(b["person"][name])) {
             return a["person"][name].toString().localeCompare(b["person"][name].toString()) * (reverse ? -1 : 1);
         }
         if (a[name] || b[name]) {

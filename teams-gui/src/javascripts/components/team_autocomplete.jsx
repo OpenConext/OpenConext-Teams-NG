@@ -45,13 +45,15 @@ export default class TeamAutocomplete extends React.PureComponent {
     };
 
     render() {
-        const {suggestions, query, selectedTeam, itemSelected} = this.props;
+        const {suggestions, query, selectedTeam, itemSelected, hasMoreResults} = this.props;
         const showSuggestions = (suggestions && suggestions.length > 0);
         return (
             <section className="teams-autocomplete">
                 {!showSuggestions &&
                 <div className="no-results">{I18n.t("auto_complete.no_results")}</div>
                 }
+                {(showSuggestions && hasMoreResults) &&
+                <div className="has-more-reesults">{I18n.t("teams_autocomplete.results_limited")}</div>}
                 {showSuggestions && <table className="result">
                     <thead>
                     <tr>
@@ -89,6 +91,7 @@ export default class TeamAutocomplete extends React.PureComponent {
 
 TeamAutocomplete.propTypes = {
     suggestions: PropTypes.array.isRequired,
+    hasMoreResults: PropTypes.bool.isRequired,
     query: PropTypes.string.isRequired,
     selectedTeam: PropTypes.number.isRequired,
     itemSelected: PropTypes.func.isRequired

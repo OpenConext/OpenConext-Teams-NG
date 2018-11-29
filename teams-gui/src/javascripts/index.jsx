@@ -52,6 +52,9 @@ class App extends React.PureComponent {
             }
         };
         window.onerror = (msg, url, line, col, err) => {
+            if (msg && msg.indexOf("Uncaught Invariant Violation") > 0) {
+                return;
+            }
             this.setState({errorDialogOpen: true});
             const info = err || {};
             const response = err.response || {};
