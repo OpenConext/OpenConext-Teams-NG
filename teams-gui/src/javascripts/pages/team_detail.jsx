@@ -80,7 +80,7 @@ export default class TeamDetail extends React.PureComponent {
     }
 
     handleNotFound = err => {
-        if (err.response.status === 404) {
+        if (err.response && err.response.status === 404) {
             this.props.history.push("/404");
         } else {
             throw err;
