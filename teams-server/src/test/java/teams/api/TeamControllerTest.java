@@ -8,6 +8,7 @@ import teams.exception.IllegalMembershipException;
 import teams.exception.IllegalSearchParamException;
 import teams.exception.NotAllowedException;
 
+import java.util.Map;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
@@ -180,7 +181,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         String email = "second_admin@test.org";
         String invitationMessage = "Please join";
 
-        Team team = given()
+        given()
                 .body(new NewTeamProperties("new team name", "Team champions ", null, true,
                         email, invitationMessage, Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
@@ -189,18 +190,12 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_OK)
                 .body("urn", equalTo(urn))
-                .extract()
-                .as(Team.class);
-
-        Set<Invitation> invitations = team.getInvitations();
-        assertEquals(1, invitations.size());
-
-        Invitation invitation = invitations.iterator().next();
-        assertEquals(email, invitation.getEmail());
-        assertEquals(Role.ADMIN, invitation.getIntendedRole());
-        assertEquals(Language.DUTCH, invitation.getLanguage());
-
-        assertEquals(invitationMessage, invitation.getLatestInvitationMessage().getMessage());
+                .body("invitations.size()", equalTo(1))
+                .body("invitations[0].email", equalTo(email))
+                .body("invitations[0].intendedRole", equalTo("ADMIN"))
+                .body("invitations[0].language", equalTo("DUTCH"))
+                .body("invitations[0].invitationMessages.size()", equalTo(1))
+                .body("invitations[0].invitationMessages[0].message", equalTo(invitationMessage));
     }
 
     @Test

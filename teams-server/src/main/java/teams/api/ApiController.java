@@ -60,18 +60,19 @@ public abstract class ApiController {
 
     protected List<Invitation> saveAndSendInvitation(List<Invitation> invitations, Team team, Person person, FederatedUser federatedUser) throws IOException, MessagingException {
         Iterable<Invitation> saved = invitationRepository.save(invitations);
-
-        log.info("Created invitation for team {} and person {}", team.getUrn(), person.getUrn());
-
         saved.forEach(invitation -> {
             try {
                 mailBox.sendInviteMail(invitation, federatedUser);
+                log.info("Created invitation by {} for team {} and person {} with email {}",
+                        federatedUser.getPerson().getUrn(),
+                        team.getUrn(),
+                        person.getUrn(),
+                        invitation.getEmail());
             } catch (MessagingException | IOException e) {
                 throw new IllegalArgumentException(e);
             }
         });
-
-        return StreamSupport.stream(saved.spliterator(),false).collect(toList());
+        return StreamSupport.stream(saved.spliterator(), false).collect(toList());
     }
 
 

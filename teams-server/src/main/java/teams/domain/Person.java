@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
 
@@ -16,7 +17,7 @@ import static org.springframework.util.StringUtils.hasText;
 @Entity(name = "persons")
 @Getter
 @NoArgsConstructor
-public class Person {
+public class Person implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

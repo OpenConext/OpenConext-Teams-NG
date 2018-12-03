@@ -16,7 +16,6 @@ public class LifeCycleResult {
 
   private String status = "OK";
   private String name = "OpenConext-teams-server";
-  private String message;
   private List<Attribute> data = new ArrayList<>();
 
   public void setData(List<Attribute> data) {

@@ -11,6 +11,7 @@ import teams.api.validations.HashGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -23,7 +24,7 @@ import static javax.persistence.CascadeType.ALL;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Team implements HashGenerator {
+public class Team implements HashGenerator, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

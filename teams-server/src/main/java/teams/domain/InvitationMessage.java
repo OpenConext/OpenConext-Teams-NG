@@ -7,11 +7,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Entity(name = "invitation_message")
 @NoArgsConstructor
-public class InvitationMessage {
+public class InvitationMessage implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

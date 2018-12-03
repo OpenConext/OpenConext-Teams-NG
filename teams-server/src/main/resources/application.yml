@@ -50,6 +50,11 @@ voot:
   scopes: groups
 
 spring:
+  session:
+    store-type: jdbc
+    jdbc:
+      schema: classpath:org/springframework/session/jdbc/schema-mysql.sql
+      initialize-schema: always
   jpa:
     properties:
       hibernate:

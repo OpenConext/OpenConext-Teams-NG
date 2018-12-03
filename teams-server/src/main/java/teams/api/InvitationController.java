@@ -20,7 +20,7 @@ import static teams.domain.Feature.EXPIRY_DATE_MEMBERSHIP;
 public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator {
 
     @GetMapping("api/teams/invitations/{id}")
-    public Invitation invitation(@PathVariable("id") Long id, FederatedUser federatedUser){
+    public Invitation invitation(@PathVariable("id") Long id, FederatedUser federatedUser) {
         Invitation invitation = invitationRepository.findById(id);
 
         assertNotNull(Invitation.class.getSimpleName(), invitation, id);
@@ -48,7 +48,7 @@ public class InvitationController extends ApiController implements MembershipVal
                 clientInvitation.getLanguage(),
                 clientInvitation.getExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
                 .collect(toList());
-
+        log.info("Saving {} invitations for emails: {}", invitations.size(), String.join(",", emails));
         return saveAndSendInvitation(invitations, team, person, federatedUser);
     }
 

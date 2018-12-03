@@ -9,13 +9,14 @@ import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.Instant;
 
 @Entity(name = "memberships")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Membership {
+public class Membership implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

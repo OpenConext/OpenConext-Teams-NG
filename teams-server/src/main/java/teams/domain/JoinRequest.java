@@ -3,18 +3,21 @@ package teams.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.Instant;
 
 
 @Entity(name = "requests")
 @Getter
 @NoArgsConstructor
-public class JoinRequest {
+@Setter
+public class JoinRequest implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

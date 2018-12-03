@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -26,9 +27,11 @@ import static javax.persistence.FetchType.EAGER;
 @Entity(name = "invitations")
 @Getter
 @NoArgsConstructor
-public class Invitation implements HashGenerator{
+public class Invitation implements HashGenerator, Serializable {
 
     private static final long TWO_WEEKS = 14L * 24L * 60L * 60L * 1000L;
+
+    @Transient
     public static final java.util.regex.Pattern emailPattern = java.util.regex.Pattern.compile("\\S+@\\S+");
 
     @Id

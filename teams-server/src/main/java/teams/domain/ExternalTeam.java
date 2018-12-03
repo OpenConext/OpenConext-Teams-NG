@@ -3,9 +3,11 @@ package teams.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,7 +15,8 @@ import java.util.Set;
 @Entity(name = "external_groups")
 @NoArgsConstructor
 @Getter
-public class ExternalTeam {
+@Setter
+public class ExternalTeam implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
