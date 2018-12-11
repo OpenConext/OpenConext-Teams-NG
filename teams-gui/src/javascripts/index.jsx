@@ -159,19 +159,16 @@ class App extends React.PureComponent {
 }
 
 (() => {
-    // DetermineLanguage based on parameter, navigator and finally cookie
+    // DetermineLanguage based on parameter, cookie and finally navigator
     let parameterByName = getParameterByName("lang", window.location.search);
 
     if (isEmpty(parameterByName)) {
-        const lang = navigator.language.toLowerCase();
-        parameterByName = lang.startsWith("en") ? "en" : lang.startsWith("nl") ? "nl" : undefined;
+        parameterByName = Cookies.get("lang");
     }
 
     if (isEmpty(parameterByName)) {
-        parameterByName = Cookies.get("lang");
-        parameterByName = isEmpty(parameterByName) ? "en" : parameterByName;
+        parameterByName = navigator.language.toLowerCase().substring(0, 2);
     }
-
     I18n.locale = parameterByName;
     moment.locale(I18n.locale);
 })();
