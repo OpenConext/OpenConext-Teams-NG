@@ -1,0 +1,51 @@
+{{> header.html}}
+<p>
+    {{invitationMessage.person.name}} convidou você para participar da equipe
+    <strong>{{invitation.team.name}}</strong>.
+    Por favor, leia abaixo as etapas que você deve seguir para aceitar este convite.
+</p>
+
+{{#invitationMessage.containsMessage}}
+<hr/>
+<p>
+    <strong>Mensagem pessoal de {{invitationMessage.person.name}}:</strong><br>"{{{invitationMessage.htmlMessage}}}"
+</p>
+<hr/>
+{{/invitationMessage.containsMessage}}
+
+<p>
+    <strong>Aceitar convite:</strong><br>
+    Para aceitar este convite, clique em 'Login para aceitar este convite'. Depois de entrar com o seu institucional
+    conta que você é um membro da equipe.
+</p>
+
+<p>
+    Se você não quiser aceitar este convite, clique em 'Recusar este convite' ou simplesmente ignorar este e-mail.
+    O convite expira automaticamente após 14 dias.
+</p>
+
+<table id="invitation-mail-table" cellpadding="10" width="90%" align="center">
+    <tr>
+        <td class="invitation-accept" align="center" width="50%">
+            <span><a href="{{baseUrl}}/invitation/accept/{{invitation.invitationHash}}" style="color:#0088CC;">Entre para aceitar este convite</a></span>
+        </td>
+        <td class="invitation-deny" align="center" width="50%">
+            <span><a href="{{baseUrl}}/invitation/deny/{{invitation.invitationHash}}" style="color:#0088CC;">Recusar este convite</a></span>
+        </td>
+    </tr>
+</table>
+
+<p>
+    <strong>Preciso de ajuda?</strong><br>{{invitationMessage.person.name}} convidou você para participar dessa equipe.
+
+    Por favor, entre em contato com <a href="mailto:{{invitationMessage.person.email}}">{{invitationMessage.person.name}}</a>
+    se você tiver alguma dúvida sobre este convite.
+</p>
+
+{{> invitation_pt_footer.html}}
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

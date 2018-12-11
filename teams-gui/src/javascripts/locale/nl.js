@@ -23,6 +23,7 @@ I18n.translations.nl = {
         title: "Teams",
         links: {
             logout: "Uitloggen",
+            exit: "Exit",
             help: "Help"
         },
         role: "Rol"

@@ -64,6 +64,9 @@
 
         &.title {
           margin-left: 210px;
+          &.pt {
+            margin-left: 260px;
+          }
           font-weight: bold;
           text-transform: uppercase;
           font-size: 22px;
@@ -107,6 +110,10 @@
             &:last-child {
               border-bottom-right-radius: 1px;
               border-top-right-radius: 1px;
+            }
+            &:not(:first-child):not(:last-child) {
+              border-left: 1px $blue solid;
+              border-right: 1px $blue solid;
             }
             a {
               font-weight: normal;

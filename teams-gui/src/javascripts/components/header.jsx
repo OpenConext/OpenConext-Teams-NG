@@ -3,7 +3,9 @@ import I18n from "i18n-js";
 import PropTypes from "prop-types";
 import {unmountComponentAtNode} from "react-dom";
 import {Link} from "react-router-dom";
-import logo from "../../images/logo@2x.png";
+import SURFconext from "../../images/logo@2x.png";
+import OpenConext from "../../images/open-conext-logo.png";
+import RCTSaai from "../../images/rctsaai_blue.svg";
 import LanguageSelector from "./language_selector";
 import UserProfile from "./user_profile";
 import {logOut} from "../api";
@@ -57,12 +59,16 @@ export default class Header extends React.PureComponent {
     render() {
         const currentUser = this.props.currentUser;
         const validCurrentUser = currentUser.person.id && currentUser.person.email && currentUser.person.name && currentUser.productName;
+        const organization = currentUser.config.organization;
+        const titleClassName = `title ${organization === "RCTSaai" ? "pt" : ""}`;
         return (
             <div className="header-container">
                 <div className="header">
-                    <Link to="/" className="logo"><img src={logo}/></Link>
+                    {organization === "SURFconext" && <Link to="/" className="logo"><img src={SURFconext}/></Link>}
+                    {organization === "OpenConext" && <Link to="/" className="logo"><img src={OpenConext}/></Link>}
+                    {organization === "RCTSaai" && <Link to="/" className="logo"><img src={RCTSaai}/></Link>}
                     <ul className="links">
-                        <li className="title"><span>Teams</span></li>
+                        <li className={titleClassName}><span>{I18n.t("header.title")}</span></li>
                         {validCurrentUser && <li className="profile"
                             tabIndex="1" onBlur={() => this.setState({dropDownActive: false})}>
                             {this.renderProfileLink(currentUser)}
@@ -72,7 +78,7 @@ export default class Header extends React.PureComponent {
                             <a href={I18n.locale === "en" ? currentUser.config.helpLinkEn : currentUser.config.helpLinkNl} target="_blank">{I18n.t("header.links.help")}</a></li>}
                         {this.renderExitLogout()}
                         <li>
-                            <LanguageSelector />
+                            <LanguageSelector supportedLanguageCodes={currentUser.config.supportedLanguageCodes} />
                         </li>
                     </ul>
                 </div>

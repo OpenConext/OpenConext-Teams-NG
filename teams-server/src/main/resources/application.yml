@@ -23,8 +23,10 @@ config:
   help-tos-en: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28EN%29
   help-tos-nl: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29
   main-link: https://www.surfconext.nl
-  organization: SURFconext
+  # Currently supported organizations: SURFconext, OpenConext and RCTSaai
+  organization: OpenConext
   sponsor: SURFnet
+  supported_language_codes: en,nl,pt
 
 security:
   user:

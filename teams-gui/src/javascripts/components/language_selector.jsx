@@ -4,16 +4,15 @@ import Cookies from "js-cookie";
 import {replaceQueryParameter} from "../utils/query-parameters";
 import {stop} from "../utils/utils";
 import moment from "moment";
+import PropTypes from "prop-types";
 
 export default class LanguageSelector extends React.PureComponent {
 
     render() {
+        const languageCodes = this.props.supportedLanguageCodes.split(",").map(s => s.trim());
         return (
             <ul className="language-selector">
-                {[
-                    this.renderLocaleChooser("en"),
-                    this.renderLocaleChooser("nl")
-                ]}
+                {languageCodes.map(code => this.renderLocaleChooser(code))}
             </ul>
         );
     }
@@ -37,3 +36,7 @@ export default class LanguageSelector extends React.PureComponent {
         window.location.search = replaceQueryParameter(window.location.search, "lang", locale);
     };
 }
+
+LanguageSelector.propTypes = {
+    supportedLanguageCodes: PropTypes.string.isRequired
+};

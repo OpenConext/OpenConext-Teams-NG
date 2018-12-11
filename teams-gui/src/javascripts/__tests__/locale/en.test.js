@@ -13,7 +13,7 @@ expect.extend({
     },
 });
 
-test("All translations exists in EN and NL", () => {
+test("All translations exists in EN, PT and NL", () => {
     const contains = (translation, translationToVerify) => {
         Object.keys(translation).forEach(key => {
             expect(translationToVerify).toContainKey(key);
@@ -25,5 +25,7 @@ test("All translations exists in EN and NL", () => {
     };
     contains(I18n.translations.en, I18n.translations.nl);
     contains(I18n.translations.nl, I18n.translations.en);
+    contains(I18n.translations.en, I18n.translations.pt);
+    contains(I18n.translations.pt, I18n.translations.en);
 
 });

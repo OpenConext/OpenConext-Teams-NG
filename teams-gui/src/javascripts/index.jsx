@@ -33,6 +33,7 @@ import ErrorDialog from "./components/error_dialog";
 
 import "./locale/en";
 import "./locale/nl";
+import "./locale/pt";
 
 polyfill();
 

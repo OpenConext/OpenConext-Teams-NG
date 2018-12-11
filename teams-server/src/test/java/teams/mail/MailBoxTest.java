@@ -56,6 +56,21 @@ public class MailBoxTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void sendInviteMailPortugese() throws Exception {
+        Team team = new Team("urn", "Champions", "description", true, null);
+        Person person = new Person("urn", "John Doe", EMAIL, false);
+
+        Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.PORTUGESE, null);
+        invitation.addInvitationMessage(person, "Please join");
+
+        mailBox.sendInviteMail(invitation, federatedUser());
+
+        String body = mailBody();
+        assertTrue(body.contains("Convite para Champions"));
+        assertTrue(body.contains("Por favor, leia abaixo as etapas"));
+    }
+
+    @Test
     public void sendJoinRequestMail() throws Exception {
         JoinRequest joinRequest = joinRequest();
         mailBox.sendJoinRequestMail(joinRequest, singletonList(EMAIL), federatedUser());

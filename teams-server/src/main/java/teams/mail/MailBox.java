@@ -39,8 +39,10 @@ public class MailBox {
 
     public void sendInviteMail(Invitation invitation, FederatedUser federatedUser) throws MessagingException, IOException {
         String languageCode = invitation.getLanguage().getLanguageCode();
+
         String title = String.format("%s %s ",
-                languageCode.equals(Language.DUTCH.getLanguageCode()) ? "Uitnodiging voor" : "Invitation for",
+                languageCode.equals(Language.DUTCH.getLanguageCode()) ? "Uitnodiging voor" :
+                        languageCode.equals(Language.ENGLISH.getLanguageCode()) ? "Invitation for" : "Convite para",
                 invitation.getTeam().getName());
 
         Map<String, Object> variables = new HashMap<>();

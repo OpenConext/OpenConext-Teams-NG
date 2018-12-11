@@ -141,6 +141,9 @@ public class SecurityConfig {
         @Value("${config.sponsor}")
         private String sponsor;
 
+        @Value("${config.supported_language_codes}")
+        private String supportedLanguageCodes;
+
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             PreAuthenticatedAuthenticationProvider authenticationProvider = new PreAuthenticatedAuthenticationProvider();
@@ -164,6 +167,7 @@ public class SecurityConfig {
             config.put("mainLink", mainLink);
             config.put("organization", organization);
             config.put("sponsor", sponsor);
+            config.put("supportedLanguageCodes", supportedLanguageCodes);
             return config;
         }
 
@@ -194,7 +198,6 @@ public class SecurityConfig {
                 http.addFilterBefore(new MockShibbolethFilter(environment.acceptsProfiles("test")), ShibbolethPreAuthenticatedProcessingFilter.class);
                 http.csrf().disable();
             }
-
         }
     }
 

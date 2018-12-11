@@ -23,6 +23,7 @@ I18n.translations.en = {
         title: "Teams",
         links: {
             logout: "Logout",
+            exit: "Exit",
             help: "Help"
         },
         role: "Role"

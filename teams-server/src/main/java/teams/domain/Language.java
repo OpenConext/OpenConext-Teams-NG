@@ -2,7 +2,7 @@ package teams.domain;
 
 public enum Language {
 
-    DUTCH("nl"), ENGLISH("en");
+    DUTCH("nl"), ENGLISH("en"), PORTUGESE("pt");
 
     private final String languageCode;
 
