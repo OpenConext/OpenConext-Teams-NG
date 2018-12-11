@@ -17,7 +17,7 @@ api:
     password: secret
 
 config:
-  support-email: help@surfconext.nl
+  support-email: help@openconext.nl
   help-link-en: https://wiki.surfnet.nl/pages/viewpage.action?pageId=35422637
   help-link-nl: https://wiki.surfnet.nl/display/conextsupport/SURFconext+teams
   help-tos-en: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28EN%29
@@ -41,7 +41,7 @@ cron:
 teams:
   default-stem-name: "demo:openconext:org"
   group-name-context: "urn:collab:group:demo.openconext.org:"
-  product-name: "OpenConext Teams"
+  product-name: "OpenConext"
   non-guest-member-of: "urn:collab:org:surf.nl"
 
 voot:
