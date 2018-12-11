@@ -16,5 +16,5 @@ export default function Footer({currentUser, isEn}) {
 
 Footer.propTypes = {
     currentUser: PropTypes.object.isRequired,
-    isEn: PropTypes.bool.isRequired
+    locale: PropTypes.bool.isRequired
 };

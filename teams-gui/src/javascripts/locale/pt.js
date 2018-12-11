@@ -152,7 +152,7 @@ I18n.translations.pt = {
             leave_team: "Tem a certeza que pretende sair do Grupo {{name}}?",
             delete_member: "Tem a certeza que pretende apagar a associação de {{name}}?",
             accept_join_request: "Tem a certeza que pretende aprovar o pedido de associação de {{name}}?",
-            reject_join_request: "Are you sure you want to reject the join request from {{name}}?",
+            reject_join_request: "Tem certeza de que deseja rejeitar a solicitação de participação de {{name}}?",
             delete_invitation: "Tem a certeza que pretende apagar o convite para {{name}}?",
             downgrade_current_user: "Tem a certeza que não pretende ser mais administrador do Grupo {{name}}? Não poderá reverter esta acção sozinho.",
         },
@@ -227,9 +227,9 @@ I18n.translations.pt = {
         required: "O nome é obrigatório",
         description: "Descrição",
         description_info: "A descrição do Grupo é visível a qualquer pessoa se tornar este Grupo como público. Caso contrário, apenas os membros do Grupo podem visualizar a descrição.",
-        viewable_info: "List this team in the public Teams index such that others can see Team information and request membership for this Team.",
+        viewable_info: "Liste essa equipe no índice público de equipes para que outras pessoas possam ver as informações da equipe e solicitar a associação a essa equipe.",
         personal_note: "Nota pessoal",
-        personal_note_info: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
+        personal_note_info: "Esta nota só é visível para você e outros administradores desta equipe. Você pode usar este campo para especificar o que essa equipe é usada, por exemplo.",
         admins: "administradores",
         admins_info: "É extremamente recomendado convidar outro Administrador.",
         admins_email_placeholder: "Adicionar um endereço de email para que haja outro Administrador...",
@@ -260,13 +260,13 @@ I18n.translations.pt = {
         expiry_date_placeholder: "Expiry date for membership",
         expiry_date_none: "Nenhum",
         message: "Mensagem",
-        message_info: "Your personal invitation message",
+        message_info: "Sua mensagem de convite pessoal",
         submit: "Convidar membros",
         cancel: "Cancelar",
         flash: "O convite foi enviado",
         flash_resent: "O email de lembrete foi enviado",
         message_placeholder: "Mensagem pessoal a ser incluída no email de convite",
-        expiry_data_info: "The expiry date is the expiry date of the membership of this Team (if this invitation is accepted). By setting an expiry date, a member will be automatically removed from this Team after the expiry date expires. This is NOT the expiry date for the invitation."
+        expiry_data_info: "A data de expiração é a data de expiração da associação desta Equipe (se este convite for aceito). Ao definir uma data de expiração, um membro será removido automaticamente desta equipe após o vencimento da data de expiração. Esta não é a data de expiração do convite."
     },
     invitation: {
         title: "Convite recebido para o Grupo '{{name}}'",
@@ -279,26 +279,26 @@ I18n.translations.pt = {
         },
         cancel: "Cancelar",
         deny: "Decline",
-        deny_confirmation: "Are you sure you want to decline this invitation?",
+        deny_confirmation: "Tem certeza de que deseja recusar este convite?",
         accept: "Aceitar",
         denied: "declined",
         share_info: "Compartilhe esta informação com as aplicações usadas neste Grupo.",
         approval_required: "Deve aprovar que esta informação deve ser partilhada",
         message: "Messagem",
-        message_info: "The personal invitation message you have received with the invitation",
+        message_info: "A mensagem de convite pessoal que você recebeu com o convite",
         flash: {
             "accept": "Você aderiu com sucesso ao Grupo {{name}}.",
             "deny": "Você negou com sucesso a adesão ao Grupo {{name}}."
         },
         invalid: {
-            not_found: "Either the invitation has expired and has been removed or you were not invited.",
-            accepted: "You already accepted this invitation.",
-            declined: "You already declined this invitation.",
-            expired: "This invitation is expired.",
-            already_member: "You are already a member of this Team",
-            join_request: "join request",
-            join_request_1: " You can send a ",
-            join_request_2: " if you want to become a member."
+            not_found: "O convite expirou e foi removido ou você não foi convidado.",
+            accepted: "Você já aceitou este convite.",
+            declined: "Você já recusou este convite.",
+            expired: "Este convite expirou.",
+            already_member: "Você já é um membro desta equipe",
+            join_request: "juntar pedido",
+            join_request_1: " Você pode enviar uma ",
+            join_request_2: " se você quiser se tornar um membro."
         }
     },
     public_link: {
@@ -328,7 +328,7 @@ I18n.translations.pt = {
     },
     institution_teams: {
         name: "Nome do Grupo / identificador",
-        help: "Explain",
+        help: "Explicar",
         description: "Descrições",
         linked_teams: "Grupos institucionais ligados",
         searchPlaceHolder: "PROCURAR GRUPOS",

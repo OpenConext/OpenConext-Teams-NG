@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 export default function InviteInfo({locale = "en", personEmailPickerEnabled = true}) {
     const text = personEmailPickerEnabled ? "Search and add " : "Add ";
     const textNl = personEmailPickerEnabled ? "Zoek en voeg " : "Voeg ";
+    const textPt = personEmailPickerEnabled ? "Pesquise e adicione " : "Adicionar ";
     return locale === "en" ?
         <div className="invitation_info">
             <p className="info">{text}the email addresses of colleagues you would like to invite for this team.</p>
@@ -12,7 +13,7 @@ export default function InviteInfo({locale = "en", personEmailPickerEnabled = tr
                 addresses or upload a csv file with comma-separated email addresses.</p>
             <p>This invitation expires after two weeks. After this time the user must be re-invited to become a member
             of this team.</p>
-        </div> :
+        </div> : locale === "nl" ?
         <div className="invitation_info">
             <p className="info">{textNl}de e-mailadressen van je collega's toe die je wilt uitnodigen voor dit team.</p>
             <p className="by-email">Je kan één of meer personen uitnodigen.</p>
@@ -21,7 +22,15 @@ export default function InviteInfo({locale = "en", personEmailPickerEnabled = tr
             <p>Deze uitnodiging is twee weken geldig. Na deze tijd verloopt deze
                 automatisch en moet een gebruiker opnieuw worden uitgenodigd om lid te
                 worden.</p>
-        </div>;
+        </div> :
+            <div className="invitation_info">
+                <p className="info">{textPt}Adicione os endereços de e-mail dos colegas que você gostaria de convidar para essa equipe.</p>
+                <p className="by-email">Você pode convidar uma ou mais pessoas.</p>
+                <p className="by-file">Para enviar vários convites, basta adicionar mais e-mails
+                    endereços ou carregar um arquivo csv com endereços de e-mail separados por vírgulas.</p>
+                <p>Este convite expira depois de duas semanas. Após esse período, o usuário deve ser convidado novamente a se tornar um membro
+                    desta equipe.</p>
+            </div>;
 
 }
 
