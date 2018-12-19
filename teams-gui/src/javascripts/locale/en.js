@@ -141,7 +141,7 @@ I18n.translations.en = {
         action_options: {
             join_request_accept: "Accept join request",
             join_request_reject: "Reject join request",
-            invite_resend: "Resent invitation",
+            invite_resend: "Resend invitation",
             invite_delete: "Delete invitation",
             member_delete: "Delete member",
             member_leave: "Leave Team",
