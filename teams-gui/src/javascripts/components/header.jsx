@@ -75,7 +75,7 @@ export default class Header extends React.PureComponent {
                             {this.renderDropDown(currentUser)}
                         </li>}
                         {currentUser.config && <li>
-                            <a href={I18n.locale === "en" ? currentUser.config.helpLinkEn : currentUser.config.helpLinkNl} target="_blank">{I18n.t("header.links.help")}</a></li>}
+                            <a href={I18n.locale === "en" ? currentUser.config.helpLinkEn : I18n.locale === "nl" ? currentUser.config.helpLinkNl : currentUser.config.helpLinkPt} target="_blank">{I18n.t("header.links.help")}</a></li>}
                         {this.renderExitLogout()}
                         <li>
                             <LanguageSelector supportedLanguageCodes={currentUser.config.supportedLanguageCodes} />
