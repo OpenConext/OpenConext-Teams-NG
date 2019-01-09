@@ -14,8 +14,8 @@ export default function InvitationInfo({invitation, locale = "en"}) {
                 <p className="by-file">Deze uitnodiging verloopt over {invitation.daysValid} dagen.</p>
             </div> :
             <div className="invitation_info">
-                <p className="info">Je abaixou a porta {invitation.inviter} para abrir a tampa da equipe {invitation.teamName}.</p>
-                <p className="by-file">Desfrute de mais de {invitation.daysValid} dias.</p>
+                <p className="info">Foi convidado por {invitation.inviter} a juntar-se ao Grupo {invitation.teamName}.</p>
+                <p className="by-file">Este convite irá expirar em {invitation.daysValid} dias.</p>
             </div>;
 
 }
