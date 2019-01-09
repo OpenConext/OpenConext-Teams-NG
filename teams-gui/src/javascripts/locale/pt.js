@@ -84,7 +84,7 @@ I18n.translations.pt = {
             join_request_delete: "Tem a certeza que pretende apagar a solicitação de se juntar ao Grupo {{name}}?",
         },
         flash: {
-            team: "O Grupo {{name}} foi com sucesso {{action}}",
+            team: "O Grupo {{name}} foi {{action}} com sucesso",
             updated: "actualizado",
             created: "criado",
             deleted: "apagado",
