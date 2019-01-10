@@ -20,8 +20,10 @@ config:
   support-email: help@openconext.nl
   help-link-en: https://wiki.surfnet.nl/pages/viewpage.action?pageId=35422637
   help-link-nl: https://wiki.surfnet.nl/display/conextsupport/SURFconext+teams
+  help-link-pt: https://wiki.surfnet.nl/display/conextsupport/SURFconext+teams
   help-tos-en: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28EN%29
   help-tos-nl: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29
+  help-tos-pt: https://wiki.surfnet.nl/display/conextsupport/Terms+of+Service+%28NL%29
   main-link: https://www.surfconext.nl
   # Currently supported organizations: SURFconext, OpenConext and RCTSaai
   organization: OpenConext
