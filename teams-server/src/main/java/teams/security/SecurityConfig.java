@@ -126,6 +126,9 @@ public class SecurityConfig {
         @Value("${config.help-link-nl}")
         private String helpLinkNl;
 
+        @Value("${config.help-link-pt}")
+        private String helpLinkPt;
+
         @Value("${config.main-link}")
         private String mainLink;
 
@@ -134,6 +137,9 @@ public class SecurityConfig {
 
         @Value("${config.help-tos-nl}")
         private String helpTosNl;
+
+        @Value("${config.help-tos-pt}")
+        private String helpTosPt;
 
         @Value("${config.organization}")
         private String organization;
@@ -162,8 +168,10 @@ public class SecurityConfig {
             config.put("supportEmail", supportEmail);
             config.put("helpLinkEn", helpLinkEn);
             config.put("helpLinkNl", helpLinkNl);
+            config.put("helpLinkPt", helpLinkPt);
             config.put("helpTosEn", helpTosEn);
             config.put("helpTosNl", helpTosNl);
+            config.put("helpTosPt", helpTosPt);
             config.put("mainLink", mainLink);
             config.put("organization", organization);
             config.put("sponsor", sponsor);
