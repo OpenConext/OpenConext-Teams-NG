@@ -67,7 +67,7 @@ public class MailBoxTest extends AbstractApplicationTest {
 
         String body = mailBody();
         assertTrue(body.contains("Convite para Champions"));
-        assertTrue(body.contains("Por favor, leia abaixo as etapas"));
+        assertTrue(body.contains("Por favor, leia em baixo quais"));
     }
 
     @Test
