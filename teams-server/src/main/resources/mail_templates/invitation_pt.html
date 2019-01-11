@@ -1,27 +1,27 @@
 {{> header.html}}
 <p>
-    {{invitationMessage.person.name}} convidou você para participar da equipe
+    {{invitationMessage.person.name}} convidou-o a aderir ao grupo
     <strong>{{invitation.team.name}}</strong>.
-    Por favor, leia abaixo as etapas que você deve seguir para aceitar este convite.
+    Por favor, leia em baixo quais são os passos que deve efectuar para aceitar o convite.
 </p>
 
 {{#invitationMessage.containsMessage}}
 <hr/>
 <p>
-    <strong>Mensagem pessoal de {{invitationMessage.person.name}}:</strong><br>"{{{invitationMessage.htmlMessage}}}"
+    <strong>Mensagem de {{invitationMessage.person.name}}:</strong><br>"{{{invitationMessage.htmlMessage}}}"
 </p>
 <hr/>
 {{/invitationMessage.containsMessage}}
 
 <p>
     <strong>Aceitar convite:</strong><br>
-    Para aceitar este convite, clique em 'Login para aceitar este convite'. Depois de entrar com o seu institucional
-    conta que você é um membro da equipe.
+    Para aceitar este convite, carregue em <strong>'Entre para aceitar este convite'</strong>. Após autenticar-se na sua instituição 
+    passará a ser um membro do grupo.
 </p>
 
 <p>
-    Se você não quiser aceitar este convite, clique em 'Recusar este convite' ou simplesmente ignorar este e-mail.
-    O convite expira automaticamente após 14 dias.
+    Se não pretende aceitar este convite, carregue em <strong>'Recusar este convite'</strong> ou simplesmente ignore este email.
+    Este convite irá expirar automaticamente após 14 dias.
 </p>
 
 <table id="invitation-mail-table" cellpadding="10" width="90%" align="center">
@@ -36,10 +36,10 @@
 </table>
 
 <p>
-    <strong>Preciso de ajuda?</strong><br>{{invitationMessage.person.name}} convidou você para participar dessa equipe.
+    <strong>Preciso de ajuda?</strong><br>Você foi convidado por {{invitationMessage.person.name}} a aderir a este grupo.
 
-    Por favor, entre em contato com <a href="mailto:{{invitationMessage.person.email}}">{{invitationMessage.person.name}}</a>
-    se você tiver alguma dúvida sobre este convite.
+    Por favor contacte <a href="mailto:{{invitationMessage.person.email}}">{{invitationMessage.person.name}}</a>
+    se tem alguma questão sobre o convite.
 </p>
 
 {{> invitation_pt_footer.html}}
