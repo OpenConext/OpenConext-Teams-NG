@@ -53,8 +53,10 @@ I18n.translations.pt = {
     teams: {
         title: "Os Meus Grupos",
         name: "Nome do Grupo",
+        viewable: "Público",
+        viewableTooltip: "Outros usuários do SURFconext Teams<br/>podem encontrar equipes públicas e solicitar associação.<br/>Arquivos não públicos são ocultados para não-membros.<br/>Os administradores podem alterar essa<br/>configuração na página de configurações de Equipes.",
         description: "Descrição",
-        searchPlaceHolder: "PROCURAR TODOS OS GRUPOS PÚBLICOS...",
+        searchPlaceHolder: "Procurar todos os grupos públicos...",
         role: "O Meu Perfil",
         membershipCount: "Membros",
         actions: "",
@@ -204,6 +206,7 @@ I18n.translations.pt = {
         description: "Descrição",
         expiryDate: "Data de Expiração",
         membershipCount: "Membros",
+        viewable: "Público",
         linked: "Ligado"
     },
     filter: {
@@ -331,7 +334,7 @@ I18n.translations.pt = {
         help: "Explicar",
         description: "Descrições",
         linked_teams: "Grupos institucionais ligados",
-        searchPlaceHolder: "PROCURAR GRUPOS",
+        searchPlaceHolder: "Procurar grupos",
         filtered: "Nenhum Grupo institucional encontrado",
         institution_team: "Grupo Institucional",
         no_teams: "A sua instituição não fornece nenhum Grupo ou você não é membro de nenhum Grupo Institucional.",

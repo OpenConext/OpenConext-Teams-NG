@@ -443,6 +443,12 @@ export default class TeamDetail extends React.PureComponent {
                         </span>
                     </CopyToClipboard>
                 </div>
+                    <div className="team-attribute">
+                        <label className="title info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
+                    </div>
+                    <CheckBox name="viewable" value={team.viewable} readOnly={!isAdmin}
+                              info={I18n.t("team_detail.viewable_info")} onChange={this.changeViewable}/>
+                    <div className="separator"/>
                 {isAdmin && <div className="team-attribute">
                     <label className="title info-after">{I18n.t("team_detail.public_link")}</label>
                     <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}
@@ -462,11 +468,7 @@ export default class TeamDetail extends React.PureComponent {
                     <span className="attribute disabled">{universalPublicLink}
                         </span>}
                 </div>}
-                <div className="team-attribute">
-                    <label className="title info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
-                </div>
-                <CheckBox name="viewable" value={team.viewable} readOnly={!isAdmin}
-                          info={I18n.t("team_detail.viewable_info")} onChange={this.changeViewable}/>
+
             </section>
         );
     }

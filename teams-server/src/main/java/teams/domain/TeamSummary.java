@@ -27,6 +27,8 @@ public class TeamSummary {
 
     private int invitationsCount;
 
+    private boolean viewable;
+
     private List<AdminMember> admins = new ArrayList<>();
 
     public TeamSummary(Team team, FederatedUser user, boolean includeAdmins) {
@@ -35,6 +37,7 @@ public class TeamSummary {
         this.name = team.getName();
         this.membershipCount = team.getMembershipCount();
         this.description = team.getDescription();
+        this.viewable = team.isViewable();
         Optional<Membership> membershipOptional = team.getMemberships()
                 .stream()
                 .filter(membership -> membership.getUrnPerson().equals(user.getUrn()))

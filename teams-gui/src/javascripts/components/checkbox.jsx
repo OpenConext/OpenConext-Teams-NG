@@ -6,10 +6,10 @@ export default function CheckBox({name, value, readOnly = false, onChange, info 
         <div className={className}>
             <input type="checkbox" id={name} name={name} checked={value}
                    onChange={onChange} disabled={readOnly}/>
-            <label htmlFor={name}>
+            <label htmlFor={name} className="checkbox-label">
                 <span><i className="fa fa-check"></i></span>
             </label>
-            {info && <label htmlFor={name}><em>{info}</em></label>}
+            {info && <label className="checkbox-info" htmlFor={name}><em>{info}</em></label>}
         </div>
     );
 

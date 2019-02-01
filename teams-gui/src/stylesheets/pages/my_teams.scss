@@ -29,15 +29,17 @@
       }
 
       i.fa-search {
-          color: lighten($blue, 5);
-          position: absolute;
-          right: 14px;
-          top: 8px;
-          font-size: 24px;
+        color: lighten($blue, 5);
+        position: absolute;
+        right: 14px;
+        top: 8px;
+        font-size: 24px;
       }
     }
+
     a.button {
       margin-top: 15px;
+
       i.fa-plus {
         font-size: inherit;
         margin-left: 10px;
@@ -76,24 +78,60 @@
   table.teams {
     width: 100%;
     word-break: break-all;
+    table-layout: fixed;
 
     tr {
       border-bottom: 1px solid $light-grey;
     }
+
     thead {
+      th.viewable {
+        width: 75px;
+        position: relative;
+
+        section.header-info {
+          position: absolute;
+          left: -13px;
+          top: 0;
+          cursor: pointer;
+
+          i.fa-info-circle {
+            color:$medium-grey;
+          }
+
+          &.sorted {
+            i.fa-info-circle {
+              color: $blue;
+            }
+
+          }
+
+          .__react_component_tooltip {
+            text-transform: none;
+            text-align: center;
+            color: $dark-grey;
+            font-size: 12px;
+          }
+        }
+      }
+
       th.name {
         width: 20%;
       }
+
       th.description {
         width: 35%;
       }
+
       th.role {
-        width: 20%;
+        width: 170px;
       }
+
       th.membershipCount {
         text-align: right;
-        width: 20%;
+        width: 85px;
       }
+
       th.actions {
         text-align: right;
         width: 5%;
@@ -104,20 +142,21 @@
           width: 25%;
         }
         th.description {
-          width: 40%;
+          width: 45%;
         }
         th.role {
-          width: 15%;
+          width: 170px;
         }
         th.membershipCount {
           text-align: right;
-          width: 15%;
+          width: 85px;
         }
         th.actions {
           text-align: right;
           width: 5%;
         }
       }
+
       span {
         position: relative;
         display: inline-block;
@@ -133,32 +172,40 @@
         }
       }
     }
+
     tbody {
       tr {
         cursor: pointer;
+
         &:hover {
           background-color: $hover;
+
           td.actions i.fa-ellipsis-h {
             color: $blue;
           }
         }
       }
+
       td {
         i.fa-info-circle {
           @include info-icon;
         }
+
         word-break: break-word;
         word-wrap: break-word;
 
         div.tool-tip {
           @include tool-tip;
+
           span {
             text-transform: none;
+
             &.label {
               font-weight: bold;
               display: block;
               padding: 3px 0;
             }
+
             &.value {
               font-weight: normal;
               float: right;
@@ -167,14 +214,21 @@
           }
         }
       }
+
+      td.viewable {
+        text-align: center;
+      }
+
       td.name {
         color: $blue;
         font-weight: bold;
         padding-right: 15px;
       }
+
       td.description {
         padding-right: 15px;
       }
+
       td.role {
         i {
           padding: 15px 5px 15px 0;
@@ -183,6 +237,7 @@
           &.fa-envelope {
             color: $dark-green;
           }
+
           &.fa-info-circle {
             @include info-icon;
           }
@@ -192,28 +247,34 @@
           }
 
         }
+
         &.join_request {
           color: $dark-green;
+
           span {
             position: relative;
             padding: 15px 10px 0 0;
           }
         }
       }
+
       td.membership-count {
         text-align: right;
 
         span {
           position: relative;
+
           &.membership-count {
             padding: 15px 10px;
             z-index: 2;
           }
+
           i.fa-info-circle {
             color: $orange;
           }
         }
       }
+
       td.actions {
         cursor: pointer;
         text-align: right;
@@ -240,7 +301,7 @@
 
         &:before {
           content: attr(data-label);
-          float:left;
+          float: left;
           text-transform: uppercase;
           font-weight: bold;
           font-size: 14px;

@@ -19,7 +19,6 @@
 
     em {
       font-size: 11px;
-      margin-left: 8px;
     }
 
     span.attribute {
@@ -27,7 +26,7 @@
       border-bottom: 1px solid $lighter-grey;
       border-top-left-radius: $br;
       border-top-right-radius: $br;
-      padding: 5px 25px 5px 10px;
+      padding: 5px 40px 5px 0;
       word-wrap: break-word;
       overflow-wrap: break-word;
       position: relative;
@@ -60,9 +59,10 @@
   .inline-editable {
     span {
       min-height: 28px;
-      padding: 5px 25px 5px 10px;
+      padding: 5px 40px 5px 0;
 
       &.edit-editable {
+        padding: 5px 40px 5px 10px;
         background-color: $light-blue;
       }
     }
@@ -70,7 +70,7 @@
     input[type=text], input[type=email] {
       display: block;
       width: 100%;
-      padding: 5px 25px 5px 10px;
+      padding: 5px 40px 5px 10px;
       font-size: 14px;
       background-color: $light-grey;
     }
@@ -80,7 +80,6 @@
   .checkbox {
     em {
       font-size: 11px;
-      margin-left: 8px;
     }
   }
 

@@ -53,8 +53,10 @@ I18n.translations.en = {
     teams: {
         title: "My Teams",
         name: "Team name",
+        viewable: "Public",
+        viewableTooltip: "Other users of SURFconext Teams can<br/>find public teams and request membership.<br/>Non-public teams are hidden for non-members.<br/>Administrators can change this setting<br/>in the Teams settings page.",
         description: "Description",
-        searchPlaceHolder: "SEARCH ALL PUBLIC TEAMS...",
+        searchPlaceHolder: "Search all public teams...",
         role: "My role",
         membershipCount: "Members",
         actions: "",
@@ -129,7 +131,7 @@ I18n.translations.en = {
         edit: "Edit",
         invite: "Invite",
         link_to_institution_team: "Add",
-        search_members_placeholder: "Search members",
+        search_members_placeholder: "Filter members",
         no_found: "No members found",
         public_link: "Public Link",
         public_link_disabled: "If enabled, people who have the public link can join the Team as member without the need for approval by admins or managers.",
@@ -204,6 +206,7 @@ I18n.translations.en = {
         description: "Description",
         expiryDate: "Expiry date",
         membershipCount: "Members",
+        viewable: "Public",
         linked: "Linked"
     },
     filter: {
@@ -331,7 +334,7 @@ I18n.translations.en = {
         help: "Explain",
         description: "Description",
         linked_teams: "Linked institutional Teams",
-        searchPlaceHolder: "SEARCH TEAMS",
+        searchPlaceHolder: "Search teams",
         filtered: "No institutional Teams found",
         institution_team: "Institutional Team",
         no_teams: "Your institution either does not provide any Teams or you are not a member of any institutional Team.",

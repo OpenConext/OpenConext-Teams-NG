@@ -16,6 +16,7 @@ import {autoCompleteTeam, deleteJoinRequest, deleteTeam, getMyTeams} from "../ap
 import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
+import CheckBox from "../components/checkbox";
 
 export default class MyTeams extends React.PureComponent {
 
@@ -26,10 +27,11 @@ export default class MyTeams extends React.PureComponent {
             teams: [],
             filteredTeams: [],
             joinRequests: [],
-            sorted: {name: "name", order: "down"},
+            sorted: {name: "viewable", order: "down"},
             actions: {show: false, id: ""},
             sortAttributes: [
-                {name: "name", order: "down", current: true},
+                {name: "viewable", order: "down", current: true},
+                {name: "name", order: "down", current: false},
                 {name: "description", order: "down", current: false},
                 {name: "role", order: "down", current: false},
                 {name: "membershipCount", order: "down", current: false}
@@ -60,7 +62,7 @@ export default class MyTeams extends React.PureComponent {
                     id: joinRequest.joinRequest.id, teamId: joinRequest.teamId
                 };
             });
-            const teams = myTeams.teamSummaries.concat(joinRequests).sort(this.sortByAttribute("name"));
+            const teams = myTeams.teamSummaries.concat(joinRequests).sort(this.sortByAttribute(this.state.sorted.name));
             const newFilterAttributes = [...this.state.filterAttributes];
             newFilterAttributes.forEach(attr => attr.count = teams.filter(team => team.role === attr.name).length);
             this.setState({
@@ -176,6 +178,11 @@ export default class MyTeams extends React.PureComponent {
     };
 
     sortByAttribute = (name, reverse = false) => (a, b) => {
+        if (name === "viewable") {
+            const aSafe = a[name] === undefined ? 1 : a[name] ? -1 : 0;
+            const bSafe = b[name] === undefined ? 1 : b[name] ? -1 : 0;
+            return (aSafe < bSafe ? -1 : aSafe === bSafe ? 0 : 1) * (reverse ? -1 : 1);
+        }
         if (name === "membershipCount") {
             const aSafe = a[name] || 0;
             const bSafe = b[name] || 0;
@@ -315,10 +322,19 @@ export default class MyTeams extends React.PureComponent {
         const currentSorted = this.currentSortedAttribute();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
 
-        const columns = ["name", "description", "role", "membershipCount", "actions"];
+        const columns = ["viewable", "name", "description", "role", "membershipCount", "actions"];
         const th = index => (
             <th key={index} className={columns[index]}>
                 <span className={sortColumnClassName(columns[index])}>{I18n.t(`teams.${columns[index]}`)}</span>
+                {index === 0 && <section className={`header-info ${sortColumnClassName(columns[index])}`}
+                                         data-for="header-public-tooltip" data-tip>
+                    <i className="fa fa-info-circle"></i>
+                    <ReactTooltip id="header-public-tooltip" type="light" class="tool-tip"
+                                  effect="solid">
+                        <p dangerouslySetInnerHTML={{
+                            __html: I18n.t("teams.viewableTooltip")
+                        }}/>
+                    </ReactTooltip></section>}
             </th>
         );
         if (teams.length !== 0) {
@@ -331,6 +347,11 @@ export default class MyTeams extends React.PureComponent {
                     {teams.map((team, index) =>
                         <tr key={`${team.urn}_${index}`} onClick={this.showTeam(team)}
                             className={team.isJoinRequest ? "join_request" : "team_member"}>
+                            <td data-label={I18n.t("teams.viewable")}
+                                className="viewable">
+                                {team.isJoinRequest ? null :
+                                    <CheckBox readOnly={true} value={team.viewable} name={`viewable_${index}`}/>}
+                            </td>
                             <td data-label={I18n.t("teams.name")}
                                 className={team.isJoinRequest ? "join_request name" : "name"}>
                                 {team.name}
@@ -340,7 +361,8 @@ export default class MyTeams extends React.PureComponent {
                             {this.membershipCountCell(team)}
                             <td data-label={I18n.t("teams.actions_phone")} className="actions"
                                 onClick={this.toggleActions(team, actions)}
-                                tabIndex="1" onBlur={() => setTimeout(() => this.setState({actions: {show: false, id: ""}}), 250)}>
+                                tabIndex="1"
+                                onBlur={() => setTimeout(() => this.setState({actions: {show: false, id: ""}}), 250)}>
                                 <i className="fa fa-ellipsis-h"></i>
                                 {this.renderActions(team, actions)}
                             </td>

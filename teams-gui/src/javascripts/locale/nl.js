@@ -52,6 +52,8 @@ I18n.translations.nl = {
     teams: {
         title: "Mijn Teams",
         name: "Teamnaam",
+        viewable: "Publiek",
+        viewableTooltip: "Andere gebruikers van SURFconext Teams<br/>kunnen publieke teams vinden<br/>en een lidmaatschap aanvragen.<br/>Niet-publieke teams zijn verborgen voor niet-leden.<br/>Admins kunnen deze instelling wijzigen<br/>op de detail pagina van het Team.",
         description: "Omschrijving",
         searchPlaceHolder: "Zoek in alle publieke Teams...",
         role: "Mijn rol",
@@ -128,7 +130,7 @@ I18n.translations.nl = {
         edit: "Bewerken",
         invite: "Uitnodigen",
         link_to_institution_team: "Nieuw",
-        search_members_placeholder: "Zoek leden",
+        search_members_placeholder: "Filter leden",
         no_found: "Geen leden gevonden",
         public_link: "Publieke link",
         public_link_disabled: "Indien geactiveerd kunnen mensen die de publieke link hebben ontvangen lid worden van dit team zonder verdere goedkeuring van de beheerders.",
@@ -203,6 +205,7 @@ I18n.translations.nl = {
         description: "Omschrijving",
         expiryDate: "Vervaldatum",
         membershipCount: "Leden",
+        viewable: "Publiek",
         linked: "Gekoppeld"
     },
     filter: {
@@ -331,7 +334,7 @@ I18n.translations.nl = {
         help: "Uitleg",
         description: "Omschrijving",
         linked_teams: "Verbonden teams",
-        searchPlaceHolder: "ZOEK TEAMS",
+        searchPlaceHolder: "Zoek teams",
         filtered: "Geen instellingsteams gevonden",
         institution_team: "Instellingsteam",
         no_teams: "Je instelling levert geen teams of je ben geen lid van een Team binnen je instelling",
