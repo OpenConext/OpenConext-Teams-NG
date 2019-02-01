@@ -16,7 +16,6 @@ import {autoCompleteTeam, deleteJoinRequest, deleteTeam, getMyTeams} from "../ap
 import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
-import CheckBox from "../components/checkbox";
 
 export default class MyTeams extends React.PureComponent {
 
