@@ -3,10 +3,7 @@ package teams.api.validations;
 import org.junit.Test;
 import teams.Seed;
 import teams.api.JoinRequestController;
-import teams.domain.Membership;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
+import teams.domain.*;
 import teams.exception.IllegalJoinRequestException;
 import teams.exception.IllegalMembershipException;
 
@@ -35,7 +32,7 @@ public class JoinRequestValidatorTest implements Seed{
     @Test
     public void admins() {
         Team team = team();
-        new Membership(Role.ADMIN, team, person());
+        new Membership(Role.ADMIN, team, person(), MembershipOrigin.INITIAL_ADMIN, "John Doe");
         List<String> admins = subject.admins(team);
 
         assertEquals(1, admins.size());

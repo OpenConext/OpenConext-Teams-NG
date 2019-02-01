@@ -37,7 +37,7 @@ public class PublicLinkController implements JoinRequestValidator, TeamValidator
 
         membershipNotAllowed(team, person);
 
-        new Membership(Role.MEMBER, team, person, null);
+        new Membership(Role.MEMBER, team, person, MembershipOrigin.PUBLIC_LINK, person.getName());
 
         return lazyLoadTeam(teamRepository.save(team), Role.MEMBER, federatedUser);
     }

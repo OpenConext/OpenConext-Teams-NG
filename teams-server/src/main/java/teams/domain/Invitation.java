@@ -15,10 +15,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static javax.persistence.CascadeType.ALL;
@@ -104,6 +101,12 @@ public class Invitation implements HashGenerator, Serializable {
         return invitationMessages.stream().max(Comparator.comparingLong(InvitationMessage::getTimestamp))
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Invitation for team %s and person %s has no invitation message", team.getUrn(), email)));
+    }
+
+    @JsonIgnore
+    public Optional<Person> getFirstInviter() {
+        return invitationMessages.stream().min(Comparator.comparingLong(InvitationMessage::getTimestamp))
+                .map(invitationMessage -> invitationMessage.getPerson());
     }
 
     public void accepted(boolean accepted) {

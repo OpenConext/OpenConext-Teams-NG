@@ -43,6 +43,7 @@ import {
     ROLES
 } from "../validations/memberships";
 import SelectRole from "../components/select_role";
+import TeamsDetailsLegend from "../components/teams_details_legend";
 
 export default class TeamDetail extends React.PureComponent {
 
@@ -72,7 +73,7 @@ export default class TeamDetail extends React.PureComponent {
             isOnlyAdmin: false,
             roleInTeam: ROLES.MEMBER.role,
             searchQuery: "",
-            tab: "members",
+            tab: "details",
             confirmationDialogOpen: false,
             confirmationDialogQuestion: "",
             confirmationDialogAction: () => false
@@ -443,12 +444,12 @@ export default class TeamDetail extends React.PureComponent {
                         </span>
                     </CopyToClipboard>
                 </div>
-                    <div className="team-attribute">
-                        <label className="title info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
-                    </div>
-                    <CheckBox name="viewable" value={team.viewable} readOnly={!isAdmin}
-                              info={I18n.t("team_detail.viewable_info")} onChange={this.changeViewable}/>
-                    <div className="separator"/>
+                <div className="team-attribute">
+                    <label className="title info-after" htmlFor="viewable">{I18n.t("team_detail.viewable")}</label>
+                </div>
+                <CheckBox name="viewable" value={team.viewable} readOnly={!isAdmin}
+                          info={I18n.t("team_detail.viewable_info")} onChange={this.changeViewable}/>
+                <div className="separator"/>
                 {isAdmin && <div className="team-attribute">
                     <label className="title info-after">{I18n.t("team_detail.public_link")}</label>
                     <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}
@@ -478,30 +479,68 @@ export default class TeamDetail extends React.PureComponent {
         const linkedInstitutionTeams = (team.externalTeams || [])
             .filter(et => institutionTeamIdentifiers.indexOf(et.identifier) > -1);
 
-        return <div className="members-tab">
-                    <span className={tab === "members" ? "active" : ""} onClick={() => this.setState({tab: "members"})}>
+        return (
+            <div className="members-tab">
+               <span className={tab === "details" ? "active" : ""} onClick={() => this.setState({tab: "details"})}>
+                        {I18n.t("team_detail.team_details")}
+               </span>
+                <span className={tab === "members" ? "active" : ""} onClick={() => this.setState({tab: "members"})}>
                         {I18n.t("team_detail.team_members", {count: team.memberships.length})}
-                        </span>
-            <span className={tab === "groups" ? "active" : ""} onClick={() => this.setState({tab: "groups"})}>
-                        {I18n.t("team_detail.team_groups", {count: linkedInstitutionTeams.length})}</span>
-        </div>;
+               </span>
+                <span className={tab === "groups" ? "active" : ""} onClick={() => this.setState({tab: "groups"})}>
+                        {I18n.t("team_detail.team_groups", {count: linkedInstitutionTeams.length})}
+                </span>
+            </div>
+        );
     };
 
-    tabsAndIconLegend = (team, tab, currentUser) =>
-        tab === "members" ?
-            <RolesIconLegend includeInvitation={true}>
-                {this.renderTabs(tab, team, currentUser)}
-            </RolesIconLegend> :
-            <TeamsIconLegend currentUser={this.props.currentUser}>
-                {this.renderTabs(tab, team, currentUser)}
-            </TeamsIconLegend>;
-
+    tabsAndIconLegend = (team, tab, currentUser) => {
+        switch (tab) {
+            case "details":
+                return (
+                    <TeamsDetailsLegend>
+                        {this.renderTabs(tab, team, currentUser)}
+                    </TeamsDetailsLegend>
+                );
+            case "members":
+                return (
+                    <RolesIconLegend includeInvitation={true}>
+                        {this.renderTabs(tab, team, currentUser)}
+                    </RolesIconLegend>
+                );
+            case "groups":
+                return (
+                    <TeamsIconLegend currentUser={this.props.currentUser}>
+                        {this.renderTabs(tab, team, currentUser)}
+                    </TeamsIconLegend>
+                );
+            default:
+                throw new Error(`Unknown tab ${tab}`);
+        }
+    };
 
     currentSorted = () => this.state.sortAttributes.filter(attr => attr.current)[0];
 
-    statusOfMembership = member => {
-        if (member.isMembership) {
+    statusOfMembership = (member, isMember) => {
+        if (member.isMembership && isMember) {
             return moment.unix(member.created).format("LLL");
+        } else if (member.isMembership && !isMember) {
+            const toolTipId = `member_tooltip_${member.id}`;
+            const origin = member.origin ? I18n.t(`team_detail.membership.origin.${member.origin.toLowerCase()}`) :
+                I18n.t("team_detail.membership.origin.unknown");
+            const approvedBy = member.approvedBy || I18n.t("team_detail.membership.origin.unknown");
+            return <span className="membership" data-for={toolTipId} data-tip>
+                {moment.unix(member.created).format("LLL")}
+                <i className="fa fa-info-circle"></i>
+                <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
+                    <span className="label">{I18n.t("team_detail.membership.origin.name")}
+                        <span className="value">{origin}</span>
+                    </span>
+                    <span className="label">{I18n.t("team_detail.membership.origin.approvedBy")}
+                        <span className="value">{approvedBy}</span>
+                    </span>
+                </ReactTooltip>
+            </span>;
         } else if (member.isJoinRequest) {
             const toolTipId = `join_request_tooltip_${member.id}`;
             const label = labelForRole(ROLES.JOIN_REQUEST.role);
@@ -626,10 +665,11 @@ export default class TeamDetail extends React.PureComponent {
         return <DropDownActions options={options} i18nPrefix="team_detail.action_options"/>;
     };
 
-    renderMembersTable(currentUser, visibleMembers, actions, team) {
+    renderMembersTable(currentUser, visibleMembers, actions, team, role) {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
         const columns = ["name", "email", "status", "expiry_date", "role", "actions"];
+        const isMember = role === ROLES.MEMBER.role;
 
         if (!this.props.currentUser.featureToggles["EXPIRY_DATE_MEMBERSHIP"]) {
             columns.splice(3, 1);
@@ -658,7 +698,7 @@ export default class TeamDetail extends React.PureComponent {
                         <a href={`mailto:${member.person.email}`}>{member.person.email}</a>
                     </td>
                     <td data-label={I18n.t("team_detail.status")} className="status">
-                        {this.statusOfMembership(member)}
+                        {this.statusOfMembership(member, isMember)}
                     </td>
                     {this.props.currentUser.featureToggles["EXPIRY_DATE_MEMBERSHIP"] &&
                     <td data-label={I18n.t("team_detail.expiry_date")} className="expiry_date">
@@ -694,8 +734,8 @@ export default class TeamDetail extends React.PureComponent {
         return <div><em>{I18n.t("team_detail.no_found")}</em></div>;
     }
 
-    renderDetailTab = (sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team) =>
-        <section className="card">
+    teamMembers = (sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team, role) => {
+        return <section className="card">
             <section className="team-detail-controls">
                 <SortDropDown items={sortAttributes} sortBy={this.sort}/>
                 <FilterDropDown items={filterAttributes} filterBy={this.filter}/>
@@ -711,8 +751,9 @@ export default class TeamDetail extends React.PureComponent {
                     {I18n.t("team_detail.add")}<i className="fa fa-plus"></i>
                 </a>}
             </section>
-            {this.renderMembersTable(currentUser, visibleMembers, actions, team)}
+            {this.renderMembersTable(currentUser, visibleMembers, actions, team, role)}
         </section>;
+    }
 
     render() {
         const {
@@ -733,9 +774,9 @@ export default class TeamDetail extends React.PureComponent {
                                     confirm={confirmationDialogAction}
                                     question={confirmationDialogQuestion}/>
                 {this.teamDetailHeader(team, role, currentUser)}
-                {this.teamDetailAttributes(team, role, currentUser)}
                 {this.tabsAndIconLegend(team, tab, currentUser)}
-                {tab === "members" && this.renderDetailTab(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team)}
+                {tab === "details" && this.teamDetailAttributes(team, role, currentUser)}
+                {tab === "members" && this.teamMembers(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team, role)}
                 {tab === "groups" &&
                 <LinkedInstitutionTeams currentUser={currentUser} institutionTeams={currentUser.externalTeams}
                                         team={team} institutionTeamLinked={this.institutionTeamLinked}/>}

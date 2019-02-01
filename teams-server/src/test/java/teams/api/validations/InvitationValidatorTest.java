@@ -151,7 +151,7 @@ public class InvitationValidatorTest implements Seed {
     private void doDetermineFutureRole(Role role, Role intendedRole) {
         Team team = team();
         Person person = person();
-        new Membership(role, team, person);
+        new Membership(role, team, person, MembershipOrigin.INITIAL_ADMIN, "John Doe");
         assertEquals(intendedRole, subject.determineFutureRole(team, person, Role.ADMIN));
     }
 

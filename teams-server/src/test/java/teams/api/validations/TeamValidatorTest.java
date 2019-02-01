@@ -46,7 +46,7 @@ public class TeamValidatorTest implements Seed {
     @Test
     public void lazyLoadTeamMember() throws Exception {
         Team team = team();
-        new Membership(Role.ADMIN, team, person("test"));
+        new Membership(Role.ADMIN, team, person("test"),MembershipOrigin.INITIAL_ADMIN, "John Doe");
         TeamDetailsSummary summary = TeamDetailsSummary.class.cast(subject.lazyLoadTeam(team, Role.MEMBER, federatedUser()));
         assertEquals(team.getName(), summary.getName());
         assertEquals("test", summary.getMemberships().iterator().next().getPerson().getUrn());

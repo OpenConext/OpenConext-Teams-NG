@@ -37,7 +37,7 @@ public interface Seed {
     }
 
     default Membership membership(Role role, Team team, Person person) {
-        return new Membership(role, team, person);
+        return new Membership(role, team, person, MembershipOrigin.INITIAL_ADMIN, "John Doe");
     }
 
     default FederatedUser federatedUser(String urn) {
@@ -63,7 +63,7 @@ public interface Seed {
     }
 
     default JoinRequest joinRequest(String personUrn) {
-        return new JoinRequest(person(personUrn), team(),"Message");
+        return new JoinRequest(person(personUrn), team(), "Message");
     }
 
 }

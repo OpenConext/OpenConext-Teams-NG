@@ -109,6 +109,7 @@ I18n.translations.nl = {
         name: "Naam",
         actions: "...",
         leave: "Verlaat",
+        team_details: "TEAM INFO",
         team_members: "LEDEN ({{count}})",
         team_groups: "GEKOPPELDE INSTELLINGSTEAMS ({{count}})",
         membership: {
@@ -118,6 +119,15 @@ I18n.translations.nl = {
             expiry_date: "vervaldatum",
             role: "rol",
             actions: "",
+            origin: {
+                name: "Origine van lidmaatschap",
+                unknown: "Onbekend",
+                initial_admin: "Initiële admin",
+                public_link: "Publieke link",
+                invitation_accepted: "Uitnodiging geaccepteerd",
+                join_request_accepted: "Toetredingsverzoek geaccepteerd",
+                approvedBy: "Geaccepteerd door"
+            }
         },
         email: "E-mail",
         intended_role: "Toekomstige rol",

@@ -102,7 +102,8 @@ public class InvitationController extends ApiController implements MembershipVal
         Invitation invitation = doAcceptOrDeny(key, true, person);
         Team team = invitation.getTeam();
         Instant expiryDate = federatedUser.featureEnabled(EXPIRY_DATE_MEMBERSHIP) ? invitation.getExpiryDate() : null;
-        new Membership(invitation.getIntendedRole(), team, person, expiryDate);
+        new Membership(invitation.getIntendedRole(), team, person, expiryDate, MembershipOrigin.INVITATION_ACCEPTED,
+                invitation.getFirstInviter().map(inviter -> inviter.getName()).orElse(person.getName()));
 
         return teamRepository.save(team);
     }

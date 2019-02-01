@@ -110,6 +110,8 @@ I18n.translations.en = {
         name: "Name",
         actions: "...",
         leave: "Leave",
+
+        team_details: "TEAM INFO",
         team_members: "MEMBERS ({{count}})",
         team_groups: "LINKED INSTITUTIONAL TEAMS ({{count}})",
         membership: {
@@ -119,6 +121,15 @@ I18n.translations.en = {
             expiry_date: "expiry date",
             role: "role",
             actions: "",
+            origin: {
+                name: "Origin of membership",
+                unknown: "Unknown",
+                initial_admin: "Initial administrator",
+                public_link: "Public link",
+                invitation_accepted: "Invitation accepted",
+                join_request_accepted: "Join Request accepted",
+                approvedBy: "Approved by"
+            }
         },
         email: "Email",
         intended_role: "Intended role",

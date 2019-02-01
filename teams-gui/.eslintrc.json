@@ -26,10 +26,7 @@
       "smart"
     ],
     "guard-for-in": "error",
-    "indent": [
-      "error",
-      4
-    ],
+    "indent": "off",
     "linebreak-style": [
       "error",
       "unix"

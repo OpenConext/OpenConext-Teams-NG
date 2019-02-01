@@ -3,10 +3,7 @@ package teams;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
-import teams.domain.Invitation;
-import teams.domain.Language;
-import teams.domain.Membership;
-import teams.domain.Role;
+import teams.domain.*;
 import teams.repository.MembershipRepository;
 
 import java.time.Instant;
@@ -27,7 +24,8 @@ public class SchedulerTest extends AbstractApplicationTest {
                 Role.ADMIN,
                 teamRepository.findOne(1L),
                 personRepository.findOne(6L),
-                Instant.now().minus(15, ChronoUnit.DAYS));
+                Instant.now().minus(15, ChronoUnit.DAYS),
+                MembershipOrigin.INITIAL_ADMIN, "John Doe");
         membershipRepository.save(membership);
 
         int deleted = scheduler.removeExpiredMemberships();
@@ -59,7 +57,8 @@ public class SchedulerTest extends AbstractApplicationTest {
     public void testNotResponsibleForScheduling() throws Exception {
         ReflectionTestUtils.setField(scheduler, "nodeCronJobResponsible", false);
         removeExpiredMembershipsWithException(0);
-        ReflectionTestUtils.setField(scheduler, "nodeCronJobResponsible", true);    }
+        ReflectionTestUtils.setField(scheduler, "nodeCronJobResponsible", true);
+    }
 
     private void removeExpiredMembershipsWithException(int expected) {
         Object membershipRepositoryRef = ReflectionTestUtils.getField(scheduler, "membershipRepository");

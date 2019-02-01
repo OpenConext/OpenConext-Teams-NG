@@ -57,7 +57,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
 
         membershipNotAllowed(team, person);
 
-        Membership newMembership = new Membership(Role.MEMBER, team, person);
+        Membership newMembership = new Membership(Role.MEMBER, team, person, MembershipOrigin.JOIN_REQUEST_ACCEPTED, federatedUser.getPerson().getName());
         membershipRepository.save(newMembership);
 
         mailBox.sendJoinRequestAccepted(joinRequest, federatedUser);
@@ -103,7 +103,6 @@ public class JoinRequestController extends ApiController implements MembershipVa
         membersCanNotApproveJoinRequests(membership.getRole());
         return joinRequest;
     }
-
 
 
 }

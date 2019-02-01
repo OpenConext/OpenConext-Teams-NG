@@ -50,11 +50,18 @@ public class Membership implements Serializable {
     @Column
     private Instant expiryDate;
 
-    public Membership(Role role, Team team, Person person) {
-        this(role, team, person, null);
+    @Column(name = "origin")
+    @Enumerated(EnumType.STRING)
+    private MembershipOrigin origin;
+
+    @Column(name = "approved_by")
+    private String approvedBy;
+
+    public Membership(Role role, Team team, Person person, MembershipOrigin origin, String approvedBy) {
+        this(role, team, person, null, origin, approvedBy);
     }
 
-    public Membership(Role role, Team team, Person person, Instant expiryDate) {
+    public Membership(Role role, Team team, Person person, Instant expiryDate, MembershipOrigin origin, String approvedBy) {
         Assert.notNull(role, "Role required");
         Assert.notNull(team.getUrn(), "Urn team required");
         Assert.notNull(person.getUrn(), "Urn person required");
@@ -65,6 +72,8 @@ public class Membership implements Serializable {
         this.person = person;
         this.urnPerson = person.getUrn();
         this.expiryDate = expiryDate;
+        this.origin = origin;
+        this.approvedBy = approvedBy;
         this.created = Instant.now();
     }
 }

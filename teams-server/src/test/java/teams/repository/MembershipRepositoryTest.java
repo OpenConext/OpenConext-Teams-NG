@@ -2,10 +2,7 @@ package teams.repository;
 
 import org.junit.Test;
 import teams.AbstractApplicationTest;
-import teams.domain.Membership;
-import teams.domain.Person;
-import teams.domain.Role;
-import teams.domain.Team;
+import teams.domain.*;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -26,7 +23,7 @@ public class MembershipRepositoryTest extends AbstractApplicationTest {
         Team team = teamRepository.findOne(1L);
         Person person = personRepository.findOne(6L);
         Instant thePast = Instant.now().minus(15, ChronoUnit.DAYS);
-        membershipRepository.save(new Membership(Role.ADMIN, team, person, thePast));
+        membershipRepository.save(new Membership(Role.ADMIN, team, person, thePast, MembershipOrigin.INITIAL_ADMIN, "John Doe"));
         int deleted = membershipRepository.deleteExpiredMemberships(0L);
         assertEquals(1, deleted);
     }
