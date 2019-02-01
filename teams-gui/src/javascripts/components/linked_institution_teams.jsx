@@ -195,7 +195,6 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
     render() {
         const {filteredTeams, showExplanation, sortAttributes} = this.state;
         const {team, linkedTeams, includeLegend, currentUser} = this.props;
-
         return (
             <div className="institution_teams">
                 <LinkedInstitutionTeamsExplain

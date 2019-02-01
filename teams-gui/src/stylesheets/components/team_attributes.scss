@@ -27,9 +27,10 @@
       border-bottom: 1px solid $lighter-grey;
       border-top-left-radius: $br;
       border-top-right-radius: $br;
-      padding: 5px 0 5px 10px;
+      padding: 5px 25px 5px 10px;
       word-wrap: break-word;
       overflow-wrap: break-word;
+      position: relative;
 
       &.disabled {
         color: $lighter-grey;
@@ -37,11 +38,11 @@
 
       i {
         color: $blue;
-        margin-top: 3px;
-        margin-right: 20px;
         font-size: larger;
         cursor: pointer;
-        float: right;
+        position: absolute;
+        right: 10px;
+        top: 8px;
 
         &.fa-pencil {
           text-decoration: underline;
@@ -59,7 +60,7 @@
   .inline-editable {
     span {
       min-height: 28px;
-      padding: 5px 0 5px 10px;
+      padding: 5px 25px 5px 10px;
 
       &.edit-editable {
         background-color: $light-blue;
@@ -69,7 +70,7 @@
     input[type=text], input[type=email] {
       display: block;
       width: 100%;
-      padding: 5px 0 5px 10px;
+      padding: 5px 25px 5px 10px;
       font-size: 14px;
       background-color: $light-grey;
     }

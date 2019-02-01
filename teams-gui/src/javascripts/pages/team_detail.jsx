@@ -471,22 +471,27 @@ export default class TeamDetail extends React.PureComponent {
         );
     }
 
-    renderTabs = (tab, team) =>
-        <div className="members-tab">
+    renderTabs = (tab, team, currentUser) => {
+        const institutionTeamIdentifiers = (currentUser.externalTeams || []).map(it => it.identifier);
+        const linkedInstitutionTeams = (team.externalTeams || [])
+            .filter(et => institutionTeamIdentifiers.indexOf(et.identifier) > -1);
+
+        return <div className="members-tab">
                     <span className={tab === "members" ? "active" : ""} onClick={() => this.setState({tab: "members"})}>
                         {I18n.t("team_detail.team_members", {count: team.memberships.length})}
                         </span>
             <span className={tab === "groups" ? "active" : ""} onClick={() => this.setState({tab: "groups"})}>
-                        {I18n.t("team_detail.team_groups", {count: (team.externalTeams || []).length})}</span>
+                        {I18n.t("team_detail.team_groups", {count: linkedInstitutionTeams.length})}</span>
         </div>;
+    };
 
-    tabsAndIconLegend = (team, tab) =>
+    tabsAndIconLegend = (team, tab, currentUser) =>
         tab === "members" ?
             <RolesIconLegend includeInvitation={true}>
-                {this.renderTabs(tab, team)}
+                {this.renderTabs(tab, team, currentUser)}
             </RolesIconLegend> :
             <TeamsIconLegend currentUser={this.props.currentUser}>
-                {this.renderTabs(tab, team)}
+                {this.renderTabs(tab, team, currentUser)}
             </TeamsIconLegend>;
 
 
@@ -662,7 +667,8 @@ export default class TeamDetail extends React.PureComponent {
                     </td>
                     <td data-label={I18n.t("team_detail.actions_phone")} className="actions"
                         onClick={this.toggleActions(member, actions)}
-                        tabIndex="1" onBlur={() => setTimeout(() => this.setState({actions: {show: false, id: ""}}), 350)}>
+                        tabIndex="1"
+                        onBlur={() => setTimeout(() => this.setState({actions: {show: false, id: ""}}), 350)}>
                         {!isEmpty(options) && <i className="fa fa-ellipsis-h"></i>}
                         {this.renderActions(options, member, actions)}
                     </td>
@@ -726,7 +732,7 @@ export default class TeamDetail extends React.PureComponent {
                                     question={confirmationDialogQuestion}/>
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.teamDetailAttributes(team, role, currentUser)}
-                {this.tabsAndIconLegend(team, tab)}
+                {this.tabsAndIconLegend(team, tab, currentUser)}
                 {tab === "members" && this.renderDetailTab(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team)}
                 {tab === "groups" &&
                 <LinkedInstitutionTeams currentUser={currentUser} institutionTeams={currentUser.externalTeams}
