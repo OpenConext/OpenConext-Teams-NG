@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static teams.domain.Invitation.EXPIRY_DAYS;
 import static teams.domain.Language.DUTCH;
 import static teams.domain.Role.ADMIN;
 
@@ -53,10 +54,11 @@ public class InvitationTest implements Seed {
     @Test
     public void daysValid() throws UnsupportedEncodingException {
         Invitation invitation = invitation("email");
-        long fiveDaysAgo = LocalDateTime.now().minusDays(5).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        int daysAgo = 5;
+        long fiveDaysAgo = LocalDateTime.now().minusDays(daysAgo).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         ReflectionTestUtils.setField(invitation, "timestamp", fiveDaysAgo);
         long daysValid = invitation.daysValid();
-        assertEquals(9, daysValid);
+        assertEquals(EXPIRY_DAYS - daysAgo, daysValid);
     }
 
     private Invitation invitation() throws UnsupportedEncodingException {

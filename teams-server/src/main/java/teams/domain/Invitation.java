@@ -29,7 +29,7 @@ import static javax.persistence.FetchType.EAGER;
 @NoArgsConstructor
 public class Invitation implements HashGenerator, Serializable {
 
-    private static final long EXPIRY_DAYS = 30L;
+    public static final long EXPIRY_DAYS = 30L;
     private static final long THIRTY_DAYS = EXPIRY_DAYS * 24L * 60L * 60L * 1000L;
 
     @Transient
