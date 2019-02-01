@@ -52,8 +52,9 @@ I18n.translations.nl = {
     teams: {
         title: "Mijn Teams",
         name: "Teamnaam",
-        viewable: "Publiek",
-        viewableTooltip: "Andere gebruikers van SURFconext Teams<br/>kunnen publieke teams vinden<br/>en een lidmaatschap aanvragen.<br/>Niet-publieke teams zijn verborgen voor niet-leden.<br/>Admins kunnen deze instelling wijzigen<br/>op de detail pagina van het Team.",
+        viewable: "",
+        viewableTooltip: "Dit team is publiek,<br/>wat betekent dat andere gebruikers<br/>van SURFconext Teams het kunnen vinden<br/>en lidmaatschap kunnen aanvragen.<br/>Admins kunnen deze <br/> instelling in de Teams pagina wijzigen.",
+        nonViewableTooltip: "Dit team is niet publiek<br/>wat betekent dat andere gebruikers<br/>het team niet kunnen vinden.<br/>Admins kunnen deze <br/> instelling in de Teams pagina wijzigen.",
         description: "Omschrijving",
         searchPlaceHolder: "Zoek in alle publieke Teams...",
         role: "Mijn rol",

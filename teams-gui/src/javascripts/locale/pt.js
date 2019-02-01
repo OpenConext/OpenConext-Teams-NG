@@ -53,8 +53,9 @@ I18n.translations.pt = {
     teams: {
         title: "Os Meus Grupos",
         name: "Nome do Grupo",
-        viewable: "Público",
-        viewableTooltip: "Outros usuários do SURFconext Teams<br/>podem encontrar equipes públicas e solicitar associação.<br/>Arquivos não públicos são ocultados para não-membros.<br/>Os administradores podem alterar essa<br/>configuração na página de configurações de Equipes.",
+        viewable: "",
+        viewableTooltip: "Esta equipe é pública, <br/> o que significa que outros usuários <br/> das equipes SURFconext podem encontrá-lo <br/> e solicitar associação. <br/> Os administradores podem alterar essa configuração <br/> nas equipes. página de configurações ",
+        nonViewableTooltip: "Equipes não públicas são <br/> ocultas para não membros.",
         description: "Descrição",
         searchPlaceHolder: "Procurar todos os grupos públicos...",
         role: "O Meu Perfil",

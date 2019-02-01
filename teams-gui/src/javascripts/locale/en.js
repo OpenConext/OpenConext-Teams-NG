@@ -53,8 +53,9 @@ I18n.translations.en = {
     teams: {
         title: "My Teams",
         name: "Team name",
-        viewable: "Public",
-        viewableTooltip: "Other users of SURFconext Teams can<br/>find public teams and request membership.<br/>Non-public teams are hidden for non-members.<br/>Administrators can change this setting<br/>in the Teams settings page.",
+        viewable: "",
+        viewableTooltip: "This team is public,<br/>which means other users<br/>of SURFconext Teams can find it<br/>and request membership.<br/>Administrators can change this<br/>setting in the Teams settings page.",
+        nonViewableTooltip: "This team is non-public,<br/>which means it can't be found by non-members.<br/>Administrators can change this<br/>setting in the Teams settings page.",
         description: "Description",
         searchPlaceHolder: "Search all public teams...",
         role: "My role",

@@ -86,33 +86,7 @@
 
     thead {
       th.viewable {
-        width: 75px;
-        position: relative;
-
-        section.header-info {
-          position: absolute;
-          left: -13px;
-          top: 0;
-          cursor: pointer;
-
-          i.fa-info-circle {
-            color:$medium-grey;
-          }
-
-          &.sorted {
-            i.fa-info-circle {
-              color: $blue;
-            }
-
-          }
-
-          .__react_component_tooltip {
-            text-transform: none;
-            text-align: center;
-            color: $dark-grey;
-            font-size: 12px;
-          }
-        }
+        width: 40px;
       }
 
       th.name {
@@ -217,6 +191,12 @@
 
       td.viewable {
         text-align: center;
+        i.fa-eye {
+          color: $green;
+        }
+        i.fa-eye-slash {
+          color: $orange;
+        }
       }
 
       td.name {

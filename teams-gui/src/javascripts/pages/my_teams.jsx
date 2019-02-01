@@ -27,11 +27,10 @@ export default class MyTeams extends React.PureComponent {
             teams: [],
             filteredTeams: [],
             joinRequests: [],
-            sorted: {name: "viewable", order: "down"},
+            sorted: {name: "name", order: "down"},
             actions: {show: false, id: ""},
             sortAttributes: [
-                {name: "viewable", order: "down", current: true},
-                {name: "name", order: "down", current: false},
+                {name: "name", order: "down", current: true},
                 {name: "description", order: "down", current: false},
                 {name: "role", order: "down", current: false},
                 {name: "membershipCount", order: "down", current: false}
@@ -326,15 +325,6 @@ export default class MyTeams extends React.PureComponent {
         const th = index => (
             <th key={index} className={columns[index]}>
                 <span className={sortColumnClassName(columns[index])}>{I18n.t(`teams.${columns[index]}`)}</span>
-                {index === 0 && <section className={`header-info ${sortColumnClassName(columns[index])}`}
-                                         data-for="header-public-tooltip" data-tip>
-                    <i className="fa fa-info-circle"></i>
-                    <ReactTooltip id="header-public-tooltip" type="light" class="tool-tip"
-                                  effect="solid">
-                        <p dangerouslySetInnerHTML={{
-                            __html: I18n.t("teams.viewableTooltip")
-                        }}/>
-                    </ReactTooltip></section>}
             </th>
         );
         if (teams.length !== 0) {
@@ -350,7 +340,15 @@ export default class MyTeams extends React.PureComponent {
                             <td data-label={I18n.t("teams.viewable")}
                                 className="viewable">
                                 {team.isJoinRequest ? null :
-                                    <CheckBox readOnly={true} value={team.viewable} name={`viewable_${index}`}/>}
+                                    <section data-for={`public_${team.id}_${index}`} data-tip>
+                                        <i className={`fa fa-${team.viewable ? "eye" : "eye-slash"}`}></i>
+                                        <ReactTooltip id={`public_${team.id}_${index}`} type="light" class="tool-tip"
+                                                      effect="solid">
+                                            <p dangerouslySetInnerHTML={{
+                                                __html: team.viewable ? I18n.t("teams.viewableTooltip") : I18n.t("teams.nonViewableTooltip")
+                                            }}/>
+                                        </ReactTooltip>
+                                    </section>}
                             </td>
                             <td data-label={I18n.t("teams.name")}
                                 className={team.isJoinRequest ? "join_request name" : "name"}>
