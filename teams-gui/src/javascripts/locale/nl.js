@@ -65,7 +65,7 @@ I18n.translations.nl = {
         delete: "Verwijder",
         join: "WORD LID",
         received_join_request: "1 ontvangen toetredingsverzoek",
-        received_join_requests: "{{count}} received toetredingsverzoeken",
+        received_join_requests: "{{count}} ontvangen toetredingsverzoeken",
         pending_invitation: "1 openstaande uitnodiging",
         pending_invitations: "{{count}} openstaande uitnodigingen",
         no_found: "Je bent nog geen lid van een Team",
