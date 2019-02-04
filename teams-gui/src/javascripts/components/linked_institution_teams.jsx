@@ -183,8 +183,7 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
                         {groupedBy[adminName].map(team => <li key={team.identifier}>{`${team.name} - ${team.identifier}`}</li>)}
                     </ul>
                 </section>)}
-            </section>)
-
+            </section>);
     }
 
     renderTeamsTable(filteredTeams, linkedTeams, team) {

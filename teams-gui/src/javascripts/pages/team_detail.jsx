@@ -474,7 +474,7 @@ export default class TeamDetail extends React.PureComponent {
         );
     }
 
-    renderTabs = (tab, team, currentUser) => {
+    renderTabs = (tab, team) => {
         return (
             <div className="members-tab">
                <span className={tab === "details" ? "active" : ""} onClick={() => this.setState({tab: "details"})}>
@@ -490,24 +490,24 @@ export default class TeamDetail extends React.PureComponent {
         );
     };
 
-    tabsAndIconLegend = (team, tab, currentUser) => {
+    tabsAndIconLegend = (team, tab) => {
         switch (tab) {
             case "details":
                 return (
                     <TeamsDetailsLegend>
-                        {this.renderTabs(tab, team, currentUser)}
+                        {this.renderTabs(tab, team)}
                     </TeamsDetailsLegend>
                 );
             case "members":
                 return (
                     <RolesIconLegend includeInvitation={true}>
-                        {this.renderTabs(tab, team, currentUser)}
+                        {this.renderTabs(tab, team)}
                     </RolesIconLegend>
                 );
             case "groups":
                 return (
                     <TeamsIconLegend currentUser={this.props.currentUser}>
-                        {this.renderTabs(tab, team, currentUser)}
+                        {this.renderTabs(tab, team)}
                     </TeamsIconLegend>
                 );
             default:
@@ -774,7 +774,7 @@ export default class TeamDetail extends React.PureComponent {
                                     confirm={confirmationDialogAction}
                                     question={confirmationDialogQuestion}/>
                 {this.teamDetailHeader(team, role, currentUser)}
-                {this.tabsAndIconLegend(team, tab, currentUser)}
+                {this.tabsAndIconLegend(team, tab)}
                 {tab === "details" && this.teamDetailAttributes(team, role, currentUser)}
                 {tab === "members" && this.teamMembers(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team, role)}
                 {tab === "groups" &&
