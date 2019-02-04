@@ -37,6 +37,9 @@ public class ExternalTeam implements Serializable {
     @NotNull
     private String name;
 
+    @Column(name = "admin_name")
+    private String adminName;
+
     @ManyToMany
     @JoinTable(name = "team_external_groups",
             joinColumns = @JoinColumn(name = "external_groups_id", referencedColumnName = "id"),

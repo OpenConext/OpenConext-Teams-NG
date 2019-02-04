@@ -5,6 +5,18 @@
     padding: 15px;
   }
 
+  section.other-institution-teams {
+    margin: 10px 0 25px 0;
+
+    section.other-institution-team {
+      margin: 10px 0;
+      ul {
+        padding-left: 25px;
+        list-style: circle;
+      }
+    }
+
+  }
   section.options-institution-teams {
 
     section.search-institution-teams {
@@ -60,6 +72,7 @@
         }
 
       }
+
       .help {
         display: flex;
         align-items: center;
@@ -93,9 +106,11 @@
   table.institution_teams {
     width: 100%;
     word-break: break-all;
+
     tr {
       border-bottom: 1px solid $light-grey;
     }
+
     tr.linked-institutional-team + tr:not(.linked-institutional-team) {
       border-top: 3px solid $light-blue;
     }
@@ -104,13 +119,16 @@
       th.name {
         width: 45%;
       }
+
       th.description {
         width: 40%;
       }
+
       th.linked_teams, th.linked {
         width: 15%;
         text-align: right;
       }
+
       span {
         position: relative;
         display: inline-block;
@@ -126,20 +144,24 @@
         }
       }
     }
+
     tbody {
       td {
         padding: 10px 0;
         word-wrap: break-word;
       }
+
       td.name {
         span {
           &.name {
             color: black;
+
             i {
               margin-right: 15px;
               color: $medium-grey;
             }
           }
+
           &.identifier {
             display: block;
             margin-left: 26px;
@@ -158,10 +180,12 @@
                 margin-left: 15px;
                 position: initial;
               }
+
               i {
                 color: $blue;
               }
             }
+
             div.__react_component_tooltip {
               font-style: normal;
             }
@@ -170,8 +194,10 @@
         }
 
       }
+
       td.description {
       }
+
       td.linked-teams {
         text-align: right;
 
@@ -179,6 +205,7 @@
           display: flex;
           flex-direction: column;
         }
+
         a.linked-team {
           border: 1px solid $lighter-grey;
           border-radius: $br;
@@ -207,10 +234,12 @@
           }
         }
       }
+
       td.team-linked {
         text-align: right;
       }
     }
+
     @include phone {
       thead {
         display: none;
@@ -221,12 +250,14 @@
           display: block;
           border-bottom: 2px solid $lighter-grey;
         }
+
         td {
           display: block;
           text-align: right;
           min-height: 40px;
           border-bottom: 1px dotted $light-blue;
           padding: 8px 0;
+
           &.name {
             span.name {
               i {

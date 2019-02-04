@@ -349,7 +349,8 @@ I18n.translations.nl = {
         filtered: "Geen instellingsteams gevonden",
         institution_team: "Instellingsteam",
         no_teams: "Je instelling levert geen teams of je ben geen lid van een Team binnen je instelling",
-
+        unknown: "'Naam onbekend'",
+        otherInstitutionTeams: "Admin {{name}} heeft zijn / haar volgende instellingteams gekoppeld aan dit Team:"
     },
     linked_institution_example: {
         title: "Instellingsteams uitgelegd",

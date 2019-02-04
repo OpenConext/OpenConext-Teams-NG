@@ -349,7 +349,8 @@ I18n.translations.pt = {
         filtered: "Nenhum Grupo institucional encontrado",
         institution_team: "Grupo Institucional",
         no_teams: "A sua instituição não fornece nenhum Grupo ou você não é membro de nenhum Grupo Institucional.",
-
+        unknown: "'Name unknown'",
+        otherInstitutionTeams: "Admin {{}} linked the following institutional Teams to this SURFconext Team:"
     },
     linked_institution_example: {
         title: "Grupos Institucionais explicados",

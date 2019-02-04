@@ -228,11 +228,14 @@ export default class MyTeams extends React.PureComponent {
                     {isJoinRequest && <i className="fa fa-info-circle"></i>}
                     {isJoinRequest &&
                     <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
-                        <span className="label">{I18n.t("teams.join_request")}<span className="value">{team.name}</span></span>
-                        <span className="label">{I18n.t("teams.created")}<span
-                            className="value">{moment.unix(team.created).format("LLL")}</span></span>
-                        <span className="label">{I18n.t("teams.message")}</span>
-                        <span>{team.message}</span>
+                        <div className="inner-tooltip">
+                            <span className="label">{I18n.t("teams.join_request")}</span>
+                            <span className="value">{team.name}</span>
+                            <span className="label">{I18n.t("teams.created")}</span>
+                            <span className="value">{moment.unix(team.created).format("LLL")}</span>
+                            <span className="label">{I18n.t("teams.message")}</span>
+                            <span>{team.message}</span>
+                        </div>
                     </ReactTooltip>}
                 </span>
             </td>
@@ -250,14 +253,14 @@ export default class MyTeams extends React.PureComponent {
                     {tooltip && <i className="fa fa-info-circle"></i>}
                     {tooltip &&
                     <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
-                        <ul>
-                            {joinRequestsCount > 0 &&
-                            <li>{joinRequestsCount === 1 ? I18n.t("teams.received_join_request") :
-                                I18n.t("teams.received_join_requests", {count: joinRequestsCount})}</li>}
-                            {invitationsCount > 0 &&
-                            <li>{invitationsCount === 1 ? I18n.t("teams.pending_invitation") :
-                                I18n.t("teams.pending_invitations", {count: invitationsCount})}</li>}
-                        </ul>
+                        <div className="inner-tooltip">
+                                {joinRequestsCount > 0 &&
+                                <span>{joinRequestsCount === 1 ? I18n.t("teams.received_join_request") :
+                                    I18n.t("teams.received_join_requests", {count: joinRequestsCount})}</span>}
+                                {invitationsCount > 0 &&
+                                <span>{invitationsCount === 1 ? I18n.t("teams.pending_invitation") :
+                                    I18n.t("teams.pending_invitations", {count: invitationsCount})}</span>}
+                        </div>
                     </ReactTooltip>}
              </span>
             </td>
@@ -320,7 +323,7 @@ export default class MyTeams extends React.PureComponent {
         const currentSorted = this.currentSortedAttribute();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
 
-        const columns = ["viewable", "name", "description", "role", "membershipCount", "actions"];
+        const columns = ["name", "description", "role", "membershipCount", "actions"];
         const th = index => (
             <th key={index} className={columns[index]}>
                 <span className={sortColumnClassName(columns[index])}>{I18n.t(`teams.${columns[index]}`)}</span>
@@ -336,21 +339,20 @@ export default class MyTeams extends React.PureComponent {
                     {teams.map((team, index) =>
                         <tr key={`${team.urn}_${index}`} onClick={this.showTeam(team)}
                             className={team.isJoinRequest ? "join_request" : "team_member"}>
-                            <td data-label={I18n.t("teams.viewable")}
-                                className="viewable">
+                            <td data-label={I18n.t("teams.name")}
+                                className={team.isJoinRequest ? "join_request name" : "name"}>
                                 {team.isJoinRequest ? null :
-                                    <section data-for={`public_${team.id}_${index}`} data-tip>
+                                    <section className="viewable" data-for={`public_${team.id}_${index}`} data-tip>
                                         <i className={`fa fa-${team.viewable ? "eye" : "eye-slash"}`}></i>
                                         <ReactTooltip id={`public_${team.id}_${index}`} type="light" class="tool-tip"
                                                       effect="solid">
-                                            <p dangerouslySetInnerHTML={{
+                                            <div className="inner-tooltip center">
+                                            <span className="value" dangerouslySetInnerHTML={{
                                                 __html: team.viewable ? I18n.t("teams.viewableTooltip") : I18n.t("teams.nonViewableTooltip")
                                             }}/>
+                                            </div>
                                         </ReactTooltip>
                                     </section>}
-                            </td>
-                            <td data-label={I18n.t("teams.name")}
-                                className={team.isJoinRequest ? "join_request name" : "name"}>
                                 {team.name}
                             </td>
                             <td data-label={I18n.t("teams.description")} className="description">{team.description}</td>

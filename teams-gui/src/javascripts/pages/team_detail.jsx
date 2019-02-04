@@ -475,10 +475,6 @@ export default class TeamDetail extends React.PureComponent {
     }
 
     renderTabs = (tab, team, currentUser) => {
-        const institutionTeamIdentifiers = (currentUser.externalTeams || []).map(it => it.identifier);
-        const linkedInstitutionTeams = (team.externalTeams || [])
-            .filter(et => institutionTeamIdentifiers.indexOf(et.identifier) > -1);
-
         return (
             <div className="members-tab">
                <span className={tab === "details" ? "active" : ""} onClick={() => this.setState({tab: "details"})}>
@@ -488,7 +484,7 @@ export default class TeamDetail extends React.PureComponent {
                         {I18n.t("team_detail.team_members", {count: team.memberships.length})}
                </span>
                 <span className={tab === "groups" ? "active" : ""} onClick={() => this.setState({tab: "groups"})}>
-                        {I18n.t("team_detail.team_groups", {count: linkedInstitutionTeams.length})}
+                        {I18n.t("team_detail.team_groups", {count: (team.externalTeams || []).length})}
                 </span>
             </div>
         );
@@ -531,15 +527,16 @@ export default class TeamDetail extends React.PureComponent {
             const approvedBy = member.approvedBy || I18n.t("team_detail.membership.origin.unknown");
             return <span className="membership" data-for={toolTipId} data-tip>
                 {moment.unix(member.created).format("LLL")}
-                <i className="fa fa-info-circle"></i>
+                {member.id && <i className="fa fa-info-circle"></i>}
+                {member.id &&
                 <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
-                    <span className="label">{I18n.t("team_detail.membership.origin.name")}
+                    <div className="inner-tooltip">
+                        <span className="label">{I18n.t("team_detail.membership.origin.name")}</span>
                         <span className="value">{origin}</span>
-                    </span>
-                    <span className="label">{I18n.t("team_detail.membership.origin.approvedBy")}
+                        <span className="label">{I18n.t("team_detail.membership.origin.approvedBy")}</span>
                         <span className="value">{approvedBy}</span>
-                    </span>
-                </ReactTooltip>
+                    </div>
+                </ReactTooltip>}
             </span>;
         } else if (member.isJoinRequest) {
             const toolTipId = `join_request_tooltip_${member.id}`;
@@ -549,13 +546,15 @@ export default class TeamDetail extends React.PureComponent {
                 <i className={iconForRole(ROLES.JOIN_REQUEST.role)}></i>{label}
                     <i className="fa fa-info-circle"></i>
                 <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
-                    <span className="label">{label}</span>
-                    <span className="label">{I18n.t("teams.created")}<span
-                        className="value">{moment.unix(member.created).format("LLL")}</span></span>
-                    <span className="label">{I18n.t("team_detail.email")}<span
-                        className="value">{member.person.email}</span></span>
-                    <span className="label">{I18n.t("teams.message")}</span>
-                    <span>{member.message}</span>
+                    <div className="inner-tooltip">
+                        <span className="label">{label}</span>
+                        <span className="label">{I18n.t("teams.created")}</span>
+                        <span className="value">{moment.unix(member.created).format("LLL")}</span>
+                        <span className="label">{I18n.t("team_detail.email")}</span>
+                        <span className="value">{member.person.email}</span>
+                        <span className="label">{I18n.t("teams.message")}</span>
+                        <span>{member.message}</span>
+                    </div>
                 </ReactTooltip>
                 </span>
             );
@@ -570,17 +569,18 @@ export default class TeamDetail extends React.PureComponent {
                     {label}
                     <i className="fa fa-info-circle"></i>
                 <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
-                    <span className="label">{label}</span>
-                    {member.declined && <span className="label">{I18n.t("invitation.denied")}</span>}
-                    <span className="label">{I18n.t("teams.created")}<span
-                        className="value">{moment(latestMessage.timestamp).format("LLL")}</span></span>
-                    <span className="label">{I18n.t("team_detail.intended_role")}<span
-                        className="value">{member.intendedRole}</span></span>
-                    <span className="label">{I18n.t("team_detail.email")}<span
-                        className="value">{member.person.email}</span></span>
-
-                    <span className="label">{I18n.t("teams.message")}</span>
-                    <span>{latestMessage.message}</span>
+                    <div className="inner-tooltip">
+                        <span className="label">{label}</span>
+                        {member.declined && <span className="label">{I18n.t("invitation.denied")}</span>}
+                        <span className="label">{I18n.t("teams.created")}</span>
+                        <span className="value">{moment(latestMessage.timestamp).format("LLL")}</span>
+                        <span className="label">{I18n.t("team_detail.intended_role")}</span>
+                        <span className="value">{member.intendedRole}</span>
+                        <span className="label">{I18n.t("team_detail.email")}</span>
+                        <span className="value">{member.person.email}</span>
+                        <span className="label">{I18n.t("teams.message")}</span>
+                        <span>{latestMessage.message}</span>
+                    </div>
                 </ReactTooltip>
                 </span>
             );
@@ -677,8 +677,8 @@ export default class TeamDetail extends React.PureComponent {
 
         const th = index => (
             <th key={index} className={columns[index]}>
-                <span
-                    className={sortColumnClassName(columns[index])}>{I18n.t(`team_detail.membership.${columns[index]}`)}</span>
+            <span
+                className={sortColumnClassName(columns[index])}>{I18n.t(`team_detail.membership.${columns[index]}`)}</span>
             </th>
         );
         const tr = (member, index) => {
@@ -686,9 +686,9 @@ export default class TeamDetail extends React.PureComponent {
             return (
                 <tr key={`${index}`} className={member.person.id === currentUser.person.id ? "me" : ""}>
                     <td data-label={I18n.t("team_detail.name")} className="name" data-for={member.person.urn} data-tip>
-                        <span className="person-name">
-                            {member.person.name}
-                        </span>
+            <span className="person-name">
+            {member.person.name}
+            </span>
                         {!isEmpty(member.person.name) &&
                         <ReactTooltip id={member.person.urn} class="tool-tip" effect="solid">
                             <span className="person-urn">{member.person.urn}</span>
@@ -778,8 +778,10 @@ export default class TeamDetail extends React.PureComponent {
                 {tab === "details" && this.teamDetailAttributes(team, role, currentUser)}
                 {tab === "members" && this.teamMembers(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team, role)}
                 {tab === "groups" &&
-                <LinkedInstitutionTeams currentUser={currentUser} institutionTeams={currentUser.externalTeams}
-                                        team={team} institutionTeamLinked={this.institutionTeamLinked}/>}
+                <LinkedInstitutionTeams currentUser={currentUser}
+                                        institutionTeams={currentUser.externalTeams}
+                                        team={team}
+                                        institutionTeamLinked={this.institutionTeamLinked}/>}
             </div>
         );
     }

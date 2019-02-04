@@ -54,6 +54,7 @@ public class ExternalTeamController extends ApiController implements ExternalTea
 
         //There is the possibility that the external team is already linked another team of this person
         externalTeam = externalTeamRepository.findByIdentifier(externalTeamIdentifier).orElse(externalTeam);
+        externalTeam.setAdminName(federatedUser.getUsername());
 
         team.getExternalTeams().add(externalTeam);
         externalTeam.getTeams().add(team);

@@ -6,6 +6,8 @@ import teams.domain.Role;
 import teams.domain.Team;
 import teams.exception.IllegalLinkExternalTeamException;
 
+import java.util.Optional;
+
 public interface ExternalTeamValidator extends TeamValidator {
 
     default void externalTeamNotLinked(Team team, ExternalTeam externalTeam) {
@@ -38,9 +40,10 @@ public interface ExternalTeamValidator extends TeamValidator {
     }
 
     default ExternalTeam externalTeamFromFederatedUser(FederatedUser federatedUser, String externalTeamIdentifier) {
-        return federatedUser.getExternalTeams().stream()
+        Optional<ExternalTeam> externalTeamOptional = federatedUser.getExternalTeams().stream()
                 .filter(et -> et.getIdentifier().equals(externalTeamIdentifier))
-                .findFirst()
+                .findFirst();
+        return externalTeamOptional
                 .orElseThrow(() -> new IllegalLinkExternalTeamException(
                         String.format("Person %s is not a member of External Team %s",
                                 federatedUser.getUrn(), externalTeamIdentifier)));

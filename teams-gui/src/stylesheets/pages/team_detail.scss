@@ -228,17 +228,29 @@
         }
         div.tool-tip {
           @include tool-tip;
+
+          div.inner-tooltip {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+
+            &.center {
+              text-align: center;
+            }
+          }
+
           span {
             text-transform: none;
+            padding: 0 !important;
+
             &.label {
               font-weight: bold;
               display: block;
               padding: 3px 0;
             }
+
             &.value {
               font-weight: normal;
-              float: right;
-              padding: 0 0 0 60px;
             }
           }
         }

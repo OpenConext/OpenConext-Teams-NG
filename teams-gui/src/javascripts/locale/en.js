@@ -350,7 +350,8 @@ I18n.translations.en = {
         filtered: "No institutional Teams found",
         institution_team: "Institutional Team",
         no_teams: "Your institution either does not provide any Teams or you are not a member of any institutional Team.",
-
+        unknown: "'Name unknown'",
+        otherInstitutionTeams: "Admin {{name}} linked his / hers following institutional Teams to this Team:"
     },
     linked_institution_example: {
         title: "Institutional Teams explained",

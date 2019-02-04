@@ -31,7 +31,7 @@ public class MockVootClient extends VootClient{
         List<ExternalTeam> externalTeams = IntStream.range(1, 11).mapToObj(i -> new ExternalTeam(
                 "description " + i,
                 "mock-group-provider",
-                "urn:collab:group:example.org:name" + i,
+                "urn:collab:group:example.org:nameXXX" + i,
                 "name_" + i)
         ).collect(toList());
 

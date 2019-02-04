@@ -11,6 +11,7 @@ import TeamsIconLegend from "./teams_icon_legend";
 import {isEmpty} from "../utils/utils";
 import {currentUserRoleInTeam, ROLES} from "../validations/memberships";
 import LinkedInstitutionTeamsExplain from "../components/linked_institution_teams_explain";
+import groupby from "lodash/groupby";
 
 export default class LinkedInstitutionTeams extends React.PureComponent {
 
@@ -131,33 +132,66 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
             return false;
         }
         return team.externalTeams
-                .filter(et => et.identifier === institutionTeam.identifier).length > 0;
+            .filter(et => et.identifier === institutionTeam.identifier).length > 0;
     };
 
 
-    renderLinkedTeamsCellSelectionMode = (institutionTeam, team) =>
-        <td data-label={I18n.t("team_detail.linked")} className="team-linked">
+    renderLinkedTeamsCellSelectionMode = (institutionTeam, team) => {
+        const {currentUser} = this.props;
+        const ownsInstitutionTeam = (currentUser.externalTeams || [])
+            .filter(et => et.identifier === institutionTeam.identifier)
+            .length > 0;
+        const isMember = currentUserRoleInTeam(team, currentUser) === ROLES.MEMBER.role;
+
+        return <td data-label={I18n.t("team_detail.linked")} className="team-linked">
             <CheckBox name={institutionTeam.identifier}
                       value={this.isInstitutionalTeamLinked(institutionTeam, team)}
                       onChange={this.linkOrUnlink(institutionTeam)}
-                      readOnly={currentUserRoleInTeam(team, this.props.currentUser) === ROLES.MEMBER.role}/>
+                      readOnly={isMember || !ownsInstitutionTeam}/>
         </td>;
+    };
+
 
     renderLinkedTeamsCellReadOnlyMode = linkedTeams =>
         <td data-label={I18n.t("institution_teams.linked_teams")} className="linked-teams">
             <section className="linked-teams-container">
-            {linkedTeams.map((linkedTeam, index) =>
-                <NavLink key={`${linkedTeam.id}_${index}`} className="linked-team" to={`/teams/${linkedTeam.id}`}>
-                    <i className="fa fa-users"></i>{linkedTeam.name}
-                </NavLink>
-            )}
+                {linkedTeams.map((linkedTeam, index) =>
+                    <NavLink key={`${linkedTeam.id}_${index}`} className="linked-team" to={`/teams/${linkedTeam.id}`}>
+                        <i className="fa fa-users"></i>{linkedTeam.name}
+                    </NavLink>
+                )}
             </section>
         </td>;
+
+    renderOtherInstitutionTeams(team, institutionTeams) {
+        const institutionTeamsIdentifiers = institutionTeams.map(team => team.identifier);
+        const notOwnedTeams = (team.externalTeams || []).filter(team => institutionTeamsIdentifiers.indexOf(team.identifier) < 0);
+        if (notOwnedTeams.length === 0) {
+            return null;
+        }
+        notOwnedTeams.forEach(team => {
+            if (isEmpty(team.adminName)) {
+                team.adminName = I18n.t("institution_teams.unknown");
+            }
+        });
+        const groupedBy = groupby(notOwnedTeams, "adminName");
+        return (
+            <section className="other-institution-teams">
+                {Object.keys(groupedBy).map(adminName => <section key={adminName} className="other-institution-team">
+                    <p>{I18n.t("institution_teams.otherInstitutionTeams", {name: adminName})}</p>
+                    <ul>
+                        {groupedBy[adminName].map(team => <li key={team.identifier}>{`${team.name} - ${team.identifier}`}</li>)}
+                    </ul>
+                </section>)}
+            </section>)
+
+    }
 
     renderTeamsTable(filteredTeams, linkedTeams, team) {
         const columns = ["name", "description", "linked"];
         const currentSorted = this.currentSortedAttribute();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
+
 
         const th = index => (
             <th key={index} className={columns[index]}>
@@ -194,7 +228,7 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
 
     render() {
         const {filteredTeams, showExplanation, sortAttributes} = this.state;
-        const {team, linkedTeams, includeLegend, currentUser} = this.props;
+        const {team, linkedTeams, includeLegend, currentUser, institutionTeams} = this.props;
         return (
             <div className="institution_teams">
                 <LinkedInstitutionTeamsExplain
@@ -205,6 +239,7 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
                 {includeLegend && <TeamsIconLegend currentUser={this.props.currentUser}/>}
 
                 <section className="card-institution-teams">
+                    {team && this.renderOtherInstitutionTeams(team, institutionTeams)}
                     <section className="options-institution-teams">
                         <section className="search-institution-teams">
                             <div className="help" onClick={() => this.setState({showExplanation: true})}>
