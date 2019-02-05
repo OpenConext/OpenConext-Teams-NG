@@ -11,7 +11,6 @@ import TeamsIconLegend from "./teams_icon_legend";
 import {isEmpty} from "../utils/utils";
 import {currentUserRoleInTeam, ROLES} from "../validations/memberships";
 import LinkedInstitutionTeamsExplain from "../components/linked_institution_teams_explain";
-import groupby from "lodash/groupby";
 
 export default class LinkedInstitutionTeams extends React.PureComponent {
 
@@ -174,7 +173,14 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
                 team.adminName = I18n.t("institution_teams.unknown");
             }
         });
-        const groupedBy = groupby(notOwnedTeams, "adminName");
+        const groupedBy = notOwnedTeams.reduce((acc, group) => {
+            if (acc[group.adminName]) {
+                acc[group.adminName].push(group);
+            } else {
+                acc[group.adminName] = [group];
+            }
+            return acc;
+        }, {});
         return (
             <section className="other-institution-teams">
                 {Object.keys(groupedBy).map(adminName => <section key={adminName} className="other-institution-team">
