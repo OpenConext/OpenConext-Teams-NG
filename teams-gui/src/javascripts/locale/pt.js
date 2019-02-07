@@ -8,7 +8,7 @@ import I18n from "i18n-js";
 I18n.translations.pt = {
     code: "PT",
     name: "Português",
-    select_locale: "Seleccionar Português",
+    select_locale: "Selecionar Português",
 
     boolean: {
         yes: "Sim",
@@ -36,12 +36,12 @@ I18n.translations.pt = {
 
     error_dialog: {
         title: "erro inesperado",
-        body: "Isto é embaraçoso; ocorreu um erro inesperado. O erro foi registado e reportado. Por favor tente de novo. Continua a não funcionar? Carregue em 'Ajuda'.",
+        body: "Isto é embaraçoso; ocorreu um erro inesperado. O erro foi registado e reportado. Por favor tente de novo. CSe continuar a não funcionar, carregue em 'Ajuda'.",
         ok: "Fechar"
     },
 
     confirmation_dialog: {
-        title: "Confirme por favor",
+        title: "Confirmar por favor",
         confirm: "Confirmar",
         cancel: "Cancelar",
         leavePage: "Pretende mesmo sair desta página?",
@@ -54,17 +54,17 @@ I18n.translations.pt = {
         title: "Os Meus Grupos",
         name: "Nome do Grupo",
         viewable: "",
-        viewableTooltip: "Esta equipe é pública, <br/> o que significa que outros usuários <br/> das equipes SURFconext podem encontrá-lo <br/> e solicitar associação. <br/> Os administradores podem alterar essa configuração <br/> nas equipes. página de configurações ",
-        nonViewableTooltip: "Equipes não públicas são <br/> ocultas para não membros.",
+        viewableTooltip: "Este grupo é público, <br/> o que significa que outros utilizadores <br/> de grupos da RCTSaai podem encontrá-lo <br/> e solicitar a sua adesão. <br/> Os administradores podem alterar esta configuração <br/> nos Grupos. Página de configurações ",
+        nonViewableTooltip: "grupos que não sejam públicos são <br/> estão ocultados para os que não são membros.",
         description: "Descrição",
         searchPlaceHolder: "Procurar todos os grupos públicos...",
         role: "O Meu Perfil",
         membershipCount: "Membros",
         actions: "",
-        actions_phone: "Acções",
+        actions_phone: "Ações",
         edit: "Editar",
         delete: "Apagar",
-        join: "JOIN",
+        join: "Aderir",
         received_join_request: "1 convite recebido",
         received_join_requests: "{{count}} convites recebidos",
         pending_invitation: "1 convite pendente",
@@ -87,7 +87,7 @@ I18n.translations.pt = {
             join_request_delete: "Tem a certeza que pretende apagar a solicitação de se juntar ao Grupo {{name}}?",
         },
         flash: {
-            team: "O Grupo {{name}} foi {{action}} com sucesso",
+            team: "O Grupo {{name}} foi com sucesso {{action}}",
             updated: "actualizado",
             created: "criado",
             deleted: "apagado",
@@ -96,8 +96,7 @@ I18n.translations.pt = {
     },
 
     teams_autocomplete: {
-        name: "nome",
-        results_limited: "Mais entradas correspondidas do que as que podem ser exibidas. Por favor, restrinja o seu termo de pesquisa ..."
+        name: "nome"
     },
 
     team_detail: {
@@ -106,11 +105,10 @@ I18n.translations.pt = {
         description: "Descrição",
         personalNote: "Nota pessoal",
         viewable: "Grupos Públicos",
-        viewable_info: "Ao tornar o grupo público, outros utilizadores podem encontrar o grupo e solicitar a sua afiliação. Os nomes e endereços de e-mail dos administradores também ficam visíveis.",
+        viewable_info: "Ao tornar o grupo público, outros utilizadores podem encontrar o Grupo e solicitar a sua adesão. Os nomes e endereços de e-mail dos administradores também ficam visíveis.",
         name: "Nome",
         actions: "...",
         leave: "Sair do Grupo",
-        team_details: "GRUPOS INFO",
         team_members: "MEMBROS ({{count}})",
         team_groups: "GRUPOS INSTITUCIONAIS LIGADOS ({{count}})",
         membership: {
@@ -121,18 +119,18 @@ I18n.translations.pt = {
             role: "perfil",
             actions: "",
             origin: {
-                name: "Origin of membership",
-                unknown: "Unknown",
-                initial_admin: "Initial administrator",
-                public_link: "Public link",
-                invitation_accepted: "Invitation accepted",
-                join_request_accepted: "Join Request accepted",
-                approvedBy: "Approved by"
+                name: "Origem da adesão",
+                unknown: "Desconhecido",
+                initial_admin: "Administrador inicial",
+                public_link: "Endereço público",
+                invitation_accepted: "Convite aceite",
+                join_request_accepted: "Convite de Adesão aceite",
+                approvedBy: "Aprovado por"
             }
         },
         email: "Email",
         intended_role: "Perfil pretendido",
-        actions_phone: "Acções",
+        actions_phone: "Ações",
         status: "Estado",
         expiry_date: "Data expiração",
         role: "Perfil",
@@ -145,10 +143,10 @@ I18n.translations.pt = {
         search_members_placeholder: "Procurar membro",
         no_found: "Não foram encontrado membros",
         public_link: "Endereço Público",
-        public_link_disabled: "Se activado, pessoas com o endereço público podem juntar-se ao Grupo como membro sem necessitar de aprovação dos Administradores ou Gestores.",
+        public_link_disabled: "Se estiver ativadado, pessoas com acesso ao endereço público podem aderir ao Grupo como membro, isto, sem necessitar de aprovação dos Administradores ou Gestores.",
         copy: "Copiar para a memória",
         copied: "Copiado",
-        one_admin_warning: "É o único administrador do Grupo. É altamente recomendado existirem pelo menos dois Administradores em cada Grupo.",
+        one_admin_warning: "É o único administrador do Grupo. É recomendado existirem pelo menos dois Administradores em cada Grupo.",
         add: "CONVITE",
         linked: "Ligado",
         action_options: {
@@ -163,8 +161,8 @@ I18n.translations.pt = {
         confirmations: {
             delete_team: "Tem a certeza que pretende apagar o Grupo {{name}}?",
             leave_team: "Tem a certeza que pretende sair do Grupo {{name}}?",
-            delete_member: "Tem a certeza que pretende apagar a associação de {{name}}?",
-            accept_join_request: "Tem a certeza que pretende aprovar o pedido de associação de {{name}}?",
+            delete_member: "Tem a certeza que pretende apagar a adesão de {{name}}?",
+            accept_join_request: "Tem a certeza que pretende aprovar o pedido de adesão de {{name}}?",
             reject_join_request: "Tem certeza de que deseja rejeitar a solicitação de participação de {{name}}?",
             delete_invitation: "Tem a certeza que pretende apagar o convite para {{name}}?",
             downgrade_current_user: "Tem a certeza que não pretende ser mais administrador do Grupo {{name}}? Não poderá reverter esta acção sozinho.",
@@ -173,10 +171,10 @@ I18n.translations.pt = {
             deleted: "Grupo apagado com sucesso {{name}}.",
             role_changed: "O perfil para {{name}} alterado para {{role}}.",
             left: "Saiu do Grupo {{name}} com sucesso.",
-            deleted_member: "Eliminou com sucesso a associação para {{name}}.",
+            deleted_member: "Eliminou com sucesso a adesão para {{name}}.",
             deleted_invitation: "Eliminou com sucesso o convite para {{name}}.",
-            accepted_join_request: "Pedido de associação aceite por {{name}}.",
-            rejected_join_request: "Pedido de associação reejitado por {{name}}.",
+            accepted_join_request: "Pedido de adesão aceite por {{name}}.",
+            rejected_join_request: "Pedido de adesão rejitado por {{name}}.",
             linked_institutional_team: "Pedido de ligação ao Grupo Institucional {{team}} aceite para {{name}}.",
             unlinked_institutional_team: "Pedido de ligação ao Grupo Institucional {{team}} rejeitado por {{name}}."
         }
@@ -194,7 +192,7 @@ I18n.translations.pt = {
         resubmit: "Enviar de novo",
         flash: "O seu pedido para se juntar {{name}} foi enviado aos administradores",
         previous: "Pedido pendente",
-        previous_message: "Já enviou um pedido de associação para este Grupo a {{date}}",
+        previous_message: "Já enviou um pedido de adesão para este Grupo a {{date}}",
         share_info: "Compartilhe esta informação com as aplicações usadas neste Grupo.",
         approval_required: "Deve aprovar que esta informação deve ser partilhada",
         message: "Mensagem",
@@ -206,7 +204,7 @@ I18n.translations.pt = {
         manager: "Gestor",
         member: "Membro",
         invitation: "Convite",
-        join_request: "Join Request"
+        join_request: "Pedidos de Adesão"
     },
     sort: {
         label: "ORDENADO POR",
@@ -224,7 +222,7 @@ I18n.translations.pt = {
         ADMIN: "Administradores",
         MANAGER: "Gestores",
         MEMBER: "Membros",
-        JOIN_REQUEST: "Join requests",
+        JOIN_REQUEST: "Pedidos de adesão",
         INVITATION: "Convites",
         label: "MOSTRAR",
         all: "TODOS",
@@ -240,19 +238,19 @@ I18n.translations.pt = {
         already_exists_error: "Já existe um Grupo com este nome",
         required: "O nome é obrigatório",
         description: "Descrição",
-        description_info: "A descrição do Grupo é visível a qualquer pessoa se tornar este Grupo como público. Caso contrário, apenas os membros do Grupo podem visualizar a descrição.",
-        viewable_info: "Liste essa equipe no índice público de equipes para que outras pessoas possam ver as informações da equipe e solicitar a associação a essa equipe.",
+        description_info: "A descrição do Grupo é visível a qualquer pessoa, quando o Grupo é público. Caso contrário, apenas os membros do Grupo podem visualizar a descrição.",
+        viewable_info: "Selecione aqui, para listar este grupo no índice de Grupos Público. Assim, outras pessoas podem visualizar as informações do grupo e livremente solicitar a sua adesão a este grupo.",
         personal_note: "Nota pessoal",
-        personal_note_info: "Esta nota só é visível para você e outros administradores desta equipe. Você pode usar este campo para especificar o que essa equipe é usada, por exemplo.",
+        personal_note_info: "Esta nota só é visível para si e outros Administradores do Grupo. Este campo campo pode ser para especificar para que serve este Grupo.",
         admins: "administradores",
-        admins_info: "É extremamente recomendado convidar outro Administrador.",
+        admins_info: "É vivamente recomendado convidar outro Administrador.",
         admins_email_placeholder: "Adicionar um endereço de email para que haja outro Administrador...",
         invalid_email: "Endereço de email inválido",
         invitation_message: "Messagem",
-        invitation_message_info: "Mensagem pessoal para o colega Administrador deste grupo",
+        invitation_message_info: "Mensagem pessoal para o colega Administrador do grupo",
         invitation_language: "Idioma do convite",
         current_user: "{{name}} (é você)",
-        share_info: "Compartilhe esta informação com as aplicações usadas neste Grupo.",
+        share_info: "Partilhe esta informação com as aplicações usadas neste grupo.",
         approval_required: "Deve aprovar que esta informação deve ser partilhada",
         submit: "CRIAR",
         cancel: "CANCELAR",
@@ -271,16 +269,16 @@ I18n.translations.pt = {
         role: "Perfil no grupo",
         invitation_language: "Idioma do convite",
         expiry_date: "Data de expiração",
-        expiry_date_placeholder: "Expiry date for membership",
+        expiry_date_placeholder: "Data de expiração para a adesão",
         expiry_date_none: "Nenhum",
         message: "Mensagem",
-        message_info: "Sua mensagem de convite pessoal",
+        message_info: "A sua mensagem pessoal de convite",
         submit: "Convidar membros",
         cancel: "Cancelar",
         flash: "O convite foi enviado",
         flash_resent: "O email de lembrete foi enviado",
         message_placeholder: "Mensagem pessoal a ser incluída no email de convite",
-        expiry_data_info: "A data de expiração é a data de expiração da associação desta Equipe (se este convite for aceito). Ao definir uma data de expiração, um membro será removido automaticamente desta equipe após o vencimento da data de expiração. Esta não é a data de expiração do convite."
+        expiry_data_info: "A data de expiração, é a data de expiração para a adesão a este Grupo (no caso do convite ser aceite). Ao definir uma data de expiração, um membro será removido automaticamente do Grupo após o vencimento da data de expiração. Esta não é a data de expiração do convite."
     },
     invitation: {
         title: "Convite recebido para o Grupo '{{name}}'",
@@ -299,7 +297,7 @@ I18n.translations.pt = {
         share_info: "Compartilhe esta informação com as aplicações usadas neste Grupo.",
         approval_required: "Deve aprovar que esta informação deve ser partilhada",
         message: "Messagem",
-        message_info: "A mensagem de convite pessoal que você recebeu com o convite",
+        message_info: "Mensagem pessoal de convite que você recebeu juntamente com o convite",
         flash: {
             "accept": "Você aderiu com sucesso ao Grupo {{name}}.",
             "deny": "Você negou com sucesso a adesão ao Grupo {{name}}."
@@ -309,10 +307,10 @@ I18n.translations.pt = {
             accepted: "Você já aceitou este convite.",
             declined: "Você já recusou este convite.",
             expired: "Este convite expirou.",
-            already_member: "Você já é um membro desta equipe",
-            join_request: "juntar pedido",
+            already_member: "Você já é um membro deste Grupo",
+            join_request: "aderir ao pedido",
             join_request_1: " Você pode enviar uma ",
-            join_request_2: " se você quiser se tornar um membro."
+            join_request_2: " se pretender tornar-se um membro."
         }
     },
     public_link: {
@@ -322,7 +320,7 @@ I18n.translations.pt = {
             name: "Nome do Grupo",
             description: "Descrição",
             admins: "Administradores",
-            role: "O seu perfil futur"
+            role: "O seu perfil futuro"
         },
         cancel: "Cancelar",
         accept: "Aceitar",
@@ -330,10 +328,10 @@ I18n.translations.pt = {
         approval_required: "Deve aprovar que esta informação deve ser partilhada",
         flash: {
             "accept": "Você juntou-se ao Grupo {{name}} com sucesso.",
-            "deny": "Você rejeitou com sucesso o endereço público para se tornar membro do Grupo {{name}}."
+            "deny": "Você rejeitou com sucesso o endereço público para aderir ao Grupo {{name}}."
         },
         invalid: {
-            not_found: "Este é um endereço público inválido.",
+            not_found: "Este endereço público é inválido.",
             already_member: "Você já é membro deste Grupo",
             join_request: "convite",
             join_request_1: " Você pode enviar um ",
@@ -349,8 +347,8 @@ I18n.translations.pt = {
         filtered: "Nenhum Grupo institucional encontrado",
         institution_team: "Grupo Institucional",
         no_teams: "A sua instituição não fornece nenhum Grupo ou você não é membro de nenhum Grupo Institucional.",
-        unknown: "'Name unknown'",
-        otherInstitutionTeams: "Admin {{}} linked the following institutional Teams to this SURFconext Team:"
+        unknown: "'Nome desconhecido'",
+        otherInstitutionTeams: "O Administrador {{}} ligou os seguintes Grupos Institucionais a este Grupo da RCTSaai:"
     },
     linked_institution_example: {
         title: "Grupos Institucionais explicados",
@@ -372,7 +370,7 @@ I18n.translations.pt = {
 
     not_found: {
         title: "Não foi encontrada a página solicitada.",
-        description_html: "Por favor, tente mais tarde ou envie um email para <a href=\"mailto:{{helpMail}}\">{{helpMail}}</a>."
+        description_html: "Tente mais tarde por favor, ou envie um email para <a href=\"mailto:{{helpMail}}\">{{helpMail}}</a>."
     },
 
     server_error: {
