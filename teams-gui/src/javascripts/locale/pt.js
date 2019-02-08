@@ -109,6 +109,7 @@ I18n.translations.pt = {
         name: "Nome",
         actions: "...",
         leave: "Sair do Grupo",
+        team_details: "INFORMAÇÃO DO GRUPO",
         team_members: "MEMBROS ({{count}})",
         team_groups: "GRUPOS INSTITUCIONAIS LIGADOS ({{count}})",
         membership: {
