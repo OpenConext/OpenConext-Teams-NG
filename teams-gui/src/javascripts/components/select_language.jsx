@@ -10,7 +10,7 @@ import ptFlag from "../../images/pt_flag.png";
 const languageOptions = [
     {value: "DUTCH", label: "Nederlands"},
     {value: "ENGLISH", label: "English"},
-    {value: "PORTUGUES", label: "Português"}
+    {value: "PORTUGUESE", label: "Português"}
 ];
 
 export default class SelectLanguage extends React.PureComponent {
