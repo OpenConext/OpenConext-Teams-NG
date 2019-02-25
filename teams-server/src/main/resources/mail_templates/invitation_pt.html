@@ -1,45 +1,43 @@
 {{> header.html}}
 <p>
-    {{invitationMessage.person.name}} convidou-o a aderir ao grupo
-    <strong>{{invitation.team.name}}</strong>.
-    Por favor, leia em baixo quais são os passos que deve efectuar para aceitar o convite.
+    Recebeu um convite de <strong>{{invitationMessage.person.name}}</strong> para aderir 
+    ao grupo <strong>{{invitation.team.name}}</strong>.
+    Leia em baixo quais são os próximos passos a realizar para aceitar o convite.
 </p>
 
 {{#invitationMessage.containsMessage}}
 <hr/>
 <p>
-    <strong>Mensagem de {{invitationMessage.person.name}}:</strong><br>"{{{invitationMessage.htmlMessage}}}"
+    <strong>Mensagem pessoal de {{invitationMessage.person.name}}:</strong><br>"{{{invitationMessage.htmlMessage}}}"
 </p>
 <hr/>
 {{/invitationMessage.containsMessage}}
 
 <p>
     <strong>Aceitar convite:</strong><br>
-    Para aceitar este convite, carregue em <strong>'Entre para aceitar este convite'</strong>. Após autenticar-se na sua instituição 
-    passará a ser um membro do grupo.
+    Se pretende aceitar este convite, carregue em <strong>'Aceitar convite'</strong>. Passará a pertencer ao Grupo após autenticar-se
+    na sua instituição.
 </p>
 
 <p>
-    Se não pretende aceitar este convite, carregue em <strong>'Recusar este convite'</strong> ou simplesmente ignore este email.
+    Se não pretende aceitar este convite, carregue em <strong>'Recusar convite'</strong> ou simplesmente ignore este email.
     Este convite irá expirar automaticamente após 30 dias.
 </p>
 
 <table id="invitation-mail-table" cellpadding="10" width="90%" align="center">
     <tr>
         <td class="invitation-accept" align="center" width="50%">
-            <span><a href="{{baseUrl}}/invitation/accept/{{invitation.invitationHash}}" style="color:#0088CC;">Entre para aceitar este convite</a></span>
+            <span><a href="{{baseUrl}}/invitation/accept/{{invitation.invitationHash}}" style="color:#0088CC;">Aceitar convite</a></span>
         </td>
         <td class="invitation-deny" align="center" width="50%">
-            <span><a href="{{baseUrl}}/invitation/deny/{{invitation.invitationHash}}" style="color:#0088CC;">Recusar este convite</a></span>
+            <span><a href="{{baseUrl}}/invitation/deny/{{invitation.invitationHash}}" style="color:#0088CC;">Recusar convite</a></span>
         </td>
     </tr>
 </table>
 
 <p>
-    <strong>Preciso de ajuda?</strong><br>Você foi convidado por {{invitationMessage.person.name}} a aderir a este grupo.
-
-    Por favor contacte <a href="mailto:{{invitationMessage.person.email}}">{{invitationMessage.person.name}}</a>
-    se tem alguma questão sobre o convite.
+    <strong>Necessita de ajuda?</strong><br>Foi convidado a juntar-se ao grupo por <strong>{{invitationMessage.person.name}}</strong>.
+    Entre em contato com <a href="mailto:{{invitationMessage.person.email}}">{{invitationMessage.person.name}}</a> se tem alguma questão sobre o convite.
 </p>
 
 {{> invitation_pt_footer.html}}
