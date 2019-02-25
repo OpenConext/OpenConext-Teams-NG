@@ -96,7 +96,8 @@ I18n.translations.pt = {
     },
 
     teams_autocomplete: {
-        name: "nome"
+        name: "nome",
+        results_limited: "Mais entradas correspondidas do que as que podem ser exibidas. Por favor, refine seu termo de pesquisa ..."
     },
 
     team_detail: {
