@@ -80,8 +80,8 @@ spring:
     port: 3025
   main:
     banner-mode: "off"
-  flyway:
-    validate-on-migrate: false
+flyway:
+  validate-on-migrate: false
 
 email:
   from: test@surf.nl
