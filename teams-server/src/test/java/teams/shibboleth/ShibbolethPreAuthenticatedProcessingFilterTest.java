@@ -46,14 +46,18 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
     }
 
     @Test
-    public void getPreAuthenticatedPrincipalDoesNotExists() throws Exception {
+    public void getPreAuthenticatedPrincipalUTF8() throws Exception {
         Person person = new Person("urn", "Ã¤Ã¼-test-Ã¯Ã«", "mail", false);
         Person principal = doGetPreAuthenticatedPrincipal(person);
 
         assertEquals(person, principal);
-        assertEquals("äü-test-ïë", person.getName());
+        assertEquals("au-test-ie", person.getName());
+    }
 
-        //Phùng Thị Lệ Tư
+    @Test
+    public void normalize() throws Exception {
+        String res = subject.normalize("orčpžsíáýd");
+        assertEquals("orcpzsiayd", res);
     }
 
     @Test

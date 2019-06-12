@@ -166,7 +166,7 @@ I18n.translations.nl = {
             accept_join_request: "Weet je zeker dat je het toetredingsverzoek van {{name}} wilt accepteren?",
             reject_join_request: "Weet je zeker dat je het toetredingsverzoek van {{name}} wilt afkeuren?",
             delete_invitation: "Weet je zeker dat je de uitnodiging voor {{name}} wilt verwijderen?",
-            downgrade_current_user: "Weet je zeker dat je geen beheerder meer wilt zijn in team {{name}}? Je kan deze beslissing niet meer ongedaan maken.",
+            downgrade_current_user: "Weet je zeker dat je geen {{role}} meer wilt zijn in team {{name}}? Je kan deze beslissing niet meer ongedaan maken.",
         },
         flash: {
             deleted: "Team {{name}} is succesvol verwijderd.",

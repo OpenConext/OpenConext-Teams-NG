@@ -249,12 +249,13 @@ export default class TeamDetail extends React.PureComponent {
         const {currentUser} = this.props;
         const {name, id} = this.state.team;
         const i18nHash = {name: member.person.name, role: labelForRole(role.value)};
-
+        const currentRole = currentUserRoleInTeam(this.state.team, currentUser);
         const action = () => changeRole({id: member.id, role: role.value}).then(() =>
             this.refreshTeamState(id, () => setFlash(I18n.t("team_detail.flash.role_changed", i18nHash))));
-
+        const currentRoleLocal = I18n.t(`icon_legend.${currentRole.toLowerCase()}`);
         if (member.urnPerson === currentUser.urn) {
-            this.confirmation(I18n.t("team_detail.confirmations.downgrade_current_user", {name: name}), action);
+            this.confirmation(I18n.t("team_detail.confirmations.downgrade_current_user",
+              {role: currentRoleLocal, name: name}), action);
         } else {
             action();
         }

@@ -59,14 +59,13 @@ export default class Header extends React.PureComponent {
     render() {
         const currentUser = this.props.currentUser;
         const validCurrentUser = currentUser.person.id && currentUser.person.email && currentUser.person.name && currentUser.productName;
-        const organization = currentUser.config.organization;
-        const titleClassName = `title ${organization === "RCTSaai" ? "pt" : ""}`;
+        const organization = (currentUser.config.organization || "").toLowerCase();
+        const titleClassName = `title ${organization.indexOf("rctsaai") > -1 ? "pt" : ""}`;
+        const src = organization.indexOf("surfconext") > -1 ? SURFconext : organization.indexOf("rctsaai") > -1 ? RCTSaai : OpenConext;
         return (
             <div className="header-container">
                 <div className="header">
-                    {organization === "SURFconext" && <Link to="/" className="logo"><img src={SURFconext}/></Link>}
-                    {organization === "OpenConext" && <Link to="/" className="logo"><img src={OpenConext}/></Link>}
-                    {organization === "RCTSaai" && <Link to="/" className="logo"><img src={RCTSaai}/></Link>}
+                    <Link to="/" className="logo"><img src={src}/></Link>}
                     <ul className="links">
                         <li className={titleClassName}><span>{I18n.t("header.title")}</span></li>
                         {validCurrentUser && <li className="profile"

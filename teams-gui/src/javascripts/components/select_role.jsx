@@ -34,6 +34,9 @@ export default class SelectRole extends React.PureComponent {
         if (roleOfCurrentUserInTeam === ROLES.ADMIN.role) {
             return [this.ROLE_OPTIONS.ADMIN, this.ROLE_OPTIONS.MANAGER, this.ROLE_OPTIONS.MEMBER];
         }
+        if (roleOfCurrentUserInTeam === ROLES.MANAGER.role && role !== "ADMIN") {
+            return [this.ROLE_OPTIONS.MANAGER, this.ROLE_OPTIONS.MEMBER];
+        }
         return [this.ROLE_OPTIONS[role]];
     };
 

@@ -167,7 +167,7 @@ I18n.translations.pt = {
             accept_join_request: "Tem a certeza que pretende aprovar o pedido de adesão de {{name}}?",
             reject_join_request: "Tem certeza de que deseja rejeitar a solicitação de participação de {{name}}?",
             delete_invitation: "Tem a certeza que pretende apagar o convite para {{name}}?",
-            downgrade_current_user: "Tem a certeza que não pretende ser mais administrador do Grupo {{name}}? Não poderá reverter esta acção sozinho.",
+            downgrade_current_user: "Tem a certeza que não pretende ser mais {{role}} do Grupo {{name}}? Não poderá reverter esta acção sozinho.",
         },
         flash: {
             deleted: "Grupo apagado com sucesso {{name}}.",
