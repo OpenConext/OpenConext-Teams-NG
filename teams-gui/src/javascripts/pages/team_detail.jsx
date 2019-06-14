@@ -613,6 +613,7 @@ export default class TeamDetail extends React.PureComponent {
         const currentRole = currentUserRoleInTeam(team, currentUser);
         const isMember = currentRole === ROLES.MEMBER.role;
         const isAdmin = currentRole === ROLES.ADMIN.role;
+        const isManager = currentRole === ROLES.MANAGER.role;
 
         const options = [];
         if (member.isJoinRequest && !isMember) {
@@ -640,7 +641,7 @@ export default class TeamDetail extends React.PureComponent {
             });
         }
         if (member.isMembership) {
-            if (!isMemberCurrentUser && isAdmin) {
+            if (!isMemberCurrentUser && (isAdmin || (isManager && member.role !== ROLES.ADMIN.role))) {
                 options.push({
                     icon: "fa fa-trash",
                     label: "member_delete",

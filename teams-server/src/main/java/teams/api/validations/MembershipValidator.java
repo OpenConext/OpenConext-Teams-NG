@@ -34,9 +34,15 @@ public interface MembershipValidator {
         }
     }
 
-    default void onlyAdminsCanRemoveOthers(Role roleOfLoggedInPerson, Person personWhoIsRemoved, FederatedUser federatedUser) {
-        if (!(roleOfLoggedInPerson.equals(Role.ADMIN) || personWhoIsRemoved.getUrn().equals(federatedUser.getUrn()))) {
+    default void onlyAdminsCanRemoveOthers(Role roleOfLoggedInPerson, Person personWhoIsRemoved,
+                                           FederatedUser federatedUser, Role roleOfMembershipToBeDeleted) {
+        boolean personWantsToDeleteHerself = personWhoIsRemoved.getUrn().equals(federatedUser.getUrn());
+        if (roleOfLoggedInPerson.equals(Role.MEMBER) && !personWantsToDeleteHerself) {
             throw new IllegalMembershipException("Members are not allowed to do remove memberships other then themselves");
+        }
+        if (roleOfLoggedInPerson.equals(Role.MANAGER) && roleOfMembershipToBeDeleted.equals(Role.ADMIN) &&
+                !personWantsToDeleteHerself) {
+            throw new IllegalMembershipException("Managers are not allowed to remove admins");
         }
     }
 

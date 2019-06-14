@@ -3,7 +3,11 @@ package teams.api.validations;
 import org.junit.Test;
 import teams.Seed;
 import teams.api.MembershipController;
-import teams.domain.*;
+import teams.domain.Membership;
+import teams.domain.MembershipOrigin;
+import teams.domain.Person;
+import teams.domain.Role;
+import teams.domain.Team;
 import teams.exception.IllegalJoinRequestException;
 import teams.exception.IllegalMembershipException;
 
@@ -62,27 +66,32 @@ public class MembershipValidatorTest implements Seed {
 
     @Test
     public void membersCanNotRemoveOthersButAdminCan() {
-        subject.onlyAdminsCanRemoveOthers(Role.ADMIN, person("urn"), federatedUser("diff"));
+        subject.onlyAdminsCanRemoveOthers(Role.ADMIN, person("urn"), federatedUser("diff"), Role.MANAGER);
     }
 
     @Test
     public void membersCanNotRemoveOthersButThemselves() {
-        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), federatedUser("urn"));
+        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), federatedUser("urn"), Role.MEMBER);
     }
 
     @Test
-    public void managersCanNotRemoveOthersButThemselves() {
-        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("urn"));
+    public void managersCanRemoveMembersAndThemselves() {
+        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("urn"), Role.MANAGER);
     }
 
     @Test(expected = IllegalMembershipException.class)
     public void membersCanNotRemoveOthers() {
-        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), federatedUser("diff"));
+        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), federatedUser("diff"), Role.MEMBER);
     }
 
-    @Test(expected = IllegalMembershipException.class)
-    public void managersCanNotRemoveOthers() {
-        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("diff"));
+    @Test
+    public void managersCanRemoveMembers() {
+        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("diff"), Role.MEMBER);
+    }
+
+    @Test
+    public void managersCanRemoveOthetManagers() {
+        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("diff"), Role.MANAGER);
     }
 
     @Test(expected = IllegalJoinRequestException.class)
