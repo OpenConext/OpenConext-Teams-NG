@@ -76,7 +76,7 @@ public class ExternalTeamControllerTest extends AbstractApplicationTest implemen
     public void delinkTeamFromExternalTeamNoExternalTeamLeft() throws Exception {
         given()
                 .header(CONTENT_TYPE, "application/json")
-                .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
+                .header("name-id", "urn:collab:person:surfnet.nl:wdoe")
                 .body(new ExternalTeamProperties(2L, "urn:collab:group:example.org:name2"))
                 .when()
                 .put("api/teams/external-teams/delink")

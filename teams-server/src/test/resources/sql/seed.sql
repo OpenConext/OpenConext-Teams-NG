@@ -40,7 +40,7 @@ VALUES (4, 'ADMIN', 2, 'demo:openconext:org:giants', 2, 'urn:collab:person:surfn
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`, `origin`, `approved_by`)
 VALUES (5, 'ADMIN', 2, 'demo:openconext:org:giants', 3, 'urn:collab:person:surfnet.nl:wdoe', 'INITIAL_ADMIN', 'John Doe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`, `origin`, `approved_by`)
-VALUES (6, 'MANAGER', 2, 'demo:openconext:org:giants', 4, 'urn:collab:person:surfnet.nl:tdoe', 'INITIAL_ADMIN', 'John Doe');
+VALUES (6, 'MEMBER', 2, 'demo:openconext:org:giants', 4, 'urn:collab:person:surfnet.nl:tdoe', 'INITIAL_ADMIN', 'John Doe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
 VALUES (7, 'ADMIN', 3, 'demo:openconext:org:gliders', 4, 'urn:collab:person:surfnet.nl:tdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)

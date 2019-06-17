@@ -641,7 +641,7 @@ export default class TeamDetail extends React.PureComponent {
             });
         }
         if (member.isMembership) {
-            if (!isMemberCurrentUser && (isAdmin || (isManager && member.role !== ROLES.ADMIN.role))) {
+            if (!isMemberCurrentUser && (isAdmin || (isManager && member.role === ROLES.MEMBER.role))) {
                 options.push({
                     icon: "fa fa-trash",
                     label: "member_delete",

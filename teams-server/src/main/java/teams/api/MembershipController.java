@@ -57,7 +57,7 @@ public class MembershipController extends ApiController implements MembershipVal
         Role roleOfLoggedInPerson = membership(team, federatedUser.getUrn()).getRole();
         Role roleOfMembershipToBeDeleted = membership(team, person.getUrn()).getRole();
 
-        onlyAdminsCanRemoveOthers(roleOfLoggedInPerson, person, federatedUser, roleOfMembershipToBeDeleted);
+        onlyAdminsAndManagersCanRemoveMemberships(roleOfLoggedInPerson, person, federatedUser, roleOfMembershipToBeDeleted);
         oneAdminIsRequired(team, person, Role.MEMBER);
 
         //http://stackoverflow.com/a/16901857

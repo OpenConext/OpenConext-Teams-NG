@@ -66,32 +66,32 @@ public class MembershipValidatorTest implements Seed {
 
     @Test
     public void membersCanNotRemoveOthersButAdminCan() {
-        subject.onlyAdminsCanRemoveOthers(Role.ADMIN, person("urn"), federatedUser("diff"), Role.MANAGER);
+        subject.onlyAdminsAndManagersCanRemoveMemberships(Role.ADMIN, person("urn"), federatedUser("diff"), Role.MANAGER);
     }
 
     @Test
     public void membersCanNotRemoveOthersButThemselves() {
-        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), federatedUser("urn"), Role.MEMBER);
+        subject.onlyAdminsAndManagersCanRemoveMemberships(Role.MEMBER, person("urn"), federatedUser("urn"), Role.MEMBER);
     }
 
     @Test
     public void managersCanRemoveMembersAndThemselves() {
-        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("urn"), Role.MANAGER);
+        subject.onlyAdminsAndManagersCanRemoveMemberships(Role.MANAGER, person("urn"), federatedUser("urn"), Role.MANAGER);
     }
 
     @Test(expected = IllegalMembershipException.class)
     public void membersCanNotRemoveOthers() {
-        subject.onlyAdminsCanRemoveOthers(Role.MEMBER, person("urn"), federatedUser("diff"), Role.MEMBER);
+        subject.onlyAdminsAndManagersCanRemoveMemberships(Role.MEMBER, person("urn"), federatedUser("diff"), Role.MEMBER);
     }
 
     @Test
     public void managersCanRemoveMembers() {
-        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("diff"), Role.MEMBER);
+        subject.onlyAdminsAndManagersCanRemoveMemberships(Role.MANAGER, person("urn"), federatedUser("diff"), Role.MEMBER);
     }
 
-    @Test
-    public void managersCanRemoveOthetManagers() {
-        subject.onlyAdminsCanRemoveOthers(Role.MANAGER, person("urn"), federatedUser("diff"), Role.MANAGER);
+    @Test(expected = IllegalMembershipException.class)
+    public void managersMayNotRemoveOtherManagers() {
+        subject.onlyAdminsAndManagersCanRemoveMemberships(Role.MANAGER, person("urn"), federatedUser("diff"), Role.MANAGER);
     }
 
     @Test(expected = IllegalJoinRequestException.class)
