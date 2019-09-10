@@ -109,7 +109,7 @@ The first one is secured with shibboleth and CSRF and the second and third one a
     
 ## LifeCycle Deprovisioning
 
-Authz-Server has a LifeCycle API to deprovision users. The preview endpoint:
+Teams has a LifeCycle API to deprovision users. The preview endpoint:
 ```
 curl -u life:secret http://localhost:8080/deprovision/urn:collab:person:surfnet.nl:jdoe | jq 
 ```
