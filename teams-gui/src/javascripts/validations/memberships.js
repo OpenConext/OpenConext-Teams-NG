@@ -2,6 +2,7 @@ import I18n from "i18n-js";
 
 export const ROLES = {
     ADMIN: {icon: "fa fa-star", name: "admin", role: "ADMIN"},
+    OWNER: {icon: "fa fa-star", name: "owner", role: "OWNER"},
     MANAGER: {icon: "fa fa-black-tie", name: "manager", role: "MANAGER"},
     MEMBER: {icon: "fa fa-user", name: "member", role: "MEMBER"},
     JOIN_REQUEST: {icon: "fa fa-envelope", name: "join_request", role: "JOIN_REQUEST"},

@@ -69,6 +69,7 @@ public interface InvitationValidator {
     default Role doDetermineFutureRole(Role role, Role intendedRole) {
         switch (role) {
             case ADMIN:
+            case OWNER:
                 return intendedRole;
             case MANAGER:
                 return Role.MEMBER;

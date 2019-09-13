@@ -11,6 +11,7 @@ export default class SelectRole extends React.PureComponent {
         super(props);
         this.ROLE_OPTIONS = {
             ADMIN: {value: ROLES.ADMIN.role, label: I18n.t("icon_legend.admin")},
+            OWNER: {value: ROLES.OWNER.role, label: I18n.t("icon_legend.owner")},
             MANAGER: {value: ROLES.MANAGER.role, label: I18n.t("icon_legend.manager")},
             MEMBER: {value: ROLES.MEMBER.role, label: I18n.t("icon_legend.member")}
         };
@@ -29,10 +30,10 @@ export default class SelectRole extends React.PureComponent {
 
     options = (roleOfCurrentUserInTeam, isOnlyAdmin, isCurrentUser, role) => {
         if (isCurrentUser && isOnlyAdmin) {
-            return [this.ROLE_OPTIONS.ADMIN];
+            return [this.ROLE_OPTIONS.ADMIN, this.ROLE_OPTIONS.OWNER];
         }
-        if (roleOfCurrentUserInTeam === ROLES.ADMIN.role) {
-            return [this.ROLE_OPTIONS.ADMIN, this.ROLE_OPTIONS.MANAGER, this.ROLE_OPTIONS.MEMBER];
+        if (roleOfCurrentUserInTeam === ROLES.ADMIN.role || roleOfCurrentUserInTeam === ROLES.OWNER.role) {
+            return [this.ROLE_OPTIONS.ADMIN, this.ROLE_OPTIONS.OWNER, this.ROLE_OPTIONS.MANAGER, this.ROLE_OPTIONS.MEMBER];
         }
         return [this.ROLE_OPTIONS[role]];
     };

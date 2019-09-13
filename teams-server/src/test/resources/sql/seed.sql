@@ -28,6 +28,8 @@ INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)
 VALUES (6, 'urn:collab:person:example.com:john.doe', 'John Doe Junior', 'junior@domain.net', 1);
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`, `last_login_date`)
 VALUES (7, 'urn:collab:person:example.com:unhappy', 'Unhappy User', 'unhappy@domain.net', 0, '2018-05-17 09:32:12');
+INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`, `last_login_date`)
+VALUES (8, 'urn:collab:person:example.com:owner', 'Owner User', 'owner@domain.net', 0, '2018-05-17 09:32:12');
 
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`, `origin`, `approved_by`)
 VALUES (1, 'ADMIN', 1, 'demo:openconext:org:riders', 1, 'urn:collab:person:surfnet.nl:jdoe', 'INITIAL_ADMIN', 'John Doe');
@@ -38,7 +40,7 @@ VALUES (3, 'MEMBER', 3, 'demo:openconext:org:gliders', 1, 'urn:collab:person:sur
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`, `origin`, `approved_by`)
 VALUES (4, 'ADMIN', 2, 'demo:openconext:org:giants', 2, 'urn:collab:person:surfnet.nl:mdoe', 'JOIN_REQUEST_ACCEPTED', 'John Doe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`, `origin`, `approved_by`)
-VALUES (5, 'ADMIN', 2, 'demo:openconext:org:giants', 3, 'urn:collab:person:surfnet.nl:wdoe', 'INITIAL_ADMIN', 'John Doe');
+VALUES (5, 'OWNER', 2, 'demo:openconext:org:giants', 3, 'urn:collab:person:surfnet.nl:wdoe', 'INITIAL_ADMIN', 'John Doe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`, `origin`, `approved_by`)
 VALUES (6, 'MEMBER', 2, 'demo:openconext:org:giants', 4, 'urn:collab:person:surfnet.nl:tdoe', 'INITIAL_ADMIN', 'John Doe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
@@ -53,6 +55,8 @@ INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `ur
 VALUES (11, 'ADMIN', 5, 'demo:openconext:org:wolves', 3, 'urn:collab:person:surfnet.nl:wdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
 VALUES (12, 'ADMIN', 7, 'demo:openconext:org:orphan', 7, 'urn:collab:person:example.com:unhappy');
+INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
+VALUES (13, 'OWNER', 1, 'demo:openconext:org:riders', 8, 'urn:collab:person:example.com:owner');
 
 
 INSERT INTO `external_groups` (`id`, `description`, `group_provider`, `identifier`, `name`)

@@ -387,7 +387,7 @@ export default class MyTeams extends React.PureComponent {
                                     cancel={this.cancelConfirmation}
                                     confirm={confirmationDialogAction}
                                     question={confirmationDialogQuestion}/>
-                <RolesIconLegend/>
+                <RolesIconLegend includeInvitation={false} includeOwner={true}/>
                 <div className="card">
                     <div className="options">
                         <SortDropDown items={sortAttributes} sortBy={this.sort}/>

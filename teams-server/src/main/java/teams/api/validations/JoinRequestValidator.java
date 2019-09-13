@@ -1,6 +1,10 @@
 package teams.api.validations;
 
-import teams.domain.*;
+import teams.domain.FederatedUser;
+import teams.domain.JoinRequest;
+import teams.domain.Person;
+import teams.domain.Role;
+import teams.domain.Team;
 import teams.exception.IllegalJoinRequestException;
 import teams.exception.IllegalMembershipException;
 
@@ -18,7 +22,8 @@ public interface JoinRequestValidator {
 
     default List<String> admins(Team team) {
         List<String> admins = team.getMemberships().stream()
-                .filter(membership -> membership.getRole().equals(Role.ADMIN))
+                .filter(membership ->
+                        membership.getRole().equals(Role.ADMIN) || membership.getRole().equals(Role.OWNER))
                 .map(membership -> membership.getPerson().getEmail())
                 .collect(toList());
         if (admins.isEmpty()) {

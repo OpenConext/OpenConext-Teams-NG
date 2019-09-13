@@ -20,7 +20,7 @@ public class PublicLink {
         this.description = team.getDescription();
         this.alreadyMember = team.member(federatedUser.getUrn()).isPresent();
         this.admins = team.getMemberships().stream()
-                .filter(membership -> membership.getRole().equals(Role.ADMIN))
+                .filter(membership -> membership.getRole().equals(Role.ADMIN) || membership.getRole().equals(Role.OWNER))
                 .map(membership -> new AdminMember(membership.getPerson()))
                 .collect(Collectors.toList());
 

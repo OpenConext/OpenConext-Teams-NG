@@ -2,7 +2,7 @@ package teams.domain;
 
 public enum Role {
 
-    MEMBER(0), MANAGER(1), ADMIN(2);
+    MEMBER(0), MANAGER(1), ADMIN(2), OWNER(2);
 
     private int importance;
 

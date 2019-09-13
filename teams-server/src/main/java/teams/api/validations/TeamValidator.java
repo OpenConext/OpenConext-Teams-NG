@@ -8,6 +8,7 @@ import teams.exception.InvalidTeamNameException;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -44,7 +45,8 @@ public interface TeamValidator {
     }
 
     default boolean isAllowedToAcceptJoinRequest(TeamSummary teamSummary) {
-        return Role.ADMIN.equals(teamSummary.getRole()) || Role.MANAGER.equals(teamSummary.getRole());
+        return Role.ADMIN.equals(teamSummary.getRole()) || Role.MANAGER.equals(teamSummary.getRole())
+                || Role.OWNER.equals(teamSummary.getRole());
     }
 
     default void invitationsCountFromQuery(List<Object[]> counts, List<TeamSummary> summaries) {

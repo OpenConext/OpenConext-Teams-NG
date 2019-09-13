@@ -501,7 +501,7 @@ export default class TeamDetail extends React.PureComponent {
                 );
             case "members":
                 return (
-                    <RolesIconLegend includeInvitation={true}>
+                    <RolesIconLegend includeInvitation={true} includeOwner={false}>
                         {this.renderTabs(tab, team)}
                     </RolesIconLegend>
                 );

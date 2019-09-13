@@ -24,20 +24,34 @@
         &.fa-check {
           color: $green;
         }
+
         &.fa-exclamation {
           color: $red;
         }
+
         &.fa-search {
           color: $blue;
         }
       }
     }
 
-    p.current-user-name {
-      margin: 5px 0;
-      padding: 5px;
-      background-color: $light-grey;
+    div.admin-owner-select {
+      display: flex;
       width: 100%;
+      align-items: center;
+
+      div.select-role {
+        width: 100%;
+      }
+
+      p.current-user-name {
+        padding: 8px 10px 8px 15px;
+        margin-top: 4px;
+        margin-left: 10px;
+        background-color: $light-grey;
+        width: 100%;
+      }
+
     }
 
     label.invitation-message, label.invitation-language {

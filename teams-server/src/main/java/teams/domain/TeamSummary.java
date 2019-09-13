@@ -45,7 +45,7 @@ public class TeamSummary {
         this.role = membershipOptional.map(Membership::getRole).orElse(null);
         if (includeAdmins) {
             this.admins = team.getMemberships().stream()
-                    .filter(membership -> membership.getRole().equals(Role.ADMIN))
+                    .filter(membership -> membership.getRole().equals(Role.ADMIN) || membership.getRole().equals(Role.OWNER))
                     .map(membership -> new AdminMember(membership.getPerson()))
                     .collect(Collectors.toList());
         }

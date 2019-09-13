@@ -208,6 +208,7 @@ I18n.translations.en = {
     },
     icon_legend: {
         admin: "Admin",
+        owner: "Owner",
         manager: "Manager",
         member: "Member",
         invitation: "Invitation",

@@ -16,10 +16,10 @@ public interface MembershipValidator {
     }
 
     default void oneAdminIsRequired(Team team, Person person, Role futureRole) {
-        if (!futureRole.equals(Role.ADMIN)) {
+        if (futureRole.equals(Role.MEMBER) || futureRole.equals(Role.MANAGER)) {
             team.getMemberships().stream()
                     .filter(membership -> !membership.getUrnPerson().equals(person.getUrn()))
-                    .filter(membership -> membership.getRole().equals(Role.ADMIN))
+                    .filter(membership -> membership.getRole().equals(Role.ADMIN) || membership.getRole().equals(Role.OWNER))
                     .findAny()
                     .orElseThrow(() ->
                             new IllegalMembershipException(String.format("Not allowed to remove the only admin %s", person.getUrn())));

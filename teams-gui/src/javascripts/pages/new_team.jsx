@@ -13,6 +13,8 @@ import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 
 import {validNameRegExp} from "../validations/regular_exp";
+import SelectRole from "../components/select_role";
+import {ROLES} from "../validations/memberships";
 
 export default class NewTeam extends React.PureComponent {
 
@@ -112,7 +114,10 @@ export default class NewTeam extends React.PureComponent {
         <section className="form-divider">
             <label htmlFor="admins">{I18n.t("new_team.admins")}</label>
             <em>{I18n.t("new_team.admins_info")}</em>
-            <p className="current-user-name">{I18n.t("new_team.current_user", {name: currentUser.username})}</p>
+            <div className="admin-owner-select">
+              <SelectRole onChange={() =>true} role={ROLES.ADMIN.role} isOnlyAdmin={true}  isCurrentUser={true}/>
+              <p className="current-user-name">{I18n.t("new_team.current_user", {name: currentUser.username})}</p>
+            </div>
             <EmailInput emails={isEmpty(email) ? [] : [email]} emailRequired={false}
                         onChangeEmails={this.onChangeEmails}
                         multipleEmails={false}
