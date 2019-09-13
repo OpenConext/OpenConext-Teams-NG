@@ -128,7 +128,11 @@ I18n.translations.en = {
                 public_link: "Public link",
                 invitation_accepted: "Invitation accepted",
                 join_request_accepted: "Join Request accepted",
-                approvedBy: "Approved by"
+                unknown_label: "Unknown",
+                initial_admin_label: "Created by",
+                public_link_label: "Accepted by",
+                invitation_accepted_label: "Invited by",
+                join_request_accepted_label: "Approved by"
             }
         },
         email: "Email",

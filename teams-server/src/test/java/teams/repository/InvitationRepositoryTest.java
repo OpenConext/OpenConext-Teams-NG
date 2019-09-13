@@ -5,6 +5,7 @@ import teams.AbstractApplicationTest;
 import teams.domain.Invitation;
 import teams.domain.Language;
 import teams.domain.Role;
+import teams.domain.Team;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +41,13 @@ public class InvitationRepositoryTest extends AbstractApplicationTest {
 
         int count = invitationRepository.deleteExpiredInvitations(System.currentTimeMillis() + 3600 * 1000);
         assertEquals(1, count);
+    }
+
+    @Test
+    public void findByTeamAndEmai() {
+        Team team = teamRepository.findById(5L);
+        List<Invitation> invitations = invitationRepository.findByTeamAndEmail(team, "john.doe@example.org");
+        assertEquals(1, invitations.size());
     }
 
 }

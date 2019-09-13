@@ -66,6 +66,10 @@ public class JoinRequestController extends ApiController implements MembershipVa
         log.info("Approved joinRequest for team {} and person {} by {}",
                 team.getUrn(), person.getUrn(), federatedUser.getUrn());
 
+        // rare race condition when join requests and invitations overlap
+        List<Invitation> invitations = invitationRepository.findByTeamAndEmail(team, person.getEmail());
+        invitationRepository.delete(invitations);
+
         return newMembership;
     }
 

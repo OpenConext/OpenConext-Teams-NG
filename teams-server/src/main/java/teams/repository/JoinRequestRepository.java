@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import teams.domain.JoinRequest;
 import teams.domain.Person;
+import teams.domain.Team;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public interface JoinRequestRepository extends CrudRepository<JoinRequest, Long>
 
     @Query(value = "select i.team.id, count(i.id) from teams.domain.JoinRequest i where i.team.id in :teamIds group by i.team")
     List<Object[]> countJoinRequestsByTeamId(@Param("teamIds") List<Long> teamIds);
+
+    List<JoinRequest> findByPersonAndTeam(Person person, Team team);
 
 }

@@ -127,7 +127,11 @@ I18n.translations.pt = {
                 public_link: "Endereço público",
                 invitation_accepted: "Convite aceite",
                 join_request_accepted: "Convite de Adesão aceite",
-                approvedBy: "Aprovado por"
+                unknown_label: "Unknown",
+                initial_admin_label: "Created by",
+                public_link_label: "Accepted by",
+                invitation_accepted_label: "Invited by",
+                join_request_accepted_label: "Aprovado por"
             }
         },
         email: "Email",

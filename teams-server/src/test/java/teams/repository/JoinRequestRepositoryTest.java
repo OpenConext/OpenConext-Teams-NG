@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import teams.AbstractApplicationTest;
 import teams.domain.JoinRequest;
 import teams.domain.Person;
+import teams.domain.Team;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +31,14 @@ public class JoinRequestRepositoryTest extends AbstractApplicationTest {
         Object[] r1 = results.get(0);
         assertEquals(1L, Long.class.cast(r1[0]).longValue());
         assertEquals(2L, Long.class.cast(r1[1]).longValue());
+    }
+
+    @Test
+    public void findByPersonAndTeam() {
+        Team team = teamRepository.findById(1L);
+        Person person = personRepository.findOne(6L);
+        List<JoinRequest> joinRequests = joinRequestRepository.findByPersonAndTeam(person, team);
+        assertEquals(1, joinRequests.size());
     }
 
 }

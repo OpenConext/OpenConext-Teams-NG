@@ -65,7 +65,7 @@ export default class Header extends React.PureComponent {
         return (
             <div className="header-container">
                 <div className="header">
-                    <Link to="/" className="logo"><img src={src}/></Link>}
+                    <Link to="/" className="logo"><img src={src}/></Link>
                     <ul className="links">
                         <li className={titleClassName}><span>{I18n.t("header.title")}</span></li>
                         {validCurrentUser && <li className="profile"

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import teams.domain.Invitation;
+import teams.domain.Team;
 
 import javax.persistence.OptimisticLockException;
 import java.util.List;
@@ -31,4 +32,6 @@ public interface InvitationRepository extends CrudRepository<Invitation, Long> {
     @EntityGraph(value = "findFirstById", type = EntityGraph.EntityGraphType.LOAD,
             attributePaths = {"invitationMessages", "team", "team.memberships"})
     Invitation findById(Long id);
+
+    List<Invitation> findByTeamAndEmail(Team team, String email);
 }

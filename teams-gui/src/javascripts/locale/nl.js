@@ -126,7 +126,11 @@ I18n.translations.nl = {
                 public_link: "Publieke link",
                 invitation_accepted: "Uitnodiging geaccepteerd",
                 join_request_accepted: "Toetredingsverzoek geaccepteerd",
-                approvedBy: "Geaccepteerd door"
+                unknown_label: "Onbekend",
+                initial_admin_label: "Aangemaakt door",
+                public_link_label: "Geaccepteeerd door",
+                invitation_accepted_label: "Uitgenodigd door",
+                join_request_accepted_label: "Goedgekeurd door"
             }
         },
         email: "E-mail",

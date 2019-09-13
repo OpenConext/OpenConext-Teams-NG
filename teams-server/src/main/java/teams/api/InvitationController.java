@@ -105,6 +105,10 @@ public class InvitationController extends ApiController implements MembershipVal
         new Membership(invitation.getIntendedRole(), team, person, expiryDate, MembershipOrigin.INVITATION_ACCEPTED,
                 invitation.getFirstInviter().map(inviter -> inviter.getName()).orElse(person.getName()));
 
+        // rare race condition when join requests and invitations overlap
+        List<JoinRequest> joinRequests = joinRequestRepository.findByPersonAndTeam(person, team);
+        joinRequestRepository.delete(joinRequests);
+
         return teamRepository.save(team);
     }
 

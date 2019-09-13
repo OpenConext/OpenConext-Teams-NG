@@ -526,6 +526,8 @@ export default class TeamDetail extends React.PureComponent {
             const origin = member.origin ? I18n.t(`team_detail.membership.origin.${member.origin.toLowerCase()}`) :
                 I18n.t("team_detail.membership.origin.unknown");
             const approvedBy = member.approvedBy || I18n.t("team_detail.membership.origin.unknown");
+            const approvedByLabel = member.origin ? I18n.t(`team_detail.membership.origin.${member.origin.toLowerCase()}_label`):
+              I18n.t("team_detail.membership.origin.join_request_accepted_label");
             return <span className="membership" data-for={toolTipId} data-tip>
                 {moment.unix(member.created).format("LLL")}
                 {member.id && <i className="fa fa-info-circle"></i>}
@@ -534,7 +536,7 @@ export default class TeamDetail extends React.PureComponent {
                     <div className="inner-tooltip">
                         <span className="label">{I18n.t("team_detail.membership.origin.name")}</span>
                         <span className="value">{origin}</span>
-                        <span className="label">{I18n.t("team_detail.membership.origin.approvedBy")}</span>
+                        <span className="label">{approvedByLabel}</span>
                         <span className="value">{approvedBy}</span>
                     </div>
                 </ReactTooltip>}
