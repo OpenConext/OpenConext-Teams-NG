@@ -147,6 +147,7 @@ I18n.translations.nl = {
         link_to_institution_team: "Nieuw",
         search_members_placeholder: "Filter leden",
         no_found: "Geen leden gevonden",
+        no_found_owners: "Geen eigenaren geconfigureerd",
         public_link: "Publieke link",
         public_link_disabled: "Indien geactiveerd kunnen mensen die de publieke link hebben ontvangen lid worden van dit team zonder verdere goedkeuring van de beheerders.",
         copy: "Kopieer naar clipboard",

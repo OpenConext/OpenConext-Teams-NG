@@ -748,7 +748,8 @@ export default class TeamDetail extends React.PureComponent {
                 </table>
             );
         }
-        return <div><em>{I18n.t("team_detail.no_found")}</em></div>;
+        const msg = displayHeaders ? "team_detail.no_found" : "team_detail.no_found_owners";
+        return <div><em>{I18n.t(msg)}</em></div>;
     }
 
     teamMembers = (sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team, role) => {

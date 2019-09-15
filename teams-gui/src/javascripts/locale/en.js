@@ -149,6 +149,7 @@ I18n.translations.en = {
         link_to_institution_team: "Add",
         search_members_placeholder: "Filter members",
         no_found: "No members found",
+        no_found_owners: "No owners configured",
         public_link: "Public Link",
         public_link_disabled: "If enabled, people who have the public link can join the Team as member without the need for approval by admins or managers.",
         copy: "Copy to clipboard",

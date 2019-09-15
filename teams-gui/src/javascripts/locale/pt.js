@@ -148,6 +148,7 @@ I18n.translations.pt = {
         link_to_institution_team: "Adicionar",
         search_members_placeholder: "Procurar membro",
         no_found: "Não foram encontrado membros",
+        no_found_owners: "Nenhum proprietário configurado",
         public_link: "Endereço Público",
         public_link_disabled: "Se estiver ativadado, pessoas com acesso ao endereço público podem aderir ao Grupo como membro, isto, sem necessitar de aprovação dos Administradores ou Gestores.",
         copy: "Copiar para a memória",
