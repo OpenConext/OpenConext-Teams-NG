@@ -154,6 +154,7 @@ I18n.translations.nl = {
         one_admin_warning: "Je bent de enige beheerder (admin) in dit team. Het is vanwege back-up-redenen beter om twee beheerders in elk team te hebben.",
         add: "UITNODIGEN",
         linked: "Gekoppeld",
+        owners: "Eigenaren",
         action_options: {
             join_request_accept: "Accepteer toetredingsverzoek",
             join_request_reject: "Weiger toetredingsverzoek",
@@ -170,6 +171,7 @@ I18n.translations.nl = {
             accept_join_request: "Weet je zeker dat je het toetredingsverzoek van {{name}} wilt accepteren?",
             reject_join_request: "Weet je zeker dat je het toetredingsverzoek van {{name}} wilt afkeuren?",
             delete_invitation: "Weet je zeker dat je de uitnodiging voor {{name}} wilt verwijderen?",
+            equalgrade_current_user: "Weet je zeker dat je geen {{role}} meer wilt zijn in team {{name}}?",
             downgrade_current_user: "Weet je zeker dat je geen {{role}} meer wilt zijn in team {{name}}? Je kan deze beslissing niet meer ongedaan maken.",
         },
         flash: {
@@ -206,6 +208,7 @@ I18n.translations.nl = {
     },
     icon_legend: {
         admin: "Admin",
+        owner: "Eigenaar",
         manager: "Manager",
         member: "Lid",
         invitation: "Uitnodiging",
@@ -252,7 +255,7 @@ I18n.translations.nl = {
         admins_email_placeholder: "E-mailadres van een collega-beheerder...",
         invalid_email: "Ongeldig e-mailadres",
         invitation_message: "Bericht",
-        invitation_message_info: "Persoonlijk bericht voor je collega-beheerder",
+        invitation_message_info: "Persoonlijk bericht voor je collega-beheerders",
         invitation_language: "Taal van de uitnodiging",
         current_user: "{{name}} (jij dus)",
         share_info: "Deel deze informatie met de applicaties gebruikt door dit team.",

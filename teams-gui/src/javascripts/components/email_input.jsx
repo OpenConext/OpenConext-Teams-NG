@@ -86,12 +86,12 @@ export default class EmailInput extends React.PureComponent {
     };
 
     personSelected = personAutocomplete => {
-        const {emails, onChangeEmails, multipleEmails} = this.props;
+        const {emails, onChangeEmails, multipleEmails, clearAfterPersist} = this.props;
         const email = personAutocomplete.email;
 
         const newEmail = emails.indexOf(email) < 0;
         this.setState({
-            email: multipleEmails ? "" : email, suggestions: [], selectedPerson: -1,
+            email: (multipleEmails || clearAfterPersist) ? "" : email, suggestions: [], selectedPerson: -1,
             initial: !newEmail, eventFromSelectedPerson: true
         });
         if (newEmail) {
@@ -145,7 +145,7 @@ export default class EmailInput extends React.PureComponent {
     };
 
     render() {
-        const {emails, emailRequired, multipleEmails, placeholder, disabled} = this.props;
+        const {emails, emailRequired, multipleEmails, placeholder, disabled, clearAfterPersist} = this.props;
         const {initial, email, suggestions, selectedPerson} = this.state;
 
         const invalidEmailFormat = !initial && !isEmpty(email) && !validEmailRegExp.test(email);
@@ -164,13 +164,14 @@ export default class EmailInput extends React.PureComponent {
                            value={email}
                            onKeyDown={this.onAutocompleteKeyDown}
                     />
-                    {initial && <i className="fa fa-search"></i>}
+                    {(initial && this.props.currentUser.featureToggles["PERSON_EMAIL_PICKER"])
+                        && <i className="fa fa-search"></i>}
                     {showAutoCompletes && <PersonAutocomplete suggestions={suggestions}
                                                               query={email}
                                                               selectedPerson={selectedPerson}
                                                               itemSelected={this.personSelected}/>
                     }
-                    {(!invalidEmailFormat && !inValidEmail && !initial) && <i className="fa fa-check"></i>}
+                    {(!invalidEmailFormat && !inValidEmail && !initial && !clearAfterPersist) && <i className="fa fa-check"></i>}
                     {(invalidEmailFormat || inValidEmail) && <i className="fa fa-exclamation"></i>}
                 </div>}
 
@@ -198,6 +199,7 @@ EmailInput.propTypes = {
     emailRequired: PropTypes.bool,
     onChangeEmails: PropTypes.func.isRequired,
     multipleEmails: PropTypes.bool,
+    clearAfterPersist: PropTypes.bool,
     autoFocus: PropTypes.bool,
     disabled: PropTypes.bool,
     currentUser: PropTypes.object.isRequired

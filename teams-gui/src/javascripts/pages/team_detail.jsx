@@ -52,6 +52,7 @@ export default class TeamDetail extends React.PureComponent {
         this.state = {
             team: {},
             members: [],
+            owners: [],
             visibleMembers: [],
             actions: {show: false, id: ""},
             sortAttributes: [
@@ -136,9 +137,14 @@ export default class TeamDetail extends React.PureComponent {
                 };
             });
 
-        const members = team.memberships.map(member => {
-            return {...member, isMembership: true, filterAttribute: member.role, order: 3};
-        }).concat(joinRequests).concat(invitations);
+        const members = team.memberships
+            .filter(member => member.role !== ROLES.OWNER.role)
+            .map(member => ({...member, isMembership: true, filterAttribute: member.role, order: 3}))
+            .concat(joinRequests).concat(invitations);
+
+        const owners = team.memberships
+            .filter(member => member.role === ROLES.OWNER.role)
+            .map(member => ({...member, isMembership: true, filterAttribute: member.role, order: 3}));
 
         if (displayOneAdminWarning && hasOneAdmin(team, this.props.currentUser)) {
             setFlash(I18n.t("team_detail.one_admin_warning"), "warning");
@@ -154,6 +160,7 @@ export default class TeamDetail extends React.PureComponent {
         this.setState({
             team: team,
             members: members,
+            owners: owners,
             visibleMembers: sortedMembers,
             filterAttributes: newFilterAttributes.filter(attr => attr.count > 0),
             loaded: true,
@@ -254,8 +261,10 @@ export default class TeamDetail extends React.PureComponent {
             this.refreshTeamState(id, () => setFlash(I18n.t("team_detail.flash.role_changed", i18nHash))));
         const currentRoleLocal = I18n.t(`icon_legend.${currentRole.toLowerCase()}`);
         if (member.urnPerson === currentUser.urn) {
-            this.confirmation(I18n.t("team_detail.confirmations.downgrade_current_user",
-              {role: currentRoleLocal, name: name}), action);
+            const msg = (role.value === ROLES.OWNER.role || role.value === ROLES.ADMIN.role) ?
+                "team_detail.confirmations.equalgrade_current_user" : "team_detail.confirmations.downgrade_current_user";
+            this.confirmation(I18n.t(msg,
+                {role: currentRoleLocal, name: name}), action);
         } else {
             action();
         }
@@ -416,8 +425,8 @@ export default class TeamDetail extends React.PureComponent {
         );
     }
 
-    teamDetailAttributes(team, role, currentUser) {
-        const isAdmin = role === ROLES.ADMIN.role;
+    teamDetailAttributes(team, role, currentUser, owners, actions) {
+        const isAdmin = (role === ROLES.ADMIN.role || role === ROLES.OWNER.role);
         const {copiedToClipboard, copiedToClipboardPublicLink} = this.state;
         const copiedToClipBoardClassName = copiedToClipboard ? "copied" : "";
         const copiedToClipBoardPublicLinkClassName = copiedToClipboardPublicLink ? "copied" : "";
@@ -469,6 +478,10 @@ export default class TeamDetail extends React.PureComponent {
                     {team.publicLinkDisabled &&
                     <span className="attribute disabled">{universalPublicLink}
                         </span>}
+                    <div>
+                        <label className="title">{I18n.t("team_detail.owners")}</label>
+                        {this.renderMembersTable(currentUser, owners, actions, team, role, false)}
+                    </div>
                 </div>}
 
             </section>
@@ -482,7 +495,7 @@ export default class TeamDetail extends React.PureComponent {
                         {I18n.t("team_detail.team_details")}
                </span>
                 <span className={tab === "members" ? "active" : ""} onClick={() => this.setState({tab: "members"})}>
-                        {I18n.t("team_detail.team_members", {count: team.memberships.length})}
+                        {I18n.t("team_detail.team_members", {count: team.memberships.filter(m => m.role !== ROLES.OWNER.role).length})}
                </span>
                 <span className={tab === "groups" ? "active" : ""} onClick={() => this.setState({tab: "groups"})}>
                         {I18n.t("team_detail.team_groups", {count: (team.externalTeams || []).length})}
@@ -526,8 +539,8 @@ export default class TeamDetail extends React.PureComponent {
             const origin = member.origin ? I18n.t(`team_detail.membership.origin.${member.origin.toLowerCase()}`) :
                 I18n.t("team_detail.membership.origin.unknown");
             const approvedBy = member.approvedBy || I18n.t("team_detail.membership.origin.unknown");
-            const approvedByLabel = member.origin ? I18n.t(`team_detail.membership.origin.${member.origin.toLowerCase()}_label`):
-              I18n.t("team_detail.membership.origin.join_request_accepted_label");
+            const approvedByLabel = member.origin ? I18n.t(`team_detail.membership.origin.${member.origin.toLowerCase()}_label`) :
+                I18n.t("team_detail.membership.origin.join_request_accepted_label");
             return <span className="membership" data-for={toolTipId} data-tip>
                 {moment.unix(member.created).format("LLL")}
                 {member.id && <i className="fa fa-info-circle"></i>}
@@ -669,7 +682,7 @@ export default class TeamDetail extends React.PureComponent {
         return <DropDownActions options={options} i18nPrefix="team_detail.action_options"/>;
     };
 
-    renderMembersTable(currentUser, visibleMembers, actions, team, role) {
+    renderMembersTable(currentUser, visibleMembers, actions, team, role, displayHeaders = true) {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
         const columns = ["name", "email", "status", "expiry_date", "role", "actions"];
@@ -727,7 +740,7 @@ export default class TeamDetail extends React.PureComponent {
             return (
                 <table className="members">
                     <thead>
-                    <tr>{columns.map((column, index) => th(index))}</tr>
+                    {displayHeaders && <tr>{columns.map((column, index) => th(index))}</tr>}
                     </thead>
                     <tbody>
                     {visibleMembers.map((member, index) => tr(member, index))}
@@ -757,12 +770,12 @@ export default class TeamDetail extends React.PureComponent {
             </section>
             {this.renderMembersTable(currentUser, visibleMembers, actions, team, role)}
         </section>;
-    }
+    };
 
     render() {
         const {
             team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded,
-            confirmationDialogOpen, confirmationDialogAction, confirmationDialogQuestion
+            confirmationDialogOpen, confirmationDialogAction, confirmationDialogQuestion, owners
         } = this.state;
         const {currentUser} = this.props;
         if (!loaded) {
@@ -779,7 +792,7 @@ export default class TeamDetail extends React.PureComponent {
                                     question={confirmationDialogQuestion}/>
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.tabsAndIconLegend(team, tab)}
-                {tab === "details" && this.teamDetailAttributes(team, role, currentUser)}
+                {tab === "details" && this.teamDetailAttributes(team, role, currentUser, owners, actions)}
                 {tab === "members" && this.teamMembers(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team, role)}
                 {tab === "groups" &&
                 <LinkedInstitutionTeams currentUser={currentUser}

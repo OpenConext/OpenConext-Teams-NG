@@ -58,7 +58,7 @@ public abstract class ApiController {
         }
     }
 
-    protected List<Invitation> saveAndSendInvitation(List<Invitation> invitations, Team team, Person person, FederatedUser federatedUser) throws IOException, MessagingException {
+    protected List<Invitation> saveAndSendInvitation(List<Invitation> invitations, Team team, Person person, FederatedUser federatedUser)  {
         Iterable<Invitation> saved = invitationRepository.save(invitations);
         saved.forEach(invitation -> {
             try {

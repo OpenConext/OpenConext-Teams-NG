@@ -155,6 +155,7 @@ I18n.translations.pt = {
         one_admin_warning: "É o único administrador do Grupo. É recomendado existirem pelo menos dois Administradores em cada Grupo.",
         add: "CONVITE",
         linked: "Ligado",
+        owners: "OS PROPRIETÁRIOS",
         action_options: {
             join_request_accept: "Convite aceite",
             join_request_reject: "Convite rejeitado",
@@ -171,6 +172,7 @@ I18n.translations.pt = {
             accept_join_request: "Tem a certeza que pretende aprovar o pedido de adesão de {{name}}?",
             reject_join_request: "Tem certeza de que deseja rejeitar a solicitação de participação de {{name}}?",
             delete_invitation: "Tem a certeza que pretende apagar o convite para {{name}}?",
+            equalgrade_current_user: "Tem a certeza que não pretende ser mais {{role}} do Grupo {{name}}?",
             downgrade_current_user: "Tem a certeza que não pretende ser mais {{role}} do Grupo {{name}}? Não poderá reverter esta acção sozinho.",
         },
         flash: {
@@ -207,6 +209,7 @@ I18n.translations.pt = {
     },
     icon_legend: {
         admin: "Administrador",
+        owner: "Proprietária",
         manager: "Gestor",
         member: "Membro",
         invitation: "Convite",

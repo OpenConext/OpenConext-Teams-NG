@@ -2,7 +2,7 @@ import I18n from "i18n-js";
 
 export const ROLES = {
     ADMIN: {icon: "fa fa-star", name: "admin", role: "ADMIN"},
-    OWNER: {icon: "fa fa-star", name: "owner", role: "OWNER"},
+    OWNER: {icon: "fa fa-universal-access", name: "owner", role: "OWNER"},
     MANAGER: {icon: "fa fa-black-tie", name: "manager", role: "MANAGER"},
     MEMBER: {icon: "fa fa-user", name: "member", role: "MEMBER"},
     JOIN_REQUEST: {icon: "fa fa-envelope", name: "join_request", role: "JOIN_REQUEST"},
@@ -15,16 +15,18 @@ export function labelForRole(role) {
 
 export function allowedToLeave(team, currentUser) {
     const admins = team.memberships
-        .filter(membership => membership.role === ROLES.ADMIN.role && membership.urnPerson !== currentUser.urn);
+        .filter(membership => (membership.role === ROLES.ADMIN.role || membership.role === ROLES.OWNER.role)
+            && membership.urnPerson !== currentUser.urn);
     return admins.length > 0;
 }
 
 export function hasOneAdmin(team, currentUser) {
-    const pendingAdminInvitations = (team.invitations || []).filter(invitation => invitation.intendedRole === ROLES.ADMIN.role
-    && !invitation.declined);
+    const pendingAdminInvitations = (team.invitations || []).filter(invitation => (invitation.intendedRole === ROLES.ADMIN.role ||
+        invitation.intendedRole === ROLES.OWNER.role) && !invitation.declined);
     const hasPendingAdminInvitations = pendingAdminInvitations.length > 0;
     const admins = team.memberships
-        .filter(membership => membership.role === ROLES.ADMIN.role && membership.urnPerson !== currentUser.urn);
+        .filter(membership => (membership.role === ROLES.ADMIN.role || membership.role === ROLES.OWNER.role)
+            && membership.urnPerson !== currentUser.urn);
     return admins.length === 0 && !hasPendingAdminInvitations;
 }
 
@@ -33,8 +35,9 @@ export function currentUserRoleInTeam(team, currentUser) {
 }
 
 export function isOnlyAdmin(team, currentUser) {
-    const admins = team.memberships.filter(membership => membership.role === ROLES.ADMIN.role);
-    return admins.length === 1 && currentUserRoleInTeam(team, currentUser) === ROLES.ADMIN.role;
+    const admins = team.memberships.filter(membership => membership.role === ROLES.ADMIN.role || membership.role === ROLES.OWNER.role);
+    const userRoleInTeam = currentUserRoleInTeam(team, currentUser);
+    return admins.length === 1 && (userRoleInTeam === ROLES.ADMIN.role || userRoleInTeam === ROLES.OWNER.role);
 }
 
 export function iconForRole(role) {

@@ -48,7 +48,8 @@ public class VootApiController {
     public Set<Group> linkedLocalTeamsGroup(@RequestParam("externalGroupIds") String fullyQualifiedExternalGroupIds) {
         List<String> identifiers = Arrays.asList(fullyQualifiedExternalGroupIds.split(","));
         return externalTeamRepository.findByIdentifierIn(identifiers).stream()
-                .map(ExternalTeam::getTeams).flatMap(Collection::stream)
+                .map(ExternalTeam::getTeams)
+                .flatMap(Collection::stream)
                 .map(this::convertTeamToGroup)
                 .collect(toSet());
     }
@@ -66,7 +67,10 @@ public class VootApiController {
     public List<Member> getMembers(@PathVariable("localGroupId") String localGroupId) {
         localGroupId = stripGroupNameContext(localGroupId);
         Team team = resolveOptionalOrThrow(teamRepository.findByUrn(localGroupId), localGroupId);
-        return team.getMemberships().stream().map(this::convertMembershipToMember).collect(toList());
+        return team.getMemberships()
+                .stream()
+                .filter(membership -> !membership.getRole().equals(Role.OWNER))
+                .map(this::convertMembershipToMember).collect(toList());
     }
 
     @GetMapping("api/voot/groups")
@@ -81,6 +85,7 @@ public class VootApiController {
         return teamRepository.findByMembershipsUrnPerson(uid)
                 .stream()
                 .map(team -> this.convertTeamToGroupIncludingMembership(team, uid))
+                .filter(group -> !group.getMembership().equals("owner"))
                 .collect(toList());
     }
 
@@ -90,6 +95,9 @@ public class VootApiController {
         Optional<Membership> membershipOptional = membershipRepository.findByUrnTeamAndUrnPerson(strippedGroupId, uid);
         Membership membership = membershipOptional.orElseThrow(
                 () -> new ResourceNotFoundException(String.format("Membership for team %s and Person %s not found", strippedGroupId, uid)));
+        if (membership.getRole().equals(Role.OWNER)) {
+            throw new ResourceNotFoundException(String.format("Membership for team %s and Person %s not found", strippedGroupId, uid));
+        }
         return this.convertTeamToGroupIncludingMembership(membership.getTeam(), uid);
     }
 
@@ -113,7 +121,7 @@ public class VootApiController {
                                 String.format("Expected team %s to have a member with personUrn %s",
                                         team.getUrn(), urnPerson)));
 
-        String role = membership.getRole().equals(Role.MEMBER) ? "member" : "admin";
+        String role = membership.getRole().equals(Role.MEMBER) ? "member" :  membership.getRole().equals(Role.OWNER) ? "owner" : "admin";
         return new Group(team.getUrn(), team.getName(), team.getDescription(), role);
     }
 

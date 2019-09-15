@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Pattern;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -19,7 +20,7 @@ public class NewTeamProperties {
     private String personalNote;
     private boolean viewable;
 
-    private String email;
+    private Map<String, String> emails;
     private String invitationMessage;
     private Language language;
 }

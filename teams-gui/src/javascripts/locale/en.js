@@ -156,6 +156,7 @@ I18n.translations.en = {
         one_admin_warning: "You are the only administrator in the Team. It is highly recommended to have at least two administrators for each Team.",
         add: "INVITE",
         linked: "Linked",
+        owners: "OWNERS",
         action_options: {
             join_request_accept: "Accept join request",
             join_request_reject: "Reject join request",
@@ -172,6 +173,7 @@ I18n.translations.en = {
             accept_join_request: "Are you sure you want to approve the join request from {{name}}?",
             reject_join_request: "Are you sure you want to reject the join request from {{name}}?",
             delete_invitation: "Are you sure you want to delete the invitation for {{name}}?",
+            equalgrade_current_user: "Are you sure you don't want to be {{role}} anymore in Team {{name}}?.",
             downgrade_current_user: "Are you sure you don't want to be {{role}} anymore in Team {{name}}? You can't undo this action yourself.",
         },
         flash: {
@@ -252,10 +254,10 @@ I18n.translations.en = {
         personal_note_info: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
         admins: "admins",
         admins_info: "It is highly recommended to invite another administrator.",
-        admins_email_placeholder: "Enter an email address for another admin...",
+        admins_email_placeholder: "Enter an email address to invite other persons...",
         invalid_email: "Invalid email address",
         invitation_message: "Message",
-        invitation_message_info: "Personal message for the fellow admin of this team",
+        invitation_message_info: "Personal message for the invitees of this team",
         invitation_language: "Invitation language",
         current_user: "{{name}} (it's you)",
         share_info: "Share this information with the applications used by this team.",

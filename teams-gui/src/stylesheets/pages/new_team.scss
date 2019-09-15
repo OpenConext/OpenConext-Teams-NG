@@ -50,6 +50,19 @@
         margin-left: 10px;
         background-color: $light-grey;
         width: 100%;
+
+        &.deletable {
+          position: relative;
+
+          i.fa-times {
+            position: absolute;
+            color: $red;
+            right: 5px;
+            top: 0;
+            font-size: 22px;
+            cursor: pointer;
+          }
+        }
       }
 
     }

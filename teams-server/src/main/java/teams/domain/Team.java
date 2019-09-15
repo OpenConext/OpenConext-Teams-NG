@@ -55,7 +55,7 @@ public class Team implements HashGenerator, Serializable {
     @Column
     private boolean publicLinkDisabled = true;
 
-    @Formula("(select count(*) from memberships m where m.team_id = id)")
+    @Formula("(select count(*) from memberships m where m.team_id = id and m.role <> 'OWNER')")
     private int membershipCount;
 
     @OneToMany(mappedBy = "team", orphanRemoval = true, cascade = ALL)

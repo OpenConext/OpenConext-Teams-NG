@@ -16,7 +16,7 @@ import {validNameRegExp} from "../validations/regular_exp";
 import SelectRole from "../components/select_role";
 import {ROLES} from "../validations/memberships";
 
-export default class NewTeam extends React.PureComponent {
+export default class NewTeam extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -25,7 +25,8 @@ export default class NewTeam extends React.PureComponent {
             description: "",
             personalNote: "",
             viewable: true,
-            email: "",
+            roleOfCurrentUser: ROLES.ADMIN.role,
+            emails: {},
             invitationMessage: "",
             initial: true,
             format: true,
@@ -60,8 +61,12 @@ export default class NewTeam extends React.PureComponent {
         teamExistsByName(this.state.name)
             .then(exists => this.setState({exists: exists})), 350);
 
-    onChangeEmails = emails => {
-        this.setState({email: isEmpty(emails) ? "" : emails[emails.length - 1]});
+    onChangeEmails = email => {
+        if (!isEmpty(email)) {
+            const currentEmails = this.state.emails;
+            currentEmails[email[0]] = ROLES.ADMIN.role;
+            this.setState({emails: currentEmails});
+        }
     };
 
     handleInputChange = attributeName => e => {
@@ -89,7 +94,7 @@ export default class NewTeam extends React.PureComponent {
     };
 
     isValid = () => this.state.format && !this.state.exists && this.state.approval &&
-    !isEmpty(this.state.name);
+        !isEmpty(this.state.name);
 
     renderButtons = () =>
         <section className="buttons">
@@ -110,29 +115,57 @@ export default class NewTeam extends React.PureComponent {
             {!approval && <em className="error with-checkbox">{I18n.t("new_team.approval_required")}</em>}
         </section>;
 
-    renderEmailAndMessage = (currentUser, email, invitationMessage, language) =>
-        <section className="form-divider">
-            <label htmlFor="admins">{I18n.t("new_team.admins")}</label>
-            <em>{I18n.t("new_team.admins_info")}</em>
-            <div className="admin-owner-select">
-              <SelectRole onChange={() =>true} role={ROLES.ADMIN.role} isOnlyAdmin={true}  isCurrentUser={true}/>
-              <p className="current-user-name">{I18n.t("new_team.current_user", {name: currentUser.username})}</p>
-            </div>
-            <EmailInput emails={isEmpty(email) ? [] : [email]} emailRequired={false}
-                        onChangeEmails={this.onChangeEmails}
-                        multipleEmails={false}
-                        placeholder={I18n.t("new_team.admins_email_placeholder")}
-                        currentUser={currentUser}/>
-            <label className="invitation-message"
-                   htmlFor="invitationMessage">{I18n.t("new_team.invitation_message")}</label>
-            <em>{I18n.t("new_team.invitation_message_info")}</em>
-            <textarea id="invitationMessage" name="invitationMessage" value={invitationMessage}
-                      rows={3}
-                      onChange={this.handleInputChange("invitationMessage")}/>
-            <label className="invitation-language"
-                   htmlFor="invitationLanguage">{I18n.t("new_team.invitation_language")}</label>
-            <SelectLanguage onChange={this.handleInputChange("language")} language={language}/>
-        </section>;
+    changeRole = email => selectedRole => {
+        const {emails} = this.state;
+        emails[email] = selectedRole.value;
+        this.setState({...emails});
+    };
+
+    deleteInvitee = email => () => {
+        const {emails} = this.state;
+        delete emails[email];
+        this.setState({...emails});
+    };
+
+    renderEmailAndMessage = (currentUser, roleOfCurrentUser, emails, invitationMessage, language) => {
+        return (
+            <section className="form-divider">
+                <label htmlFor="admins">{I18n.t("new_team.admins")}</label>
+                <em>{I18n.t("new_team.admins_info")}</em>
+                <div className="admin-owner-select">
+                    <SelectRole onChange={selectedRole => this.setState({roleOfCurrentUser: selectedRole.value})}
+                                role={roleOfCurrentUser} isOnlyAdmin={true} isCurrentUser={true}/>
+                    <p className="current-user-name">{I18n.t("new_team.current_user", {name: currentUser.username})}</p>
+                </div>
+                {Object.keys(emails).map((email, index) =>
+                    <div key={index} className="admin-owner-select">
+                        <SelectRole onChange={this.changeRole(email)} role={emails[email]}
+                                    roleOfCurrentUserInTeam={ROLES.ADMIN.role}/>
+                        <p className="current-user-name deletable">{email}
+                            <i className="fa fa-times" onClick={this.deleteInvitee(email)}></i>
+                        </p>
+                    </div>)
+                }
+                <EmailInput emails={[]}
+                            emailRequired={false}
+                            onChangeEmails={this.onChangeEmails}
+                            multipleEmails={false}
+                            clearAfterPersist={true}
+                            placeholder={I18n.t("new_team.admins_email_placeholder")}
+                            currentUser={currentUser}/>
+                <label className="invitation-message"
+                       htmlFor="invitationMessage">{I18n.t("new_team.invitation_message")}</label>
+                <em>{I18n.t("new_team.invitation_message_info")}</em>
+                <textarea id="invitationMessage" name="invitationMessage" value={invitationMessage}
+                          rows={3}
+                          onChange={this.handleInputChange("invitationMessage")}/>
+                <label className="invitation-language"
+                       htmlFor="invitationLanguage">{I18n.t("new_team.invitation_language")}</label>
+                <SelectLanguage onChange={this.handleInputChange("language")} language={language}/>
+            </section>
+        );
+    }
+
 
     renderDescriptionAndPersonalNote = (description, viewable, personalNote) =>
         <section className="form-divider">
@@ -181,8 +214,8 @@ export default class NewTeam extends React.PureComponent {
     render() {
         const {currentUser} = this.props;
         const {
-            name, description, personalNote, viewable, initial, format, exists, invitationMessage, email, approval,
-            language, confirmationDialogOpen, confirmationDialogAction
+            name, description, personalNote, viewable, initial, format, exists, invitationMessage, emails, approval,
+            language, confirmationDialogOpen, confirmationDialogAction, roleOfCurrentUser
         } = this.state;
         const validName = format && !exists;
 
@@ -196,7 +229,7 @@ export default class NewTeam extends React.PureComponent {
                 <div className="card">
                     {this.renderName(name, validName, initial, format, exists)}
                     {this.renderDescriptionAndPersonalNote(description, viewable, personalNote)}
-                    {this.renderEmailAndMessage(currentUser, email, invitationMessage, language)}
+                    {this.renderEmailAndMessage(currentUser, roleOfCurrentUser, emails, invitationMessage, language)}
                     {this.renderApproval(approval)}
                     {this.renderButtons()}
                 </div>

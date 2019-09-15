@@ -8,6 +8,7 @@ import teams.exception.IllegalMembershipException;
 import teams.exception.IllegalSearchParamException;
 import teams.exception.NotAllowedException;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -180,10 +181,11 @@ public class TeamControllerTest extends AbstractApplicationTest {
         String urn = "demo:openconext:org:new_team_name";
         String email = "second_admin@test.org";
         String invitationMessage = "Please join";
-
+        Map<String, String> emails = new HashMap<>();
+        emails.put(email, Role.ADMIN.name());
         given()
                 .body(new NewTeamProperties("new team name", "Team champions ", null, true,
-                        email, invitationMessage, Language.DUTCH))
+                        emails, invitationMessage, Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")

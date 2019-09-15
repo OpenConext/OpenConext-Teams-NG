@@ -2,6 +2,7 @@ package teams.api;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -117,16 +118,19 @@ public class TeamController extends ApiController implements TeamValidator {
 
         log.info("Team {} created by {}", urn, federatedUser.getUrn());
 
-        if (StringUtils.hasText(teamProperties.getEmail())) {
-            Invitation invitation = new Invitation(
-                    team,
-                    teamProperties.getEmail(),
-                    Role.ADMIN,
-                    teamProperties.getLanguage(),
-                    null);
-            invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
-            Invitation saved = saveAndSendInvitation(Collections.singletonList(invitation), team, person, federatedUser).get(0);
-            savedTeam.getInvitations().add(saved);
+        if (!CollectionUtils.isEmpty(teamProperties.getEmails())) {
+            teamProperties.getEmails().forEach((email, role) -> {
+                Invitation invitation = new Invitation(
+                        team,
+                        email,
+                        Role.valueOf(role),
+                        teamProperties.getLanguage(),
+                        null);
+                invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
+                Invitation saved = saveAndSendInvitation(Collections.singletonList(invitation), team, person, federatedUser).get(0);
+                savedTeam.getInvitations().add(saved);
+
+            });
         }
 
         return lazyLoadTeam(savedTeam, membership.getRole(), federatedUser);

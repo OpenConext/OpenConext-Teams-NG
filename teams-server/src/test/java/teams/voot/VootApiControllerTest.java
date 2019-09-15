@@ -60,15 +60,15 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     @Test
     public void getMembers() throws Exception {
         start("members/demo:openconext:org:giants")
-                .body("size()", equalTo(4))
-                .body("name", hasItems("Tracey Doe", "Mary Doe", "John Doe", "William Doe"));
+                .body("size()", equalTo(3))
+                .body("name", hasItems("Tracey Doe", "Mary Doe", "John Doe"));
     }
 
     @Test
     public void getMembersWithFullyQualifiedGroupName() throws Exception {
         start("members/urn:collab:group:demo.openconext.org:demo:openconext:org:giants")
-                .body("size()", equalTo(4))
-                .body("name", hasItems("Tracey Doe", "Mary Doe", "John Doe", "William Doe"));
+                .body("size()", equalTo(3))
+                .body("name", hasItems("Tracey Doe", "Mary Doe", "John Doe"));
     }
 
     @Test
