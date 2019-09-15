@@ -627,7 +627,7 @@ export default class TeamDetail extends React.PureComponent {
         const isMemberCurrentUser = member.urnPerson === currentUser.urn;
         const currentRole = currentUserRoleInTeam(team, currentUser);
         const isMember = currentRole === ROLES.MEMBER.role;
-        const isAdmin = currentRole === ROLES.ADMIN.role;
+        const isAdmin = currentRole === ROLES.ADMIN.role || currentRole === ROLES.OWNER.role;
         const isManager = currentRole === ROLES.MANAGER.role;
 
         const options = [];
