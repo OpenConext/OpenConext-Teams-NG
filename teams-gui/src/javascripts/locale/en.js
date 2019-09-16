@@ -176,7 +176,7 @@ I18n.translations.en = {
             accept_join_request: "Are you sure you want to approve the join request from {{name}}?",
             reject_join_request: "Are you sure you want to reject the join request from {{name}}?",
             delete_invitation: "Are you sure you want to delete the invitation for {{name}}?",
-            equalgrade_current_user: "Are you sure you don't want to be {{role}} anymore in Team {{name}}?.",
+            equalgrade_current_user: "Are you sure you don't want to be {{role}} anymore in Team {{name}}?",
             downgrade_current_user: "Are you sure you don't want to be {{role}} anymore in Team {{name}}? You can't undo this action yourself.",
         },
         flash: {
