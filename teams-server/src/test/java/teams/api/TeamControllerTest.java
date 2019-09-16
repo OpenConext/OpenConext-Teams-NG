@@ -273,6 +273,22 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void resetPublicLink() throws Exception {
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+                .when()
+                .put("api/teams/teams/reset-public-link/" + 1L)
+                .then()
+                .statusCode(SC_OK);
+
+        Team updatedTeam = teamRepository.findByUrn("demo:openconext:org:riders").get();
+
+        assertEquals(new Long(1), updatedTeam.getId());
+        assertFalse(updatedTeam.getPublicLink().startsWith("wZ"));
+    }
+
+    @Test
     public void updateTeamAsGuest() throws Exception {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")

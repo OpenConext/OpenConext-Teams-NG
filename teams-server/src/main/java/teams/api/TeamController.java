@@ -166,6 +166,20 @@ public class TeamController extends ApiController implements TeamValidator {
         return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
     }
 
+    @PutMapping("api/teams/teams/reset-public-link/{id}")
+    public Object resetPublicLink(@PathVariable("id") Long id, FederatedUser federatedUser) {
+        Team team = teamById(id, false);
+
+        String federatedUserUrn = federatedUser.getUrn();
+        Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
+        onlyAdminAllowed(roleOfLoggedInPerson, federatedUser, team, "resetPublicLink");
+
+        team.resetPublicLink();
+        log.info("Team {} resetPublicLink by {}", team.getUrn(), federatedUserUrn);
+
+        return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("api/teams/teams/{id}")
     public void deleteTeam(@PathVariable("id") Long id, FederatedUser federatedUser) {

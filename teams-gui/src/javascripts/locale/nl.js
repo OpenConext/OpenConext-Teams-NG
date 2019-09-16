@@ -150,6 +150,8 @@ I18n.translations.nl = {
         no_found_owners: "Geen eigenaren geconfigureerd",
         public_link: "Publieke link",
         public_link_disabled: "Indien geactiveerd kunnen mensen die de publieke link hebben ontvangen lid worden van dit team zonder verdere goedkeuring van de beheerders.",
+        public_link_reset: "Reset publieke link",
+        public_link_reset_confirmation: "Weet je zeker dat je de publieke link opnieuw wilt instellen? De huidige publieke link is niet langer geldig.",
         copy: "Kopieer naar clipboard",
         copied: "Gekopieerd",
         one_admin_warning: "Je bent de enige beheerder (admin) in dit team. Het is vanwege back-up-redenen beter om twee beheerders in elk team te hebben.",

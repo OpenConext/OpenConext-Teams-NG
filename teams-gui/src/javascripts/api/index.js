@@ -108,6 +108,10 @@ export function saveTeam(teamProperties) {
     return postPutJson("teams", teamProperties);
 }
 
+export function resetPublicLink(id) {
+    return postPutJson("teams/reset-public-link/" + id,{},"put");
+}
+
 export function leaveTeam(membershipId) {
     return fetchDelete("memberships/" + membershipId);
 }

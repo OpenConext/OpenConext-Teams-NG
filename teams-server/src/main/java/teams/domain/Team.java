@@ -9,7 +9,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 import teams.api.validations.HashGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
@@ -106,5 +112,10 @@ public class Team implements HashGenerator, Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @JsonIgnore
+    public void resetPublicLink() {
+        this.publicLink = generateHash(32, "UTF-8");
     }
 }

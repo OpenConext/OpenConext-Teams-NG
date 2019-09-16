@@ -17,6 +17,7 @@ import {
     leaveTeam,
     linkExternalTeam,
     rejectJoinRequest,
+    resetPublicLink,
     saveTeam,
     teamIdFromUrn
 } from "../api";
@@ -187,6 +188,15 @@ export default class TeamDetail extends React.PureComponent {
             deleteTeam(team.id).then(() => {
                 this.props.history.replace("/my-teams");
                 setFlash(I18n.t("team_detail.flash.deleted", {name: team.name}));
+            });
+        });
+    };
+
+    handleResetPublicLink = team => e => {
+        stop(e);
+        this.confirmation(I18n.t("team_detail.public_link_reset_confirmation"), () => {
+            resetPublicLink(team.id).then(updatedTeam => {
+                this.stateTeam(updatedTeam, false);
             });
         });
     };
@@ -465,9 +475,16 @@ export default class TeamDetail extends React.PureComponent {
                     <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}
                               info={I18n.t("team_detail.public_link_disabled")}
                               onChange={this.changePublicLinkDisabled}/>
+
                     {!team.publicLinkDisabled &&
                     <CopyToClipboard text={universalPublicLink} onCopy={this.copiedToClipboardPublicLink}>
                         <span className="attribute">{universalPublicLink}
+                            <a onClick={this.handleResetPublicLink(team)} data-for="public-link-reset" data-tip>
+                                <i className="fa fa-link"></i>
+                            </a>
+                            <ReactTooltip id="public-link-reset" place="right">
+                                {I18n.t("team_detail.public_link_reset")}
+                            </ReactTooltip>
                             <a data-for={universalPublicLink} data-tip>
                                 <i className={`fa fa-clone ${copiedToClipBoardPublicLinkClassName}`}></i>
                             </a>

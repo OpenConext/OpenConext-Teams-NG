@@ -151,6 +151,8 @@ I18n.translations.pt = {
         no_found_owners: "Nenhum proprietário configurado",
         public_link: "Endereço Público",
         public_link_disabled: "Se estiver ativadado, pessoas com acesso ao endereço público podem aderir ao Grupo como membro, isto, sem necessitar de aprovação dos Administradores ou Gestores.",
+        public_link_reset: "Redefinir link público",
+        public_link_reset_confirmation: "Tem certeza de que deseja redefinir o link público? O link público atual não será válido solitário.",
         copy: "Copiar para a memória",
         copied: "Copiado",
         one_admin_warning: "É o único administrador do Grupo. É recomendado existirem pelo menos dois Administradores em cada Grupo.",

@@ -74,9 +74,10 @@
     i {
       color: lighten($blue, 5);
       position: absolute;
-      right: 10px;
+      right: 40px;
       top: 6px;
       font-size: 24px;
+
     }
   }
 
@@ -156,26 +157,33 @@
     tr {
       border-bottom: 1px solid $light-grey;
     }
+
     thead {
       th.name {
         width: 15%;
       }
+
       th.email {
         width: 30%;
       }
+
       th.status {
         width: 20%;
       }
+
       th.expiry_date {
         width: 15%;
       }
+
       th.role {
         width: 15%;
       }
+
       th.actions {
         text-align: right;
         width: 5%;
       }
+
       span {
         position: relative;
         display: inline-block;
@@ -220,6 +228,7 @@
           font-size: 13px;
         }
       }
+
       td.role {
         width: 15%;
       }

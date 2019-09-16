@@ -152,6 +152,8 @@ I18n.translations.en = {
         no_found_owners: "No owners configured",
         public_link: "Public Link",
         public_link_disabled: "If enabled, people who have the public link can join the Team as member without the need for approval by admins or managers.",
+        public_link_reset: "Reset public link",
+        public_link_reset_confirmation: "Are you sure you want to reset the public link? The current public link will be no longer valid.",
         copy: "Copy to clipboard",
         copied: "Copied",
         one_admin_warning: "You are the only administrator in the Team. It is highly recommended to have at least two administrators for each Team.",
