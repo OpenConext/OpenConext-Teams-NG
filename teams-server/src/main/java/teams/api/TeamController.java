@@ -112,7 +112,9 @@ public class TeamController extends ApiController implements TeamValidator {
 
         Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable(), teamProperties.getPersonalNote());
         Person person = federatedUser.getPerson();
-        Membership membership = new Membership(Role.ADMIN, team, person, MembershipOrigin.INITIAL_ADMIN, person.getName());
+        String roleOfCurrentUser = teamProperties.getRoleOfCurrentUser();
+        Role currentUserRole = getCurrentUserRole(roleOfCurrentUser);
+        Membership membership = new Membership(currentUserRole, team, person, MembershipOrigin.INITIAL_ADMIN, person.getName());
 
         Team savedTeam = teamRepository.save(team);
 
@@ -134,6 +136,10 @@ public class TeamController extends ApiController implements TeamValidator {
         }
 
         return lazyLoadTeam(savedTeam, membership.getRole(), federatedUser);
+    }
+
+    private Role getCurrentUserRole(String roleOfCurrentUser) {
+        return StringUtils.hasText(roleOfCurrentUser) ? Role.valueOf(roleOfCurrentUser) : Role.ADMIN;
     }
 
     private String constructUrn(String name) {

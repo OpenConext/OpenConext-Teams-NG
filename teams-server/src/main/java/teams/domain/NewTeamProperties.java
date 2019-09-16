@@ -21,6 +21,7 @@ public class NewTeamProperties {
     private boolean viewable;
 
     private Map<String, String> emails;
+    private String roleOfCurrentUser;
     private String invitationMessage;
     private Language language;
 }

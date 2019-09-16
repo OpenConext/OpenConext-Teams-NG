@@ -2,7 +2,12 @@ package teams.api;
 
 import org.junit.Test;
 import teams.AbstractApplicationTest;
-import teams.domain.*;
+import teams.domain.Language;
+import teams.domain.Membership;
+import teams.domain.NewTeamProperties;
+import teams.domain.Role;
+import teams.domain.Team;
+import teams.domain.TeamProperties;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
 import teams.exception.IllegalSearchParamException;
@@ -13,9 +18,19 @@ import java.util.Map;
 import java.util.Set;
 
 import static io.restassured.RestAssured.given;
-import static org.apache.http.HttpStatus.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_FORBIDDEN;
+import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
+import static org.apache.http.HttpStatus.SC_NOT_FOUND;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class TeamControllerTest extends AbstractApplicationTest {
@@ -160,7 +175,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         String urn = "demo:openconext:org:new_team_name";
         given()
                 .body(new NewTeamProperties("new team name", "Team champions ", null, true,
-                        null, null, Language.DUTCH))
+                        null, Role.ADMIN.name(), null, Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")
@@ -185,7 +200,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         emails.put(email, Role.ADMIN.name());
         given()
                 .body(new NewTeamProperties("new team name", "Team champions ", null, true,
-                        emails, invitationMessage, Language.DUTCH))
+                        emails, null, invitationMessage, Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")
