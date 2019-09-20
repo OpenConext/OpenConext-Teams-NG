@@ -13,6 +13,12 @@
 
     padding: 50px 25px 25px;
 
+    p.error {
+      width: 100%;
+      color: $red;
+      font-size: larger;
+    }
+
     section.form-divider {
       margin-bottom: 25px;
 

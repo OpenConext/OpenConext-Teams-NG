@@ -208,6 +208,10 @@ I18n.translations.nl = {
         message: "Bericht",
         message_info: "Je persoonlijke bericht voor je mede-beheerder(s) van dit Team",
         message_placeholder: "Je persoonlijke bericht",
+        not_found: "Dit {{name}} is niet meer geldig omdat het verwijderd is.",
+        teamName: "team",
+        joinRequestName: "toetredingsverzoek"
+
     },
     icon_legend: {
         admin: "Admin",

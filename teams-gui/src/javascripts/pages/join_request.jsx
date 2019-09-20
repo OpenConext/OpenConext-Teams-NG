@@ -26,24 +26,38 @@ export default class JoinRequest extends React.PureComponent {
             confirmationDialogAction: () => {
                 this.setState({confirmationDialogOpen: false});
                 this.goBack();
-            }
+            },
+            notFound: false,
+            notFoundType: ""
         };
     }
 
     componentDidMount() {
         const {teamId, id} = this.props.match.params;
-        getTeamDetail(teamId).then(team => {
-            this.setState({team: team, loaded: isEmpty(id)});
-            if (id) {
-                getJoinRequest(id).then(joinRequest => this.setState({
-                    joinRequest: joinRequest,
-                    message: joinRequest.message,
-                    loaded: true
-                }));
-            }
-        });
+        getTeamDetail(teamId, false)
+            .then(team => {
+                this.setState({team: team, loaded: isEmpty(id)});
+                if (id) {
+                    getJoinRequest(id, false)
+                        .then(joinRequest => this.setState({
+                            joinRequest: joinRequest,
+                            message: joinRequest.message,
+                            loaded: true
+                        }))
+                        .catch(this.handleNotFound("joinRequestName"));
+
+                }
+            }).catch(this.handleNotFound("teamName"));
         window.scrollTo(0, 0);
     }
+
+    handleNotFound = notFoundType => err => {
+        if (err.response && err.response.status === 404) {
+            this.setState({notFound: true, notFoundType: notFoundType, loaded: true});
+        } else {
+            throw err;
+        }
+    };
 
     handleInputChange = attributeName => e => {
         const target = e.target;
@@ -80,9 +94,9 @@ export default class JoinRequest extends React.PureComponent {
     renderTeam = team => {
         return (
             <section className="team">
-                <label >{I18n.t("join_request.team.name")}</label>
+                <label>{I18n.t("join_request.team.name")}</label>
                 <input type="text" value={team.name} disabled="true"/>
-                <label >{I18n.t("join_request.team.description")}</label>
+                <label>{I18n.t("join_request.team.description")}</label>
                 <input type="text" value={team.description} disabled="true"/>
                 <section className="admins">
                     <label>{I18n.t("join_request.team.admins")}</label>
@@ -134,7 +148,8 @@ export default class JoinRequest extends React.PureComponent {
     };
 
     render() {
-        const {team, joinRequest, message, approval, loaded, confirmationDialogOpen, confirmationDialogAction} = this.state;
+        const {team, joinRequest, message, approval, loaded, confirmationDialogOpen, confirmationDialogAction,
+            notFound, notFoundType} = this.state;
         if (!loaded) {
             return null;
         }
@@ -146,7 +161,12 @@ export default class JoinRequest extends React.PureComponent {
                                     confirm={() => this.setState({confirmationDialogOpen: false})}
                                     leavePage={true}/>
                 <h2>{I18n.t("join_request.title")}</h2>
-                <div className="card">
+                {notFound && <div className="card">
+                    <p className="error">
+                        {I18n.t("join_request.not_found" , {name: I18n.t(`join_request.${notFoundType}`)})}
+                    </p>
+                </div>}
+                {!notFound && <div className="card">
                     <section className="screen-divider">
                         {this.renderTeam(team)}
                         {this.renderExistingJoinRequest(joinRequest)}
@@ -164,7 +184,7 @@ export default class JoinRequest extends React.PureComponent {
                             {isEmpty(joinRequest.id) ? I18n.t("join_request.submit") : I18n.t("join_request.resubmit")}
                         </a>
                     </section>
-                </div>
+                </div>}
             </div>
         );
     }

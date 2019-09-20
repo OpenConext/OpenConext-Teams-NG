@@ -209,6 +209,10 @@ I18n.translations.pt = {
         message: "Mensagem",
         message_info: "A mensagem pessoal deste convite para o administrador do grupo",
         message_placeholder: "A sua mensagem pessoal",
+        not_found: "This {{name}} is not valid anymore as it has been removed.",
+        teamName: "team",
+        joinRequestName: "join request"
+
     },
     icon_legend: {
         admin: "Administrador",

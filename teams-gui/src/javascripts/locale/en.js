@@ -210,6 +210,9 @@ I18n.translations.en = {
         message: "Message",
         message_info: "Your personal invitation message for the fellow administrator of this team",
         message_placeholder: "Your personal message",
+        not_found: "This {{name}} is not valid anymore as it has been removed.",
+        teamName: "team",
+        joinRequestName: "join request"
     },
     icon_legend: {
         admin: "Admin",

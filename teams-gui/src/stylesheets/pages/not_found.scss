@@ -1,7 +1,15 @@
 .mod-not-found, .mod-server-error {
+
+  @include page;
+
+  .card {
+    @include card;
+    padding-bottom: 15px;
+  }
+
   padding: 50px;
   text-align: center;
-  margin: 50px 100px;
+  margin-top: 25px;
   background-color: white;
   box-shadow: 1px 4px 12px 1px $medium-grey;
   border-radius: $br;

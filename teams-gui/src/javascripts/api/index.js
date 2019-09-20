@@ -109,7 +109,7 @@ export function saveTeam(teamProperties) {
 }
 
 export function resetPublicLink(id) {
-    return postPutJson("teams/reset-public-link/" + id,{},"put");
+    return postPutJson("teams/reset-public-link/" + id, {}, "put");
 }
 
 export function leaveTeam(membershipId) {
@@ -180,8 +180,8 @@ export function joinRequest(clientJoinRequest) {
     return postPutJson("join-requests", clientJoinRequest);
 }
 
-export function getJoinRequest(id) {
-    return fetchJson("join-requests/" + id);
+export function getJoinRequest(id, showErrorDialog = true) {
+    return fetchJson("join-requests/" + id, {}, {}, showErrorDialog);
 }
 
 export function approveJoinRequest(id) {

@@ -99,7 +99,7 @@ export default class TeamDetail extends React.PureComponent {
                 .then(id => this.refreshTeamState(id))
                 .catch(this.handleNotFound);
         } else {
-            this.props.history.push("/404");
+            this.props.history.push("/404/");
         }
 
     };
