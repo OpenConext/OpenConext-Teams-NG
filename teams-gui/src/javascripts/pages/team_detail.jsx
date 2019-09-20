@@ -480,7 +480,7 @@ export default class TeamDetail extends React.PureComponent {
                     <CopyToClipboard text={universalPublicLink} onCopy={this.copiedToClipboardPublicLink}>
                         <span className="attribute">{universalPublicLink}
                             <a onClick={this.handleResetPublicLink(team)} data-for="public-link-reset" data-tip>
-                                <i className="fa fa-link"></i>
+                                <i className="fa fa-refresh"></i>
                             </a>
                             <ReactTooltip id="public-link-reset" place="right">
                                 {I18n.t("team_detail.public_link_reset")}
