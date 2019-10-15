@@ -1,5 +1,7 @@
 package teams.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -16,10 +18,14 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestController
 public class ErrorController implements org.springframework.boot.autoconfigure.web.ErrorController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ErrorController.class);
 
     private final ErrorAttributes errorAttributes;
 
@@ -44,6 +50,9 @@ public class ErrorController implements org.springframework.boot.autoconfigure.w
         if (error == null) {
             statusCode = result.containsKey("status") ? HttpStatus.valueOf((Integer) result.get("status")) : INTERNAL_SERVER_ERROR;
         } else {
+
+            LOG.error("Error occurred", error);
+
             //https://github.com/spring-projects/spring-boot/issues/3057
             ResponseStatus annotation = AnnotationUtils.getAnnotation(error.getClass(), ResponseStatus.class);
             statusCode = annotation != null ? annotation.value() : status(error);

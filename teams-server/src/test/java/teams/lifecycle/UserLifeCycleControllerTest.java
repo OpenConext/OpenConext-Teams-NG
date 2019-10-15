@@ -1,5 +1,6 @@
 package teams.lifecycle;
 
+import io.restassured.http.Header;
 import org.junit.Test;
 import teams.AbstractApplicationTest;
 
@@ -54,7 +55,20 @@ public class UserLifeCycleControllerTest extends AbstractApplicationTest {
 
     @Test
     public void deprovisionNonExistentUser() {
-        LifeCycleResult result = doDeprovision(false, "nope");
+        LifeCycleResult result = doDeprovision(false, "nope.nope");
+        assertEquals(0, result.getData().size());
+    }
+
+    @Test
+    public void contentNegotion() {
+        LifeCycleResult result = given()
+                .auth()
+                .preemptive()
+                .basic("life", "secret")
+                .header(new Header("Accept", "application/json"))
+                .when()
+                .delete("deprovision/nope.h")
+                .as(LifeCycleResult.class);
         assertEquals(0, result.getData().size());
     }
 

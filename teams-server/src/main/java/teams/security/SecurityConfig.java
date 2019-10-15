@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import teams.domain.Feature;
@@ -223,6 +224,11 @@ public class SecurityConfig {
             registry.addInterceptor(new SessionAliveInterceptor());
         }
 
+        @Override
+        public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+            super.configureContentNegotiation(configurer);
+            configurer.favorParameter(false).favorPathExtension(false);
+        }
     }
 
 }
