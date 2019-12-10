@@ -313,7 +313,7 @@ export default class MyTeams extends React.PureComponent {
                 }
             });
         }
-        if (team.role === "ADMIN") {
+        if (team.role === "ADMIN" || team.role === "OWNER") {
             options.push({icon: "fa fa-trash", label: "team_delete", action: this.handleDeleteTeam(team)});
         }
         return <DropDownActions options={options} i18nPrefix="teams.action_options"/>;
