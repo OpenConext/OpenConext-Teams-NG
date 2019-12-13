@@ -594,7 +594,8 @@ export default class TeamDetail extends React.PureComponent {
         } else if (member.isInvitation) {
             const label = labelForRole(ROLES.INVITATION.role);
             const toolTipId = `invitation_${member.id}`;
-            const latestMessage = member.invitationMessages.sort((m1, m2) => m1.id < m2.id ? 1 : -1)[0];
+            const latestMessage = member.invitationMessages.sort((m1, m2) => m1.id < m2.id ? 1 : -1)[0]
+                || {message:"", timestamp: new Date().getTime()};
             const className = member.declined ? "declined" : "";
             return (
                 <span className={`invitation ${className}`} data-for={toolTipId} data-tip>
