@@ -52,7 +52,7 @@ public class VootClient {
     public List<ExternalTeam> teams(String personUrn) {
         String personUrnEncoded = encodeUrn(personUrn);
         List<ExternalTeam> externalTeams = vootService.exchange(
-                RequestEntity.get(URI.create(String.format("%s/internal/external-groups/%s", serviceUrl, personUrnEncoded))).build(),
+                RequestEntity.get(URI.create(String.format("%s/internal/external-groups/%s/", serviceUrl, personUrnEncoded))).build(),
                 new ParameterizedTypeReference<List<Map<String, Object>>>() {
                 })
                 .getBody()
