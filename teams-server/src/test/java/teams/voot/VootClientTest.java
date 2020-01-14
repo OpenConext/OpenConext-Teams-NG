@@ -33,7 +33,7 @@ public class VootClientTest implements Mocks {
         String oauthJson = fromMocks("voot-groups.json");
 
         stubFor(post(urlEqualTo("/oauth/token")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(groupsJson)));
-        stubFor(get(urlEqualTo("/internal/external-groups/" + URLEncoder.encode(personUrn, Charset.defaultCharset().name()))).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(oauthJson)));
+        stubFor(get(urlEqualTo("/internal/external-groups/" + URLEncoder.encode(personUrn, Charset.defaultCharset().name()) + "/")).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(oauthJson)));
 
         List<ExternalTeam> teams = client.teams(personUrn);
         assertEquals(2, teams.size());
