@@ -82,7 +82,7 @@ public class VootApiController {
 
     @GetMapping("api/voot/user/{uid:.+}/groups")
     public List<Group> getGroupsForMember(@PathVariable("uid") String uid) {
-        return teamRepository.findByMembershipsUrnPerson(uid)
+        return teamRepository.findByMembershipsUrnPersonIgnoreCase(uid)
                 .stream()
                 .map(team -> this.convertTeamToGroupIncludingMembership(team, uid))
                 .filter(group -> !group.getMembership().equals("owner"))

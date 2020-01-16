@@ -21,8 +21,8 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
     @EntityGraph(value = "findByPublicLinkAndPublicLinkDisabled", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "memberships")
     Optional<Team> findByPublicLinkAndPublicLinkDisabled(String publicLink, boolean publicLinkDisabled);
 
-    @EntityGraph(value = "findByMembershipsUrnPerson", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "memberships")
-    List<Team> findByMembershipsUrnPerson(String personUrn);
+    @EntityGraph(value = "findByMembershipsUrnPersonIgnoreCase", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "memberships")
+    List<Team> findByMembershipsUrnPersonIgnoreCase(String personUrn);
 
     @Query(value = "select distinct(teams.name), teams.id, teams.description, (select memberships.role from memberships " +
             "where memberships.person_id = ?1 and memberships.team_id = teams.id) as role " +

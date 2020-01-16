@@ -42,9 +42,16 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void findByMembershipsPersonUrn() throws Exception {
-        List<Team> teams = teamRepository.findByMembershipsUrnPerson(
+    public void findByMembershipsPersonUrn() {
+        List<Team> teams = teamRepository.findByMembershipsUrnPersonIgnoreCase(
                 "urn:collab:person:surfnet.nl:jdoe");
+        assertEquals(3, teams.size());
+    }
+
+    @Test
+    public void findByMembershipsPersonUrnIgnoreCase() throws Exception {
+        List<Team> teams = teamRepository.findByMembershipsUrnPersonIgnoreCase(
+                "urn:COLLAB:person:SURFNET.nl:JDOE");
         assertEquals(3, teams.size());
     }
 

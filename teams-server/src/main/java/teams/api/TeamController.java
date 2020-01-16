@@ -34,7 +34,7 @@ public class TeamController extends ApiController implements TeamValidator {
     @GetMapping("api/teams/my-teams")
     public MyTeams myTeams(FederatedUser federatedUser) {
         List<Team> teams = teamRepository
-                .findByMembershipsUrnPerson(federatedUser.getUrn());
+                .findByMembershipsUrnPersonIgnoreCase(federatedUser.getUrn());
         List<TeamSummary> teamSummaries = teams
                 .stream()
                 .map(team -> new TeamSummary(team, federatedUser, false))
