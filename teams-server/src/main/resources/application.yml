@@ -11,6 +11,8 @@ feature-toggles:
   expiry-date-membership: false
   person-email-picker: true
 
+secure_cookie: false
+
 api:
   lifecycle:
     username: life

@@ -2,6 +2,7 @@ package teams.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
@@ -15,6 +16,8 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -34,6 +37,14 @@ import java.util.Map;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 public class SecurityConfig {
+
+
+    @Bean
+    CookieSerializer cookieSerializer(@Value("${secure_cookie}") boolean secureCookie) {
+        DefaultCookieSerializer defaultCookieSerializer = new DefaultCookieSerializer();
+        defaultCookieSerializer.setUseSecureCookie(secureCookie);
+        return defaultCookieSerializer;
+    }
 
     @Order(1)
     @Configuration
