@@ -25,24 +25,24 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     protected String password;
 
     @Test
-    public void findByLocalGroupId() throws Exception {
+    public void findByLocalGroupId() {
         start("group/demo:openconext:org:giants")
                 .body("displayName", equalTo("giants"));
     }
 
     @Test
-    public void findByFullyQualifiedGroupId() throws Exception {
+    public void findByFullyQualifiedGroupId() {
         start("group/urn:collab:group:demo.openconext.org:demo:openconext:org:giants")
                 .body("displayName", equalTo("giants"));
     }
 
     @Test
-    public void findByLocalGroupIdNonExistent() throws Exception {
+    public void findByLocalGroupIdNonExistent() {
         start("group/demo:openconext:org:nope", SC_NOT_FOUND);
     }
 
     @Test
-    public void linkedLocalTeamsGroup() throws Exception {
+    public void linkedLocalTeamsGroup() {
         String[] params = {"externalGroupIds", "urn:collab:group:example.org:name1,urn:collab:group:example.org:name2"};
         start("linked-locals", Optional.of(params), SC_OK)
                 .body("size()", equalTo(2))
@@ -50,7 +50,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void linkedExternalGroupIds() throws Exception {
+    public void linkedExternalGroupIds() {
         String[] params = {"teamId", "demo:openconext:org:riders"};
         start("linked-externals", Optional.of(params), SC_OK)
                 .body("size()", equalTo(2))
@@ -58,7 +58,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void getMembers() throws Exception {
+    public void getMembers() {
         start("members/demo:openconext:org:giants")
                 .body("size()", equalTo(3))
                 .body("name", hasItems("Tracey Doe", "Mary Doe", "John Doe"));
@@ -72,14 +72,14 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void getAllGroups() throws Exception {
+    public void getAllGroups() {
         start("groups")
-                .body("size()", equalTo(6))
+                .body("size()", equalTo(7))
                 .body("displayName", hasItems("riders", "giants", "gliders", "masters", "wolves"));
     }
 
     @Test
-    public void getGroupsForMember() throws Exception {
+    public void getGroupsForMember() {
         start("user/urn:collab:person:surfnet.nl:tdoe/groups")
                 .body("size()", equalTo(2))
                 .body("displayName", hasItems("giants", "gliders"))
@@ -87,7 +87,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void getGroupsForMemberAndTeamUrn() throws Exception {
+    public void getGroupsForMemberAndTeamUrn() {
         start("user/urn:collab:person:surfnet.nl:tdoe/groups/demo:openconext:org:gliders")
                 //four properties, not elements
                 .body("size()", equalTo(4))
@@ -96,7 +96,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void getGroupsForMemberAndTeamUrnNotExists() throws Exception {
+    public void getGroupsForMemberAndTeamUrnNotExists() {
         start("user/urn:collab:person:surfnet.nl:nope/groups/demo:openconext:org:nope", SC_NOT_FOUND);
     }
 
