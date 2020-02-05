@@ -236,6 +236,7 @@ I18n.translations.pt = {
     },
     filter: {
         ADMIN: "Administradores",
+        OWNER: "Proprietário",
         MANAGER: "Gestores",
         MEMBER: "Membros",
         JOIN_REQUEST: "Pedidos de adesão",

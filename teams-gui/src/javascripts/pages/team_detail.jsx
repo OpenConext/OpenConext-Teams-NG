@@ -426,8 +426,9 @@ export default class TeamDetail extends React.PureComponent {
                                                              onClick={this.handleLeaveTeam(myMembershipId)}>{I18n.t("team_detail.leave")}
                         <i className="fa fa-sign-out"></i>
                     </a>}
-                    {role === ROLES.ADMIN.role && <a className="button" href="#"
-                                                     onClick={this.handleDeleteTeam(team)}>{I18n.t("team_detail.delete")}
+                    {(role === ROLES.ADMIN.role || role === ROLES.OWNER.role) &&
+                    <a className="button" href="#"
+                       onClick={this.handleDeleteTeam(team)}>{I18n.t("team_detail.delete")}
                         <i className="fa fa-trash"></i>
                     </a>}
                 </div>
@@ -595,7 +596,7 @@ export default class TeamDetail extends React.PureComponent {
             const label = labelForRole(ROLES.INVITATION.role);
             const toolTipId = `invitation_${member.id}`;
             const latestMessage = member.invitationMessages.sort((m1, m2) => m1.id < m2.id ? 1 : -1)[0]
-                || {message:"", timestamp: new Date().getTime()};
+                || {message: "", timestamp: new Date().getTime()};
             const className = member.declined ? "declined" : "";
             return (
                 <span className={`invitation ${className}`} data-for={toolTipId} data-tip>

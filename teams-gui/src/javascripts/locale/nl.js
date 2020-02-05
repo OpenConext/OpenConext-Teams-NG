@@ -235,6 +235,7 @@ I18n.translations.nl = {
     },
     filter: {
         ADMIN: "Admins",
+        OWNER: "Eigenaar",
         MANAGER: "Managers",
         MEMBER: "Leden",
         JOIN_REQUEST: "Toetredingsverzoeken",

@@ -235,7 +235,8 @@ I18n.translations.en = {
         linked: "Linked"
     },
     filter: {
-        ADMIN: "Admins",
+        ADMIN: "Admin",
+        OWNER: "Owner",
         MANAGER: "Manager",
         MEMBER: "Members",
         JOIN_REQUEST: "Join requests",

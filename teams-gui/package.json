@@ -66,9 +66,7 @@
     "uglifyjs-webpack-plugin": "^0.4.3",
     "url-loader": "0.5.7",
     "webpack": "1.13.2",
-    "webpack-dev-server": "1.16.1"
-  },
-  "dependencies": {
-    "react-scripts": "1.0.7"
+    "webpack-dev-server": "1.16.1",
+    "react-scripts": "3.3.1"
   }
 }

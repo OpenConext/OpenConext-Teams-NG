@@ -36,6 +36,7 @@ export default class MyTeams extends React.PureComponent {
             ],
             filterAttributes: [
                 {name: ROLES.ADMIN.role, selected: true, count: 0},
+                {name: ROLES.OWNER.role, selected: true, count: 0},
                 {name: ROLES.MANAGER.role, selected: true, count: 0},
                 {name: ROLES.MEMBER.role, selected: true, count: 0},
                 {name: ROLES.JOIN_REQUEST.role, selected: true, count: 0}
@@ -305,7 +306,7 @@ export default class MyTeams extends React.PureComponent {
                 action: () => this.props.history.replace(`/teams/${team.id}`)
             });
         }
-        if (team.role === "ADMIN" || team.role === "MANAGER") {
+        if (team.role === "ADMIN" || team.role === "OWNER" || team.role === "MANAGER") {
             options.push({
                 icon: "fa fa-clock-o", label: "invite_member", action: () => {
                     setBackPage("/my-teams");
