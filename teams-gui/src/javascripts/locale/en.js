@@ -109,7 +109,7 @@ I18n.translations.en = {
         viewable_info: "By making your Team public, other users can find the Team and request membership for it. The names and email addresses of the admins are also visible.",
         name: "Name",
         actions: "...",
-        leave: "Leave",
+        leave: "Leave Team",
 
         team_details: "TEAM INFO",
         team_members: "MEMBERS ({{count}})",
@@ -143,7 +143,7 @@ I18n.translations.en = {
         role: "Role",
         pending: "PENDING",
         resend_invitation: "Resend invitation",
-        delete: "Delete",
+        delete: "Delete Team",
         edit: "Edit",
         invite: "Invite",
         link_to_institution_team: "Add",
