@@ -86,6 +86,7 @@ export default class NewTeam extends React.Component {
         if (this.isValid()) {
             const teamProperties = {...this.state};
             ["initial", "format", "exists", "approval"].forEach(attr => delete teamProperties[attr]);
+            teamProperties.language = this.state.language.value || this.state.language;
             saveTeam(teamProperties)
                 .then(team => {
                     this.props.history.push(`/teams/${team.id}`);

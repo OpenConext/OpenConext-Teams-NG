@@ -127,6 +127,7 @@ export default class Invite extends React.PureComponent {
                     .then(afterAction);
 
             } else {
+                const languageValue = language.value || language;
                 invite({
                     teamId,
                     intendedRole,
@@ -134,7 +135,7 @@ export default class Invite extends React.PureComponent {
                     expiryDate: expiryDate || null,
                     message,
                     csvEmails: csvEmails === false ? null : csvEmails,
-                    language
+                    language: languageValue
                 })
                     .then(afterAction);
             }
