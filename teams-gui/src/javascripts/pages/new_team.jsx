@@ -15,6 +15,7 @@ import {isEmpty, stop} from "../utils/utils";
 import {validNameRegExp} from "../validations/regular_exp";
 import SelectRole from "../components/select_role";
 import {ROLES} from "../validations/memberships";
+import {languageOptions} from "../constants/languages";
 
 export default class NewTeam extends React.Component {
 
@@ -32,7 +33,7 @@ export default class NewTeam extends React.Component {
             format: true,
             exists: false,
             approval: true,
-            language: "ENGLISH",
+            language: languageOptions.find(option => option.code === I18n.locale),
             confirmationDialogOpen: false,
             confirmationDialogAction: () => {
                 this.setState({confirmationDialogOpen: false});
@@ -161,7 +162,8 @@ export default class NewTeam extends React.Component {
                           onChange={this.handleInputChange("invitationMessage")}/>
                 <label className="invitation-language"
                        htmlFor="invitationLanguage">{I18n.t("new_team.invitation_language")}</label>
-                <SelectLanguage onChange={this.handleInputChange("language")} language={language}/>
+                <SelectLanguage onChange={this.handleInputChange("language")} language={language}
+                                supportedLanguageCodes={this.props.currentUser.config.supportedLanguageCodes}/>
             </section>
         );
     }

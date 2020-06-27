@@ -18,6 +18,7 @@ import SelectRole from "../components/select_role";
 import moment from "moment";
 
 import {validEmailRegExp} from "../validations/regular_exp";
+import {languageOptions} from "../constants/languages";
 
 export default class Invite extends React.PureComponent {
 
@@ -31,7 +32,7 @@ export default class Invite extends React.PureComponent {
             fileName: "",
             fileInputKey: new Date().getMilliseconds(),
             intendedRole: "MEMBER",
-            language: "ENGLISH",
+            language: languageOptions.find(option => option.code === I18n.locale),
             expiryDate: undefined,
             message: "",
             roleOfCurrentUserInTeam: "MANAGER",
@@ -196,7 +197,9 @@ export default class Invite extends React.PureComponent {
                 <div>
                     <label className="invitation-language"
                            htmlFor="invitationLanguage">{I18n.t("invite.invitation_language")}</label>
-                    <SelectLanguage onChange={this.handleInputChange("language")} language={language} disabled={readOnly} />
+                    <SelectLanguage onChange={this.handleInputChange("language")} language={language}
+                                    disabled={readOnly}
+                                    supportedLanguageCodes={this.props.currentUser.config.supportedLanguageCodes}/>
                 </div>
                 {this.props.currentUser.featureToggles["EXPIRY_DATE_MEMBERSHIP"] &&
                 <div>
