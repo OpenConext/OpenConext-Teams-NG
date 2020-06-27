@@ -18,7 +18,7 @@ export default class SelectLanguage extends React.PureComponent {
     };
 
     filterLanguages = supportedLanguageCodes => {
-        return languageOptions.filter(option => supportedLanguageCodes.indexOf(option.code) > -1)
+        return languageOptions.filter(option => supportedLanguageCodes.indexOf(option.code) > -1);
     }
 
     render() {
