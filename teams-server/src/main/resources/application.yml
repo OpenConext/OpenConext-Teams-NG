@@ -30,7 +30,7 @@ config:
   # Currently supported organizations: SURFconext, OpenConext and RCTSaai
   organization: OpenConext
   sponsor: SURFnet
-  supported_language_codes: en,nl,pt
+  supported_language_codes: en,nl
 
 security:
   user:

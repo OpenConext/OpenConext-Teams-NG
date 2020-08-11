@@ -108,7 +108,7 @@ I18n.translations.nl = {
         viewable_info: "Door je Team publiek te maken kunnen andere gebruikers het Team vinden en vervolgens een toetredingsverzoek insturen. Ook de namen en e-mailadressen van de beheerders zijn zichtbaar.",
         name: "Naam",
         actions: "...",
-        leave: "Verlaat",
+        leave: "Verlaat Team",
         team_details: "TEAM INFO",
         team_members: "LEDEN ({{count}})",
         team_groups: "GEKOPPELDE INSTELLINGSTEAMS ({{count}})",

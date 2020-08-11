@@ -2,16 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
+import {languageOptions} from "../constants/languages";
 
-import nlFlag from "../../images/nl_flag.png";
-import enFlag from "../../images/en_flag.png";
-import ptFlag from "../../images/pt_flag.png";
-
-const languageOptions = [
-    {value: "DUTCH", label: "Nederlands"},
-    {value: "ENGLISH", label: "English"},
-    {value: "PORTUGUESE", label: "Português"}
-];
 
 export default class SelectLanguage extends React.PureComponent {
 
@@ -19,18 +11,22 @@ export default class SelectLanguage extends React.PureComponent {
     renderOption = option => {
         return (
             <span className="select-option">
-                {option.value === "ENGLISH" ? <img src={enFlag}/> : option.value === "DUTCH" ? <img src={nlFlag}/> : <img src={ptFlag}/>}
+                <img src={option.src}/>
                 <span className="select-label">{option.label}</span>
             </span>
         );
     };
 
+    filterLanguages = supportedLanguageCodes => {
+        return languageOptions.filter(option => supportedLanguageCodes.indexOf(option.code) > -1);
+    }
+
     render() {
-        const {onChange, language, disabled} = this.props;
+        const {onChange, language, disabled, supportedLanguageCodes} = this.props;
         return <Select className="select-language"
                        onChange={onChange}
                        optionRenderer={this.renderOption}
-                       options={languageOptions}
+                       options={this.filterLanguages(supportedLanguageCodes.split(","))}
                        value={language}
                        searchable={false}
                        valueRenderer={this.renderOption}
@@ -43,7 +39,8 @@ export default class SelectLanguage extends React.PureComponent {
 SelectLanguage.propTypes = {
     onChange: PropTypes.func.isRequired,
     language: PropTypes.string.isRequired,
-    disabled: PropTypes.bool
+    supportedLanguageCodes: PropTypes.string.isRequired,
+    disabled: PropTypes.bool,
 };
 
 
