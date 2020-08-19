@@ -95,14 +95,14 @@ export default class JoinRequest extends React.PureComponent {
         return (
             <section className="team">
                 <label>{I18n.t("join_request.team.name")}</label>
-                <input type="text" value={team.name} disabled="true"/>
+                <input type="text" value={team.name} disabled={true}/>
                 <label>{I18n.t("join_request.team.description")}</label>
-                <input type="text" value={team.description} disabled="true"/>
+                <input type="text" value={team.description} disabled={true}/>
                 <section className="admins">
                     <label>{I18n.t("join_request.team.admins")}</label>
                     {(team.admins || []).map((admin, index) =>
                         <div key={index}>
-                            <input type="text" value={`${admin.name} <${admin.email}>`} disabled="true"/>
+                            <input type="text" value={`${admin.name} <${admin.email}>`} disabled={true}/>
                         </div>
                     )}
                 </section>

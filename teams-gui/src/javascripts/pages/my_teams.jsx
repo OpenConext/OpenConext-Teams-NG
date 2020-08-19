@@ -209,7 +209,12 @@ export default class MyTeams extends React.PureComponent {
         this.setState({filteredTeams: sortedTeams, filterAttributes: newFilterAttributes});
     };
 
-    itemSelected = team => this.showTeam({...team, isJoinRequest: isEmpty(team.role), teamId: team.id})();
+    itemSelected = team => {
+        const {currentUser} = this.props;
+        const {superAdminModus} = currentUser;
+        const isJoinRequest = !superAdminModus && isEmpty(team.role);
+        this.showTeam({...team, isJoinRequest: isJoinRequest, teamId: team.id})();
+    }
 
     addTeam = e => {
         stop(e);
@@ -377,6 +382,7 @@ export default class MyTeams extends React.PureComponent {
 
     render() {
         const {currentUser} = this.props;
+        const {superAdminModus} = currentUser;
         const {
             filteredTeams, actions, sortAttributes, filterAttributes, selectedTeam, suggestions, query,
             isMemberOfTeam, confirmationDialogOpen, confirmationDialogAction, confirmationDialogQuestion, loadingAutoComplete
@@ -396,7 +402,7 @@ export default class MyTeams extends React.PureComponent {
                         <section className="search"
                                  tabIndex="1" onBlur={this.onBlurSearch(suggestions)}>
                             <input className={currentUser.person.guest ? "" : "allowed"}
-                                   placeholder={I18n.t("teams.searchPlaceHolder")}
+                                   placeholder={I18n.t(superAdminModus ? "teams.searchPlaceHolderSuperAdmin" : "teams.searchPlaceHolder")}
                                    type="text"
                                    onChange={this.search}
                                    value={query}
@@ -404,6 +410,7 @@ export default class MyTeams extends React.PureComponent {
                             <i className="fa fa-search"></i>
                             {showAutoCompletes && <TeamAutocomplete suggestions={suggestions.slice(0, 10)}
                                                                     query={query}
+                                                                    superAdminModus={superAdminModus}
                                                                     selectedTeam={selectedTeam}
                                                                     itemSelected={this.itemSelected}
                                                                     hasMoreResults={suggestions.length === 11}

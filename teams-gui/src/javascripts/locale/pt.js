@@ -26,7 +26,10 @@ I18n.translations.pt = {
             exit: "Sair",
             help: "Ajuda"
         },
-        role: "Perfil"
+        role: "Perfil",
+        superAdmin: {
+            modus: "Super-Admin modus enabled"
+        }
     },
 
     navigation: {
@@ -58,6 +61,7 @@ I18n.translations.pt = {
         nonViewableTooltip: "Grupos que não sejam públicos estão <br/> ocultados para os que não são membros do Grupo.",
         description: "Descrição",
         searchPlaceHolder: "Procurar todos os grupos públicos...",
+        searchPlaceHolderSuperAdmin: "Procurar todos os grupos...",
         role: "O Meu Perfil",
         membershipCount: "Membros",
         actions: "",
@@ -65,6 +69,7 @@ I18n.translations.pt = {
         edit: "Editar",
         delete: "Apagar",
         join: "Aderir",
+        view: "VIEW",
         received_join_request: "1 convite recebido",
         received_join_requests: "{{count}} convites recebidos",
         pending_invitation: "1 convite pendente",

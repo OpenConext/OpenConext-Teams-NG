@@ -67,6 +67,15 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void autoCompleteIncludeNonViewable() {
+        List<Object[]> result = teamRepository.autocompleteSuperAdmin(0L, "%PRIVAT%");
+        assertEquals(1, result.size());
+
+        result = teamRepository.autocomplete(0L, "%PRIVAT%", 0L);
+        assertEquals(0, result.size());
+    }
+
+    @Test
     public void existsByUrn() throws Exception {
         List<Object> urns = teamRepository.existsByUrn("demo:openconext:org:giants");
         assertEquals(1, urns.size());

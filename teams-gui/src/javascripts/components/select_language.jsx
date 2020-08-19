@@ -38,7 +38,7 @@ export default class SelectLanguage extends React.PureComponent {
 
 SelectLanguage.propTypes = {
     onChange: PropTypes.func.isRequired,
-    language: PropTypes.string.isRequired,
+    language: PropTypes.object.isRequired,
     supportedLanguageCodes: PropTypes.string.isRequired,
     disabled: PropTypes.bool,
 };

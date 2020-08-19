@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.util.StringUtils;
+import teams.domain.Membership;
 import teams.domain.Person;
+import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,14 +21,20 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
     private static final Logger LOG = LoggerFactory.getLogger(ShibbolethPreAuthenticatedProcessingFilter.class);
 
     private final PersonRepository personRepository;
-    private String nonGuestsMemberOf;
+    private final MembershipRepository membershipRepository;
+    private final String nonGuestsMemberOf;
+    private final String superAdminsTeamUrn;
 
     public ShibbolethPreAuthenticatedProcessingFilter(AuthenticationManager authenticationManager,
                                                       PersonRepository personRepository,
-                                                      String nonGuestsMemberOf) {
+                                                      MembershipRepository membershipRepository,
+                                                      String nonGuestsMemberOf,
+                                                      String superAdminsTeamUrn) {
         super();
         this.personRepository = personRepository;
+        this.membershipRepository = membershipRepository;
         this.nonGuestsMemberOf = nonGuestsMemberOf;
+        this.superAdminsTeamUrn = superAdminsTeamUrn;
         setAuthenticationManager(authenticationManager);
     }
 
@@ -38,11 +46,14 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
         String memberOf = getHeader("is-member-of", request);
         name = normalize(name);
 
-        Person person = new Person(nameId, name, email, !nonGuestsMemberOf.equals(memberOf));
+        Person person = new Person(nameId, name, email, !nonGuestsMemberOf.equals(memberOf), false);
 
         LOG.info("Person {} is attempting authentication", person);
-        if ( person.isValid()) {
-            return provision(person);
+        if (person.isValid()) {
+            Person provisionedPerson = provision(person);
+            Optional<Membership> optionalMembership = membershipRepository.findByUrnTeamAndUrnPerson(superAdminsTeamUrn, nameId);
+            provisionedPerson.markAsSuperAdmin(optionalMembership != null && optionalMembership.isPresent());
+            return provisionedPerson;
         } else {
             return person;
         }

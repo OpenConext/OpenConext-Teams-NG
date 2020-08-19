@@ -32,8 +32,9 @@ public interface TeamValidator {
     }
 
     default Object lazyLoadTeam(Team team, Role role, FederatedUser user) {
+        boolean superAdmin = user.getPerson().isSuperAdmin();
         team.getMemberships().forEach(membership -> membership.getPerson().isValid());
-        if (role.equals(Role.MEMBER)) {
+        if (Role.MEMBER.equals(role) && !superAdmin) {
             return new TeamDetailsSummary(team, user);
         }
         team.getInvitations()

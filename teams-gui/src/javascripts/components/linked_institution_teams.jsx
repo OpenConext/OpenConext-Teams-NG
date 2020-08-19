@@ -135,12 +135,12 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
     };
 
 
-    renderLinkedTeamsCellSelectionMode = (institutionTeam, team) => {
-        const {currentUser} = this.props;
+    renderLinkedTeamsCellSelectionMode = (institutionTeam, team, currentUser) => {
         const ownsInstitutionTeam = (currentUser.externalTeams || [])
             .filter(et => et.identifier === institutionTeam.identifier)
             .length > 0;
-        const isMember = currentUserRoleInTeam(team, currentUser) === ROLES.MEMBER.role;
+        const roleInTeam = currentUserRoleInTeam(team, currentUser);
+        const isMember = roleInTeam === ROLES.MEMBER.role || roleInTeam === ROLES.SUPER_ADMIN.role;
 
         return <td data-label={I18n.t("team_detail.linked")} className="team-linked">
             <CheckBox name={institutionTeam.identifier}
@@ -192,7 +192,7 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
             </section>);
     }
 
-    renderTeamsTable(filteredTeams, linkedTeams, team) {
+    renderTeamsTable(filteredTeams, linkedTeams, team, currentUser) {
         const columns = ["name", "description", "linked"];
         const currentSorted = this.currentSortedAttribute();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
@@ -216,7 +216,7 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
                             {this.renderNameCell(institutionTeam)}
                             <td data-label={I18n.t("institution_teams.description")}
                                 className="description">{institutionTeam.description}</td>
-                            {team && this.renderLinkedTeamsCellSelectionMode(institutionTeam, team)}
+                            {team && this.renderLinkedTeamsCellSelectionMode(institutionTeam, team, currentUser)}
                             {linkedTeams && this.renderLinkedTeamsCellReadOnlyMode(linkedTeams[institutionTeam.identifier] || [])}
                         </tr>
                     )}
@@ -257,7 +257,7 @@ export default class LinkedInstitutionTeams extends React.PureComponent {
                             <i className="fa fa-search"></i>
                         </section>
                     </section>
-                    {this.renderTeamsTable(filteredTeams, linkedTeams, team)}
+                    {this.renderTeamsTable(filteredTeams, linkedTeams, team, currentUser)}
                 </section>
             </div>
         );

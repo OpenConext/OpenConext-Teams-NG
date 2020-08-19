@@ -47,7 +47,7 @@ teams:
   group-name-context: "urn:collab:group:demo.openconext.org:"
   product-name: "OpenConext"
   non-guest-member-of: "urn:collab:org:surf.nl"
-
+  super_admins_team_urn: "demo:openconext:org:super_admins"
 voot:
   serviceUrl: "https://voot.vm.openconext.org"
   accessTokenUri: "https://authz.vm.openconext.org/oauth/token"

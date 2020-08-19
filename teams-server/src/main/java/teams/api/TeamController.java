@@ -61,8 +61,9 @@ public class TeamController extends ApiController implements TeamValidator {
     public Object teamById(@PathVariable("id") Long id, FederatedUser federatedUser) {
         Team team = teamById(id, true);
         assertNotNull("Team", team, id);
-        Optional<Membership> membershipOptional = team.member(federatedUser.getUrn());
-        if (!membershipOptional.isPresent() && !team.isViewable()) {
+        boolean superAdmin = federatedUser.getPerson().isSuperAdmin();
+        Optional<Membership> membershipOptional = superAdmin ? Optional.of(new Membership()) : team.member(federatedUser.getUrn());
+        if (!membershipOptional.isPresent() && !team.isViewable() && !superAdmin) {
             throw new NotAllowedException(String.format("Team %s is private and %s is not a member", id, federatedUser.getUrn()));
         }
         return membershipOptional.map(membership -> lazyLoadTeam(team, membership.getRole(), federatedUser))
@@ -80,14 +81,18 @@ public class TeamController extends ApiController implements TeamValidator {
             throw new IllegalSearchParamException("Minimal query length is 2");
         }
         Long id = federatedUser.getPerson().getId();
-        List<TeamAutocomplete> autoCompletes = teamRepository.autocomplete(id, ("%" + query + "%").toUpperCase(), id)
+        boolean superAdmin = federatedUser.getPerson().isSuperAdmin();
+        String queryUpper = ("%" + query + "%").toUpperCase();
+        List<Object[]> autocompletes = superAdmin ? teamRepository.autocompleteSuperAdmin(id, queryUpper) : teamRepository
+                .autocomplete(id, queryUpper, id);
+        List<TeamAutocomplete> autoCompletes = autocompletes
                 .stream()
                 .map(arr -> new TeamAutocomplete(
                         arr[0].toString(),
                         Long.valueOf(arr[1].toString()),
                         arr[2] != null ? arr[2].toString() : "",
                         (arr.length == 4 && arr[3] != null) ? arr[3].toString() : null))
-                .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), query.toLowerCase()))
+                .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), queryUpper.toLowerCase()))
                 .collect(toList());
         return autoCompletes.subList(0, Math.max(0, Math.min(autoCompletes.size(), 11)));
     }

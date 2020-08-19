@@ -12,6 +12,8 @@ INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_lin
 VALUES (6, 'demo:openconext:org:private', 'private', 'we are private', 0, 'secret', 1);
 INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`, `public_link_disabled`)
 VALUES (7, 'demo:openconext:org:orphan', 'orphans', 'i am orphan', 1, 'V7cp5sisDgFnrcYekbTYOx3KqhkJlk2M5pBBtuvp6gU3D', 0);
+INSERT INTO `teams` (`id`, `urn`, `name`, `description`, `viewable`, `public_link`, `public_link_disabled`)
+VALUES (8, 'demo:openconext:org:super_admins', 'super_admins', 'super_admins', 1, NULL, 1);
 
 
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`)
@@ -30,6 +32,8 @@ INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`, `last_login_date`)
 VALUES (7, 'urn:collab:person:example.com:unhappy', 'Unhappy User', 'unhappy@domain.net', 0, '2018-05-17 09:32:12');
 INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`, `last_login_date`)
 VALUES (8, 'urn:collab:person:example.com:owner', 'Owner User', 'owner@domain.net', 0, '2018-05-17 09:32:12');
+INSERT INTO `persons` (`id`, `urn`, `name`, `email`, `guest`, `last_login_date`)
+VALUES (9, 'urn:collab:person:surfnet.nl:super_admin', 'Super Admin', 'super@admin.net', 0, '2032-05-17 09:32:12');
 
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`, `origin`, `approved_by`)
 VALUES (1, 'ADMIN', 1, 'demo:openconext:org:riders', 1, 'urn:collab:person:surfnet.nl:jdoe', 'INITIAL_ADMIN', 'John Doe');
@@ -57,6 +61,10 @@ INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `ur
 VALUES (12, 'ADMIN', 7, 'demo:openconext:org:orphan', 7, 'urn:collab:person:example.com:unhappy');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
 VALUES (13, 'OWNER', 1, 'demo:openconext:org:riders', 8, 'urn:collab:person:example.com:owner');
+INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
+VALUES (14, 'MEMBER', 8, 'demo:openconext:org:super_admins', 9, 'urn:collab:person:surfnet.nl:super_admin');
+INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
+VALUES (15, 'ADMIN', 6, 'demo:openconext:org:private', 8, 'urn:collab:person:example.com:owner');
 
 
 INSERT INTO `external_groups` (`id`, `description`, `group_provider`, `identifier`, `name`)

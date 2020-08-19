@@ -7,7 +7,9 @@ export default function RolesIconLegend(props) {
     <div className="icon-legend">
       {props.children && props.children}
       <section className="roles">
-        {Object.keys(ROLES).filter(role => (props.includeInvitation || role !== ROLES.INVITATION.role)
+        {Object.keys(ROLES)
+            .filter(role => ROLES[role].icon)
+            .filter(role => (props.includeInvitation || role !== ROLES.INVITATION.role)
           && (props.includeOwner || role !== ROLES.OWNER.role))
           .map(role =>
             <span className="role" key={role}><i className={iconForRole(role)}></i>{labelForRole(role)}</span>

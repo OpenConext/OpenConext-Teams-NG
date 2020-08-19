@@ -74,7 +74,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     @Test
     public void getAllGroups() {
         start("groups")
-                .body("size()", equalTo(7))
+                .body("size()", equalTo(8))
                 .body("displayName", hasItems("riders", "giants", "gliders", "masters", "wolves"));
     }
 

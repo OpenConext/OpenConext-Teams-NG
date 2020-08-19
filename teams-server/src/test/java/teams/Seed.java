@@ -33,7 +33,7 @@ public interface Seed {
     }
 
     default Person person(String urn) {
-        return new Person(urn, "name", "email", false);
+        return new Person(urn, "name", "email", false, false);
     }
 
     default Membership membership(Role role, Team team, Person person) {

@@ -9,6 +9,7 @@ import RCTSaai from "../../images/rctsaai_blue.svg";
 import LanguageSelector from "./language_selector";
 import UserProfile from "./user_profile";
 import {logOut} from "../api";
+import CheckBox from "./checkbox";
 
 export default class Header extends React.PureComponent {
 
@@ -56,6 +57,11 @@ export default class Header extends React.PureComponent {
         this.setState({dropDownActive: !this.state.dropDownActive});
     }
 
+    doToggleSuperAdminModus = e => {
+        const {toggleSuperAdminModus} = this.props;
+        toggleSuperAdminModus(e.target.checked);
+    }
+
     render() {
         const currentUser = this.props.currentUser;
         const validCurrentUser = currentUser.person.id && currentUser.person.email && currentUser.person.name && currentUser.productName;
@@ -69,17 +75,25 @@ export default class Header extends React.PureComponent {
                     <ul className="links">
                         <li className={titleClassName}><span>{I18n.t("header.title")}</span></li>
                         {validCurrentUser && <li className="profile"
-                            tabIndex="1" onBlur={() => this.setState({dropDownActive: false})}>
+                                                 tabIndex="1" onBlur={() => this.setState({dropDownActive: false})}>
                             {this.renderProfileLink(currentUser)}
                             {this.renderDropDown(currentUser)}
                         </li>}
                         {currentUser.config && <li>
-                            <a href={I18n.locale === "en" ? currentUser.config.helpLinkEn : I18n.locale === "nl" ? currentUser.config.helpLinkNl : currentUser.config.helpLinkPt} target="_blank">{I18n.t("header.links.help")}</a></li>}
+                            <a
+                                href={I18n.locale === "en" ? currentUser.config.helpLinkEn : I18n.locale === "nl" ? currentUser.config.helpLinkNl : currentUser.config.helpLinkPt}
+                                target="_blank">{I18n.t("header.links.help")}</a></li>}
                         {this.renderExitLogout()}
                         <li>
-                            <LanguageSelector supportedLanguageCodes={currentUser.config.supportedLanguageCodes} />
+                            <LanguageSelector supportedLanguageCodes={currentUser.config.supportedLanguageCodes}/>
                         </li>
                     </ul>
+                    {currentUser.superAdmin &&
+                    <CheckBox className="checkbox super-admin"
+                              onChange={this.doToggleSuperAdminModus}
+                              value={currentUser.superAdminModus}
+                              name="supre_admin"
+                              info={I18n.t("header.superAdmin.modus")}/>}
                 </div>
             </div>
         );
@@ -88,5 +102,6 @@ export default class Header extends React.PureComponent {
 }
 
 Header.propTypes = {
-    currentUser: PropTypes.object.isRequired
+    currentUser: PropTypes.object.isRequired,
+    toggleSuperAdminModus: PropTypes.func.isRequired
 };

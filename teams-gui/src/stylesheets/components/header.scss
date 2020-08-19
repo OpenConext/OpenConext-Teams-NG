@@ -51,11 +51,12 @@
         display: inline-block;
         margin-right: 15px;
 
-        i  {
+        i {
           &.fa-caret-up, &.fa-caret-down {
             margin-left: 10px;
             margin-right: 30px;
           }
+
           &.fa-user-circle-o {
             font-size: larger;
             margin-right: 10px;
@@ -64,9 +65,11 @@
 
         &.title {
           margin-left: 210px;
+
           &.pt {
             margin-left: 260px;
           }
+
           font-weight: bold;
           text-transform: uppercase;
           font-size: 22px;
@@ -103,23 +106,29 @@
             display: inline-block;
             padding: 5px 15px;
             margin: 0;
+
             &:first-child {
               border-bottom-left-radius: 1px;
               border-top-left-radius: 1px;
             }
+
             &:last-child {
               border-bottom-right-radius: 1px;
               border-top-right-radius: 1px;
             }
+
             &:not(:first-child):not(:last-child) {
               border-left: 1px $blue solid;
               border-right: 1px $blue solid;
             }
+
             a {
               font-weight: normal;
             }
+
             &.active {
               background-color: $blue;
+
               a {
                 color: white;
               }
@@ -130,6 +139,7 @@
         }
 
       }
+
       a.welcome-link {
         position: relative;
       }
@@ -166,6 +176,13 @@
 
     }
 
+    div.super-admin {
+      position: absolute;
+      right: 30px;
+      bottom: 6px;
+      color: $blue;
+      font-weight: bold;
+    }
   }
 
 }

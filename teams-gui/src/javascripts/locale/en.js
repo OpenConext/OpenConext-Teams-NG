@@ -26,7 +26,10 @@ I18n.translations.en = {
             exit: "Exit",
             help: "Help"
         },
-        role: "Role"
+        role: "Role",
+        superAdmin: {
+            modus: "Super-Admin modus enabled"
+        }
     },
 
     navigation: {
@@ -58,6 +61,7 @@ I18n.translations.en = {
         nonViewableTooltip: "This team is non-public,<br/>which means it can't be found by non-members.<br/>Administrators can change this<br/>setting in the Teams settings page.",
         description: "Description",
         searchPlaceHolder: "Search all public teams...",
+        searchPlaceHolderSuperAdmin: "Search all teams...",
         role: "My role",
         membershipCount: "Members",
         actions: "",
@@ -65,6 +69,7 @@ I18n.translations.en = {
         edit: "Edit",
         delete: "Delete",
         join: "JOIN",
+        view: "VIEW",
         received_join_request: "1 received join request",
         received_join_requests: "{{count}} received join requests",
         pending_invitation: "1 pending invitation",

@@ -23,7 +23,7 @@ public class MockShibbolethFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         SetHeader wrapper = new SetHeader(request);
-
+        // "urn:collab:person:surfnet.nl:super_admin"
         String nameId = test ? "urn:collab:person:surfnet.nl:jdoe" : request.getHeader("name-id");
         wrapper.setHeader("name-id", nameId == null ? "urn:collab:person:example.com:john.doe" : nameId);
 

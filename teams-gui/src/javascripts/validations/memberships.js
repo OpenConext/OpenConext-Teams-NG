@@ -5,6 +5,7 @@ export const ROLES = {
     OWNER: {icon: "fa fa-universal-access", name: "owner", role: "OWNER"},
     MANAGER: {icon: "fa fa-black-tie", name: "manager", role: "MANAGER"},
     MEMBER: {icon: "fa fa-user", name: "member", role: "MEMBER"},
+    SUPER_ADMIN: {name: "super_admin", role: "SUPER_ADMIN"},
     JOIN_REQUEST: {icon: "fa fa-envelope", name: "join_request", role: "JOIN_REQUEST"},
     INVITATION: {icon: "fa fa-clock-o", name: "invitation", role: "INVITATION"}
 };
@@ -31,6 +32,9 @@ export function hasOneAdmin(team, currentUser) {
 }
 
 export function currentUserRoleInTeam(team, currentUser) {
+    if (currentUser.superAdminModus) {
+        return "SUPER_ADMIN";
+    }
     return team.memberships.filter(membership => membership.urnPerson === currentUser.urn)[0].role;
 }
 

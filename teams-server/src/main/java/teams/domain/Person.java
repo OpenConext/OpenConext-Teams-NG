@@ -50,11 +50,15 @@ public class Person implements Serializable {
     @JsonIgnore
     private Set<Membership> memberships = new HashSet<>();
 
-    public Person(String urn, String name, String email, boolean isGuest) {
+    @Transient
+    private boolean isSuperAdmin;
+
+    public Person(String urn, String name, String email, boolean isGuest, boolean isSuperAdmin) {
         this.urn = urn;
         this.name = name;
         this.email = pickFirstMailEmail(email);
         this.guest = isGuest;
+        this.isSuperAdmin = isSuperAdmin;
         this.created = Instant.now();
         this.lastLoginDate = Instant.now();
     }
@@ -87,20 +91,6 @@ public class Person implements Serializable {
         return hasText(urn) && hasText(name) && hasText(email);
     }
 
-    public String invalidAttributes() {
-        List<String> invalidAttributes = new ArrayList<>();
-        if (!hasText(urn)) {
-            invalidAttributes.add("urn");
-        }
-        if (!hasText(name)) {
-            invalidAttributes.add("name");
-        }
-        if (!hasText(email)) {
-            invalidAttributes.add("email");
-        }
-        return String.join(",", invalidAttributes);
-    }
-
     @Override
     public String toString() {
         return "Person{" +
@@ -109,5 +99,9 @@ public class Person implements Serializable {
                 ", email='" + email + '\'' +
                 ", guest=" + guest +
                 '}';
+    }
+
+    public void markAsSuperAdmin(boolean superAdmin) {
+        isSuperAdmin = superAdmin;
     }
 }

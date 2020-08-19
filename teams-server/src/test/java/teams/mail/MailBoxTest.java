@@ -42,7 +42,7 @@ public class MailBoxTest extends AbstractApplicationTest {
     @Test
     public void sendInviteMail() throws Exception {
         Team team = new Team("urn", "Champions", "description", true, null);
-        Person person = new Person("urn", "John Doe", EMAIL, false);
+        Person person = new Person("urn", "John Doe", EMAIL, false, false);
 
         Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.DUTCH, null);
         invitation.addInvitationMessage(person, "Please join");
@@ -58,7 +58,7 @@ public class MailBoxTest extends AbstractApplicationTest {
     @Test
     public void sendInviteMailPortugese() throws Exception {
         Team team = new Team("urn", "Champions", "description", true, null);
-        Person person = new Person("urn", "John Doe", EMAIL, false);
+        Person person = new Person("urn", "John Doe", EMAIL, false, false);
 
         Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.PORTUGUESE, null);
         invitation.addInvitationMessage(person, "Please join");
@@ -107,7 +107,7 @@ public class MailBoxTest extends AbstractApplicationTest {
     }
 
     private JoinRequest joinRequest() {
-        Person person = new Person("urn", "John Doe", EMAIL, false);
+        Person person = new Person("urn", "John Doe", EMAIL, false, false);
         Team team = new Team("urn", "name", TEAM_DESCRIPTION, true, null);
         return new JoinRequest(person, team, "Let me join");
     }

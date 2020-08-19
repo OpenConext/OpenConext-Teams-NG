@@ -105,15 +105,16 @@ export default class TeamDetail extends React.PureComponent {
     };
 
 
-    refreshTeamState = (teamId, callback = () => 1, displayOneAdminWarning = true) => getTeamDetail(teamId, false)
-        .then(team => {
-            this.stateTeam(team, displayOneAdminWarning);
-            callback();
-        })
-        .catch(this.handleNotFound);
+    refreshTeamState = (teamId, callback = () => 1, displayOneAdminWarning = true) =>
+        getTeamDetail(teamId, false)
+            .then(team => {
+                this.stateTeam(team, displayOneAdminWarning);
+                callback();
+            })
+            .catch(this.handleNotFound);
 
     stateTeam(team, displayOneAdminWarning) {
-        //url guessing
+        //prevent url guessing
         if (isEmpty(team.memberships)) {
             this.props.history.push(`/join-requests/${team.id}`);
             return;
@@ -645,7 +646,7 @@ export default class TeamDetail extends React.PureComponent {
     actionOptions = (currentUser, member, team) => {
         const isMemberCurrentUser = member.urnPerson === currentUser.urn;
         const currentRole = currentUserRoleInTeam(team, currentUser);
-        const isMember = currentRole === ROLES.MEMBER.role;
+        const isMember = currentRole === ROLES.MEMBER.role || currentRole === ROLES.SUPER_ADMIN.role;
         const isAdmin = currentRole === ROLES.ADMIN.role || currentRole === ROLES.OWNER.role;
         const isManager = currentRole === ROLES.MANAGER.role;
 
@@ -705,7 +706,7 @@ export default class TeamDetail extends React.PureComponent {
         const currentSorted = this.currentSorted();
         const sortColumnClassName = name => currentSorted.name === name ? "sorted" : "";
         const columns = ["name", "email", "status", "expiry_date", "role", "actions"];
-        const isMember = role === ROLES.MEMBER.role;
+        const isMember = role === ROLES.MEMBER.role || role === ROLES.SUPER_ADMIN.role;
 
         if (!this.props.currentUser.featureToggles["EXPIRY_DATE_MEMBERSHIP"]) {
             columns.splice(3, 1);
@@ -802,7 +803,7 @@ export default class TeamDetail extends React.PureComponent {
             return null;
         }
         const role = currentUserRoleInTeam(team, currentUser);
-        const mayInvite = role !== "MEMBER";
+        const mayInvite = role !== "MEMBER" && role !== "SUPER_ADMIN";
 
         return (
             <div className="team-detail">

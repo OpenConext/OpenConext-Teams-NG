@@ -99,10 +99,19 @@ class App extends React.PureComponent {
                     if (!currentUser || !currentUser.person) {
                         this.handleBackendDown();
                     } else {
+                        //shortcut notation
+                        currentUser.superAdmin = currentUser.person.superAdmin;
+                        currentUser.superAdminModus = currentUser.superAdmin;
                         this.setState({loading: false, currentUser: currentUser});
                     }
                 });
         }
+    }
+
+    toggleSuperAdminModus = val => {
+        const {currentUser} = this.state;
+        const user = {...currentUser, superAdminModus: val};
+        this.setState({currentUser: user});
     }
 
     render() {
@@ -120,7 +129,7 @@ class App extends React.PureComponent {
                 <div>
                     <div>
                         <Flash/>
-                        <Header currentUser={currentUser}/>
+                        <Header currentUser={currentUser} toggleSuperAdminModus={this.toggleSuperAdminModus}/>
                         <Navigation currentUser={currentUser}/>
                         <ErrorDialog isOpen={errorDialogOpen}
                                      close={errorDialogAction}/>

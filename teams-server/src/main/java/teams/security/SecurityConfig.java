@@ -23,6 +23,7 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import teams.domain.Feature;
+import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 import teams.shibboleth.ShibbolethPreAuthenticatedProcessingFilter;
 import teams.shibboleth.ShibbolethUserDetailService;
@@ -109,6 +110,9 @@ public class SecurityConfig {
         private PersonRepository personRepository;
 
         @Autowired
+        private MembershipRepository membershipRepository;
+
+        @Autowired
         private VootClient vootClient;
 
         @Autowired
@@ -116,6 +120,9 @@ public class SecurityConfig {
 
         @Value("${teams.non-guest-member-of}")
         private String nonGuestsMemberOf;
+
+        @Value("${teams.super_admins_team_urn}")
+        private String superAdminsTeamUrn;
 
         @Value("${teams.group-name-context}")
         private String groupNameContext;
@@ -201,7 +208,8 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             ShibbolethPreAuthenticatedProcessingFilter filter =
-                    new ShibbolethPreAuthenticatedProcessingFilter(authenticationManager(), personRepository, nonGuestsMemberOf);
+                    new ShibbolethPreAuthenticatedProcessingFilter(authenticationManager(), personRepository,
+                            membershipRepository, nonGuestsMemberOf, superAdminsTeamUrn);
 
             http
                     .antMatcher("/api/teams/**")

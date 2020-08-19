@@ -45,7 +45,7 @@ export default class TeamAutocomplete extends React.PureComponent {
     };
 
     render() {
-        const {suggestions, query, selectedTeam, itemSelected, hasMoreResults} = this.props;
+        const {suggestions, query, selectedTeam, itemSelected, hasMoreResults, superAdminModus} = this.props;
         const showSuggestions = (suggestions && suggestions.length > 0);
         return (
             <section className="teams-autocomplete">
@@ -76,8 +76,9 @@ export default class TeamAutocomplete extends React.PureComponent {
                                     }}>
                                     <td>{this.itemName(item, query)}</td>
                                     <td>{this.itemDescription(item, index)}</td>
-                                    <td className="role">{item.role ? <span>{item.role}</span> :
-                                        <span className="join">{I18n.t("teams.join")}</span>}</td>
+                                    <td className="role">{superAdminModus ? <span>{I18n.t("teams.view")}</span> :
+                                        item.role ? <span>{item.role}</span> : <span className="join">{I18n.t("teams.join")}</span>}
+                                    </td>
                                 </tr>
                             )
                         )}
@@ -92,6 +93,7 @@ export default class TeamAutocomplete extends React.PureComponent {
 TeamAutocomplete.propTypes = {
     suggestions: PropTypes.array.isRequired,
     hasMoreResults: PropTypes.bool.isRequired,
+    superAdminModus: PropTypes.bool.isRequired,
     query: PropTypes.string.isRequired,
     selectedTeam: PropTypes.number.isRequired,
     itemSelected: PropTypes.func.isRequired

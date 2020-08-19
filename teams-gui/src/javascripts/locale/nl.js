@@ -26,7 +26,10 @@ I18n.translations.nl = {
             exit: "Exit",
             help: "Help"
         },
-        role: "Rol"
+        role: "Rol",
+        superAdmin: {
+            modus: "Super-Admin modus enabled"
+        }
     },
 
     navigation: {
@@ -57,6 +60,7 @@ I18n.translations.nl = {
         nonViewableTooltip: "Dit team is niet publiek<br/>wat betekent dat andere gebruikers<br/>het team niet kunnen vinden.<br/>Admins kunnen deze <br/> instelling in de Teams pagina wijzigen.",
         description: "Omschrijving",
         searchPlaceHolder: "Zoek in alle publieke Teams...",
+        searchPlaceHolderSuperAdmin: "Zoek in alle Teams...",
         role: "Mijn rol",
         membershipCount: "Leden",
         actions: "",
@@ -64,6 +68,7 @@ I18n.translations.nl = {
         edit: "Aanpassen",
         delete: "Verwijder",
         join: "WORD LID",
+        view: "BEKIJK",
         received_join_request: "1 ontvangen toetredingsverzoek",
         received_join_requests: "{{count}} ontvangen toetredingsverzoeken",
         pending_invitation: "1 openstaande uitnodiging",

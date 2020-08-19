@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class InvitationInfo {
 
