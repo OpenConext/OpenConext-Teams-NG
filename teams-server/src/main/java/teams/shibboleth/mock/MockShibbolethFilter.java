@@ -15,6 +15,8 @@ public class MockShibbolethFilter extends GenericFilterBean {
 
     private final boolean test;
 
+    private final String userUrn = "urn:collab:person:surfnet.nl:jdoe";//"urn:collab:person:surfnet.nl:super_admin"
+
     public MockShibbolethFilter(boolean test) {
         this.test = test;
     }
@@ -23,9 +25,9 @@ public class MockShibbolethFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         SetHeader wrapper = new SetHeader(request);
-        // "urn:collab:person:surfnet.nl:super_admin"
-        String nameId = test ? "urn:collab:person:surfnet.nl:jdoe" : request.getHeader("name-id");
-        wrapper.setHeader("name-id", nameId == null ? "urn:collab:person:example.com:john.doe" : nameId);
+
+        String nameId = test ? userUrn : request.getHeader("name-id");
+        wrapper.setHeader("name-id", nameId == null ? userUrn : nameId);
 
         wrapper.setHeader("displayName", "John Doe");
         wrapper.setHeader("Shib-InetOrgPerson-mail", "john.doe@example.org ; test@example.com");

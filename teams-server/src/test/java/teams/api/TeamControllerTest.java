@@ -188,7 +188,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
 
         Membership membership = memberships.iterator().next();
         assertEquals(Role.ADMIN, membership.getRole());
-        assertEquals("urn:collab:person:example.com:john.doe", membership.getUrnPerson());
+        assertEquals("urn:collab:person:surfnet.nl:jdoe", membership.getUrnPerson());
     }
 
     @Test
@@ -318,7 +318,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     public void updateTeamWithoutBeingMember() throws Exception {
         given()
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(2L, null, null, true, false))
+                .body(new TeamProperties(8L, null, null, true, false))
                 .when()
                 .put("api/teams/teams")
                 .then()
