@@ -2,6 +2,10 @@ import React from "react";
 import {shallow} from "enzyme";
 import UserProfile from "../../components/user_profile";
 import start from "../base";
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
 start();
 
 
