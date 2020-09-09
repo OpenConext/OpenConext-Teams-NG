@@ -153,7 +153,7 @@ I18n.translations.pt = {
         link_to_institution_team: "Adicionar",
         search_members_placeholder: "Procurar membro",
         no_found: "Não foram encontrado membros",
-        no_found_owners: "Nenhum proprietário configurado",
+        no_found_owners: "Nenhum supervisor configurado",
         public_link: "Endereço Público",
         public_link_disabled: "Se estiver ativadado, pessoas com acesso ao endereço público podem aderir ao Grupo como membro, isto, sem necessitar de aprovação dos Administradores ou Gestores.",
         public_link_reset: "Redefinir link público",
@@ -163,7 +163,7 @@ I18n.translations.pt = {
         one_admin_warning: "É o único administrador do Grupo. É recomendado existirem pelo menos dois Administradores em cada Grupo.",
         add: "CONVITE",
         linked: "Ligado",
-        owners: "OS PROPRIETÁRIOS",
+        owners: "OS SUPERVISORES",
         action_options: {
             join_request_accept: "Convite aceite",
             join_request_reject: "Convite rejeitado",
@@ -221,7 +221,7 @@ I18n.translations.pt = {
     },
     icon_legend: {
         admin: "Administrador",
-        owner: "Proprietária",
+        owner: "Supervisor",
         manager: "Gestor",
         member: "Membro",
         invitation: "Convite",
@@ -241,7 +241,7 @@ I18n.translations.pt = {
     },
     filter: {
         ADMIN: "Administradores",
-        OWNER: "Proprietário",
+        OWNER: "Supervisor",
         MANAGER: "Gestores",
         MEMBER: "Membros",
         JOIN_REQUEST: "Pedidos de adesão",
