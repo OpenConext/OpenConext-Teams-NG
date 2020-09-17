@@ -1,4 +1,5 @@
 import I18n from "i18n-js";
+import {isEmpty} from "../utils/utils";
 
 export const ROLES = {
     ADMIN: {icon: "fa fa-star", name: "admin", role: "ADMIN"},
@@ -19,7 +20,7 @@ export function allowedToLeave(team, currentUser) {
     const admins = team.memberships
         .filter(membership => (membership.role === ROLES.ADMIN.role || membership.role === ROLES.OWNER.role)
             && membership.urnPerson !== currentUser.urn);
-    return admins.length > 0 && isMember;
+    return admins.length > 0 && !isEmpty(isMember) ;
 }
 
 export function hasOneAdmin(team, currentUser) {
