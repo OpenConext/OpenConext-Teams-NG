@@ -34,6 +34,7 @@ import ErrorDialog from "./components/error_dialog";
 import "./locale/en";
 import "./locale/nl";
 import "./locale/pt";
+import {setSuperAdmin} from "./lib/store";
 
 polyfill();
 
@@ -101,7 +102,7 @@ class App extends React.PureComponent {
                     } else {
                         //shortcut notation
                         currentUser.superAdmin = currentUser.person.superAdmin;
-                        currentUser.superAdminModus = currentUser.superAdmin;
+                        currentUser.superAdminModus = false;
                         this.setState({loading: false, currentUser: currentUser});
                     }
                 });
@@ -112,6 +113,7 @@ class App extends React.PureComponent {
         const {currentUser} = this.state;
         const user = {...currentUser, superAdminModus: val};
         this.setState({currentUser: user});
+        setSuperAdmin(val)
     }
 
     render() {

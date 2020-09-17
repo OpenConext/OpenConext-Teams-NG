@@ -40,6 +40,8 @@ public abstract class ApiController {
     @Autowired
     protected MailBox mailBox;
 
+    public static final String ADMIN_HEADER = "X-ADMIN-HEADER";
+
     protected Team teamById(Long id, boolean includePersons) {
         Team team = includePersons ? teamRepository.findFirstById(id) : teamRepository.findById(id);
         assertNotNull("Team", team, id);

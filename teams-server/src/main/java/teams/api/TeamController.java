@@ -58,10 +58,10 @@ public class TeamController extends ApiController implements TeamValidator {
     }
 
     @GetMapping("api/teams/teams/{id}")
-    public Object teamById(@PathVariable("id") Long id, FederatedUser federatedUser) {
+    public Object teamById(@PathVariable("id") Long id, HttpServletRequest httpServletRequest, FederatedUser federatedUser) {
         Team team = teamById(id, true);
         assertNotNull("Team", team, id);
-        boolean superAdmin = federatedUser.getPerson().isSuperAdmin();
+        boolean superAdmin = federatedUser.getPerson().isSuperAdmin() && Boolean.parseBoolean(httpServletRequest.getHeader(ADMIN_HEADER));
         Optional<Membership> membershipOptional = superAdmin ? Optional.of(new Membership()) : team.member(federatedUser.getUrn());
         if (!membershipOptional.isPresent() && !team.isViewable() && !superAdmin) {
             throw new NotAllowedException(String.format("Team %s is private and %s is not a member", id, federatedUser.getUrn()));
@@ -76,12 +76,12 @@ public class TeamController extends ApiController implements TeamValidator {
     }
 
     @GetMapping("api/teams/teams")
-    public List<TeamAutocomplete> teamSearch(@RequestParam("query") String query, FederatedUser federatedUser) {
+    public List<TeamAutocomplete> teamSearch(@RequestParam("query") String query, HttpServletRequest httpServletRequest, FederatedUser federatedUser) {
         if (query.trim().length() < 2) {
             throw new IllegalSearchParamException("Minimal query length is 2");
         }
         Long id = federatedUser.getPerson().getId();
-        boolean superAdmin = federatedUser.getPerson().isSuperAdmin();
+        boolean superAdmin = federatedUser.getPerson().isSuperAdmin() && Boolean.parseBoolean(httpServletRequest.getHeader(ADMIN_HEADER));;
         String queryUpper = ("%" + query + "%").toUpperCase();
         List<Object[]> autocompletes = superAdmin ? teamRepository.autocompleteSuperAdmin(id, queryUpper) : teamRepository
                 .autocomplete(id, queryUpper, id);

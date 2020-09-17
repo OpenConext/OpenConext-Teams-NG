@@ -15,10 +15,11 @@ export function labelForRole(role) {
 }
 
 export function allowedToLeave(team, currentUser) {
+    const isMember = team.memberships.find(membership => membership.urnPerson === currentUser.urn);
     const admins = team.memberships
         .filter(membership => (membership.role === ROLES.ADMIN.role || membership.role === ROLES.OWNER.role)
             && membership.urnPerson !== currentUser.urn);
-    return admins.length > 0;
+    return admins.length > 0 && isMember;
 }
 
 export function hasOneAdmin(team, currentUser) {

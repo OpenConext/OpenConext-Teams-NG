@@ -472,7 +472,7 @@ export default class TeamDetail extends React.PureComponent {
                 <CheckBox name="viewable" value={team.viewable} readOnly={!isAdmin}
                           info={I18n.t("team_detail.viewable_info")} onChange={this.changeViewable}/>
                 <div className="separator"/>
-                {isAdmin && <div className="team-attribute">
+                {(isAdmin || currentUser.superAdminModus) && <div className="team-attribute">
                     <label className="title info-after">{I18n.t("team_detail.public_link")}</label>
                     <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}
                               info={I18n.t("team_detail.public_link_disabled")}
