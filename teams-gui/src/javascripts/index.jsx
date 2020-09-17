@@ -113,7 +113,7 @@ class App extends React.PureComponent {
         const {currentUser} = this.state;
         const user = {...currentUser, superAdminModus: val};
         this.setState({currentUser: user});
-        setSuperAdmin(val)
+        setSuperAdmin(val);
     }
 
     render() {
