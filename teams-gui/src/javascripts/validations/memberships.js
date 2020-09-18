@@ -22,7 +22,7 @@ export function allowedToLeave(team, currentUser) {
             && membership.urnPerson !== currentUser.urn);
     return admins.length > 0 && !isEmpty(isMember) ;
 }
-
+w
 export function hasOneAdmin(team, currentUser) {
     const pendingAdminInvitations = (team.invitations || []).filter(invitation => (invitation.intendedRole === ROLES.ADMIN.role ||
         invitation.intendedRole === ROLES.OWNER.role) && !invitation.declined);
