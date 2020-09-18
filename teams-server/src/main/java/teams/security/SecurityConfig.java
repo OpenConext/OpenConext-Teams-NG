@@ -2,6 +2,7 @@ package teams.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -103,6 +104,7 @@ public class SecurityConfig {
         }
     }
 
+    @EnableConfigurationProperties(SuperAdmin.class)
     @Configuration
     public static class SecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
@@ -121,8 +123,8 @@ public class SecurityConfig {
         @Value("${teams.non-guest-member-of}")
         private String nonGuestsMemberOf;
 
-        @Value("${teams.super_admins_team_urn}")
-        private String superAdminsTeamUrn;
+        @Autowired
+        private SuperAdmin superAdmin;
 
         @Value("${teams.group-name-context}")
         private String groupNameContext;
@@ -209,7 +211,7 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             ShibbolethPreAuthenticatedProcessingFilter filter =
                     new ShibbolethPreAuthenticatedProcessingFilter(authenticationManager(), personRepository,
-                            membershipRepository, nonGuestsMemberOf, superAdminsTeamUrn);
+                            membershipRepository, nonGuestsMemberOf, superAdmin);
 
             http
                     .antMatcher("/api/teams/**")

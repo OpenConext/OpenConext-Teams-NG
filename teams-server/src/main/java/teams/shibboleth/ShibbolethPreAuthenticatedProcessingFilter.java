@@ -9,12 +9,15 @@ import teams.domain.Membership;
 import teams.domain.Person;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
+import teams.security.SuperAdmin;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedProcessingFilter {
 
@@ -23,18 +26,18 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
     private final PersonRepository personRepository;
     private final MembershipRepository membershipRepository;
     private final String nonGuestsMemberOf;
-    private final String superAdminsTeamUrn;
+    private final SuperAdmin superAdmin;
 
     public ShibbolethPreAuthenticatedProcessingFilter(AuthenticationManager authenticationManager,
                                                       PersonRepository personRepository,
                                                       MembershipRepository membershipRepository,
                                                       String nonGuestsMemberOf,
-                                                      String superAdminsTeamUrn) {
+                                                      SuperAdmin superAdmin) {
         super();
         this.personRepository = personRepository;
         this.membershipRepository = membershipRepository;
         this.nonGuestsMemberOf = nonGuestsMemberOf;
-        this.superAdminsTeamUrn = superAdminsTeamUrn;
+        this.superAdmin = superAdmin;
         setAuthenticationManager(authenticationManager);
     }
 
@@ -51,8 +54,11 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
         LOG.info("Person {} is attempting authentication", person);
         if (person.isValid()) {
             Person provisionedPerson = provision(person);
-            Optional<Membership> optionalMembership = membershipRepository.findByUrnTeamAndUrnPerson(superAdminsTeamUrn, nameId);
-            provisionedPerson.markAsSuperAdmin(optionalMembership != null && optionalMembership.isPresent());
+            boolean isMember = superAdmin.getUrns().stream()
+                    .map(urn -> membershipRepository.findByUrnTeamAndUrnPerson(urn, nameId))
+                    .anyMatch(Optional::isPresent);
+
+            provisionedPerson.markAsSuperAdmin(isMember);
             return provisionedPerson;
         } else {
             return person;
