@@ -121,7 +121,7 @@ I18n.translations.en = {
         team_details: "TEAM INFO",
         team_members: "MEMBERS ({{count}})",
         team_groups: "INSTITUTIONAL TEAMS ({{count}})",
-        team_introduction: "INTRO",
+        team_introduction: "MESSAGE",
         membership: {
             name: "name",
             email: "email",
@@ -203,10 +203,10 @@ I18n.translations.en = {
     team_introduction: {
         write: "Markdown text",
         preview: "Preview",
-        explanation: "The message below will be shown to new members who accept the invite for team {{name}}.",
+        explanation: "The message below will be shown to new members who join team {{name}}.",
         save: "Save",
         flash: {
-            saved: "Successfully saved the after-invite message for {{name}}"
+            saved: "Successfully saved the message for new members of {{name}}."
         }
     },
     post_invite_dialog: {

@@ -191,7 +191,7 @@ export default class TeamDetail extends React.PureComponent {
 
     cancelPostInviteDialog = () => this.setState({postInviteDialogOpen: false});
 
-    showPostInviteHTML = () => this.setState({postInviteDialogOpen: true});
+    showPostInviteHTML = () => this.state.team.introductionText && this.setState({postInviteDialogOpen: true});
 
     handleDeleteTeam = team => e => {
         stop(e);
@@ -851,10 +851,10 @@ export default class TeamDetail extends React.PureComponent {
                                     cancel={this.cancelConfirmation}
                                     confirm={confirmationDialogAction}
                                     question={confirmationDialogQuestion}/>
-                <PostInviteDialog isOpen={postInviteDialogOpen}
+                {team.introductionText && <PostInviteDialog isOpen={postInviteDialogOpen}
                                   cancel={this.cancelPostInviteDialog}
                                   team={team}
-                                  markdown={team.introductionText}/>
+                                  markdown={team.introductionText}/>}
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.tabsAndIconLegend(team, tab, role)}
                 {tab === "details" && this.teamDetailAttributes(team, role, currentUser, owners, actions)}

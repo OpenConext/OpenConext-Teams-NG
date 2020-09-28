@@ -48,3 +48,32 @@
     }
   }
 }
+
+.mde-preview-content {
+  ul {
+    list-style: circle;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  p {
+    em {
+      font-style: italic;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+
+    code {
+      font-family: "Courier New", Courier, monospace;
+    }
+  }
+}
+.mde-textarea-wrapper {
+  textarea {
+    height: 300px!important;
+  }
+}
