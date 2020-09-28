@@ -549,7 +549,7 @@ export default class TeamDetail extends React.PureComponent {
                 <span className={tab === "groups" ? "active" : ""} onClick={this.switchTab("groups")}>
                         {I18n.t("team_detail.team_groups", {count: (team.externalTeams || []).length})}
                 </span>
-                {role === "ADMIN" && <span className={tab === "introduction" ? "active no-border" : "no-border"}
+                {(role === "ADMIN" || role === "OWNER") && <span className={tab === "introduction" ? "active no-border" : "no-border"}
                                            onClick={this.switchTab("introduction")}>
                         {I18n.t("team_detail.team_introduction")}
                 </span>}
