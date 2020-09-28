@@ -210,7 +210,7 @@ I18n.translations.nl = {
     },
     post_invite_dialog: {
         title: "Welkom in team {{name}}",
-        close: "Sluit"
+        close: "Doorgaan"
     },
     join_request: {
         title: "Toetredingsverzoek",

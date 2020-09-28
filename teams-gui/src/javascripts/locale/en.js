@@ -211,7 +211,7 @@ I18n.translations.en = {
     },
     post_invite_dialog: {
         title: "Welcome to team {{name}}",
-        close: "Close"
+        close: "Continue"
     },
     join_request: {
         title: "Join request",
