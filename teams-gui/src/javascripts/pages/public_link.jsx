@@ -70,7 +70,7 @@ export default class PublicLink extends React.PureComponent {
             acceptPublicLink(key)
                 .then(() => {
                     this.setState({confirmationDialogOpen: false});
-                    goto(`/teams/${this.state.team.id}`, this.props);
+                    goto(`/teams/${this.state.team.id}?new=true`, this.props);
                     setFlash(I18n.t("public_link.flash.accept", {name: this.state.team.name}));
                 });
         }
