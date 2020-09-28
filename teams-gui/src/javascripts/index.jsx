@@ -140,6 +140,8 @@ class App extends React.PureComponent {
                         <Route exact path="/" render={() => <Redirect to="/my-teams"/>}/>
                         <Route path="/my-teams"
                                render={props => <MyTeams currentUser={currentUser} {...props}/>}/>
+                        <Route path="/teams/:id/:tab?"
+                               render={props => <TeamDetail currentUser={currentUser} {...props}/>}/>
                         <Route path="/teams/:id"
                                render={props => <TeamDetail currentUser={currentUser} {...props}/>}/>
                         <Route path="/team-link/:name"

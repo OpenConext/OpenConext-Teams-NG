@@ -70,7 +70,7 @@ export default class Invitation extends React.PureComponent {
                 acceptInvitation(key)
                     .then(() => {
                         this.setState({confirmationDialogOpen: false});
-                        goto(`/teams/${this.state.invitation.teamId}`, this.props);
+                        goto(`/teams/${this.state.invitation.teamId}?new=true`, this.props);
                         setFlash(I18n.t("invitation.flash.accept", {name: this.state.invitation.teamName}));
 
                     });

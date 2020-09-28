@@ -59,6 +59,9 @@ public class Team implements HashGenerator, Serializable {
     private String publicLink;
 
     @Column
+    private String introductionText;
+
+    @Column
     private boolean publicLinkDisabled = true;
 
     @Formula("(select count(*) from memberships m where m.team_id = id and m.role <> 'OWNER')")

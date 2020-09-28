@@ -1,6 +1,7 @@
 package teams.api;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -181,6 +183,22 @@ public class TeamController extends ApiController implements TeamValidator {
 
         team.resetPublicLink();
         log.info("Team {} resetPublicLink by {}", team.getUrn(), federatedUserUrn);
+
+        return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
+    }
+
+    @PutMapping("api/teams/teams/save-introduction-text")
+    public Object saveIntroductionText(@RequestBody TeamProperties teamProperties, FederatedUser federatedUser) {
+        Team team = teamById(teamProperties.getId(), false);
+
+        String federatedUserUrn = federatedUser.getUrn();
+        Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
+        onlyAdminAllowed(roleOfLoggedInPerson, federatedUser, team, "saveIntroductionText");
+
+        team.setIntroductionText(teamProperties.getIntroductionText());
+        teamRepository.save(team);
+
+        log.info("Team {} saveIntroductionText by {}", team.getUrn(), federatedUserUrn);
 
         return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
     }

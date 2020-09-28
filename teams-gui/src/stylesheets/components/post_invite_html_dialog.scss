@@ -1,0 +1,50 @@
+.post-invite-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(95, 95, 95, 0.7);
+  z-index: 4;
+
+  .post-invite-dialog-content {
+    top: 10%;
+    left: 20%;
+    right: 20%;
+    bottom: 10%;
+    position: absolute;
+    background-color: rgb(245, 245, 245);
+    overflow: auto;
+    border-radius: 3px;
+    outline: none;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 1px 6px 0 rgb(95, 95, 95);
+
+    .post-invite-header {
+      background-color: $blue;
+      padding: 15px;
+      color: white;
+      text-transform: uppercase;
+      font-size: large;
+      font-weight: bold;
+    }
+
+    .post-invite-content {
+      text-align: left;
+      padding: 25px;
+    }
+
+    .post-invite-buttons {
+      margin-top: auto;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: flex-end;
+
+      .button:last-child {
+        margin-right: 25px;
+      }
+    }
+  }
+}

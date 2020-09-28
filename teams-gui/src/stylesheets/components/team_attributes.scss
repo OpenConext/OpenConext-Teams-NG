@@ -46,6 +46,7 @@
         &.fa-pencil {
           text-decoration: underline;
         }
+
         &.fa-refresh {
           right: 40px;
         }
@@ -87,4 +88,21 @@
     }
   }
 
+  div.show-post-invite {
+    display: flex;
+
+    i.fa-eye {
+      margin-left: auto;
+      color: $blue;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 5px;
+
+      &.disabled {
+        color: $medium-grey;
+        cursor: not-allowed;
+      }
+    }
+
+  }
 }

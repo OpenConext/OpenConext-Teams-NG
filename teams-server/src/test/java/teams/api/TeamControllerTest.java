@@ -257,7 +257,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
-                .body(new TeamProperties(1L, "changed", "personalNote", false, true))
+                .body(new TeamProperties(1L, "changed", "personalNote", false, true, null))
                 .when()
                 .put("api/teams/teams")
                 .then()
@@ -289,12 +289,30 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void saveIntroductionText() throws Exception {
+        TeamProperties teamProperties = new TeamProperties(1L, null, null, false, false, "### Nice");
+        given()
+                .header(CONTENT_TYPE, "application/json")
+                .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
+                .body(teamProperties)
+                .when()
+                .put("api/teams/teams/save-introduction-text")
+                .then()
+                .statusCode(SC_OK);
+
+        Team updatedTeam = teamRepository.findByUrn("demo:openconext:org:riders").get();
+
+        assertEquals(new Long(1), updatedTeam.getId());
+        assertEquals(teamProperties.getIntroductionText(), updatedTeam.getIntroductionText());
+    }
+
+    @Test
     public void updateTeamAsGuest() throws Exception {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .header("is-member-of", "guest-org")
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(2L, null, null, true, false))
+                .body(new TeamProperties(2L, null, null, true, false, null))
                 .when()
                 .put("api/teams/teams")
                 .then()
@@ -306,7 +324,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(2L, null, null, true, false))
+                .body(new TeamProperties(2L, null, null, true, false, null))
                 .when()
                 .put("api/teams/teams")
                 .then()
@@ -318,7 +336,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     public void updateTeamWithoutBeingMember() throws Exception {
         given()
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(8L, null, null, true, false))
+                .body(new TeamProperties(8L, null, null, true, false, null))
                 .when()
                 .put("api/teams/teams")
                 .then()

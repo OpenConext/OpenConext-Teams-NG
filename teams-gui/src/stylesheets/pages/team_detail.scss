@@ -143,6 +143,10 @@
           border-right: none;
         }
 
+        &.no-border {
+          border-left: none;
+        }
+
         &:last-child {
           border-top-right-radius: $br;
         }

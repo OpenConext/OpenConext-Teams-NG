@@ -115,9 +115,13 @@ I18n.translations.pt = {
         name: "Nome",
         actions: "...",
         leave: "Sair do Grupo",
+        postInviteHTML: "Message for new members",
+        showPostInviteHTML: "Show the message for new members popup",
+        showNoPostInviteHTML: "This team has no message for new members",
         team_details: "INFORMAÇÃO DO GRUPO",
         team_members: "MEMBROS ({{count}})",
-        team_groups: "GRUPOS INSTITUCIONAIS LIGADOS ({{count}})",
+        team_groups: "INSTITUCIONAIS LIGADOS ({{count}})",
+        team_introduction: "INTRO",
         membership: {
             name: "nome",
             email: "email",
@@ -195,6 +199,19 @@ I18n.translations.pt = {
             unlinked_institutional_team: "Pedido de ligação ao Grupo Institucional {{team}} rejeitado por {{name}}."
         }
 
+    },
+    team_introduction: {
+        write: "Markdown text",
+        preview: "Preview",
+        explanation: "The HTML below will be shown to new members who accept the invite for team {{name}}.",
+        save: "Save",
+        flash: {
+            saved: "Successfully saved the after-invite HTML for {{name}}"
+        }
+    },
+    post_invite_dialog: {
+      title: "Post-invite HTML",
+      close: "Close"
     },
     join_request: {
         title: "Convite",

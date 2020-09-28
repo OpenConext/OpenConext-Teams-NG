@@ -115,10 +115,13 @@ I18n.translations.en = {
         name: "Name",
         actions: "...",
         leave: "Leave Team",
-
+        postInviteHTML: "Message for new members",
+        showPostInviteHTML: "Show the message for new members popup",
+        showNoPostInviteHTML: "This team has no message for new members",
         team_details: "TEAM INFO",
         team_members: "MEMBERS ({{count}})",
-        team_groups: "LINKED INSTITUTIONAL TEAMS ({{count}})",
+        team_groups: "INSTITUTIONAL TEAMS ({{count}})",
+        team_introduction: "INTRO",
         membership: {
             name: "name",
             email: "email",
@@ -196,6 +199,19 @@ I18n.translations.en = {
             unlinked_institutional_team: "Successfully unlinked institutional Team {{team}} from {{name}}."
         }
 
+    },
+    team_introduction: {
+        write: "Markdown text",
+        preview: "Preview",
+        explanation: "The message below will be shown to new members who accept the invite for team {{name}}.",
+        save: "Save",
+        flash: {
+            saved: "Successfully saved the after-invite message for {{name}}"
+        }
+    },
+    post_invite_dialog: {
+        title: "Welcome to team {{name}}",
+        close: "Close"
     },
     join_request: {
         title: "Join request",

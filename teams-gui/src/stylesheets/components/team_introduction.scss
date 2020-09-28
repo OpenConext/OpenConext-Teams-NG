@@ -1,0 +1,23 @@
+.team-introduction {
+
+  @include card;
+  padding: 15px;
+
+  p.info {
+    margin-bottom: 15px;
+    color: $dark-grey;
+  }
+
+  div.actions {
+    display: flex;
+    margin-top: 25px;
+    a.button {
+      margin-left: auto;
+    }
+    i {
+      color: $blue;
+      margin-left: 25px;
+    }
+  }
+
+}

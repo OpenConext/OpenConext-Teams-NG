@@ -45,6 +45,10 @@ import {
 } from "../validations/memberships";
 import SelectRole from "../components/select_role";
 import TeamsDetailsLegend from "../components/teams_details_legend";
+import TeamsIntroductionLegend from "../components/teams_introduction_legend";
+import TeamIntroduction from "../components/team_introduction";
+import PostInviteDialog from "../components/post_invite_dialog";
+import {getParameterByName} from "../utils/query-parameters";
 
 export default class TeamDetail extends React.PureComponent {
 
@@ -78,7 +82,8 @@ export default class TeamDetail extends React.PureComponent {
             tab: "details",
             confirmationDialogOpen: false,
             confirmationDialogQuestion: "",
-            confirmationDialogAction: () => false
+            confirmationDialogAction: () => false,
+            cancelPostInviteDialog: false
         };
     }
 
@@ -92,16 +97,17 @@ export default class TeamDetail extends React.PureComponent {
 
     componentWillMount = () => {
         const params = this.props.match.params;
+        const tab = params.tab || "details";
+        const isNew = getParameterByName("new", window.location.search);
         if (params.id) {
-            this.refreshTeamState(params.id);
+            this.refreshTeamState(params.id, this.switchTab(tab, isNew));
         } else if (params.name) {
             teamIdFromUrn(params.name)
-                .then(id => this.refreshTeamState(id))
+                .then(id => this.refreshTeamState(id, this.switchTab(tab, isNew)))
                 .catch(this.handleNotFound);
         } else {
             this.props.history.push("/404/");
         }
-
     };
 
 
@@ -113,7 +119,7 @@ export default class TeamDetail extends React.PureComponent {
             })
             .catch(this.handleNotFound);
 
-    stateTeam(team, displayOneAdminWarning) {
+    stateTeam = (team, displayOneAdminWarning) => {
         //prevent url guessing
         if (isEmpty(team.memberships)) {
             this.props.history.push(`/join-requests/${team.id}`);
@@ -182,6 +188,10 @@ export default class TeamDetail extends React.PureComponent {
     });
 
     cancelConfirmation = () => this.setState({confirmationDialogOpen: false});
+
+    cancelPostInviteDialog = () => this.setState({postInviteDialogOpen: false});
+
+    showPostInviteHTML = () => this.setState({postInviteDialogOpen: true});
 
     handleDeleteTeam = team => e => {
         stop(e);
@@ -472,6 +482,17 @@ export default class TeamDetail extends React.PureComponent {
                 <CheckBox name="viewable" value={team.viewable} readOnly={!isAdmin}
                           info={I18n.t("team_detail.viewable_info")} onChange={this.changeViewable}/>
                 <div className="separator"/>
+                <div className="show-post-invite team-attribute">
+                    <label className="title">{I18n.t("team_detail.postInviteHTML")}</label>
+                    <ReactTooltip id="showPostInviteHTML" place="right">
+                        {I18n.t(`team_detail.${team.introductionText ? 'showPostInviteHTML' : 'showNoPostInviteHTML'}`)}
+                    </ReactTooltip>
+                    <i data-for="showPostInviteHTML" data-tip
+                       onClick={this.showPostInviteHTML}
+                       className={`fa fa-eye ${team.introductionText ? '' : 'disabled'}`}/>
+                </div>
+                <div className="separator"/>
+
                 {(isAdmin || currentUser.superAdminModus) && <div className="team-attribute">
                     <label className="title info-after">{I18n.t("team_detail.public_link")}</label>
                     <CheckBox name="publicLinkDisable" value={!team.publicLinkDisabled} readOnly={!isAdmin}
@@ -507,42 +528,60 @@ export default class TeamDetail extends React.PureComponent {
         );
     }
 
-    renderTabs = (tab, team) => {
+    switchTab = (tab, isNew = false) => () => {
+        this.setState({tab: tab});
+        const params = this.props.match.params;
+        this.props.history.push(`/teams/${params.id}/${tab}`);
+        if (isNew) {
+            this.setState({postInviteDialogOpen: true});
+        }
+    }
+
+    renderTabs = (tab, team, role) => {
         return (
             <div className="members-tab">
-               <span className={tab === "details" ? "active" : ""} onClick={() => this.setState({tab: "details"})}>
+               <span className={tab === "details" ? "active" : ""} onClick={this.switchTab("details")}>
                         {I18n.t("team_detail.team_details")}
                </span>
-                <span className={tab === "members" ? "active" : ""} onClick={() => this.setState({tab: "members"})}>
+                <span className={tab === "members" ? "active" : ""} onClick={this.switchTab("members")}>
                         {I18n.t("team_detail.team_members", {count: team.memberships.filter(m => m.role !== ROLES.OWNER.role).length})}
                </span>
-                <span className={tab === "groups" ? "active" : ""} onClick={() => this.setState({tab: "groups"})}>
+                <span className={tab === "groups" ? "active" : ""} onClick={this.switchTab("groups")}>
                         {I18n.t("team_detail.team_groups", {count: (team.externalTeams || []).length})}
                 </span>
+                {role === "ADMIN" && <span className={tab === "introduction" ? "active no-border" : "no-border"}
+                                           onClick={this.switchTab("introduction")}>
+                        {I18n.t("team_detail.team_introduction")}
+                </span>}
             </div>
         );
     };
 
-    tabsAndIconLegend = (team, tab) => {
+    tabsAndIconLegend = (team, tab, role) => {
         switch (tab) {
             case "details":
                 return (
                     <TeamsDetailsLegend>
-                        {this.renderTabs(tab, team)}
+                        {this.renderTabs(tab, team, role)}
                     </TeamsDetailsLegend>
                 );
             case "members":
                 return (
                     <RolesIconLegend includeInvitation={true} includeOwner={false}>
-                        {this.renderTabs(tab, team)}
+                        {this.renderTabs(tab, team, role)}
                     </RolesIconLegend>
                 );
             case "groups":
                 return (
                     <TeamsIconLegend currentUser={this.props.currentUser}>
-                        {this.renderTabs(tab, team)}
+                        {this.renderTabs(tab, team, role)}
                     </TeamsIconLegend>
                 );
+            case "introduction":
+                return (
+                    <TeamsIntroductionLegend>
+                        {this.renderTabs(tab, team, role)}
+                    </TeamsIntroductionLegend>);
             default:
                 throw new Error(`Unknown tab ${tab}`);
         }
@@ -796,7 +835,8 @@ export default class TeamDetail extends React.PureComponent {
     render() {
         const {
             team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded,
-            confirmationDialogOpen, confirmationDialogAction, confirmationDialogQuestion, owners
+            confirmationDialogOpen, confirmationDialogAction, confirmationDialogQuestion, owners,
+            postInviteDialogOpen
         } = this.state;
         const {currentUser} = this.props;
         if (!loaded) {
@@ -811,8 +851,12 @@ export default class TeamDetail extends React.PureComponent {
                                     cancel={this.cancelConfirmation}
                                     confirm={confirmationDialogAction}
                                     question={confirmationDialogQuestion}/>
+                <PostInviteDialog isOpen={postInviteDialogOpen}
+                                  cancel={this.cancelPostInviteDialog}
+                                  team={team}
+                                  markdown={team.introductionText}/>
                 {this.teamDetailHeader(team, role, currentUser)}
-                {this.tabsAndIconLegend(team, tab)}
+                {this.tabsAndIconLegend(team, tab, role)}
                 {tab === "details" && this.teamDetailAttributes(team, role, currentUser, owners, actions)}
                 {tab === "members" && this.teamMembers(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team, role)}
                 {tab === "groups" &&
@@ -820,6 +864,7 @@ export default class TeamDetail extends React.PureComponent {
                                         institutionTeams={currentUser.externalTeams}
                                         team={team}
                                         institutionTeamLinked={this.institutionTeamLinked}/>}
+                {tab === "introduction" && <TeamIntroduction team={team} refreshTeam={this.stateTeam}/>}
             </div>
         );
     }

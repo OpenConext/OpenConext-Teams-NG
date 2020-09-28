@@ -114,9 +114,13 @@ I18n.translations.nl = {
         name: "Naam",
         actions: "...",
         leave: "Verlaat Team",
+        postInviteHTML: "Bericht voor nieuwe leden",
+        showPostInviteHTML: "Toon het bericht voor nieuwe leden",
+        showNoPostInviteHTML: "Dit team heeft geen bericht  voor nieuwe leden",
         team_details: "TEAM INFO",
         team_members: "LEDEN ({{count}})",
-        team_groups: "GEKOPPELDE INSTELLINGSTEAMS ({{count}})",
+        team_groups: "INSTELLINGSTEAMS ({{count}})",
+        team_introduction: "INTRO",
         membership: {
             name: "naam",
             email: "e-mail",
@@ -194,6 +198,19 @@ I18n.translations.nl = {
             unlinked_institutional_team: "Instellingsteam {{team}} succesvol ontkoppeld van {{name}}."
         }
 
+    },
+    team_introduction: {
+        write: "Markdown tekst",
+        preview: "Voorbeeld",
+        explanation: "Het bericht hieronder zal worden getoond aan nieuwe leden die een uitnodiging accepteren voor team {{name}}.",
+        save: "Opslaan",
+        flash: {
+            saved: "Het post-invite bericht is succesvol opgeslagen voor {{name}}"
+        }
+    },
+    post_invite_dialog: {
+        title: "Welkom in team {{name}}",
+        close: "Sluit"
     },
     join_request: {
         title: "Toetredingsverzoek",
