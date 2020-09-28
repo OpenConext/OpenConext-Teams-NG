@@ -19,7 +19,7 @@ const sanitizeHtml = html => {
         return "";
     }
     return html.replace(/<a /g, "<a target='_blank'");
-}
+};
 
 export default function PostInviteDialog({isOpen = false, team, markdown, cancel}) {
     return (
@@ -56,6 +56,7 @@ export default function PostInviteDialog({isOpen = false, team, markdown, cancel
 
 PostInviteDialog.propTypes = {
     isOpen: PropTypes.bool,
+    team: PropTypes.object,
     markdown: PropTypes.string,
     cancel: PropTypes.func.isRequired
 };

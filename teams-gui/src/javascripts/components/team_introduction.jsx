@@ -5,7 +5,7 @@ import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import {stop} from "../utils/utils";
-import {leaveTeam, saveIntroductionText} from "../api";
+import {saveIntroductionText} from "../api";
 import {setFlash} from "../utils/flash";
 
 const converter = new Showdown.Converter({
@@ -26,7 +26,7 @@ export default class TeamIntroduction extends React.PureComponent {
         this.tabOptions = {
             "write": I18n.t("team_introduction.write"),
             "preview": I18n.t("team_introduction.preview")
-        }
+        };
     }
 
     saveIntroduction = e => {

@@ -485,11 +485,11 @@ export default class TeamDetail extends React.PureComponent {
                 <div className="show-post-invite team-attribute">
                     <label className="title">{I18n.t("team_detail.postInviteHTML")}</label>
                     <ReactTooltip id="showPostInviteHTML" place="right">
-                        {I18n.t(`team_detail.${team.introductionText ? 'showPostInviteHTML' : 'showNoPostInviteHTML'}`)}
+                        {I18n.t(`team_detail.${team.introductionText ? "showPostInviteHTML" : "showNoPostInviteHTML"}`)}
                     </ReactTooltip>
                     <i data-for="showPostInviteHTML" data-tip
                        onClick={this.showPostInviteHTML}
-                       className={`fa fa-eye ${team.introductionText ? '' : 'disabled'}`}/>
+                       className={`fa fa-eye ${team.introductionText ? "" : "disabled"}`}/>
                 </div>
                 <div className="separator"/>
 
