@@ -18,8 +18,7 @@ const sanitizeHtml = html => {
     if (isEmpty(html)) {
         return "";
     }
-    html = DOMPurify.sanitize(html);
-    return html.replace(/<a /g, "<a target='_blank'")
+    return DOMPurify.sanitize(html);
 };
 
 export default function PostInviteDialog({isOpen = false, team, markdown, cancel}) {
