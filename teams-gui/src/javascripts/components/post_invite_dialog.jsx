@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import I18n from "i18n-js";
 import {isEmpty, stop} from "../utils/utils";
 import "react-mde/lib/styles/css/react-mde-all.css";
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 import * as Showdown from "showdown";
 
 const converter = new Showdown.Converter({

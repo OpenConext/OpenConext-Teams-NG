@@ -7,7 +7,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import {stop} from "../utils/utils";
 import {saveIntroductionText} from "../api";
 import {setFlash} from "../utils/flash";
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 const converter = new Showdown.Converter({
     tables: true,
