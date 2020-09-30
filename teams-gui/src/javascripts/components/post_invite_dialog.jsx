@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import I18n from "i18n-js";
 import {isEmpty, stop} from "../utils/utils";
 import "react-mde/lib/styles/css/react-mde-all.css";
-
+import DOMPurify from 'dompurify';
 import * as Showdown from "showdown";
 
 const converter = new Showdown.Converter({
@@ -18,7 +18,8 @@ const sanitizeHtml = html => {
     if (isEmpty(html)) {
         return "";
     }
-    return html.replace(/<a /g, "<a target='_blank'");
+    html = DOMPurify.sanitize(html);
+    return html.replace(/<a /g, "<a target='_blank'")
 };
 
 export default function PostInviteDialog({isOpen = false, team, markdown, cancel}) {

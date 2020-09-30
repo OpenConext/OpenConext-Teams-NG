@@ -7,6 +7,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import {stop} from "../utils/utils";
 import {saveIntroductionText} from "../api";
 import {setFlash} from "../utils/flash";
+import DOMPurify from 'dompurify';
 
 const converter = new Showdown.Converter({
     tables: true,
@@ -47,13 +48,18 @@ export default class TeamIntroduction extends React.PureComponent {
                 <p className="info">{I18n.t("team_introduction.explanation", {name: team.name})}</p>
                 <div className="container">
                     <ReactMde
+                        toolbarCommands={[
+                            ["header", "bold", "italic", "strikethrough"],
+                            ["link", "quote", "code"],
+                            ["unordered-list", "ordered-list"]
+                        ]}
                         value={value}
                         l18n={this.tabOptions}
                         onChange={value => this.setState({value})}
                         selectedTab={selectedTab}
                         onTabChange={selectedTab => this.setState({selectedTab})}
                         generateMarkdownPreview={markdown =>
-                            Promise.resolve(converter.makeHtml(markdown))
+                            Promise.resolve(DOMPurify.sanitize(converter.makeHtml(markdown)))
                         }
                     />
                 </div>
