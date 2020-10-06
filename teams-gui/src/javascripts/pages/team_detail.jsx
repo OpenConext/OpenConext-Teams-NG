@@ -491,6 +491,10 @@ export default class TeamDetail extends React.PureComponent {
                        onClick={this.showPostInviteHTML}
                        className={`fa fa-eye ${team.introductionText ? "" : "disabled"}`}/>
                 </div>
+                <div>
+                    {team.introductionText && <span className="info">{I18n.t("team_detail.postInviteHTMLInfo")}</span>}
+                    {!team.introductionText && <span className="info">{I18n.t("team_detail.postInviteHTMLInfoNone")}</span>}
+                </div>
                 <div className="separator"/>
 
                 {(isAdmin || currentUser.superAdminModus) && <div className="team-attribute">

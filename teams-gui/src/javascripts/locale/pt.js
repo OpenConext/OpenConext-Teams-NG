@@ -117,6 +117,8 @@ I18n.translations.pt = {
         leave: "Sair do Grupo",
         postInviteHTML: "Message for new members",
         showPostInviteHTML: "Show the message for new members popup",
+        postInviteHTMLInfo: "Click on the eye icon right to view the dialog new members of this team see when they join",
+        postInviteHTMLInfoNone: "New members  who join this team do not see a welcome message",
         showNoPostInviteHTML: "This team has no message for new members",
         team_details: "INFORMAÇÃO DO GRUPO",
         team_members: "MEMBROS ({{count}})",

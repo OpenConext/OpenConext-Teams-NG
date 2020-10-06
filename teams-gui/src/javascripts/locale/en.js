@@ -116,6 +116,8 @@ I18n.translations.en = {
         actions: "...",
         leave: "Leave Team",
         postInviteHTML: "Message for new members",
+        postInviteHTMLInfo: "Click on the eye icon right to view the dialog new members of this team see when they join",
+        postInviteHTMLInfoNone: "New members  who join this team do not see a welcome message",
         showPostInviteHTML: "Show the message for new members popup",
         showNoPostInviteHTML: "This team has no message for new members",
         team_details: "TEAM INFO",

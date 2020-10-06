@@ -115,6 +115,8 @@ I18n.translations.nl = {
         actions: "...",
         leave: "Verlaat Team",
         postInviteHTML: "Bericht voor nieuwe leden",
+        postInviteHTMLInfo: "Klik op het oogpictogram rechts om de dialoog te zien die nieuwe leden van dit team zien wanneer ze lid worden",
+        postInviteHTMLInfoNone: "Nieuwe leden die lid worden van dit team zien geen welkomstbericht",
         showPostInviteHTML: "Toon het bericht voor nieuwe leden",
         showNoPostInviteHTML: "Dit team heeft geen bericht  voor nieuwe leden",
         team_details: "TEAM INFO",
