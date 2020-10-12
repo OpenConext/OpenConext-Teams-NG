@@ -11,6 +11,7 @@ import {goto, stop} from "../utils/utils";
 import PublicLinkInfo from "../components/public_link_info";
 import SelectRole from "../components/select_role";
 import {ROLES} from "../validations/memberships";
+import {convertToHtml} from "../utils/markdown";
 
 export default class PublicLink extends React.PureComponent {
 
@@ -86,7 +87,9 @@ export default class PublicLink extends React.PureComponent {
                 <label >{I18n.t("public_link.team.name")}</label>
                 <input type="text" value={team.name} disabled="true"/>
                 <label >{I18n.t("public_link.team.description")}</label>
-                <input type="text" value={team.description} disabled="true"/>
+                <p className="html-description mde-preview-content" dangerouslySetInnerHTML={{
+                    __html: convertToHtml(team.description, true)
+                }} />
                 <section className="admins">
                     <label>{I18n.t("public_link.team.admins")}</label>
                     {team.admins.map((admin, index) =>

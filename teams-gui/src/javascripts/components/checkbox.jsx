@@ -23,5 +23,3 @@ CheckBox.propTypes = {
     info: PropTypes.string,
     className: PropTypes.string
 };
-
-

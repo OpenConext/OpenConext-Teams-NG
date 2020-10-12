@@ -23,6 +23,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import org.commonmark.node.*;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 import static javax.persistence.CascadeType.ALL;
 
@@ -57,9 +60,6 @@ public class Team implements HashGenerator, Serializable {
 
     @Column
     private String publicLink;
-
-    @Column
-    private String introductionText;
 
     @Column
     private boolean publicLinkDisabled = true;
@@ -101,7 +101,17 @@ public class Team implements HashGenerator, Serializable {
 
     @JsonIgnore
     public String getHtmlDescription() {
-        return isContainsDescription() ? HtmlUtils.htmlEscape(description).replaceAll("\n", "<br/>") : "";
+        if (isContainsDescription()) {
+            Parser parser = Parser.builder().build();
+            Node document = parser.parse(description);
+            HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(false).build();
+            String render = renderer.render(document);
+            if (render.endsWith("\n")) {
+                render = render.substring(0, render.length() - 1);
+            }
+            return render.replaceAll("\n", "<br/>");
+        }
+        return "";
     }
 
     @Override

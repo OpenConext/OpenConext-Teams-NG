@@ -10,6 +10,7 @@ import CheckBox from "../components/checkbox";
 import {getJoinRequest, getTeamDetail, joinRequest} from "../api";
 import {setFlash} from "../utils/flash";
 import {goto, isEmpty, stop} from "../utils/utils";
+import {convertToHtml} from "../utils/markdown";
 
 
 export default class JoinRequest extends React.PureComponent {
@@ -97,7 +98,10 @@ export default class JoinRequest extends React.PureComponent {
                 <label>{I18n.t("join_request.team.name")}</label>
                 <input type="text" value={team.name} disabled={true}/>
                 <label>{I18n.t("join_request.team.description")}</label>
-                <input type="text" value={team.description} disabled={true}/>
+                <p className="html-description mde-preview-content" dangerouslySetInnerHTML={{
+                    __html: convertToHtml(team.description, true)
+                }} />
+
                 <section className="admins">
                     <label>{I18n.t("join_request.team.admins")}</label>
                     {(team.admins || []).map((admin, index) =>
@@ -129,7 +133,7 @@ export default class JoinRequest extends React.PureComponent {
                       onChange={this.handleInputChange("approval")}
                       info={I18n.t("join_request.share_info")}
                       className={approval ? "checkbox" : "checkbox with-error"}/>
-            {!approval && <em className="error with-checkbox">{I18n.t("join_request.approval_required")}</em>}
+            {!approval && <em className="info error with-checkbox">{I18n.t("join_request.approval_required")}</em>}
         </section>;
 
     renderInvitationMessage = message => {
@@ -137,7 +141,7 @@ export default class JoinRequest extends React.PureComponent {
             <section className="form-divider" style={{clear: "both"}}>
                 <label className="join-request-message"
                        htmlFor="message">{I18n.t("join_request.message")}</label>
-                <em>{I18n.t("join_request.message_info")}</em>
+                <em className="info">{I18n.t("join_request.message_info")}</em>
                 <textarea id="message" name="message" value={message}
                           rows={5}
                           onChange={this.handleInputChange("message")}

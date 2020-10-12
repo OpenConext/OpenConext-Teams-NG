@@ -16,6 +16,7 @@ import {autoCompleteTeam, deleteJoinRequest, deleteTeam, getMyTeams} from "../ap
 import {setFlash} from "../utils/flash";
 import {isEmpty, stop} from "../utils/utils";
 import {iconForRole, labelForRole, ROLES} from "../validations/memberships";
+import TeamDescriptionTooltip from "../components/team_description_tooltip";
 
 export default class MyTeams extends React.PureComponent {
 
@@ -361,7 +362,9 @@ export default class MyTeams extends React.PureComponent {
                                     </section>}
                                 {team.name}
                             </td>
-                            <td data-label={I18n.t("teams.description")} className="description">{team.description}</td>
+                            <td data-label={I18n.t("teams.description")} className="description">
+                                {<TeamDescriptionTooltip mdDescription={team.description} index={`description${team.id}`} />}
+                            </td>
                             {this.roleCell(team)}
                             {this.membershipCountCell(team)}
                             <td data-label={I18n.t("teams.actions_phone")} className="actions"

@@ -122,7 +122,6 @@ I18n.translations.nl = {
         team_details: "TEAM INFO",
         team_members: "LEDEN ({{count}})",
         team_groups: "INSTELLINGSTEAMS ({{count}})",
-        team_introduction: "BERICHT",
         membership: {
             name: "naam",
             email: "e-mail",
@@ -201,10 +200,11 @@ I18n.translations.nl = {
         }
 
     },
-    team_introduction: {
+    team_description: {
         write: "Markdown tekst",
         preview: "Voorbeeld",
-        explanation: "Het bericht hieronder zal worden getoond aan nieuwe leden van het team {{name}}.",
+        title: "Omschrijving",
+        explanation: "De omschrijving zal worden getoond aan nieuwe leden van het team {{name}}.",
         save: "Opslaan",
         flash: {
             saved: "Het bericht voor nieuwe leden van {{name}} is succesvol opgeslagen."

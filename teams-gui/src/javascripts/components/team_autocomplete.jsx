@@ -1,10 +1,8 @@
 import React from "react";
 import I18n from "i18n-js";
 import PropTypes from "prop-types";
-import ReactTooltip from "react-tooltip";
 import scrollIntoView from "scroll-into-view";
-
-import {isEmpty} from "../utils/utils";
+import TeamDescriptionTooltip from "./team_description_tooltip";
 
 export default class TeamAutocomplete extends React.PureComponent {
 
@@ -21,27 +19,11 @@ export default class TeamAutocomplete extends React.PureComponent {
         const first = name.substring(0, indexOf);
         const middle = name.substring(indexOf, indexOf + query.length);
         const last = name.substring(indexOf + query.length);
-        return  <span>{first}<span className="matched">{middle}</span>{last}</span>;
+        return <span>{first}<span className="matched">{middle}</span>{last}</span>;
     };
 
     itemDescription = (item, index) => {
-        const description = item.description;
-        if (isEmpty(description)) {
-            return "";
-        }
-        if (description.length > 45) {
-            const id = `description${index}`;
-            return (
-                <span data-for={id} data-tip>
-                {`${description.substring(0, Math.min(description.substring(25).indexOf(" ") + 25, 50))}  `}
-                    <i className="fa fa-info-circle"></i>
-                <ReactTooltip id={id} type="light" class="tool-tip" effect="solid">
-                    <span>{description}</span>
-                </ReactTooltip>
-            </span>
-            );
-        }
-        return description;
+        return <TeamDescriptionTooltip mdDescription={item.description} index={`description${index}`}/>;
     };
 
     render() {
@@ -77,7 +59,8 @@ export default class TeamAutocomplete extends React.PureComponent {
                                     <td>{this.itemName(item, query)}</td>
                                     <td>{this.itemDescription(item, index)}</td>
                                     <td className="role">{superAdminModus ? <span>{I18n.t("teams.view")}</span> :
-                                        item.role ? <span>{item.role}</span> : <span className="join">{I18n.t("teams.join")}</span>}
+                                        item.role ? <span>{item.role}</span> :
+                                            <span className="join">{I18n.t("teams.join")}</span>}
                                     </td>
                                 </tr>
                             )

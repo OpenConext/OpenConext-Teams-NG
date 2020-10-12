@@ -187,22 +187,6 @@ public class TeamController extends ApiController implements TeamValidator {
         return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
     }
 
-    @PutMapping("api/teams/teams/save-introduction-text")
-    public Object saveIntroductionText(@RequestBody TeamProperties teamProperties, FederatedUser federatedUser) {
-        Team team = teamById(teamProperties.getId(), false);
-
-        String federatedUserUrn = federatedUser.getUrn();
-        Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
-        onlyAdminAllowed(roleOfLoggedInPerson, federatedUser, team, "saveIntroductionText");
-
-        team.setIntroductionText(teamProperties.getIntroductionText());
-        teamRepository.save(team);
-
-        log.info("Team {} saveIntroductionText by {}", team.getUrn(), federatedUserUrn);
-
-        return lazyLoadTeam(teamRepository.save(team), roleOfLoggedInPerson, federatedUser);
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("api/teams/teams/{id}")
     public void deleteTeam(@PathVariable("id") Long id, FederatedUser federatedUser) {

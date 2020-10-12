@@ -45,8 +45,7 @@ import {
 } from "../validations/memberships";
 import SelectRole from "../components/select_role";
 import TeamsDetailsLegend from "../components/teams_details_legend";
-import TeamsIntroductionLegend from "../components/teams_introduction_legend";
-import TeamIntroduction from "../components/team_introduction";
+import TeamDescription from "../components/team_description";
 import PostInviteDialog from "../components/post_invite_dialog";
 import {getParameterByName} from "../utils/query-parameters";
 
@@ -175,7 +174,6 @@ export default class TeamDetail extends React.PureComponent {
             isOnlyAdmin: isOnlyAdmin(team, currentUser),
             roleInTeam: currentUserRoleInTeam(team, currentUser)
         });
-
     }
 
     confirmation = (question, action) => this.setState({
@@ -191,7 +189,7 @@ export default class TeamDetail extends React.PureComponent {
 
     cancelPostInviteDialog = () => this.setState({postInviteDialogOpen: false});
 
-    showPostInviteHTML = () => this.state.team.introductionText && this.setState({postInviteDialogOpen: true});
+    showPostInviteHTML = () => this.state.team.description && this.setState({postInviteDialogOpen: true});
 
     handleDeleteTeam = team => e => {
         stop(e);
@@ -460,8 +458,7 @@ export default class TeamDetail extends React.PureComponent {
         const universalPublicLink = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/public/${team.publicLink}`;
         return (
             <section className="team-attributes">
-                <InlineEditable name="team_detail.description" mayEdit={isAdmin} value={team.description || ""}
-                                onChange={this.changeDescription}/>
+                <TeamDescription team={team} changeDescription={this.changeDescription} readOnly={!isAdmin} />
                 {isAdmin &&
                 <InlineEditable name="team_detail.personalNote" mayEdit={isAdmin} value={team.personalNote || ""}
                                 onChange={this.changePersonalNote}/>}
@@ -481,20 +478,20 @@ export default class TeamDetail extends React.PureComponent {
                 </div>
                 <CheckBox name="viewable" value={team.viewable} readOnly={!isAdmin}
                           info={I18n.t("team_detail.viewable_info")} onChange={this.changeViewable}/>
-                <div className="separator"/>
-                <div className="show-post-invite team-attribute">
-                    <label className="title">{I18n.t("team_detail.postInviteHTML")}</label>
-                    <ReactTooltip id="showPostInviteHTML" place="right">
-                        {I18n.t(`team_detail.${team.introductionText ? "showPostInviteHTML" : "showNoPostInviteHTML"}`)}
-                    </ReactTooltip>
-                    <i data-for="showPostInviteHTML" data-tip
-                       onClick={this.showPostInviteHTML}
-                       className={`fa fa-eye ${team.introductionText ? "" : "disabled"}`}/>
-                </div>
-                <div>
-                    {team.introductionText && <span className="info">{I18n.t("team_detail.postInviteHTMLInfo")}</span>}
-                    {!team.introductionText && <span className="info">{I18n.t("team_detail.postInviteHTMLInfoNone")}</span>}
-                </div>
+                {/*<div className="separator"/>*/}
+                {/*<div className="show-post-invite team-attribute">*/}
+                {/*    <label className="title">{I18n.t("team_detail.postInviteHTML")}</label>*/}
+                {/*    <ReactTooltip id="showPostInviteHTML" place="right">*/}
+                {/*        {I18n.t(`team_detail.${team.introductionText ? "showPostInviteHTML" : "showNoPostInviteHTML"}`)}*/}
+                {/*    </ReactTooltip>*/}
+                {/*    <i data-for="showPostInviteHTML" data-tip*/}
+                {/*       onClick={this.showPostInviteHTML}*/}
+                {/*       className={`fa fa-eye ${team.introductionText ? "" : "disabled"}`}/>*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    {team.introductionText && <span className="info">{I18n.t("team_detail.postInviteHTMLInfo")}</span>}*/}
+                {/*    {!team.introductionText && <span className="info">{I18n.t("team_detail.postInviteHTMLInfoNone")}</span>}*/}
+                {/*</div>*/}
                 <div className="separator"/>
 
                 {(isAdmin || currentUser.superAdminModus) && <div className="team-attribute">
@@ -541,7 +538,7 @@ export default class TeamDetail extends React.PureComponent {
         }
     }
 
-    renderTabs = (tab, team, role) => {
+    renderTabs = (tab, team) => {
         return (
             <div className="members-tab">
                <span className={tab === "details" ? "active" : ""} onClick={this.switchTab("details")}>
@@ -553,10 +550,6 @@ export default class TeamDetail extends React.PureComponent {
                 <span className={tab === "groups" ? "active" : ""} onClick={this.switchTab("groups")}>
                         {I18n.t("team_detail.team_groups", {count: (team.externalTeams || []).length})}
                 </span>
-                {(role === "ADMIN" || role === "OWNER") && <span className={tab === "introduction" ? "active no-border" : "no-border"}
-                                           onClick={this.switchTab("introduction")}>
-                        {I18n.t("team_detail.team_introduction")}
-                </span>}
             </div>
         );
     };
@@ -581,11 +574,6 @@ export default class TeamDetail extends React.PureComponent {
                         {this.renderTabs(tab, team, role)}
                     </TeamsIconLegend>
                 );
-            case "introduction":
-                return (
-                    <TeamsIntroductionLegend>
-                        {this.renderTabs(tab, team, role)}
-                    </TeamsIntroductionLegend>);
             default:
                 throw new Error(`Unknown tab ${tab}`);
         }
@@ -855,10 +843,10 @@ export default class TeamDetail extends React.PureComponent {
                                     cancel={this.cancelConfirmation}
                                     confirm={confirmationDialogAction}
                                     question={confirmationDialogQuestion}/>
-                {team.introductionText && <PostInviteDialog isOpen={postInviteDialogOpen}
+                {team.description && <PostInviteDialog isOpen={postInviteDialogOpen}
                                   cancel={this.cancelPostInviteDialog}
                                   team={team}
-                                  markdown={team.introductionText}/>}
+                                  markdown={team.description}/>}
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.tabsAndIconLegend(team, tab, role)}
                 {tab === "details" && this.teamDetailAttributes(team, role, currentUser, owners, actions)}
@@ -868,7 +856,6 @@ export default class TeamDetail extends React.PureComponent {
                                         institutionTeams={currentUser.externalTeams}
                                         team={team}
                                         institutionTeamLinked={this.institutionTeamLinked}/>}
-                {tab === "introduction" && <TeamIntroduction team={team} refreshTeam={this.stateTeam}/>}
             </div>
         );
     }

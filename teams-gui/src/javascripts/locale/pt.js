@@ -123,7 +123,6 @@ I18n.translations.pt = {
         team_details: "INFORMAÇÃO DO GRUPO",
         team_members: "MEMBROS ({{count}})",
         team_groups: "INSTITUCIONAIS LIGADOS ({{count}})",
-        team_introduction: "INTRO",
         membership: {
             name: "nome",
             email: "email",
@@ -202,13 +201,14 @@ I18n.translations.pt = {
         }
 
     },
-    team_introduction: {
+    team_description: {
         write: "Markdown text",
         preview: "Preview",
-        explanation: "The HTML below will be shown to new members who accept the invite for team {{name}}.",
+        title: "Description",
+        explanation: "The description will be shown to new members who join team {{name}}.",
         save: "Save",
         flash: {
-            saved: "Successfully saved the after-invite HTML for {{name}}"
+            saved: "Successfully saved the message for new members of {{name}}."
         }
     },
     post_invite_dialog: {

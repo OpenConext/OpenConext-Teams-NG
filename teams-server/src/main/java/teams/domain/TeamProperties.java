@@ -16,6 +16,4 @@ public class TeamProperties {
     private String personalNote;
     private boolean viewable;
     private boolean publicLinkDisabled;
-    private String introductionText;
-
 }

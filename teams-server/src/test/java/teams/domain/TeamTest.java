@@ -15,8 +15,8 @@ public class TeamTest implements Seed {
         Team team = new Team("urn", "name", " ", true, null);
         assertEquals("", team.getHtmlDescription());
 
-        team.setDescription("Nice\n");
-        assertEquals("Nice<br/>", team.getHtmlDescription());
+        team.setDescription("*Nice*");
+        assertEquals("<p><em>Nice</em></p>", team.getHtmlDescription());
     }
 
     @Test

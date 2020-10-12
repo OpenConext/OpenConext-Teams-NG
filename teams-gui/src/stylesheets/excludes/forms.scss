@@ -11,9 +11,6 @@ label {
 }
 
 em {
-  display: block;
-  font-size: smaller;
-  font-style: italic;
   &.error {
     color: $red;
     &.with-checkbox {
@@ -21,6 +18,19 @@ em {
     }
   }
 }
+
+p.html-description {
+  margin-bottom: 20px;
+  background-color: #eff2f3;
+  display: block;
+  width: 100%;
+  border: 1px solid #d9d9d8;
+  padding: 6px;
+  border-radius: 3px;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
 
 .validity-input-wrapper {
   position: relative;

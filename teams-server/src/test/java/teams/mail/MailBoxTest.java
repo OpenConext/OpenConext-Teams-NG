@@ -75,8 +75,11 @@ public class MailBoxTest extends AbstractApplicationTest {
         mailBox.sendJoinRequestMail(joinRequest, singletonList(EMAIL), federatedUser());
 
         String body = mailBody();
-        assertTrue(body.contains(String.format("\"%s\"", joinRequest.getTeam().getHtmlDescription())));
-        assertTrue(body.contains(String.format("\"%s\"", joinRequest.getHtmlMessage())));
+        String htmlDescription = joinRequest.getTeam().getHtmlDescription();
+        assertTrue(body.contains(htmlDescription));
+
+        String htmlMessage = joinRequest.getHtmlMessage();
+        assertTrue(body.contains(String.format("\"%s\"", htmlMessage)));
         assertTrue(body.contains(String.format("<a href=\"mailto:%s\">%s</a> would like to join team",
                 EMAIL, joinRequest.getPerson().getName())));
     }

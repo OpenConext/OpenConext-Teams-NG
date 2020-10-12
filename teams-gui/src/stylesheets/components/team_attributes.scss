@@ -3,7 +3,7 @@
   @include card;
   padding: 15px;
 
-  .team-attribute, .inline-editable {
+  .team-attribute, .inline-editable, .team-description {
     label.title {
       display: block;
       color: $medium-grey;
@@ -15,10 +15,6 @@
       &.info-after {
         margin-bottom: 0;
       }
-    }
-
-    em {
-      font-size: 11px;
     }
 
     span.attribute {
@@ -80,12 +76,6 @@
       background-color: $light-grey;
     }
 
-  }
-
-  .checkbox {
-    em {
-      font-size: 11px;
-    }
   }
 
   div.show-post-invite {

@@ -123,7 +123,6 @@ I18n.translations.en = {
         team_details: "TEAM INFO",
         team_members: "MEMBERS ({{count}})",
         team_groups: "INSTITUTIONAL TEAMS ({{count}})",
-        team_introduction: "MESSAGE",
         membership: {
             name: "name",
             email: "email",
@@ -202,10 +201,11 @@ I18n.translations.en = {
         }
 
     },
-    team_introduction: {
+    team_description: {
         write: "Markdown text",
         preview: "Preview",
-        explanation: "The message below will be shown to new members who join team {{name}}.",
+        title: "Description",
+        explanation: "The description will be shown to new members who join team {{name}}.",
         save: "Save",
         flash: {
             saved: "Successfully saved the message for new members of {{name}}."

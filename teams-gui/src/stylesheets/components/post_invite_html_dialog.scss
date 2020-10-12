@@ -8,10 +8,10 @@
   z-index: 4;
 
   .post-invite-dialog-content {
-    top: 10%;
-    left: 20%;
-    right: 20%;
-    bottom: 10%;
+    top: 20%;
+    left: 25%;
+    right: 25%;
+    bottom: 20%;
     position: absolute;
     background-color: rgb(245, 245, 245);
     overflow: auto;
@@ -52,6 +52,7 @@
 .mde-preview-content {
   ul {
     list-style: circle;
+    margin-left: 20px;
   }
 
   ol {
@@ -70,10 +71,5 @@
     code {
       font-family: "Courier New", Courier, monospace;
     }
-  }
-}
-.mde-textarea-wrapper {
-  textarea {
-    height: 300px!important;
   }
 }
