@@ -261,12 +261,12 @@ export default class MyTeams extends React.PureComponent {
                     {tooltip &&
                     <ReactTooltip id={toolTipId} type="light" class="tool-tip" effect="solid">
                         <div className="inner-tooltip">
-                                {joinRequestsCount > 0 &&
-                                <span>{joinRequestsCount === 1 ? I18n.t("teams.received_join_request") :
-                                    I18n.t("teams.received_join_requests", {count: joinRequestsCount})}</span>}
-                                {invitationsCount > 0 &&
-                                <span>{invitationsCount === 1 ? I18n.t("teams.pending_invitation") :
-                                    I18n.t("teams.pending_invitations", {count: invitationsCount})}</span>}
+                            {joinRequestsCount > 0 &&
+                            <span>{joinRequestsCount === 1 ? I18n.t("teams.received_join_request") :
+                                I18n.t("teams.received_join_requests", {count: joinRequestsCount})}</span>}
+                            {invitationsCount > 0 &&
+                            <span>{invitationsCount === 1 ? I18n.t("teams.pending_invitation") :
+                                I18n.t("teams.pending_invitations", {count: invitationsCount})}</span>}
                         </div>
                     </ReactTooltip>}
              </span>
@@ -363,7 +363,7 @@ export default class MyTeams extends React.PureComponent {
                                 {team.name}
                             </td>
                             <td data-label={I18n.t("teams.description")} className="description">
-                                {<TeamDescriptionTooltip mdDescription={team.description} index={`description${team.id}`} />}
+                                {<TeamDescriptionTooltip mdDescription={team.description}/>}
                             </td>
                             {this.roleCell(team)}
                             {this.membershipCountCell(team)}

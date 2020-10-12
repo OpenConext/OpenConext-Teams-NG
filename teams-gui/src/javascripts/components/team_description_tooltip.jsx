@@ -4,7 +4,7 @@ import {convertToHtml, convertToPlainText} from "../utils/markdown";
 import {isEmpty} from "../utils/utils";
 import ReactTooltip from "react-tooltip";
 
-export default function TeamDescriptionTooltip({mdDescription, id}) {
+export default function TeamDescriptionTooltip({mdDescription}) {
     const description = convertToPlainText(mdDescription);
     if (isEmpty(description)) {
         return "";
@@ -14,6 +14,7 @@ export default function TeamDescriptionTooltip({mdDescription, id}) {
     }
     const number = Math.min(description.substring(25).indexOf(" ") + 25, 50);
     const needsTooltip = description.length > 45;
+    const id = Math.random().toString(36).replace("0.","");
     return (
         <span data-for={id} data-tip>
                 {`${description.substring(0,number)}  `}
@@ -31,8 +32,7 @@ export default function TeamDescriptionTooltip({mdDescription, id}) {
 }
 
 TeamDescriptionTooltip.propTypes = {
-    mdDescription: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    mdDescription: PropTypes.string.isRequired
 };
 
 

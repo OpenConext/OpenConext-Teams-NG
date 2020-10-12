@@ -22,10 +22,6 @@ export default class TeamAutocomplete extends React.PureComponent {
         return <span>{first}<span className="matched">{middle}</span>{last}</span>;
     };
 
-    itemDescription = (item, index) => {
-        return <TeamDescriptionTooltip mdDescription={item.description} index={`description${index}`}/>;
-    };
-
     render() {
         const {suggestions, query, selectedTeam, itemSelected, hasMoreResults, superAdminModus} = this.props;
         const showSuggestions = (suggestions && suggestions.length > 0);
@@ -57,7 +53,7 @@ export default class TeamAutocomplete extends React.PureComponent {
                                         }
                                     }}>
                                     <td>{this.itemName(item, query)}</td>
-                                    <td>{this.itemDescription(item, index)}</td>
+                                    <td><TeamDescriptionTooltip mdDescription={item.description}/></td>
                                     <td className="role">{superAdminModus ? <span>{I18n.t("teams.view")}</span> :
                                         item.role ? <span>{item.role}</span> :
                                             <span className="join">{I18n.t("teams.join")}</span>}
