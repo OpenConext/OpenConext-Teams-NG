@@ -16,6 +16,8 @@ import {validNameRegExp} from "../validations/regular_exp";
 import SelectRole from "../components/select_role";
 import {ROLES} from "../validations/memberships";
 import {languageOptions} from "../constants/languages";
+import {convertToHtml} from "../utils/markdown";
+import ReactMde from "react-mde";
 
 export default class NewTeam extends React.Component {
 
@@ -33,12 +35,17 @@ export default class NewTeam extends React.Component {
             format: true,
             exists: false,
             approval: true,
+            selectedTab: "write",
             language: languageOptions.find(option => option.code === I18n.locale),
             confirmationDialogOpen: false,
             confirmationDialogAction: () => {
                 this.setState({confirmationDialogOpen: false});
                 this.props.history.replace("/my-teams");
             }
+        };
+        this.tabOptions = {
+            "write": I18n.t("team_description.write"),
+            "preview": I18n.t("team_description.preview")
         };
     }
 
@@ -170,13 +177,28 @@ export default class NewTeam extends React.Component {
     }
 
 
-    renderDescriptionAndPersonalNote = (description, viewable, personalNote) =>
+    renderDescriptionAndPersonalNote = (description, viewable, personalNote, selectedTab) =>
         <section className="form-divider">
             <label htmlFor="description">{I18n.t("new_team.description")}</label>
             <em>{I18n.t("new_team.description_info")}</em>
-            <textarea id="description" name="description" value={description}
-                      rows={3}
-                      onChange={this.handleInputChange("description")}/>
+            <ReactMde
+                toolbarCommands={[
+                    ["header", "bold", "italic", "strikethrough"],
+                    ["link", "quote", "code"],
+                    ["unordered-list", "ordered-list"]
+                ]}
+                maxEditorHeight={60}
+                value={description}
+                l18n={this.tabOptions}
+                onChange={value => this.setState({"description": value})}
+                selectedTab={selectedTab}
+                onTabChange={selectedTab => {
+                    this.setState({selectedTab});
+                }}
+                generateMarkdownPreview={markdown =>
+                    Promise.resolve(convertToHtml(markdown, true))
+                }
+            />
 
             <CheckBox name="viewable" value={viewable}
                       onChange={this.handleInputChange("viewable")}
@@ -218,7 +240,7 @@ export default class NewTeam extends React.Component {
         const {currentUser} = this.props;
         const {
             name, description, personalNote, viewable, initial, format, exists, invitationMessage, emails, approval,
-            language, confirmationDialogOpen, confirmationDialogAction, roleOfCurrentUser
+            language, confirmationDialogOpen, confirmationDialogAction, roleOfCurrentUser, selectedTab
         } = this.state;
         const validName = format && !exists;
 
@@ -231,7 +253,7 @@ export default class NewTeam extends React.Component {
                 <h2>{I18n.t("new_team.title")}</h2>
                 <div className="card">
                     {this.renderName(name, validName, initial, format, exists)}
-                    {this.renderDescriptionAndPersonalNote(description, viewable, personalNote)}
+                    {this.renderDescriptionAndPersonalNote(description, viewable, personalNote, selectedTab)}
                     {this.renderEmailAndMessage(currentUser, roleOfCurrentUser, emails, invitationMessage, language)}
                     {this.renderApproval(approval)}
                     {this.renderButtons()}
