@@ -10,6 +10,7 @@ import { setFlash} from "../utils/flash";
 import {goto, isEmpty, stop} from "../utils/utils";
 import InvitationInfo from "../components/invitation_info";
 import SelectRole from "../components/select_role";
+import {convertToHtml} from "../utils/markdown";
 
 export default class Invitation extends React.PureComponent {
 
@@ -107,7 +108,9 @@ export default class Invitation extends React.PureComponent {
                 <label >{I18n.t("invitation.team.name")}</label>
                 <input type="text" value={invitation.teamName} disabled="true"/>
                 <label >{I18n.t("invitation.team.description")}</label>
-                <input type="text" value={invitation.teamDescription} disabled="true"/>
+                <p className="html-description mde-preview-content" dangerouslySetInnerHTML={{
+                    __html: convertToHtml(invitation.teamDescription, true)
+                }} />
                 <section className="admins">
                     <label>{I18n.t("invitation.team.admins")}</label>
                     {invitation.admins.map((admin, index) =>
