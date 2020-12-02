@@ -28,7 +28,7 @@ I18n.translations.pt = {
         },
         role: "Perfil",
         superAdmin: {
-            modus: "Super-Admin modus enabled"
+            modus: "Super-Admin modus ativado"
         }
     },
 
@@ -115,11 +115,11 @@ I18n.translations.pt = {
         name: "Nome",
         actions: "...",
         leave: "Sair do Grupo",
-        postInviteHTML: "Message for new members",
-        showPostInviteHTML: "Show the message for new members popup",
-        postInviteHTMLInfo: "Click on the eye icon right to view the dialog new members of this team see when they join",
-        postInviteHTMLInfoNone: "New members  who join this team do not see a welcome message",
-        showNoPostInviteHTML: "This team has no message for new members",
+        postInviteHTML: "Mensagens para novos membros",
+        showPostInviteHTML: "Mostrar a mensagen para novos membros popup",
+        postInviteHTMLInfo: "Clique no ícone de olho à direita, para ver a caixa de diálogo que os novos membros deste grupo veem, quando aderem ao grupo",
+        postInviteHTMLInfoNone: "Os novos membros que aderem ao grupo não veem a mensagem de boas-vindas",
+        showNoPostInviteHTML: "Este grupo não tem mensagem para novos membros",
         team_details: "INFORMAÇÃO DO GRUPO",
         team_members: "MEMBROS ({{count}})",
         team_groups: "INSTITUCIONAIS LIGADOS ({{count}})",
@@ -203,17 +203,17 @@ I18n.translations.pt = {
     },
     team_description: {
         write: "Markdown text",
-        preview: "Preview",
-        title: "Description",
-        explanation: "The description will be shown to new members who join team {{name}}.",
-        save: "Save",
+        preview: "Pré-visualizar",
+        title: "Descrição",
+        explanation: "A descrição será exibida para novos membros que se juntem ao grupo {{name}}.",
+        save: "Gravar",
         flash: {
-            saved: "Successfully saved the message for new members of {{name}}."
+            saved: "Mensagem gravada com sucesso para novos membros do grupo {{name}}."
         }
     },
     post_invite_dialog: {
-      title: "Post-invite HTML",
-      close: "Close"
+      title: "Bem vindo ao grupo {{name}}",
+      close: "Fechar"
     },
     join_request: {
         title: "Convite",
@@ -233,9 +233,9 @@ I18n.translations.pt = {
         message: "Mensagem",
         message_info: "A mensagem pessoal deste convite para o administrador do grupo",
         message_placeholder: "A sua mensagem pessoal",
-        not_found: "This {{name}} is not valid anymore as it has been removed.",
+        not_found: "Este {{name}} já não é válido, pois foi removido.",
         teamName: "team",
-        joinRequestName: "join request"
+        joinRequestName: "pedido de adesão"
 
     },
     icon_legend: {
@@ -303,10 +303,10 @@ I18n.translations.pt = {
         emails_placeholder: "Indique um ou mais endereços de email...",
         email_required: "Email is required - either add an email address or select a file containing comma separated email addresses",
         email_invalid: "O formato do email é inválido.",
-        file_import: "Add members by file import",
+        file_import: "Adicionar membros por importação de ficheiro",
         file_placeholder: "Seleccione um ficheiro csv ou txt...",
         file_import_result: "Importar {{nbr}} emails a partir de {{fileName}}",
-        file_extension_error: "Only .csv extension files are allowed",
+        file_extension_error: "Apenas ficheiro com a extensão .csv são permitidos",
         role: "Perfil no grupo",
         invitation_language: "Idioma do convite",
         expiry_date: "Data de expiração",
@@ -335,7 +335,7 @@ I18n.translations.pt = {
         deny_confirmation: "Tem certeza de que deseja recusar este convite?",
         accept: "Aceitar",
         denied: "recusado",
-        share_info: "Compartilhe esta informação com as aplicações usadas neste Grupo.",
+        share_info: "Partilhe esta informação com as aplicações usadas neste Grupo.",
         approval_required: "Deve aprovar que esta informação deve ser partilhada",
         message: "Messagem",
         message_info: "Mensagem pessoal de convite que você recebeu juntamente com o convite",
