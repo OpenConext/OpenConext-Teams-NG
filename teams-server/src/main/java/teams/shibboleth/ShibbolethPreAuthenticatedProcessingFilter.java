@@ -59,7 +59,7 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
                     .map(urn -> membershipRepository.findByUrnTeamAndUrnPerson(urn, nameId))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
-                    .anyMatch(membership -> !membership.getRole().equals(Role.OWNER));
+                    .anyMatch(membership -> membership.getRole() != null && !membership.getRole().equals(Role.OWNER));
 
             provisionedPerson.markAsSuperAdmin(isMemberButNoOwner);
             return provisionedPerson;

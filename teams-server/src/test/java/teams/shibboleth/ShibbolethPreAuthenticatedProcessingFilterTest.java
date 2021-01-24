@@ -6,6 +6,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import teams.domain.Membership;
 import teams.domain.Person;
+import teams.domain.Role;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 import teams.security.SuperAdmin;
@@ -58,15 +59,33 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
 
     @Test
     public void getPreAuthenticatedPrincipalSuperAdmin() {
+        Person principal = doGetPreAuthenticatedPrincipalSuperAdmin(Role.ADMIN);
+        assertTrue(principal.isSuperAdmin());
+    }
+
+    @Test
+    public void getPreAuthenticatedPrincipalSuperAdminOwner() {
+        Person principal = doGetPreAuthenticatedPrincipalSuperAdmin(Role.OWNER);
+        assertFalse(principal.isSuperAdmin());
+    }
+
+    @Test
+    public void getPreAuthenticatedPrincipalSuperAdminNullRole() {
+        Person principal = doGetPreAuthenticatedPrincipalSuperAdmin(null);
+        assertFalse(principal.isSuperAdmin());
+    }
+
+    private Person doGetPreAuthenticatedPrincipalSuperAdmin(Role role) {
         Person person = new Person("urn", "John Doe", "mail", false, false);
 
         when(personRepository.findByUrnIgnoreCase("urn")).thenReturn(Optional.empty());
         when(personRepository.save(any(Person.class))).thenReturn(person);
+        Membership membership = new Membership();
+        membership.setRole(role);
         when(membershipRepository.findByUrnTeamAndUrnPerson(superAdmin.getUrns().get(0), person.getUrn()))
-                .thenReturn(Optional.of(new Membership()));
+                .thenReturn(Optional.of(membership));
 
-        Person principal = Person.class.cast(subject.getPreAuthenticatedPrincipal(populateServletRequest("Name")));
-        assertTrue(principal.isSuperAdmin());
+        return Person.class.cast(subject.getPreAuthenticatedPrincipal(populateServletRequest("Name")));
     }
 
     @Test
