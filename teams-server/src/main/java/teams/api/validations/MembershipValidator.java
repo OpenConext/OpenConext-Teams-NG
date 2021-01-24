@@ -16,7 +16,10 @@ public interface MembershipValidator {
     }
 
     default void oneAdminIsRequired(Team team, Person person, Role futureRole) {
-        if (futureRole.equals(Role.MEMBER) || futureRole.equals(Role.MANAGER)) {
+        boolean isMember = team.getMemberships().stream().anyMatch(membership ->
+                membership.getUrnPerson().equals(person.getUrn()) && (membership.getRole().equals(Role.MEMBER) ||
+                        membership.getRole().equals(Role.MANAGER)));
+        if (!isMember && (futureRole.equals(Role.MEMBER) || futureRole.equals(Role.MANAGER))) {
             team.getMemberships().stream()
                     .filter(membership -> !membership.getUrnPerson().equals(person.getUrn()))
                     .filter(membership -> membership.getRole().equals(Role.ADMIN) || membership.getRole().equals(Role.OWNER))

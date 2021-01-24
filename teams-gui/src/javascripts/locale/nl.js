@@ -305,7 +305,7 @@ I18n.translations.nl = {
         file_import: "Voeg e-mailadressen toe uit een CSV-bestand",
         file_placeholder: "Selecteer een CSV-bestand...",
         file_import_result: "{{nbr}} e-mailadressen toegevoegd uit {{fileName}}",
-        file_extension_error: "Alleen CSV-bestanden zijn toegestaan",
+        file_extension_error: "Alleen .csv en .txt bestanden zijn toegestaan",
         role: "Rol in het Team",
         invitation_language: "Taal van de uitnodiging",
         expiry_date: "Vervaldatum",

@@ -20,7 +20,7 @@ export function allowedToLeave(team, currentUser) {
     const admins = team.memberships
         .filter(membership => (membership.role === ROLES.ADMIN.role || membership.role === ROLES.OWNER.role)
             && membership.urnPerson !== currentUser.urn);
-    return admins.length > 0 && !isEmpty(isMember) ;
+    return (admins.length > 0 && !isEmpty(isMember)) || (!isEmpty(isMember) && isMember.role !== ROLES.ADMIN.role);
 }
 
 export function hasOneAdmin(team, currentUser) {
@@ -30,7 +30,9 @@ export function hasOneAdmin(team, currentUser) {
     const admins = team.memberships
         .filter(membership => (membership.role === ROLES.ADMIN.role || membership.role === ROLES.OWNER.role)
             && membership.urnPerson !== currentUser.urn);
-    return admins.length === 0 && !hasPendingAdminInvitations;
+    const membership = team.memberships.find(membership => membership.urnPerson === currentUser.urn);
+    const isAdmin = membership && membership.role === ROLES.ADMIN.role;
+    return admins.length === 0 && !hasPendingAdminInvitations && isAdmin;
 }
 
 export function currentUserRoleInTeam(team, currentUser) {

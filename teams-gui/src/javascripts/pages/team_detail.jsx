@@ -113,6 +113,10 @@ export default class TeamDetail extends React.PureComponent {
     refreshTeamState = (teamId, callback = () => 1, displayOneAdminWarning = true) =>
         getTeamDetail(teamId, false)
             .then(team => {
+                if (isEmpty(team.memberships)) {
+                    this.props.history.push(`/join-requests/${team.id}`);
+                    return;
+                }
                 this.stateTeam(team, displayOneAdminWarning);
                 callback();
             })
@@ -532,7 +536,7 @@ export default class TeamDetail extends React.PureComponent {
     switchTab = (tab, isNew = false) => () => {
         this.setState({tab: tab});
         const params = this.props.match.params;
-        this.props.history.push(`/teams/${params.id}/${tab}`);
+        this.props.history.replace(`/teams/${params.id}/${tab}`);
         if (isNew) {
             this.setState({postInviteDialogOpen: true});
         }

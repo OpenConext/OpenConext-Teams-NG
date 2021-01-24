@@ -94,7 +94,7 @@ export default class Invite extends React.PureComponent {
 
         if (!isEmpty(files)) {
             const file = files[0];
-            if (file.name.endsWith("csv")) {
+            if (file.name.toLowerCase().endsWith(".csv") || file.name.toLowerCase().endsWith(".txt")) {
                 const reader = new FileReader();
                 reader.onload = () => {
                     const csvEmails = reader.result;
@@ -163,7 +163,7 @@ export default class Invite extends React.PureComponent {
                 <label>{I18n.t("invite.file_import")}</label>
                 <input key={this.state.fileInputKey} type="file"
                        id="emailFiles" name="emailFiles"
-                       accept="text/csv"
+                       accept=".csv, .txt"
                        style={{display: "none"}}
                        onChange={this.handleFile}/>
                 <div className="email-file-container">

@@ -305,7 +305,7 @@ I18n.translations.en = {
         file_import: "Add members by file import",
         file_placeholder: "Select csv or txt file...",
         file_import_result: "Import {{nbr}} emails from {{fileName}}",
-        file_extension_error: "Only .csv extension files are allowed",
+        file_extension_error: "Only .csv and .txt extension files are allowed",
         role: "Role within the team",
         invitation_language: "Invitation language",
         expiry_date: "Expiry date",

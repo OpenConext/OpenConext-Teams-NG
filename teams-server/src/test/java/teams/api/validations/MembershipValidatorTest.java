@@ -54,6 +54,14 @@ public class MembershipValidatorTest implements Seed {
     }
 
     @Test
+    public void oneAdminIsRequiredNoExceptionMember() {
+        Team team = team();
+        Person person = person("urn");
+        team.getMemberships().add(new Membership(Role.MEMBER, team, person,MembershipOrigin.INITIAL_ADMIN, "John Doe"));
+        subject.oneAdminIsRequired(team, person, Role.MEMBER);
+    }
+
+    @Test
     public void canNotUpgradeToMoreImportantThenYourselfAllowed() {
         subject.canNotUpgradeToMoreImportantThenYourself(Role.MANAGER, Role.MANAGER);
         subject.canNotUpgradeToMoreImportantThenYourself(Role.MANAGER, Role.MEMBER);

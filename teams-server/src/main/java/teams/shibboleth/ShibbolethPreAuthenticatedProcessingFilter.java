@@ -7,6 +7,7 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.util.StringUtils;
 import teams.domain.Membership;
 import teams.domain.Person;
+import teams.domain.Role;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 import teams.security.SuperAdmin;
@@ -54,11 +55,13 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
         LOG.info("Person {} is attempting authentication", person);
         if (person.isValid()) {
             Person provisionedPerson = provision(person);
-            boolean isMember = superAdmin.getUrns().stream()
+            boolean isMemberButNoOwner = superAdmin.getUrns().stream()
                     .map(urn -> membershipRepository.findByUrnTeamAndUrnPerson(urn, nameId))
-                    .anyMatch(Optional::isPresent);
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .anyMatch(membership -> !membership.getRole().equals(Role.OWNER));
 
-            provisionedPerson.markAsSuperAdmin(isMember);
+            provisionedPerson.markAsSuperAdmin(isMemberButNoOwner);
             return provisionedPerson;
         } else {
             return person;
