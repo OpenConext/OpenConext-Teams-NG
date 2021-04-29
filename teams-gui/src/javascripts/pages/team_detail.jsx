@@ -57,6 +57,7 @@ export default class TeamDetail extends React.PureComponent {
             team: {},
             members: [],
             owners: [],
+            ownerInvitations: [],
             visibleMembers: [],
             actions: {show: false, id: ""},
             sortAttributes: [
@@ -138,7 +139,7 @@ export default class TeamDetail extends React.PureComponent {
             };
         });
 
-        const invitations = (team.invitations || [])
+        const allInvitations = (team.invitations || [])
             .filter(invitation => !invitation.accepted)
             .map(invitation => {
                 return {
@@ -147,6 +148,9 @@ export default class TeamDetail extends React.PureComponent {
                     filterAttribute: ROLES.INVITATION.role, order: 2
                 };
             });
+
+        const invitations = allInvitations.filter(invitation => invitation.role !== ROLES.OWNER.role);
+        const ownerInvitations = allInvitations.filter(invitation => invitation.role === ROLES.OWNER.role);
 
         const members = team.memberships
             .filter(member => member.role !== ROLES.OWNER.role)
@@ -172,6 +176,7 @@ export default class TeamDetail extends React.PureComponent {
             team: team,
             members: members,
             owners: owners,
+            ownerInvitations: ownerInvitations,
             visibleMembers: sortedMembers,
             filterAttributes: newFilterAttributes.filter(attr => attr.count > 0),
             loaded: true,
@@ -449,7 +454,7 @@ export default class TeamDetail extends React.PureComponent {
         );
     }
 
-    teamDetailAttributes(team, role, currentUser, owners, actions) {
+    teamDetailAttributes(team, role, currentUser, owners, actions, ownerInvitations) {
         const isAdmin = (role === ROLES.ADMIN.role || role === ROLES.OWNER.role);
         const {copiedToClipboard, copiedToClipboardPublicLink} = this.state;
         const copiedToClipBoardClassName = copiedToClipboard ? "copied" : "";
@@ -525,7 +530,7 @@ export default class TeamDetail extends React.PureComponent {
                         </span>}
                     <div>
                         <label className="title">{I18n.t("team_detail.owners")}</label>
-                        {this.renderMembersTable(currentUser, owners, actions, team, role, false)}
+                        {this.renderMembersTable(currentUser, owners.concat(ownerInvitations), actions, team, role, false)}
                     </div>
                 </div>}
 
@@ -832,7 +837,7 @@ export default class TeamDetail extends React.PureComponent {
         const {
             team, tab, actions, visibleMembers, sortAttributes, filterAttributes, loaded,
             confirmationDialogOpen, confirmationDialogAction, confirmationDialogQuestion, owners,
-            postInviteDialogOpen
+            postInviteDialogOpen, ownerInvitations
         } = this.state;
         const {currentUser} = this.props;
         if (!loaded) {
@@ -853,7 +858,7 @@ export default class TeamDetail extends React.PureComponent {
                                   markdown={team.description}/>}
                 {this.teamDetailHeader(team, role, currentUser)}
                 {this.tabsAndIconLegend(team, tab, role)}
-                {tab === "details" && this.teamDetailAttributes(team, role, currentUser, owners, actions)}
+                {tab === "details" && this.teamDetailAttributes(team, role, currentUser, owners, actions, ownerInvitations)}
                 {tab === "members" && this.teamMembers(sortAttributes, filterAttributes, mayInvite, currentUser, visibleMembers, actions, team, role)}
                 {tab === "groups" &&
                 <LinkedInstitutionTeams currentUser={currentUser}
