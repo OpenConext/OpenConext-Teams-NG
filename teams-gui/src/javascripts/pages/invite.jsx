@@ -104,7 +104,7 @@ export default class Invite extends React.PureComponent {
                 reader.onload = () => {
                     const csvEmails = reader.result;
                     const allEmails = csvEmails.replace(/[;\s]/g, ",").split(",").map(part => part.trim());
-                    const validEmails = allEmails.filter(mail => validEmailRegExp.test(mail)).length
+                    const validEmails = allEmails.filter(mail => validEmailRegExp.test(mail)).length;
                     const errorMailsImported = allEmails.filter(mail => mail.length > 0 && !validEmailRegExp.test(mail));
                     this.setState({
                         fileName: file.name,
