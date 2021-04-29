@@ -164,7 +164,8 @@ export default class Invite extends React.PureComponent {
             fileTypeError: false,
             fileName: "",
             fileInputKey: new Date().getMilliseconds(),
-            mailsImported: 0
+            mailsImported: 0,
+            errorMailsImported: []
         });
     };
 
