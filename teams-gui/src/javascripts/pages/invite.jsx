@@ -28,6 +28,7 @@ export default class Invite extends React.PureComponent {
             emails: [],
             csvEmails: false,
             mailsImported: 0,
+            errorMailsImported: [],
             fileTypeError: false,
             fileName: "",
             fileInputKey: new Date().getMilliseconds(),
@@ -73,16 +74,20 @@ export default class Invite extends React.PureComponent {
     onChangeEmails = emails => this.setState({emails: emails});
 
     handleInputChange = attributeName => e => {
-        let value;
-        if (!isEmpty(e) && isEmpty(e.target) && !isEmpty(e.value)) {
-            value = e.value;
-        } else if (isEmpty(e) || e._isAMomentObject) {
-            value = e;
+        if (attributeName === "language") {
+            this.setState({"language": e});
         } else {
-            const target = e.target;
-            value = target.type === "checkbox" ? target.checked : target.value;
+            let value;
+            if (!isEmpty(e) && isEmpty(e.target) && !isEmpty(e.value)) {
+                value = e.value;
+            } else if (isEmpty(e) || e._isAMomentObject) {
+                value = e;
+            } else {
+                const target = e.target;
+                value = target.type === "checkbox" ? target.checked : target.value;
+            }
+            this.setState({[attributeName]: value});
         }
-        this.setState({[attributeName]: value});
     };
 
     clearDate = () => {
@@ -98,9 +103,15 @@ export default class Invite extends React.PureComponent {
                 const reader = new FileReader();
                 reader.onload = () => {
                     const csvEmails = reader.result;
+                    const allEmails = csvEmails.replace(/[;\s]/g, ",").split(",").map(part => part.trim());
+                    const validEmails = allEmails.filter(mail => validEmailRegExp.test(mail)).length
+                    const errorMailsImported = allEmails.filter(mail => mail.length > 0 && !validEmailRegExp.test(mail));
                     this.setState({
-                        fileName: file.name, fileTypeError: false, csvEmails: csvEmails,
-                        mailsImported: csvEmails.split(",").filter(mail => validEmailRegExp.test(mail.trim())).length
+                        fileName: file.name,
+                        fileTypeError: false,
+                        csvEmails: csvEmails,
+                        mailsImported: validEmails,
+                        errorMailsImported: errorMailsImported
                     });
                 };
                 reader.readAsText(file);
@@ -157,7 +168,7 @@ export default class Invite extends React.PureComponent {
         });
     };
 
-    renderEmailFile = (fileName, fileTypeError, mailsImported) => {
+    renderEmailFile = (fileName, fileTypeError, mailsImported, errorMailsImported) => {
         return (
             <section className="form-divider">
                 <label>{I18n.t("invite.file_import")}</label>
@@ -175,7 +186,14 @@ export default class Invite extends React.PureComponent {
                 </div>
                 {fileTypeError && <em className="error">{I18n.t("invite.file_extension_error")}</em>}
                 {mailsImported > 0 &&
-                <em>{I18n.t("invite.file_import_result", {nbr: mailsImported, fileName: fileName})}</em>}
+                <em className="mails-imported"><i className="fa fa-check"></i>{I18n.t("invite.file_import_result", {nbr: mailsImported, fileName: fileName})}</em>}
+                {errorMailsImported.length >  0 && <div className="error-mails">
+                    <span className="error-mails-info">
+                        <i className="fa fa-warning"></i>
+                        {I18n.t("invite.error_import_result")}
+                    </span>
+                    {errorMailsImported.map(email => <span className="error-mail">{email}</span>)}
+                </div>}
             </section>
         );
     };
@@ -242,7 +260,7 @@ export default class Invite extends React.PureComponent {
     render() {
         const {currentUser} = this.props;
         const {
-            emails, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message,
+            emails, csvEmails, fileTypeError, fileName, intendedRole, language, expiryDate, message, errorMailsImported,
             roleOfCurrentUserInTeam, mailsImported, readOnly, confirmationDialogOpen, confirmationDialogAction
         } = this.state;
         const valid = this.isValid();
@@ -261,7 +279,7 @@ export default class Invite extends React.PureComponent {
                                     autoFocus={true}
                                     disabled={readOnly}
                                     currentUser={currentUser}/>
-                        {!readOnly && this.renderEmailFile(fileName, fileTypeError, mailsImported)}
+                        {!readOnly && this.renderEmailFile(fileName, fileTypeError, mailsImported, errorMailsImported)}
                         {this.renderInvitationRole(intendedRole, roleOfCurrentUserInTeam, readOnly)}
                     </section>
                     <section className="screen-divider" style={{float: "right"}}>

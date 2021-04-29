@@ -318,7 +318,8 @@ I18n.translations.nl = {
         flash: "Uitnodiging is verstuurd",
         flash_resent: "Herinneringsmail is verstuurd",
         message_placeholder: "Persoonlijk bericht voor de uitnodiging",
-        expiry_data_info: "De vervaldatum is de vervaldatum voor het lidmaatschap (als deze uitnodiging wordt geaccepteerd). Als je een vervaldatum opgeeft dan wordt dit lid automatisch uit het Team verwijderd op de vervaldatum. Het is NIET de vervaldatum van deze uitnodiging."
+        expiry_data_info: "De vervaldatum is de vervaldatum voor het lidmaatschap (als deze uitnodiging wordt geaccepteerd). Als je een vervaldatum opgeeft dan wordt dit lid automatisch uit het Team verwijderd op de vervaldatum. Het is NIET de vervaldatum van deze uitnodiging.",
+        error_import_result: "De volgende emails zijn niet valide en zijn derhalve niet geimporteerd"
     },
     invitation: {
         title: "Uitnodiging ontvangen voor Team '{{name}}'",

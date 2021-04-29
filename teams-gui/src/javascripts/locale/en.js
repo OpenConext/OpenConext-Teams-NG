@@ -304,7 +304,7 @@ I18n.translations.en = {
         email_invalid: "Email format is invalid.",
         file_import: "Add members by file import",
         file_placeholder: "Select csv or txt file...",
-        file_import_result: "Import {{nbr}} emails from {{fileName}}",
+        file_import_result: "Imported {{nbr}} emails from {{fileName}}",
         file_extension_error: "Only .csv and .txt extension files are allowed",
         role: "Role within the team",
         invitation_language: "Invitation language",
@@ -318,7 +318,8 @@ I18n.translations.en = {
         flash: "Invitation has been sent",
         flash_resent: "Reminder email has been sent",
         message_placeholder: "Personal message to be included in the invitation email",
-        expiry_data_info: "The expiry date is the expiry date of the membership of this Team (if this invitation is accepted). By setting an expiry date, a member will be automatically removed from this Team after the expiry date expires. This is NOT the expiry date for the invitation."
+        expiry_data_info: "The expiry date is the expiry date of the membership of this Team (if this invitation is accepted). By setting an expiry date, a member will be automatically removed from this Team after the expiry date expires. This is NOT the expiry date for the invitation.",
+        error_import_result: "The following emails are not valid and therefore not imported"
     },
     invitation: {
         title: "Invitation received for Team '{{name}}'",

@@ -319,7 +319,8 @@ I18n.translations.pt = {
         flash: "O convite foi enviado",
         flash_resent: "O email de lembrete foi enviado",
         message_placeholder: "Mensagem pessoal a ser incluída no email de convite",
-        expiry_data_info: "A data de expiração, é a data de expiração para a adesão a este Grupo (no caso do convite ser aceite). Ao definir uma data de expiração, um membro será removido automaticamente do Grupo após o vencimento da data de expiração. Esta não é a data de expiração do convite."
+        expiry_data_info: "A data de expiração, é a data de expiração para a adesão a este Grupo (no caso do convite ser aceite). Ao definir uma data de expiração, um membro será removido automaticamente do Grupo após o vencimento da data de expiração. Esta não é a data de expiração do convite.",
+        error_import_result: "The following emails are not valid and therefore not imported"
     },
     invitation: {
         title: "Convite recebido para o Grupo '{{name}}'",
