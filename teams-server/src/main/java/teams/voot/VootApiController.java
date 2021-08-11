@@ -114,7 +114,7 @@ public class VootApiController {
 
     private Group convertTeamToGroupIncludingMembership(Team team, String urnPerson) {
         Membership membership = team.getMemberships().stream()
-                .filter(mb -> mb.getUrnPerson().equals(urnPerson))
+                .filter(mb -> mb.getUrnPerson().equalsIgnoreCase(urnPerson))
                 .findFirst().orElseThrow(() ->
                         new ResourceNotFoundException(
                                 String.format("Expected team %s to have a member with personUrn %s",
