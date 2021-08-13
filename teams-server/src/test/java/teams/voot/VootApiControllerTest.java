@@ -87,6 +87,14 @@ public class VootApiControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void getGroupsForMemberCaseInsentive() {
+        start("user/urn:collab:person:surfnet.nl:TDOE/groups")
+                .body("size()", equalTo(2))
+                .body("displayName", hasItems("giants", "gliders"))
+                .body("membership", hasItems("admin", "admin"));
+    }
+
+    @Test
     public void getGroupsForMemberAndTeamUrn() {
         start("user/urn:collab:person:surfnet.nl:tdoe/groups/demo:openconext:org:gliders")
                 //four properties, not elements
