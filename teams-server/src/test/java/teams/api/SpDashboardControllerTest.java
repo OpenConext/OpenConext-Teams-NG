@@ -96,7 +96,7 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
 
     @Test
     public void teamByFullUrn() {
-        String urn = "urn:collab:group:demo.openconext.org:demo:openconext:org:riders";
+        String urn = "demo:openconext:org:riders";
         Map team = given()
                 .header(CONTENT_TYPE, "application/json")
                 .auth().preemptive().basic("spdashboard", "secret")

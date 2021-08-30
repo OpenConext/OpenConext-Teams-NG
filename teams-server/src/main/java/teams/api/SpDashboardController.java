@@ -30,18 +30,13 @@ public class SpDashboardController extends ApiController implements TeamValidato
     private final String spDashboardPersonEmail;
     private final String spDashboardPersonName;
 
-    @Value("${teams.group-name-context}")
-    private String groupNameContext;
-
     @Autowired
     public SpDashboardController(PersonRepository personRepository,
                                  @Qualifier("productConfig") Map<String, String> productConfig,
-                                 @Value("${teams.group-name-context}") String groupNameContext,
                                  @Value("${sp_dashboard.person-urn}") String spDashboardPersonUrn,
                                  @Value("${sp_dashboard.email}") String spDashboardPersonEmail,
                                  @Value("${sp_dashboard.name}") String spDashboardPersonName) {
         this.personRepository = personRepository;
-        this.groupNameContext = groupNameContext;
         this.productConfig = productConfig;
         this.spDashboardPersonUrn = spDashboardPersonUrn;
         this.spDashboardPersonEmail = spDashboardPersonEmail;
@@ -50,8 +45,7 @@ public class SpDashboardController extends ApiController implements TeamValidato
 
     @GetMapping("api/spdashboard/teams/{urn:.+}")
     public Team teamByUrn(@PathVariable("urn") String urn) {
-        String strippedUrn = urn.replace(groupNameContext, "");
-        Team team = teamRepository.findByUrn(strippedUrn).orElseThrow(() -> new ResourceNotFoundException(String.format("Team with urn %s does not exists", urn)));
+        Team team = teamRepository.findByUrn(urn).orElseThrow(() -> new ResourceNotFoundException(String.format("Team with urn %s does not exists", urn)));
         team.setUrn(urn);
         team.getInvitations()
                 //lazy load messages
