@@ -1,5 +1,6 @@
 package teams;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -41,6 +42,9 @@ public abstract class AbstractApplicationTest implements Seed {
 
     @Autowired
     protected JoinRequestRepository joinRequestRepository;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     @LocalServerPort
     private int serverPort;

@@ -1,0 +1,12 @@
+{
+  "name": "Champions ",
+  "description": "Team champions",
+  "personalNote": "Team created by SP Dashboard",
+  "viewable": true,
+  "emails": {
+    "test@test.com": "ADMIN"
+  },
+  "roleOfCurrentUser": "ADMIN",
+  "invitationMessage": "Please..",
+  "language": "DUTCH"
+}
