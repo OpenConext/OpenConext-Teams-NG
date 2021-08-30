@@ -78,6 +78,34 @@ public class SecurityConfig {
 
     @Order(2)
     @Configuration
+    public static class SpDashboardSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+        @Value("${security.sp-dashboard.name}")
+        private String user;
+
+        @Value("${security.sp-dashboard.password}")
+        private String password;
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.inMemoryAuthentication().withUser(user).password(password).authorities("ROLE_USER");
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .antMatcher("/api/spdashboard/**")
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                    .csrf().disable()
+                    .addFilterBefore(new BasicAuthenticationFilter(authenticationManager()), BasicAuthenticationFilter.class)
+                    .authorizeRequests()
+                    .antMatchers("/**").hasRole("USER");
+        }
+    }
+
+    @Order(3)
+    @Configuration
     public static class LifeCycleSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         @Value("${api.lifecycle.username}")
