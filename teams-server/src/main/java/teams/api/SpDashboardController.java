@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.TeamValidator;
@@ -17,7 +16,6 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -50,6 +48,7 @@ public class SpDashboardController extends ApiController implements TeamValidato
         team.getInvitations()
                 //lazy load messages
                 .forEach(invitation -> invitation.getInvitationMessages().forEach(InvitationMessage::getMessage));
+        team.getMemberships().forEach(membership -> membership.getPerson().isValid());
         return team;
     }
 
