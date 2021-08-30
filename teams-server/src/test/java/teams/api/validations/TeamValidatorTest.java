@@ -18,16 +18,6 @@ public class TeamValidatorTest implements Seed {
     private TeamValidator subject = new TeamController();
 
     @Test
-    public void teamNameDuplicated() throws Exception {
-        subject.teamNameDuplicated("name", Collections.emptyList());
-    }
-
-    @Test(expected = DuplicateTeamNameException.class)
-    public void teamNameDuplicatedException() throws Exception {
-        subject.teamNameDuplicated("name", singletonList("urn"));
-    }
-
-    @Test
     public void onlyAdminAllowed() throws Exception {
         subject.onlyAdminAllowed(Role.ADMIN, federatedUser(), team(), "test");
     }

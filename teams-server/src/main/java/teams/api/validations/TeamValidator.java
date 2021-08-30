@@ -1,5 +1,6 @@
 package teams.api.validations;
 
+import org.springframework.beans.factory.annotation.Value;
 import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
@@ -13,12 +14,6 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 public interface TeamValidator {
-
-    default void teamNameDuplicated(String name, List<Object> urns) {
-        if (!urns.isEmpty()) {
-            throw new DuplicateTeamNameException(format("Team with name %s already exists", name));
-        }
-    }
 
     default String onlyAdminAllowed(Role roleOfLoggedInPerson, FederatedUser federatedUser, Team team, String action) {
         String federatedUserUrn = federatedUser.getUrn();

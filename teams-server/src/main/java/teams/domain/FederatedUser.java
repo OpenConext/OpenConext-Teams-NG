@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,15 @@ public class FederatedUser extends User {
     private Person person;
     private List<ExternalTeam> externalTeams;
     private Map<Feature, Boolean> featureToggles;
+
+    public FederatedUser(Person person, String productName, Map<String, String> config) {
+        super(StringUtils.hasText(person.getName()) ? person.getName() : "No display name provided", "N/A", person.isGuest() ?
+                singletonList(new SimpleGrantedAuthority("ROLE_USER")) :
+                asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN")));
+        this.person = person;
+        this.config = config;
+        this.productName = productName;
+    }
 
     public FederatedUser(Person person,
                          String groupNameContext,

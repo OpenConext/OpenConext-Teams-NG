@@ -3,14 +3,22 @@ package teams.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import teams.domain.*;
+import teams.exception.DuplicateTeamNameException;
 import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
 import teams.mail.MailBox;
 import teams.repository.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -21,6 +29,9 @@ import static java.util.stream.Collectors.toList;
 public abstract class ApiController {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Value("${teams.default-stem-name}")
+    private String defaultStemName;
 
     @Autowired
     protected TeamRepository teamRepository;
@@ -76,6 +87,50 @@ public abstract class ApiController {
         });
         return StreamSupport.stream(saved.spliterator(), false).collect(toList());
     }
+
+    protected String constructUrn(String name) {
+        return format("%s:%s", defaultStemName,
+                name.toLowerCase().trim().replaceAll("[ ']", "_"));
+    }
+
+    protected void teamNameDuplicated(String name, List<Object> urns) {
+        if (!urns.isEmpty()) {
+            throw new DuplicateTeamNameException(format("Team with name %s already exists", name));
+        }
+    }
+
+    public Team doCreateTeam(NewTeamProperties teamProperties, FederatedUser federatedUser) {
+        String name = teamProperties.getName();
+
+        String urn = constructUrn(name);
+        List<Object> urns = teamRepository.existsByUrn(urn);
+
+        teamNameDuplicated(name, urns);
+
+        Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable(), teamProperties.getPersonalNote());
+        Person person = federatedUser.getPerson();
+        Team savedTeam = teamRepository.save(team);
+
+        log.info("Team {} created by {}", urn, federatedUser.getUrn());
+
+        if (!CollectionUtils.isEmpty(teamProperties.getEmails())) {
+            teamProperties.getEmails().forEach((email, role) -> {
+                Invitation invitation = new Invitation(
+                        team,
+                        email,
+                        Role.valueOf(role),
+                        teamProperties.getLanguage(),
+                        null);
+                invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
+                Invitation saved = saveAndSendInvitation(Collections.singletonList(invitation), team, person, federatedUser).get(0);
+                savedTeam.getInvitations().add(saved);
+
+            });
+        }
+
+        return team;
+    }
+
 
 
 }

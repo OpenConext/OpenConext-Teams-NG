@@ -80,10 +80,10 @@ public class SecurityConfig {
     @Configuration
     public static class SpDashboardSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-        @Value("${security.sp-dashboard.name}")
+        @Value("${sp_dashboard.user-name}")
         private String user;
 
-        @Value("${security.sp-dashboard.password}")
+        @Value("${sp_dashboard.password}")
         private String password;
 
         @Override
@@ -212,7 +212,8 @@ public class SecurityConfig {
             auth.authenticationProvider(authenticationProvider);
         }
 
-        private Map<String, String> config() {
+        @Bean(name="productConfig")
+        public Map<String, String> config() {
             Map<String, String> config = new HashMap<>();
             config.put("supportEmail", supportEmail);
             config.put("helpLinkEn", helpLinkEn);
@@ -224,6 +225,7 @@ public class SecurityConfig {
             config.put("mainLink", mainLink);
             config.put("organization", organization);
             config.put("sponsor", sponsor);
+            config.put("productName", productName);
             config.put("supportedLanguageCodes", supportedLanguageCodes);
             return config;
         }

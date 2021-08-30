@@ -28,9 +28,6 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class TeamController extends ApiController implements TeamValidator {
 
-    @Value("${teams.default-stem-name}")
-    private String defaultStemName;
-
     private TeamMatcher teamMatcher = new TeamMatcher();
 
     @GetMapping("api/teams/my-teams")
@@ -110,48 +107,13 @@ public class TeamController extends ApiController implements TeamValidator {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/teams")
     public Object createTeam(HttpServletRequest request, @Validated @RequestBody NewTeamProperties teamProperties, FederatedUser federatedUser) throws IOException, MessagingException {
-        String name = teamProperties.getName();
+        Team team = doCreateTeam(teamProperties, federatedUser);
 
-        String urn = constructUrn(name);
-        List<Object> urns = teamRepository.existsByUrn(urn);
-
-        teamNameDuplicated(name, urns);
-
-        Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable(), teamProperties.getPersonalNote());
         Person person = federatedUser.getPerson();
-        String roleOfCurrentUser = teamProperties.getRoleOfCurrentUser();
-        Role currentUserRole = getCurrentUserRole(roleOfCurrentUser);
-        Membership membership = new Membership(currentUserRole, team, person, MembershipOrigin.INITIAL_ADMIN, person.getName());
+        Membership membership = new Membership(Role.ADMIN, team, person, MembershipOrigin.INITIAL_ADMIN, person.getName());
+        membershipRepository.save(membership);
 
-        Team savedTeam = teamRepository.save(team);
-
-        log.info("Team {} created by {}", urn, federatedUser.getUrn());
-
-        if (!CollectionUtils.isEmpty(teamProperties.getEmails())) {
-            teamProperties.getEmails().forEach((email, role) -> {
-                Invitation invitation = new Invitation(
-                        team,
-                        email,
-                        Role.valueOf(role),
-                        teamProperties.getLanguage(),
-                        null);
-                invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
-                Invitation saved = saveAndSendInvitation(Collections.singletonList(invitation), team, person, federatedUser).get(0);
-                savedTeam.getInvitations().add(saved);
-
-            });
-        }
-
-        return lazyLoadTeam(savedTeam, membership.getRole(), federatedUser);
-    }
-
-    private Role getCurrentUserRole(String roleOfCurrentUser) {
-        return StringUtils.hasText(roleOfCurrentUser) ? Role.valueOf(roleOfCurrentUser) : Role.ADMIN;
-    }
-
-    private String constructUrn(String name) {
-        return format("%s:%s", defaultStemName,
-                name.toLowerCase().trim().replaceAll("[ ']", "_"));
+        return lazyLoadTeam(team, membership.getRole(), federatedUser);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

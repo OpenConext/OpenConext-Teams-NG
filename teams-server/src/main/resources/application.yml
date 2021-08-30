@@ -36,9 +36,6 @@ security:
   user:
     name: user
     password: secret
-  sp-dashboard:
-    name: spdashboard
-    password: secret
 
 # Is this node in a load-balanced topology responsible for cleaning up resources (See Scheduler)
 cron:
@@ -50,6 +47,14 @@ teams:
   group-name-context: "urn:collab:group:demo.openconext.org:"
   product-name: "OpenConext"
   non-guest-member-of: "urn:collab:org:surf.nl"
+
+sp_dashboard:
+  user-name: spdashboard
+  password: secret
+  person-urn: "urn:collab:person:surfnet.nl:sp-dashboard-C133A36F-CFCA-4F3D-87CE-7ECE29773FE0"
+  name: "SP Dashboard"
+  email: "support@surfconext.nl"
+
 
 super_admins_team:
   urns:
