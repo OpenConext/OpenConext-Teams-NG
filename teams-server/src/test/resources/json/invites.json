@@ -1,0 +1,10 @@
+{
+  "teamId": 2,
+  "intendedRole": "ADMIN",
+  "emails": [
+    "test@test.org",
+    "test2@test.org"
+  ],
+  "message": "Please join",
+  "language": "ENGLISH"
+}
