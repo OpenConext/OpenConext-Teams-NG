@@ -14,9 +14,9 @@ import teams.repository.InvitationRepository;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 
-import static teams.domain.Invitation.EXPIRY_MILLIS;
-
 import java.util.function.Function;
+
+import static teams.domain.Invitation.EXPIRY_MILLIS;
 
 @Configuration
 @EnableScheduling
