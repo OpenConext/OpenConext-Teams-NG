@@ -27,7 +27,7 @@ import static javax.persistence.FetchType.EAGER;
 public class Invitation implements HashGenerator, Serializable {
 
     public static final long EXPIRY_DAYS = 30L;
-    private static final long THIRTY_DAYS = EXPIRY_DAYS * 24L * 60L * 60L * 1000L;
+    public static final long EXPIRY_MILLIS = EXPIRY_DAYS * 24L * 60L * 60L * 1000L;
 
     @Transient
     public static final java.util.regex.Pattern emailPattern = java.util.regex.Pattern.compile("\\S+@\\S+");
@@ -87,7 +87,7 @@ public class Invitation implements HashGenerator, Serializable {
 
     @JsonProperty(value = "expired", access = JsonProperty.Access.READ_ONLY)
     public boolean expired() {
-        return (timestamp + THIRTY_DAYS) < System.currentTimeMillis();
+        return (timestamp + EXPIRY_MILLIS) < System.currentTimeMillis();
     }
 
     @JsonProperty(value = "daysValid", access = JsonProperty.Access.READ_ONLY)

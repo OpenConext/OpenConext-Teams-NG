@@ -14,13 +14,13 @@ import teams.repository.InvitationRepository;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 
+import static teams.domain.Invitation.EXPIRY_MILLIS;
+
 import java.util.function.Function;
 
 @Configuration
 @EnableScheduling
 public class Scheduler {
-
-    public static final long TWO_WEEKS = 14L * 24L * 60L * 60L * 1000L;
 
     private static final Logger LOG = LoggerFactory.getLogger(Scheduler.class);
 
@@ -43,7 +43,7 @@ public class Scheduler {
 
     @Scheduled(cron = "${cron.expression}")
     public int removeExpiredInvitations() {
-        return this.removeExpired(invitationRepository::deleteExpiredInvitations, System.currentTimeMillis() - TWO_WEEKS, Invitation.class);
+        return this.removeExpired(invitationRepository::deleteExpiredInvitations, System.currentTimeMillis() - EXPIRY_MILLIS, Invitation.class);
     }
 
     @Scheduled(cron = "${cron.expression}")
