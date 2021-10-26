@@ -11,7 +11,7 @@ import java.time.temporal.ChronoUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-import static teams.Scheduler.TWO_WEEKS;
+import static teams.domain.Invitation.EXPIRY_MILLIS;
 
 public class SchedulerTest extends AbstractApplicationTest {
 
@@ -41,7 +41,7 @@ public class SchedulerTest extends AbstractApplicationTest {
                 Role.ADMIN,
                 Language.DUTCH,
                 null).addInvitationMessage(personRepository.findOne(1L), "Please join");
-        ReflectionTestUtils.setField(invitation, "timestamp", System.currentTimeMillis() - TWO_WEEKS - (1000L * 3600));//1000L);
+        ReflectionTestUtils.setField(invitation, "timestamp", System.currentTimeMillis() - EXPIRY_MILLIS - (1000L * 3600));//1000L);
         invitationRepository.save(invitation);
 
         int count = scheduler.removeExpiredInvitations();
