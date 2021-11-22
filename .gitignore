@@ -28,3 +28,4 @@ MockData.java
 .scannerwork/
 deploy.txt
 build-tmp.sh
+dep.tree
