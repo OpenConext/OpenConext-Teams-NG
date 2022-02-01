@@ -20,8 +20,8 @@ public class MembershipRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void deleteExpiredMemberships() throws Exception {
-        Team team = teamRepository.findOne(1L);
-        Person person = personRepository.findOne(6L);
+        Team team = teamRepository.findById(1L).get();
+        Person person = personRepository.findById(6L).get();
         Instant thePast = Instant.now().minus(15, ChronoUnit.DAYS);
         membershipRepository.save(new Membership(Role.ADMIN, team, person, thePast, MembershipOrigin.INITIAL_ADMIN, "John Doe"));
         int deleted = membershipRepository.deleteExpiredMemberships(0L);

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import teams.api.validations.JoinRequestValidator;
 import teams.api.validations.MembershipValidator;
 import teams.domain.*;
+import teams.exception.ResourceNotFoundException;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
         JoinRequest joinRequest = new JoinRequest(person, team, clientJoinRequest.getMessage());
         joinRequestRepository.save(joinRequest);
 
-        joinRequestRepository.delete(existingJoinRequestForTheSameTeam);
+        joinRequestRepository.deleteAll(existingJoinRequestForTheSameTeam);
 
         mailBox.sendJoinRequestMail(joinRequest, admins, federatedUser);
 
@@ -68,7 +69,7 @@ public class JoinRequestController extends ApiController implements MembershipVa
 
         // rare race condition when join requests and invitations overlap
         List<Invitation> invitations = invitationRepository.findByTeamAndEmail(team, person.getEmail());
-        invitationRepository.delete(invitations);
+        invitationRepository.deleteAll(invitations);
 
         return newMembership;
     }
@@ -95,7 +96,8 @@ public class JoinRequestController extends ApiController implements MembershipVa
     }
 
     private JoinRequest notNullGetJoinRequest(Long id) {
-        JoinRequest joinRequest = joinRequestRepository.findOne(id);
+        JoinRequest joinRequest = joinRequestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("JoinRequest not found:" + id));
         assertNotNull(JoinRequest.class.getSimpleName(), joinRequest, id);
         return joinRequest;
     }

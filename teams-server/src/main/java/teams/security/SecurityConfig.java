@@ -7,12 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -22,7 +25,7 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import teams.domain.Feature;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
@@ -40,6 +43,10 @@ import java.util.Map;
 @Configuration
 public class SecurityConfig {
 
+    @Bean
+    PasswordEncoder getPasswordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
 
     @Bean
     CookieSerializer cookieSerializer(@Value("${secure_cookie}") boolean secureCookie) {
@@ -212,7 +219,7 @@ public class SecurityConfig {
             auth.authenticationProvider(authenticationProvider);
         }
 
-        @Bean(name="productConfig")
+        @Bean(name = "productConfig")
         public Map<String, String> config() {
             Map<String, String> config = new HashMap<>();
             config.put("supportEmail", supportEmail);
@@ -254,15 +261,15 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .antMatchers("/**").hasRole("USER");
 
-            if (environment.acceptsProfiles("dev")) {
-                http.addFilterBefore(new MockShibbolethFilter(environment.acceptsProfiles("test")), ShibbolethPreAuthenticatedProcessingFilter.class);
+            if (environment.acceptsProfiles(Profiles.of("dev"))) {
+                http.addFilterBefore(new MockShibbolethFilter(environment.acceptsProfiles(Profiles.of("test"))), ShibbolethPreAuthenticatedProcessingFilter.class);
                 http.csrf().disable();
             }
         }
     }
 
     @Configuration
-    public class MvcConfig extends WebMvcConfigurerAdapter {
+    public class MvcConfig implements WebMvcConfigurer {
 
         @Override
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
@@ -271,14 +278,12 @@ public class SecurityConfig {
 
         @Override
         public void addInterceptors(InterceptorRegistry registry) {
-            super.addInterceptors(registry);
             registry.addInterceptor(new SessionAliveInterceptor());
         }
 
         @Override
         public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-            super.configureContentNegotiation(configurer);
-            configurer.favorParameter(false).favorPathExtension(false);
+            configurer.favorParameter(false);
         }
     }
 

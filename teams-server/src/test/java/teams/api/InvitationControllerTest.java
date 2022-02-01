@@ -131,7 +131,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_OK);
 
-        Invitation invitation = invitationRepository.findOne(resendInvitation.getId());
+        Invitation invitation = invitationRepository.findById(resendInvitation.getId()).get();
         assertEquals(2, invitation.getInvitationMessages().size());
     }
 

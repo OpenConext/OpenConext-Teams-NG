@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
 
-@ConfigurationProperties(prefix = "super_admins_team")
+@ConfigurationProperties(prefix = "super-admins-team")
 @Getter
 @Setter
 @NoArgsConstructor

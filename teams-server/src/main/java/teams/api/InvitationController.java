@@ -1,6 +1,5 @@
 package teams.api;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.InvitationValidator;
@@ -21,9 +20,8 @@ public class InvitationController extends ApiController implements MembershipVal
 
     @GetMapping("api/teams/invitations/{id}")
     public Invitation invitation(@PathVariable("id") Long id, FederatedUser federatedUser) {
-        Invitation invitation = invitationRepository.findById(id);
+        Invitation invitation = invitationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Invitation not found:" + id));
 
-        assertNotNull(Invitation.class.getSimpleName(), invitation, id);
         mustBeTeamAdminOrManager(invitation, federatedUser);
 
         return invitation;
@@ -42,11 +40,11 @@ public class InvitationController extends ApiController implements MembershipVal
 
         List<String> emails = emails(clientInvitation);
         List<Invitation> invitations = emails.stream().map(email -> new Invitation(
-                team,
-                email,
-                role,
-                clientInvitation.getLanguage(),
-                clientInvitation.getExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
+                        team,
+                        email,
+                        role,
+                        clientInvitation.getLanguage(),
+                        clientInvitation.getExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
                 .collect(toList());
         log.info("Saving {} invitations for emails: {}", invitations.size(), String.join(",", emails));
         return saveAndSendInvitation(invitations, team, person, federatedUser);
@@ -55,9 +53,8 @@ public class InvitationController extends ApiController implements MembershipVal
     @DeleteMapping("api/teams/invitations/{id}")
     public void delete(@PathVariable("id") Long id,
                        FederatedUser federatedUser) throws IOException, MessagingException {
-        Invitation invitation = invitationRepository.findOne(id);
+        Invitation invitation = invitationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Invitation not found:" + id));
 
-        assertNotNull(Invitation.class.getSimpleName(), invitation, id);
         mustBeTeamAdminOrManager(invitation, federatedUser);
 
         invitationRepository.delete(invitation);
@@ -70,9 +67,9 @@ public class InvitationController extends ApiController implements MembershipVal
     public Invitation resend(@Validated @RequestBody ClientResendInvitation resendInvitation,
                              FederatedUser federatedUser) throws IOException, MessagingException {
         Long invitationId = resendInvitation.getId();
-        Invitation invitation = invitationRepository.findOne(invitationId);
+        Invitation invitation = invitationRepository.findById(invitationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invitation not found:" + invitationId));
 
-        assertNotNull(Invitation.class.getSimpleName(), invitation, invitationId);
         mustBeTeamAdminOrManager(invitation, federatedUser);
 
         invitation.addInvitationMessage(federatedUser.getPerson(), resendInvitation.getMessage());
@@ -107,7 +104,7 @@ public class InvitationController extends ApiController implements MembershipVal
 
         // rare race condition when join requests and invitations overlap
         List<JoinRequest> joinRequests = joinRequestRepository.findByPersonAndTeam(person, team);
-        joinRequestRepository.delete(joinRequests);
+        joinRequestRepository.deleteAll(joinRequests);
 
         return teamRepository.save(team);
     }

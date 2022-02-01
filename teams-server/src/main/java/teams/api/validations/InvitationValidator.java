@@ -18,7 +18,7 @@ public interface InvitationValidator {
 
     default void validateClientInvitation(ClientInvitation clientInvitation) {
         List<String> emails = clientInvitation.getEmails();
-        if (CollectionUtils.isEmpty(emails) && StringUtils.isEmpty(clientInvitation.getCsvEmails())) {
+        if (CollectionUtils.isEmpty(emails) && !StringUtils.hasText(clientInvitation.getCsvEmails())) {
             throw new IllegalInviteException("Either emails or file with emails is required");
         }
         Instant expiryDate = clientInvitation.getExpiryDate();

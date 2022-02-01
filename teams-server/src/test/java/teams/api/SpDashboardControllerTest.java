@@ -58,7 +58,7 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_CREATED);
 
-        Membership membership = membershipRepository.findOne(6L);
+        Membership membership = membershipRepository.findById(6L).get();
         assertEquals(Role.ADMIN, membership.getRole());
     }
 
@@ -75,7 +75,7 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(SC_CREATED);
 
-        Invitation invitation = invitationRepository.findOne(resendInvitation.getId());
+        Invitation invitation = invitationRepository.findById(resendInvitation.getId()).get();
         assertEquals(2, invitation.getInvitationMessages().size());
     }
 

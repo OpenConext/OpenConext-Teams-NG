@@ -59,7 +59,9 @@ public class SpDashboardController extends ApiController implements TeamValidato
 
     @PutMapping("api/spdashboard/memberships")
     public ResponseEntity changeMembership(@Validated @RequestBody MembershipProperties membershipProperties) {
-        Membership membership = membershipRepository.findOne(membershipProperties.getId());
+        Long id = membershipProperties.getId();
+        Membership membership = membershipRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Membership not found:" + id));
 
         Role futureRole = membershipProperties.getRole();
         log.info("Changing current {} membership of {} in team {} to {} by {}",
@@ -79,11 +81,11 @@ public class SpDashboardController extends ApiController implements TeamValidato
 
         List<String> emails = clientInvitation.getEmails();
         List<Invitation> invitations = emails.stream().map(email -> new Invitation(
-                team,
-                email,
-                clientInvitation.getIntendedRole(),
-                clientInvitation.getLanguage(),
-                clientInvitation.getExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
+                        team,
+                        email,
+                        clientInvitation.getIntendedRole(),
+                        clientInvitation.getLanguage(),
+                        clientInvitation.getExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
                 .collect(toList());
         log.info("Saving {} invitations for emails: {}", invitations.size(), String.join(",", emails));
         saveAndSendInvitation(invitations, team, person, this.federatedUser());
@@ -93,7 +95,8 @@ public class SpDashboardController extends ApiController implements TeamValidato
     @PutMapping("api/spdashboard/invites")
     public ResponseEntity resend(@Validated @RequestBody ClientResendInvitation resendInvitation) throws IOException, MessagingException {
         Long invitationId = resendInvitation.getId();
-        Invitation invitation = invitationRepository.findOne(invitationId);
+        Invitation invitation = invitationRepository.findById(invitationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invitation not found:" + invitationId));
         invitation.addInvitationMessage(this.federatedUser().getPerson(), resendInvitation.getMessage());
         log.info("Resending mail to {}", invitation.getEmail());
         invitationRepository.save(invitation);
@@ -112,7 +115,8 @@ public class SpDashboardController extends ApiController implements TeamValidato
 
     @DeleteMapping("api/spdashboard/teams/{id}")
     public ResponseEntity deleteTeam(@PathVariable("id") Long id) {
-        Team team = teamRepository.findOne(id);
+        Team team = teamRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Team not found" + id));
 
         log.info("Deleting team {}", team.getName());
 
@@ -122,7 +126,8 @@ public class SpDashboardController extends ApiController implements TeamValidato
 
     @DeleteMapping("api/spdashboard/memberships/{membershipId}")
     public ResponseEntity deleteMembership(@PathVariable("membershipId") Long membershipId) {
-        Membership membership = membershipRepository.findOne(membershipId);
+        Membership membership = membershipRepository.findById(membershipId)
+                .orElseThrow(() -> new ResourceNotFoundException("Membership not found:" + membershipId));
 
         log.info("Deleting membership {} from team {}", membership.getPerson().getUrn(), membership.getTeam().getUrn());
 

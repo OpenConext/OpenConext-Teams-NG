@@ -35,8 +35,8 @@ public class InvitationRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void deleteOlderThenExpiryDays() throws Exception {
-        Invitation invitation = new Invitation(teamRepository.findOne(1L), "test@test.org", Role.ADMIN, Language.DUTCH, null);
-        invitation.addInvitationMessage(personRepository.findOne(1L), "Please join");
+        Invitation invitation = new Invitation(teamRepository.findFirstById(1L), "test@test.org", Role.ADMIN, Language.DUTCH, null);
+        invitation.addInvitationMessage(personRepository.findById(1L).get(), "Please join");
         invitationRepository.save(invitation);
 
         int count = invitationRepository.deleteExpiredInvitations(System.currentTimeMillis() + 3600 * 1000);
@@ -45,7 +45,7 @@ public class InvitationRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByTeamAndEmai() {
-        Team team = teamRepository.findById(5L);
+        Team team = teamRepository.findById(5L).get();
         List<Invitation> invitations = invitationRepository.findByTeamAndEmail(team, "john.doe@example.org");
         assertEquals(1, invitations.size());
     }
