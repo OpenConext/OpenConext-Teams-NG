@@ -69,7 +69,7 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
     }
 
     protected String normalize(String name) {
-        if (StringUtils.isEmpty(name)) {
+        if (!StringUtils.hasText(name)) {
             return name;
         }
         //Due to the current mysql UTF-8 encoding we will normalize the displayName

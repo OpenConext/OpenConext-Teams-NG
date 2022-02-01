@@ -36,7 +36,7 @@ public class PersonRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void deleteExpiredMemberships() throws Exception {
-        Person person = personRepository.findOne(6L);
+        Person person = personRepository.findById(6L).get();
         Instant thePast = Instant.now().minus(15, ChronoUnit.DAYS);
         person.setLastLoginDate(thePast);
         personRepository.save(person);

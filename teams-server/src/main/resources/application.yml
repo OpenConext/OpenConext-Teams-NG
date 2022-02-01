@@ -7,6 +7,14 @@ logging:
 #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 #    org.hibernate.event: TRACE
 
+server:
+  error:
+    path: "/error"
+  server-header:
+  servlet:
+    session:
+      timeout: 28800
+
 feature-toggles:
   expiry-date-membership: false
   person-email-picker: true
@@ -56,7 +64,7 @@ sp_dashboard:
   email: "support@surfconext.nl"
 
 
-super_admins_team:
+super-admins-team:
   urns:
     - "demo:openconext:org:super_admins"
     - "demo:openconext:org:another_super_admins"
@@ -86,37 +94,30 @@ spring:
     url: jdbc:mysql://localhost/teams_ng?autoReconnect=true&useSSL=false&useMysqlMetadata=true
     username: root
     password:
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      connection-test-query: SELECT 1
-      leak-detection-threshold: 2000
   mail:
     host: localhost
     port: 3025
   main:
     banner-mode: "off"
-flyway:
-  validate-on-migrate: false
+  flyway:
+    validate-on-migrate: false
+    table: schema_version
 
 email:
   from: test@surf.nl
   base-url: http://localhost:8001
 
 # We disable all endpoints except health for the load-balancer and info for git information.
-endpoints:
-  enabled: false
+management:
   health:
-    enabled: true
-    sensitive: false
+    mail:
+      enabled: false
   info:
-    enabled: true
+    git:
+      mode: full
+
 # used by the git plugin
 info:
   build:
     artifact: "@project.artifactId@"
     version: "@project.version@"
-# overridden in ansible - hopefully
-management:
-  health:
-    mail:
-      enabled: false

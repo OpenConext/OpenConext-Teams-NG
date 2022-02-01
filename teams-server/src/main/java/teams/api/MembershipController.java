@@ -4,6 +4,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.MembershipValidator;
 import teams.domain.*;
+import teams.exception.ResourceNotFoundException;
 
 import java.util.Collections;
 import java.util.Map;
@@ -20,8 +21,10 @@ public class MembershipController extends ApiController implements MembershipVal
 
     @PutMapping("api/teams/memberships")
     public Membership changeMembership(@Validated @RequestBody MembershipProperties membershipProperties, FederatedUser federatedUser) {
-        Membership membership = membershipRepository.findOne(membershipProperties.getId());
-        assertNotNull(Membership.class.getSimpleName(),membership, membershipProperties.getId());
+        Long id = membershipProperties.getId();
+        Membership membership = membershipRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Membership not found:" + id));
+        assertNotNull(Membership.class.getSimpleName(), membership, id);
         Team team = membership.getTeam();
         Person person = membership.getPerson();
 
@@ -47,7 +50,8 @@ public class MembershipController extends ApiController implements MembershipVal
 
     @DeleteMapping("api/teams/memberships/{id}")
     public void deleteMembership(@PathVariable("id") Long id, FederatedUser federatedUser) {
-        Membership membership = membershipRepository.findOne(id);
+        Membership membership = membershipRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Membership not found:" + id));
 
         assertNotNull(Membership.class.getSimpleName(), membership, id);
 

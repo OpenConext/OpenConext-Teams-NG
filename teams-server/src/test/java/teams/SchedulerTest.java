@@ -22,8 +22,8 @@ public class SchedulerTest extends AbstractApplicationTest {
     public void removeExpiredMemberships() throws Exception {
         Membership membership = new Membership(
                 Role.ADMIN,
-                teamRepository.findOne(1L),
-                personRepository.findOne(6L),
+                teamRepository.findById(1L).get(),
+                personRepository.findById(6L).get(),
                 Instant.now().minus(15, ChronoUnit.DAYS),
                 MembershipOrigin.INITIAL_ADMIN, "John Doe");
         membershipRepository.save(membership);
@@ -36,11 +36,11 @@ public class SchedulerTest extends AbstractApplicationTest {
     @Test
     public void removeExpiredInvitations() throws Exception {
         Invitation invitation = new Invitation(
-                teamRepository.findOne(1L),
+                teamRepository.findById(1L).get(),
                 "test@test.org",
                 Role.ADMIN,
                 Language.DUTCH,
-                null).addInvitationMessage(personRepository.findOne(1L), "Please join");
+                null).addInvitationMessage(personRepository.findById(1L).get(), "Please join");
         ReflectionTestUtils.setField(invitation, "timestamp", System.currentTimeMillis() - EXPIRY_MILLIS - (1000L * 3600));//1000L);
         invitationRepository.save(invitation);
 

@@ -13,14 +13,13 @@ See the NOTICE file
 
 ## System Requirements
 
-- Java 8
+- Java 11
 - Maven 3
 - MySQL
-- npm 5.2.0 (higher will break the build)
-- node 6.2.2 (use for example `nvm use` to manage it - latest version of node does not work) 
-- yarn 1.1.0 (note that later versions break the sass compiler)
+- node v14.17.3 (use for example `nvm use` to manage it - latest version of node does not work) 
+- yarn (note that later versions break the sass compiler)
 
-If you use nvm the ensure you have the correct npm installed locally in that version
+If you use nvm ensure you have the correct npm installed locally in that version
 
 ```
 cd ~/.nvm/versions/node/v6.2.2/lib/
@@ -40,7 +39,8 @@ Connect to your local mysql database: `mysql -uroot`
 Execute the following:
 
 ```sql
-CREATE DATABASE teams_ng DEFAULT CHARACTER SET utf8;
+DROP DATABASE IF EXISTS teams_ng;
+CREATE DATABASE teams_ng CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 ```
 
 ### The teams-server

@@ -31,7 +31,7 @@ public interface InvitationRepository extends CrudRepository<Invitation, Long> {
 
     @EntityGraph(value = "findFirstById", type = EntityGraph.EntityGraphType.LOAD,
             attributePaths = {"invitationMessages", "team", "team.memberships"})
-    Invitation findById(Long id);
+    Optional<Invitation> findById(Long id);
 
     List<Invitation> findByTeamAndEmail(Team team, String email);
 }

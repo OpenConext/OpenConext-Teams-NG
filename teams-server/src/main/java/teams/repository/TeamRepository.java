@@ -40,7 +40,7 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
     List<Object> existsByUrn(String urn);
 
     @EntityGraph(value = "findById", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "memberships")
-    Team findById(Long id);
+    Optional<Team> findById(Long id);
 
     @EntityGraph(value = "findFirstById", type = EntityGraph.EntityGraphType.LOAD,
             attributePaths = {"memberships.person"})

@@ -83,7 +83,7 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByIdNoPersonsFetched() {
-        Team team = teamRepository.findById(1L);
+        Team team = teamRepository.findById(1L).get();
         assertTrue(areMembershipLoaded(team));
         assertFalse(arePersonsLoaded(team));
     }

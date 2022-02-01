@@ -35,8 +35,8 @@ public class JoinRequestRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void findByPersonAndTeam() {
-        Team team = teamRepository.findById(1L);
-        Person person = personRepository.findOne(6L);
+        Team team = teamRepository.findById(1L).get();
+        Person person = personRepository.findById(6L).get();
         List<JoinRequest> joinRequests = joinRequestRepository.findByPersonAndTeam(person, team);
         assertEquals(1, joinRequests.size());
     }

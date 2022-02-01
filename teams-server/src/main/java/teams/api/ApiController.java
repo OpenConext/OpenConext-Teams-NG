@@ -5,9 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.NotAllowedException;
@@ -16,7 +13,6 @@ import teams.mail.MailBox;
 import teams.repository.*;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +50,7 @@ public abstract class ApiController {
     public static final String ADMIN_HEADER = "X-ADMIN-HEADER";
 
     protected Team teamById(Long id, boolean includePersons) {
-        Team team = includePersons ? teamRepository.findFirstById(id) : teamRepository.findById(id);
+        Team team = includePersons ? teamRepository.findFirstById(id) : teamRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Team not found:" + id));
         assertNotNull("Team", team, id);
         return team;
     }
@@ -71,8 +67,8 @@ public abstract class ApiController {
         }
     }
 
-    protected List<Invitation> saveAndSendInvitation(List<Invitation> invitations, Team team, Person person, FederatedUser federatedUser)  {
-        Iterable<Invitation> saved = invitationRepository.save(invitations);
+    protected List<Invitation> saveAndSendInvitation(List<Invitation> invitations, Team team, Person person, FederatedUser federatedUser) {
+        Iterable<Invitation> saved = invitationRepository.saveAll(invitations);
         saved.forEach(invitation -> {
             try {
                 mailBox.sendInviteMail(invitation, federatedUser);
@@ -130,7 +126,6 @@ public abstract class ApiController {
 
         return team;
     }
-
 
 
 }
