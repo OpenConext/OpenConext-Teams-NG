@@ -22,7 +22,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 public class TeamControllerTest extends AbstractApplicationTest {
 
     @Test
-    public void myTeams() throws Exception {
+    public void myTeams() {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .when()
@@ -39,7 +39,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void myTeamsWithJoinRequest() throws Exception {
+    public void myTeamsWithJoinRequest() {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:mdoe")
                 .when()
@@ -52,7 +52,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamById() throws Exception {
+    public void teamById() {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .when()
@@ -66,7 +66,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void privateTeamById() throws Exception {
+    public void privateTeamById() {
         given()
                 .when()
                 .get("api/teams/teams/{id}", 6L)
@@ -76,7 +76,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamByUrnNotExistent() throws Exception {
+    public void teamByUrnNotExistent() {
         given()
                 .when()
                 .get("api/teams/teams/{id}", -1L)
@@ -85,7 +85,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamByUrnNoMemberships() throws Exception {
+    public void teamByUrnNoMemberships() {
         given()
                 .header("name-id", "not-a-member")
                 .when()
@@ -100,7 +100,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamExistsByNameFalse() throws Exception {
+    public void teamExistsByNameFalse() {
         boolean exists = given()
                 .param("name", "nope")
                 .when()
@@ -110,7 +110,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamExistsByNameError() throws Exception {
+    public void teamExistsByNameError() {
         given()
                 .param("name", "malpura")
                 .when()
@@ -120,7 +120,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamExistsByNameTrue() throws Exception {
+    public void teamExistsByNameTrue() {
         boolean exists = given()
                 .param("name", "RIdErS")
                 .when()
@@ -130,7 +130,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamAutocomplete() throws Exception {
+    public void teamAutocomplete() {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
                 .param("query", "ERS")
@@ -145,7 +145,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamAutocompleteIllegalArgument() throws Exception {
+    public void teamAutocompleteIllegalArgument() {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
                 .param("query", "E ")
@@ -157,7 +157,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void createTeam() throws Exception {
+    public void createTeam() {
         String urn = "demo:openconext:org:new_team_name";
         given()
                 .body(new NewTeamProperties("new team name", "Team champions ", null, true,
@@ -178,7 +178,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void createTeamWithAdminInvitation() throws Exception {
+    public void createTeamWithAdminInvitation() {
         String urn = "demo:openconext:org:new_team_name";
         String email = "second_admin@test.org";
         String invitationMessage = "Please join";
@@ -202,19 +202,18 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void createTeamInvalidTeamName() throws Exception {
+    public void createTeamInvalidTeamName() {
         given()
                 .body(new Team("urn", "invalid $", null, true, null))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")
                 .then()
-                .statusCode(SC_BAD_REQUEST)
-                .body("errors[0].defaultMessage", equalTo("must match \"[\\w \\-']{1,255}\""));
+                .statusCode(SC_BAD_REQUEST);
     }
 
     @Test
-    public void createTeamDuplicateTeamName() throws Exception {
+    public void createTeamDuplicateTeamName() {
         given()
                 .body(new Team("urn", "riders", null, true, null))
                 .header(CONTENT_TYPE, "application/json")
@@ -226,7 +225,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void createTeamAsGuest() throws Exception {
+    public void createTeamAsGuest() {
         given()
                 .body(new Team("urn", "valid", null, true, null))
                 .contentType(ContentType.JSON)
@@ -239,7 +238,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void updateTeam() throws Exception {
+    public void updateTeam() {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
@@ -259,7 +258,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void resetPublicLink() throws Exception {
+    public void resetPublicLink() {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
@@ -275,7 +274,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void updateTeamAsGuest() throws Exception {
+    public void updateTeamAsGuest() {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .header("is-member-of", "guest-org")
@@ -288,7 +287,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void updateTeamWithMemberRole() throws Exception {
+    public void updateTeamWithMemberRole() {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .header(CONTENT_TYPE, "application/json")
@@ -301,7 +300,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void updateTeamWithoutBeingMember() throws Exception {
+    public void updateTeamWithoutBeingMember() {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .body(new TeamProperties(8L, null, null, true, false))
@@ -313,7 +312,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void deleteTeam() throws Exception {
+    public void deleteTeam() {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
