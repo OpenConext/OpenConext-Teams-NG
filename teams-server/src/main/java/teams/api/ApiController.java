@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
+import teams.api.validations.TeamValidator;
 import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.NotAllowedException;
@@ -22,7 +23,7 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 
-public abstract class ApiController {
+public abstract class ApiController implements TeamValidator {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -97,6 +98,7 @@ public abstract class ApiController {
 
     public Team doCreateTeam(NewTeamProperties teamProperties, FederatedUser federatedUser) {
         String name = teamProperties.getName();
+        validateTeamName(name);
 
         String urn = constructUrn(name);
         List<Object> urns = teamRepository.existsByUrn(urn);
