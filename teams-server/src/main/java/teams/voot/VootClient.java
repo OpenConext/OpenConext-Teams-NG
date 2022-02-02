@@ -1,5 +1,6 @@
 package teams.voot;
 
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,15 +25,12 @@ import static java.util.stream.Collectors.toList;
 
 @Component
 @Profile("!dev")
+@SuppressWarnings("deprecation")
 public class VootClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(VootClient.class);
 
-    private String accessTokenUri;
-    private String clientId;
-    private String clientSecret;
-    private String spaceDelimitedScopes;
-    private String serviceUrl;
+    private final String serviceUrl;
 
     private OAuth2RestTemplate vootService;
 
@@ -41,27 +39,24 @@ public class VootClient {
                       @Value("${voot.clientSecret}") String clientSecret,
                       @Value("${voot.scopes}") String spaceDelimitedScopes,
                       @Value("${voot.serviceUrl}") String serviceUrl) {
-        this.accessTokenUri = accessTokenUri;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.spaceDelimitedScopes = spaceDelimitedScopes;
         this.serviceUrl = serviceUrl;
-        vootService = new OAuth2RestTemplate(vootConfiguration());
+        vootService = new OAuth2RestTemplate(vootConfiguration(clientId, clientSecret, accessTokenUri, spaceDelimitedScopes));
     }
 
+    @SneakyThrows
     public List<ExternalTeam> teams(String personUrn) {
-        String personUrnEncoded = encodeUrn(personUrn);
+        String personUrnEncoded = URLEncoder.encode(personUrn, Charset.defaultCharset().name());
         List<ExternalTeam> externalTeams = vootService.exchange(
-                RequestEntity.get(URI.create(String.format("%s/internal/external-groups/%s/", serviceUrl, personUrnEncoded))).build(),
-                new ParameterizedTypeReference<List<Map<String, Object>>>() {
-                })
+                        RequestEntity.get(URI.create(String.format("%s/internal/external-groups/%s/", serviceUrl, personUrnEncoded))).build(),
+                        new ParameterizedTypeReference<List<Map<String, Object>>>() {
+                        })
                 .getBody()
                 .stream()
                 .map(map -> new ExternalTeam(
-                        String.class.cast(map.get("description")),
-                        String.class.cast(map.get("sourceID")),
-                        String.class.cast(map.get("id")),
-                        String.class.cast(map.get("displayName"))))
+                        (String) map.get("description"),
+                        (String) map.get("sourceID"),
+                        (String) map.get("id"),
+                        (String) map.get("displayName")))
                 .collect(toList());
 
         LOG.debug("Result from VOOT external teams {}", externalTeams);
@@ -69,15 +64,10 @@ public class VootClient {
         return externalTeams;
     }
 
-    public String encodeUrn(String personUrn) {
-        try {
-            return URLEncoder.encode(personUrn, Charset.defaultCharset().name());
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Unexpected error in encoding urn: " + personUrn);
-        }
-    }
-
-    private OAuth2ProtectedResourceDetails vootConfiguration() {
+    private OAuth2ProtectedResourceDetails vootConfiguration(String clientId,
+                                                             String clientSecret,
+                                                             String accessTokenUri,
+                                                             String spaceDelimitedScopes) {
         ClientCredentialsResourceDetails details = new ClientCredentialsResourceDetails();
         details.setId("voot");
         details.setClientId(clientId);
