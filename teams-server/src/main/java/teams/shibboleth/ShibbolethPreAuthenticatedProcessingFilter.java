@@ -64,7 +64,7 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
             provisionedPerson.markAsSuperAdmin(isMemberButNoOwner);
             return provisionedPerson;
         } else {
-            return person;
+            return null;
         }
     }
 

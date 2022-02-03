@@ -112,6 +112,15 @@ management:
   health:
     mail:
       enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,mappings"
+  endpoint:
+    info:
+      enabled: true
+    mappings:
+      enabled: true
   info:
     git:
       mode: full

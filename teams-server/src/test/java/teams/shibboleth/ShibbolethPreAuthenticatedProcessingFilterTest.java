@@ -43,8 +43,8 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
     @Test
     public void getPreAuthenticatedPrincipalNotValid() {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        Person person = Person.class.cast(subject.getPreAuthenticatedPrincipal(request));
-        assertNull(person.getId());
+        Object preAuthenticatedPrincipal = subject.getPreAuthenticatedPrincipal(request);
+        assertNull(preAuthenticatedPrincipal);
     }
 
     @Test
