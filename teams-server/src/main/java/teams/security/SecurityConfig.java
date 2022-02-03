@@ -207,7 +207,7 @@ public class SecurityConfig {
         private String supportedLanguageCodes;
 
         @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        protected void configure(AuthenticationManagerBuilder auth) {
             PreAuthenticatedAuthenticationProvider authenticationProvider = new PreAuthenticatedAuthenticationProvider();
             authenticationProvider.setPreAuthenticatedUserDetailsService(
                     new ShibbolethUserDetailService(
