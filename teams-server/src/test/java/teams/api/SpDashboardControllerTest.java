@@ -109,6 +109,20 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void teamByFullUrnInternal() {
+        String urn = "demo:openconext:org:riders";
+        Map team = given()
+                .header(CONTENT_TYPE, "application/json")
+                .auth().preemptive().basic("spdashboard", "secret")
+                .when()
+                .get("internal/teams/{urn}", urn)
+                .as(Map.class);
+        assertEquals(urn, team.get("urn"));
+        assertEquals(3, ((List) team.get("memberships")).size());
+        assertEquals(1, ((List) team.get("invitations")).size());
+    }
+
+    @Test
     public void teamByFullUrn404() {
         String urn = "urn:collab:group:demo.openconext.org:demo:openconext:org:nope";
         given()
