@@ -11,6 +11,7 @@ import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -99,9 +100,18 @@ public class SecurityConfig {
         }
 
         @Override
+        public void configure(WebSecurity web) throws Exception {
+            super.configure(web);
+            web.ignoring()
+                    .antMatchers("/internal/health", "/internal/info");
+        }
+
+        @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                    .antMatcher("/api/spdashboard/**")
+                    .requestMatchers()
+                    .antMatchers("/api/spdashboard/**", "/internal/**")
+                    .and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .csrf().disable()

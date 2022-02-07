@@ -115,11 +115,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health,info,mappings"
+        include: "health,info"
+      base-path: "/internal"
   endpoint:
     info:
-      enabled: true
-    mappings:
       enabled: true
   info:
     git:

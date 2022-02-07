@@ -41,7 +41,7 @@ public class SpDashboardController extends ApiController implements TeamValidato
         this.spDashboardPersonName = spDashboardPersonName;
     }
 
-    @GetMapping("api/spdashboard/teams/{urn:.+}")
+    @GetMapping(path = {"api/spdashboard/teams/{urn:.+}", "internal/teams/{urn:.+}"})
     public Team teamByUrn(@PathVariable("urn") String urn) {
         Team team = teamRepository.findByUrn(urn).orElseThrow(() -> new ResourceNotFoundException(String.format("Team with urn %s does not exists", urn)));
         team.setUrn(urn);
@@ -52,12 +52,12 @@ public class SpDashboardController extends ApiController implements TeamValidato
         return team;
     }
 
-    @PostMapping("api/spdashboard/teams")
+    @PostMapping(path = {"api/spdashboard/teams", "internal/teams"})
     public Team createTeam(@Validated @RequestBody NewTeamProperties teamProperties) throws IOException, MessagingException {
         return doCreateTeam(teamProperties, this.federatedUser());
     }
 
-    @PutMapping("api/spdashboard/memberships")
+    @PutMapping(path = {"api/spdashboard/memberships", "internal/memberships"})
     public ResponseEntity changeMembership(@Validated @RequestBody MembershipProperties membershipProperties) {
         Long id = membershipProperties.getId();
         Membership membership = membershipRepository.findById(id)
@@ -73,7 +73,7 @@ public class SpDashboardController extends ApiController implements TeamValidato
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("api/spdashboard/invites")
+    @PostMapping(path = {"api/spdashboard/invites", "internal/invites"})
     public ResponseEntity invites(@Validated @RequestBody ClientInvitation clientInvitation) {
         Person person = this.federatedUser().getPerson();
 
@@ -92,7 +92,7 @@ public class SpDashboardController extends ApiController implements TeamValidato
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("api/spdashboard/invites")
+    @PutMapping(path = {"api/spdashboard/invites", "internal/invites"})
     public ResponseEntity resend(@Validated @RequestBody ClientResendInvitation resendInvitation) throws IOException, MessagingException {
         Long invitationId = resendInvitation.getId();
         Invitation invitation = invitationRepository.findById(invitationId)
@@ -113,7 +113,7 @@ public class SpDashboardController extends ApiController implements TeamValidato
     }
 
 
-    @DeleteMapping("api/spdashboard/teams/{id}")
+    @DeleteMapping(path = {"api/spdashboard/teams/{id}","internal/teams/{id}"})
     public ResponseEntity deleteTeam(@PathVariable("id") Long id) {
         Team team = teamRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Team not found" + id));
@@ -124,7 +124,7 @@ public class SpDashboardController extends ApiController implements TeamValidato
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("api/spdashboard/memberships/{membershipId}")
+    @DeleteMapping(path = {"api/spdashboard/memberships/{membershipId}","internal/{membershipId}"})
     public ResponseEntity deleteMembership(@PathVariable("membershipId") Long membershipId) {
         Membership membership = membershipRepository.findById(membershipId)
                 .orElseThrow(() -> new ResourceNotFoundException("Membership not found:" + membershipId));
