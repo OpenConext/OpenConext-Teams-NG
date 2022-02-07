@@ -39,10 +39,9 @@ class RedirectControllerTest {
 
     @Test
     void info() {
-        Map info = given()
+        given()
                 .contentType(ContentType.JSON)
                 .get("info")
                 .as(Map.class);
-        assertEquals(0, info.size());
     }
 }
