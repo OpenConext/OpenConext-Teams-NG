@@ -75,6 +75,7 @@ voot:
   clientId: surf-teams
   clientSecret: secret
   scopes: groups
+
 spring:
   session:
     cleanup:
