@@ -37,7 +37,7 @@ config:
   main-link: https://www.surfconext.nl
   # Currently supported organizations: SURFconext, OpenConext and RCTSaai
   organization: OpenConext
-  sponsor: SURFnet
+  sponsor: SURF
   supported_language_codes: en,nl
 
 security:
