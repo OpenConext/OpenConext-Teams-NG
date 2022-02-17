@@ -10,7 +10,7 @@
 
     <artifactId>teams-gui</artifactId>
     <packaging>pom</packaging>
-    <version>9.0.0</version>
+    <version>9.0.1-SNAPSHOT</version>
     <name>teams-gui</name>
 
     <build>
