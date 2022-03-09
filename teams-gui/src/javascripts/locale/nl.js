@@ -388,7 +388,7 @@ I18n.translations.nl = {
         searchPlaceHolder: "Zoek teams",
         filtered: "Geen instellingsteams gevonden",
         institution_team: "Instellingsteam",
-        no_teams: "Je instelling levert geen teams of je ben geen lid van een Team binnen je instelling",
+        no_teams: "Je instelling levert geen teams of je bent geen lid van een team binnen je instelling",
         unknown: "'Naam onbekend'",
         otherInstitutionTeams: "Admin {{name}} heeft zijn / haar volgende instellingteams gekoppeld aan dit Team:"
     },
