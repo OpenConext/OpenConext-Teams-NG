@@ -86,10 +86,12 @@ public class InvitationController extends ApiController implements MembershipVal
 
 
     @GetMapping("api/teams/invitations/info/{key}")
-    public InvitationInfo invitationInfo(@PathVariable("key") String key, FederatedUser federatedUser) throws IOException, MessagingException {
-        Invitation invitation = invitationRepository.findFirstByInvitationHash(key).orElseThrow(() ->
-                new ResourceNotFoundException(String.format("Invitation %s not found", key))
-        );
+    public InvitationInfo invitationInfo(@PathVariable("key") String key, FederatedUser federatedUser) {
+        Invitation invitation = invitationRepository.findFirstByInvitationHash(key).orElseThrow(() -> {
+            log.info("Invitation not found with hash '%s' for user '%s'", key, federatedUser.getPerson().getEmail());
+            return new ResourceNotFoundException(String.format("Invitation %s not found", key));
+
+        });
         return new InvitationInfo(invitation, federatedUser);
     }
 
