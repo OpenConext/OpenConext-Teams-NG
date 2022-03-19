@@ -64,7 +64,7 @@
     "scroll-into-view": "^1.8.0",
     "spin.js": "2.3.2",
     "style-loader": "0.13.1",
-    "uglify-es": "git://github.com/mishoo/UglifyJS2#harmony",
+    "uglify-es": "https://github.com/mishoo/UglifyJS2#harmony",
     "uglifyjs-webpack-plugin": "^0.4.3",
     "url-loader": "0.5.7",
     "webpack": "1.13.2",
