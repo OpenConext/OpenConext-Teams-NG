@@ -1,8 +1,12 @@
 package teams.api;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import teams.AbstractApplicationTest;
+import teams.Scheduler;
 import teams.domain.*;
+import teams.exception.ResourceNotFoundException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -19,6 +23,12 @@ import static org.junit.Assert.assertFalse;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 
 public class SpDashboardControllerTest extends AbstractApplicationTest {
+
+    @Value("${sp_dashboard.person-urn}")
+    private String spDashboardUser;
+
+    @Autowired
+    private Scheduler scheduler;
 
     @Test
     public void createTeam() {
@@ -160,6 +170,29 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
 
         assertFalse(teamRepository.findByUrn("demo:openconext:org:riders").isPresent());
     }
+
+    @Test
+    public void testRemoveOrphanPersons() {
+        //First ensure the dashboard user is created
+        given()
+                .auth().preemptive().basic("spdashboard", "secret")
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true,
+                        Collections.singletonMap("test@test.com", "ADMIN"), Role.ADMIN.name(), "Please..", Language.DUTCH))
+                .header(CONTENT_TYPE, "application/json")
+                .when()
+                .post("api/spdashboard/teams")
+                .then()
+                .statusCode(SC_OK);
+
+        Person dashboardUser = personRepository.findByUrnIgnoreCase(spDashboardUser).orElseThrow(() -> new ResourceNotFoundException("N/A"));
+        Instant thePast = Instant.now().minus(15, ChronoUnit.DAYS);
+        dashboardUser.setLastLoginDate(thePast);
+        personRepository.save(dashboardUser);
+
+        int removed = scheduler.removeOrphanPersons();
+        assertEquals(0, removed);
+    }
+
 
 
 }

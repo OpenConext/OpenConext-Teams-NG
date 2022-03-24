@@ -14,6 +14,7 @@ import teams.repository.InvitationRepository;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 
+import java.util.Collections;
 import java.util.function.Function;
 
 import static teams.domain.Invitation.EXPIRY_MILLIS;
@@ -36,6 +37,9 @@ public class Scheduler {
     @Value("${cron.node-cron-job-responsible}")
     private boolean nodeCronJobResponsible;
 
+    @Value("${sp_dashboard.person-urn}")
+    private String spDashboardUser;
+
     @Scheduled(cron = "${cron.expression}")
     public int removeExpiredMemberships() {
         return this.removeExpired(membershipRepository::deleteExpiredMemberships, 0L, Membership.class);
@@ -48,7 +52,8 @@ public class Scheduler {
 
     @Scheduled(cron = "${cron.expression}")
     public int removeOrphanPersons() {
-        return this.removeExpired(personRepository::deleteOrphanPersons, 1L, Person.class);
+        Function<Long, Integer> removeFunction = l -> personRepository.deleteOrphanPersons(l, Collections.singletonList(spDashboardUser));
+        return this.removeExpired(removeFunction, 1L, Person.class);
     }
 
     private int removeExpired(Function<Long, Integer> removeFunction, Long argument, Class clazz) {
