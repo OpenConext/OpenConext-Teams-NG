@@ -23,7 +23,8 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
     @Modifying
     @Query(value = "DELETE FROM persons WHERE persons.last_login_date < (NOW() - INTERVAL :retentionDays DAY) " +
             "AND NOT EXISTS (SELECT * FROM memberships WHERE persons.id = memberships.person_id) " +
-            "AND persons.urn NOT IN :urns",
+            "AND NOT EXISTS (SELECT * FROM invitation_message WHERE persons.id = invitation_message.person_id) " +
+            "AND persons.urn NOT IN :urns ",
             nativeQuery = true)
     int deleteOrphanPersons(@Param("retentionDays") long retentionDays, @Param("urns") List<String> urns);
 
