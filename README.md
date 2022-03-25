@@ -40,7 +40,8 @@ Connect to your local mysql database: `mysql -uroot`
 Execute the following:
 
 ```sql
-CREATE DATABASE teams_ng DEFAULT CHARACTER SET utf8;
+DROP DATABASE IF EXISTS teams_ng;
+CREATE DATABASE teams_ng CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 ```
 
 ### The teams-server
