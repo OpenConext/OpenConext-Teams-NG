@@ -9,6 +9,7 @@ import teams.domain.Team;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class PersonRepositoryTest extends AbstractApplicationTest {
         person.setLastLoginDate(thePast);
         personRepository.save(person);
 
-        int deleted = personRepository.deleteOrphanPersons(1L);
+        int deleted = personRepository.deleteOrphanPersons(1L, Collections.singletonList("Nope"));
         assertEquals(1, deleted);
     }
 }
