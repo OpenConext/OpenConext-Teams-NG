@@ -14350,9 +14350,9 @@ ua-parser-js@^0.7.18:
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
   integrity sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==
 
-"uglify-es@git://github.com/mishoo/UglifyJS2#harmony":
+"uglify-es@https://github.com/mishoo/UglifyJS2#harmony":
   version "3.3.10"
-  resolved "git://github.com/mishoo/UglifyJS2#569757d14dbbe04f66af65d7bf0600b3a75efd96"
+  resolved "https://github.com/mishoo/UglifyJS2#569757d14dbbe04f66af65d7bf0600b3a75efd96"
   dependencies:
     commander "~2.14.1"
     source-map "~0.6.1"
