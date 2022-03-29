@@ -12,7 +12,7 @@
 
     <artifactId>teams-server</artifactId>
     <packaging>jar</packaging>
-    <version>9.0.1-SNAPSHOT</version>
+    <version>9.0.1</version>
     <name>teams-server</name>
 
     <dependencies>
