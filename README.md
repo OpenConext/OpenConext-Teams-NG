@@ -15,7 +15,7 @@ See the NOTICE file
 
 - Java 11
 - Maven 3
-- MySQL
+- MySQL 8
 - node v14.17.3 (use for example `nvm use` to manage it - latest version of node does not work) 
 - yarn (note that later versions break the sass compiler)
 
@@ -47,7 +47,7 @@ CREATE DATABASE teams_ng CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 
 To run locally:
 
-`mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=dev,test"`
+`mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Dspring.profiles.active=dev,test"`
 
 Or run / debug the [TeamsApplication](teams-server/src/main/java/teams/TeamsApplication.java) and don't forget to set 
 the active profile to dev otherwise the application uses the real VOOT client on the test environment.
