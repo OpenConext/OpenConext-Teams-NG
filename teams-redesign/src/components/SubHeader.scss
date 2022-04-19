@@ -1,10 +1,11 @@
 @import "../styles/vars.scss";
 
-div.page-container {
+div.sub-header-container {
     display: flex;
-    background-color: white;
+    background-color: $tertiary-grey;
+    padding: $padding-app;
 
-    div.page {
+    div.sub-header {
         width: $width-app;
         margin: 0 auto;
         display: flex;

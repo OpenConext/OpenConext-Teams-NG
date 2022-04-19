@@ -1,0 +1,28 @@
+@import "../styles/vars.scss";
+
+div.bread-crumb {
+    display: flex;
+    background-color: transparent;
+    align-content: center;
+    word-break: keep-all;
+
+    div.path {
+        display: flex;
+        align-content: center;
+        a {
+            color: $secondary-grey;
+        }
+        img {
+            width: 14px;
+            color: $inactive-grey;
+            display: inline-block;
+            margin: 0 8px;
+        }
+        span {
+            color: $inactive-grey;
+            line-height: 22px;
+        }
+    }
+
+}
+

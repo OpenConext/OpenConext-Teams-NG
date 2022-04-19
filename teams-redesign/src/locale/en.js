@@ -16,6 +16,9 @@ I18n.translations.en = {
         admin: "Admin",
         guest: "Guest"
     },
+    breadcrumbs: {
+      myTeams: "My teams"
+    },
     footer: {
         faq: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>FAQ</a>",
         terms: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>Terms of use</a>",
