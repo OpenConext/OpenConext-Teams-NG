@@ -10,9 +10,7 @@ export const MyTeams = () => {
 
     useEffect(() => {
         getMyTeams().then(teams => {
-            //use example
             setTeams(teams);
-            debugger;
         })
     }, [])
 

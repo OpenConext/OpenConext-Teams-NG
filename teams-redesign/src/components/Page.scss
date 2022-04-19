@@ -1,0 +1,15 @@
+@import "../styles/vars.scss";
+
+div.page-container {
+    display: flex;
+    background-color: white;
+    min-height: 80vh;
+
+    div.page {
+        width: $width-app;
+        padding: 13px 0;
+        margin: 0 auto;
+        display: flex;
+    }
+}
+

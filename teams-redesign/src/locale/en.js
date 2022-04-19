@@ -10,6 +10,10 @@ I18n.translations.en = {
         title: "Title",
         members: "Members",
         empty: ""
+    },
+    profile: {
+        admin: "Admin",
+        guest: "Guest"
     }
 };
 

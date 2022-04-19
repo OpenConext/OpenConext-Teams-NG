@@ -6,6 +6,7 @@ import {getUser} from "./api";
 import Home from "./pages/Home";
 import {Header} from "./components/Header";
 import {MyTeams} from "./pages/MyTeams";
+import TeamDetails from "./pages/TeamDetails";
 
 const App = () => {
 
@@ -44,7 +45,8 @@ const App = () => {
                         <Route path=":tab" element={<Home user={user}/>}/>
                         <Route path="" element={<Home user={user}/>}/>
                     </Route>
-                    <Route path={"myteams"} element={<MyTeams/>}/>
+                    <Route path={"my-teams"} element={<MyTeams/>}/>
+                    <Route path={"team-details"} element={<TeamDetails/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>}
             </div>
