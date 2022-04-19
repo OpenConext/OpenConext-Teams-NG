@@ -1,3 +1,5 @@
+import {isEmpty} from "../utils/utils";
+
 const apiPath = "/api/teams/";
 let csrfToken = null;
 

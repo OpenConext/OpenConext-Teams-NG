@@ -28,7 +28,7 @@ const App = () => {
                 //Show generic error dialog
             })
         ;
-    }, );
+    },);
 
     if (loading) {
         return null; // render null when app is not ready yet

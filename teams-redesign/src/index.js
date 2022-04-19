@@ -1,6 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 import './index.scss';
+import ReactDOM from "react-dom/client";
 import App from './App';
 import Cookies from "js-cookie";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
@@ -24,8 +25,8 @@ if (["nl", "en"].indexOf(parameterByName) === -1) {
     parameterByName = "en";
 }
 I18n.locale = parameterByName;
-
-render(
+const root = ReactDOM.createRoot(document.getElementById("app_body"));
+root.render(
     <React.StrictMode>
         <BrowserRouter>
             <Routes>
@@ -33,5 +34,4 @@ render(
             </Routes>
         </BrowserRouter>
     </React.StrictMode>,
-    document.getElementById("app")
 );
