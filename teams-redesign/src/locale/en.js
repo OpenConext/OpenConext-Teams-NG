@@ -6,6 +6,7 @@
 import I18n from "i18n-js";
 
 I18n.translations.en = {
+    code: "EN",
     myteams: {
         title: "Title",
         members: "Members",
@@ -14,6 +15,13 @@ I18n.translations.en = {
     profile: {
         admin: "Admin",
         guest: "Guest"
+    },
+    footer: {
+        faq: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>FAQ</a>",
+        terms: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>Terms of use</a>",
+        privacy: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>Privacy policy</a>",
+        powered: "Proudly powered by",
+        surf: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>SURF</a>",
     }
 };
 

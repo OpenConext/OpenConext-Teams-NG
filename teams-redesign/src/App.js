@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import {Header} from "./components/Header";
 import {MyTeams} from "./pages/MyTeams";
 import TeamDetails from "./pages/TeamDetails";
+import {Footer} from "./components/Footer";
 
 const App = () => {
 
@@ -30,27 +31,25 @@ const App = () => {
                 //Show generic error dialog
             })
         ;
-    },[]);
+    }, []);
 
     if (loading) {
         return null; // render null when app is not ready yet
     }
     return (
         <div className="teams">
-            <div className="container">
-                <Header user={user}/>
-                {<Routes>
-                    <Route path="/" element={<Navigate replace to="home"/>}/>
-                    <Route path="home">
-                        <Route path=":tab" element={<Home user={user}/>}/>
-                        <Route path="" element={<Home user={user}/>}/>
-                    </Route>
-                    <Route path={"my-teams"} element={<MyTeams/>}/>
-                    <Route path={"team-details"} element={<TeamDetails/>}/>
-                    <Route path="*" element={<NotFound/>}/>
-                </Routes>}
-            </div>
-            {/*<Footer/>*/}
+            <Header user={user}/>
+            {<Routes>
+                <Route path="/" element={<Navigate replace to="home"/>}/>
+                <Route path="home">
+                    <Route path=":tab" element={<Home user={user}/>}/>
+                    <Route path="" element={<Home user={user}/>}/>
+                </Route>
+                <Route path={"my-teams"} element={<MyTeams/>}/>
+                <Route path={"team-details"} element={<TeamDetails/>}/>
+                <Route path="*" element={<NotFound/>}/>
+            </Routes>}
+            <Footer user={user}/>
         </div>
     );
 }

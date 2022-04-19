@@ -1,0 +1,51 @@
+@import "../styles/vars.scss";
+
+div.footer-container {
+    display: flex;
+    background-color: $tertiary-grey;
+    margin-top: auto;
+
+    div.footer {
+        width: $width-app;
+        padding: $padding-app;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        div.info {
+            display: flex;
+            flex-direction: column;
+
+            &.right {
+                span {
+                    margin-left: auto;
+                }
+            }
+        }
+
+        div.lang {
+            display: flex;
+            flex-direction: row;
+
+            a {
+                &:first-child {
+                    border-right: 1px solid black;
+                    padding-right: 10px;
+                }
+                &:last-child {
+                    padding-left: 10px;
+                }
+                &:not(&:last-child) {
+                    border-right: 1px solid black;
+                    padding-right: 10px;
+                }
+                &.active {
+                    color: black;
+                    font-weight: bold;
+                }
+            }
+        }
+
+    }
+}

@@ -6,6 +6,7 @@
 import I18n from "i18n-js";
 
 I18n.translations.nl = {
+    code: "NL",
     myteams: {
         title: "Title",
         members: "Members",
@@ -17,4 +18,4 @@ I18n.translations.nl = {
     }
 };
 
-export default I18n.translations.en;
+export default I18n.translations.nl;

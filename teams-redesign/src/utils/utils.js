@@ -1,11 +1,11 @@
-export function stop(e) {
+export const stopEvent = e => {
     if (e !== undefined && e !== null) {
         e.preventDefault();
         e.stopPropagation();
     }
 }
 
-export function isEmpty(obj) {
+export const isEmpty = obj => {
     if (obj === undefined || obj === null) {
         return true;
     }
