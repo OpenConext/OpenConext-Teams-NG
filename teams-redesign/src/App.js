@@ -8,8 +8,7 @@ import Home from "./pages/Home";
 const App = () => {
 
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState(true);
-    const navigate = useNavigate();
+    const [user, setUser] = useState({});
 
     useEffect(() => {
         getUser()
@@ -21,7 +20,7 @@ const App = () => {
                     currentUser.superAdmin = currentUser.person.superAdmin;
                     currentUser.superAdminModus = false;
                     setLoading(false);
-                    setUser(user);
+                    setUser(currentUser);
                 }
             })
             .catch(() => {

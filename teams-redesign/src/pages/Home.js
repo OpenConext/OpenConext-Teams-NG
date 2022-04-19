@@ -1,8 +1,10 @@
 import "./Home.scss";
 
-const Home = () => (
+const Home = ({user}) => (
     <div className={"home"}>
-        <p>ToDo</p>
+        <p>{JSON.stringify(user)}</p>
+        <p>TODO</p>
     </div>
+
 );
 export default Home;
