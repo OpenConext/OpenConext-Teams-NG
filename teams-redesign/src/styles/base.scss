@@ -1,0 +1,53 @@
+@import "./vars.scss";
+
+input::placeholder {
+  color: #919191;
+}
+
+.invites {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-bottom: 100px;
+
+  .container {
+    max-width: $width-app;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: stretch;
+    width: 100%;
+    margin: 0 auto;
+    padding: 25px;
+  }
+
+}
+
+
+.__react_component_tooltip {
+  text-align: center;
+  opacity: 1;
+  border-radius: 24px;
+  border: 1px solid #e0e0df;
+  max-width: 280px;
+  word-break: break-word;
+}
+
+.__react_component_tooltip.place-top:after {
+  border-top-color: #f5f5f5 !important;
+}
+
+.__react_component_tooltip.show {
+  background-color: white !important;
+  color: #4b4343;
+  opacity: 1;
+}
+

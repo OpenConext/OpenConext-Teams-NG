@@ -1,0 +1,30 @@
+table {
+
+  @media (max-width: $mobile) {
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      margin-bottom: 10px;
+      display: block;
+      border-bottom: 2px solid $primary-grey;
+    }
+
+    td {
+      display: flex;
+      text-align: right;
+      border-bottom: 1px dotted $light-blue;
+      padding: 8px 0;
+
+      &:before {
+        content: attr(data-label);
+        margin-right: auto;
+        font-weight: bold;
+        font-size: 14px;
+        color: $primary-green;
+      }
+    }
+  }
+}
