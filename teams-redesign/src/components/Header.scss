@@ -1,0 +1,60 @@
+@import "../styles/vars.scss";
+
+div.header-container {
+    display: flex;
+    background-color: $primary-blue;
+    color: #ffffff;
+    align-items: center;
+
+    div.header {
+        width: $width-app;
+        padding: 13px 0;
+        margin: 0 auto;
+        display: flex;
+
+        h2.conext {
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: auto;
+            line-height: 16px;
+            margin-left: 10px;
+        }
+
+        div.user-info {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+
+            div.user {
+                display: flex;
+                flex-direction: column;
+
+                span.name {
+                    font-weight: bold;
+                    margin-left: auto;
+                }
+
+                span.role {
+                    color: $light-blue;
+                    margin-left: auto;
+                }
+            }
+
+            div.user-toggle {
+                margin-left: 20px;
+                border-radius: 50%;
+                background-color: white;
+                display: flex;
+                width: 32px;
+                height: 32px;
+                cursor: pointer;
+
+                img {
+                    width: 20px;
+                    margin: auto;
+                }
+            }
+        }
+    }
+}
+

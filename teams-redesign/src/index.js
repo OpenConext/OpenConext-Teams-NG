@@ -1,5 +1,4 @@
 import React from 'react';
-import {render} from 'react-dom';
 import './index.scss';
 import ReactDOM from "react-dom/client";
 import App from './App';
@@ -25,7 +24,7 @@ if (["nl", "en"].indexOf(parameterByName) === -1) {
     parameterByName = "en";
 }
 I18n.locale = parameterByName;
-const root = ReactDOM.createRoot(document.getElementById("app_body"));
+const root = ReactDOM.createRoot(document.getElementById("app"));
 root.render(
     <React.StrictMode>
         <BrowserRouter>

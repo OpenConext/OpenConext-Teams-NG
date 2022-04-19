@@ -1,9 +1,11 @@
 import './App.scss';
 import {useEffect, useState} from "react";
-import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import {getUser} from "./api";
 import Home from "./pages/Home";
+import {Header} from "./components/Header";
+import {MyTeams} from "./pages/MyTeams";
 
 const App = () => {
 
@@ -27,7 +29,7 @@ const App = () => {
                 //Show generic error dialog
             })
         ;
-    },);
+    },[]);
 
     if (loading) {
         return null; // render null when app is not ready yet
@@ -35,13 +37,14 @@ const App = () => {
     return (
         <div className="teams">
             <div className="container">
-                {/*<Header user={user}/>*/}
+                <Header user={user}/>
                 {<Routes>
                     <Route path="/" element={<Navigate replace to="home"/>}/>
                     <Route path="home">
                         <Route path=":tab" element={<Home user={user}/>}/>
                         <Route path="" element={<Home user={user}/>}/>
                     </Route>
+                    <Route path={"myteams"} element={<MyTeams/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>}
             </div>
