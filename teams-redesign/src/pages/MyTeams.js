@@ -6,6 +6,7 @@ import "./MyTeams.scss"
 import {Page} from "../components/Page";
 import binIcon from "../icons/bin-1.svg";
 import blockedIcon from "../icons/allowances-no-talking.svg";
+import {ROLES} from "../utils/roles";
 
 export const MyTeams = () => {
 
@@ -42,14 +43,14 @@ export const MyTeams = () => {
     const renderAddMemberLink = team => {
         const link = <Link to={{ pathname: "/", state: { team: team } }}>{I18n.t("myteams.add_members")}</Link> 
         return (
-            <>{["ADMIN", "MANAGER"].includes(team.role) ? link: I18n.t("myteams.empty")}</>
+            <>{ROLES.MEMBER !== team.role ? link: I18n.t("myteams.empty")}</>
         )
     }
 
     const renderDeleteButton = team => {
-        const icon = <img className="binIcon" src={binIcon} alt="Delete" onClick={e => processDelete(team)} />
+        const icon = <img className="binIcon" src={binIcon} alt="Delete" onClick={() => processDelete(team)} />
         return (
-            <>{team.role == "ADMIN" ? icon : I18n.t("myteams.empty")}</>
+            <>{[ROLES.OWNER, ROLES.ADMIN].includes(team.role) ? icon : I18n.t("myteams.empty")}</>
         )
     }
 

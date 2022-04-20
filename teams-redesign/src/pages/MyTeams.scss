@@ -7,10 +7,7 @@ div.my-teams-container {
     }
 
     th {
-        border: solid;
-        border-top: none;
-        border-width: 2px 0;
-        border-color: $primary-black;
+        border-bottom: solid 1px $primary-black;
         padding: 10px;
 
         &.title {
