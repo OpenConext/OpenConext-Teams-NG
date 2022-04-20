@@ -24,6 +24,7 @@ div.header-container {
             margin-left: auto;
             display: flex;
             align-items: center;
+            position: relative;
 
             div.user {
                 display: flex;
@@ -54,7 +55,33 @@ div.header-container {
                     margin: auto;
                 }
             }
+
+            .user-drop-down {
+                position: absolute;
+                z-index: 2;
+                padding: 10px;
+                min-width: 260px;
+                top: 45px;
+                right: -5px;
+                color: black;
+                background: #fff;
+                border-radius: 4px;
+                box-shadow: 1px 1px 4px rgba(black, .3);
+                font-size: 14px;
+
+                div {
+                    margin-bottom: 5px;
+                    display: flex;
+
+                    span.value {
+                        margin-left: auto;
+                    }
+                }
+            }
+
         }
+
     }
+
 }
 

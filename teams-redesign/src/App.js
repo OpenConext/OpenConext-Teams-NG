@@ -46,7 +46,7 @@ const App = () => {
                     <Route path="" element={<Home user={user}/>}/>
                 </Route>
                 <Route path={"my-teams"} element={<MyTeams/>}/>
-                <Route path={"/team-details/:teamId"} element={<TeamDetails/>}/>
+                <Route path={"/team-details/:teamId"} element={<TeamDetails user={user}/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>}
             <Footer user={user}/>

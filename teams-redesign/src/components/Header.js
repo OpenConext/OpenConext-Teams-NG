@@ -9,6 +9,12 @@ import "./Header.scss";
 export const Header = ({user}) => {
 
     const [droppedDown, setDroppedDown] = useState(false);
+    // const dropDownElement = useRef(null);
+    //
+    // const dropDownFocus = () => {
+    //     setDroppedDown(!droppedDown);
+    //     dropDownElement.current.focus()
+    // }
 
     return (
         <div className="header-container">
@@ -20,9 +26,22 @@ export const Header = ({user}) => {
                         <span className="name">{user.person.name}</span>
                         <span className="role">{I18n.t(`profile.${user.person.guest ? "guest" : "admin"}`)}</span>
                     </div>
-                    <div className="user-toggle" onClick={() => setDroppedDown(!droppedDown)}>
+                    <div className="user-toggle"
+                         onClick={() => setDroppedDown(!droppedDown)}
+                         tabIndex="1" onBlur={() => setDroppedDown(false)}>
                         <img src={droppedDown ? arrowUp : arrowDown} alt="drop"/>
                     </div>
+                    {droppedDown && <div className="user-drop-down">
+                        <div>
+                            <span>{`${I18n.t("profile.email")}:`}</span>
+                            <span className="value">{user.person.email}</span>
+                        </div>
+                        <div>
+                            <span>{`${I18n.t("profile.role")}:`}</span>
+                            <span
+                                className="value">{I18n.t("profile." + user.person.guest, {productName: user.productName})}</span>
+                        </div>
+                    </div>}
                 </div>
             </div>
         </div>

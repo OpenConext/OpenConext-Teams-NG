@@ -402,7 +402,7 @@ I18n.translations.en = {
         name: "Name",
         role: "Role",
         true: "{{productName}} guest",
-        false: "{{productName}} member"
+        false: "{{productName}} admin"
     },
 
     auto_complete: {

@@ -21,10 +21,27 @@ I18n.translations.en = {
     },
     profile: {
         admin: "Admin",
-        guest: "Guest"
+        guest: "Guest",
+        email: "Email",
+        name: "Name",
+        role: "Role",
+        true: "{{productName}} guest",
+        false: "{{productName}} admin"
+    },
+    roles: {
+        guest: "Guest",
+        member: "Member",
+        manager: "Manager",
+        admin: "Admin",
+        owner: "Owner",
+        title: "You're {{role}}"
+    },
+    details: {
+        leave: "Leave team",
+        delete: "Delete team"
     },
     breadcrumbs: {
-      myTeams: "My teams"
+        myTeams: "My teams"
     },
     footer: {
         faq: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>FAQ</a>",
