@@ -10,6 +10,13 @@ I18n.translations.en = {
             member: "",
             bin: ""
         },
+        filters:{
+          all: 'All teams',
+          owner: "Owner of",
+          admin: "Admin of",
+          manager: "Manager of",
+          member: "Member of"  
+        },
         empty: "",
         private: "Private team",
         add_members: "Add members"

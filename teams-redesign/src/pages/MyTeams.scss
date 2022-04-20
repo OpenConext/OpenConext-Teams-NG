@@ -1,6 +1,9 @@
 @import "../styles/vars.scss";
 
 div.my-teams-container {
+  h2{
+      padding: 10px;
+  }
     table {
         width: 100%;
         table-layout: fixed;

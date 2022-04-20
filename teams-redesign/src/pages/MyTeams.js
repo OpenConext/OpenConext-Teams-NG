@@ -6,20 +6,42 @@ import "./MyTeams.scss"
 import {Page} from "../components/Page";
 import binIcon from "../icons/bin-1.svg";
 import blockedIcon from "../icons/allowances-no-talking.svg";
-import {ROLES} from "../utils/roles";
+import { ROLES } from "../utils/roles";
+
 
 export const MyTeams = () => {
 
     const [teams, setTeams] = useState({
         teamSummaries: []
     });
+    const [searchQuery,setSearchQuery] = useState("");
+    const [displayedTeams,setDisplayedTeams] = useState([]);
+    const [teamsFilter,setTeamsFilter] = useState('ALL');
 
     useEffect(() => {
         getMyTeams().then(teams => {
             setTeams(teams);
         })
-    }, [])
+    }, []);
 
+    useEffect(() => {
+        updateDisplayedTeams()
+    },[teams,searchQuery,teamsFilter])
+
+    const updateDisplayedTeams =()=>{
+        const toDisplay = teams.teamSummaries.filter(team =>{
+            if (teamsFilter != team.role && teamsFilter != 'ALL'){
+                return
+            }
+
+            if (searchQuery === ""){
+                return team;
+            }else if (team.name.toLowerCase().includes(searchQuery.toLowerCase())){
+                return team
+            }
+        })
+        setDisplayedTeams(toDisplay)
+    }
 
     const renderPrivateTag = viewable => {
         const tag = <span className="private-label">
@@ -64,10 +86,60 @@ export const MyTeams = () => {
         </tr>)
     }
 
+    const renderTeamsSearch = () =>{
+        return(
+            <input placeholder="Search" onChange={e => setSearchQuery(e.target.value)} />
+        )
+    }
+
+    const renderFilterDropdown = () =>{
+        class FilterCount{
+            constructor(value){
+                if (value === 'ALL'){
+                    this.value = value;
+                    this.count = teams.teamSummaries.length;
+                    return this;
+                }
+                this.value = value
+                this.count = 0
+            }
+            get label(){
+                return`${I18n.t(`myteams.filters.${this.value.toLowerCase()}`)} (${this.count})`
+            }
+        }
+
+        const filters = ['ALL',ROLES.OWNER, ROLES.ADMIN,ROLES.MANAGER,ROLES.MEMBER]
+        const options = filters.map(filter=>new FilterCount(filter))
+
+        teams.teamSummaries.forEach(team=>{
+            options.forEach(option=>{
+                if (option.value === team.role){
+                    option.count ++;
+                }
+            })
+        })
+
+        const why=(e)=>{
+            var hm =1
+        }
+
+        return(
+            <select className="filter_dropdown"  onChange={event => why(event.target)}>
+            {options.map(option=>option.count >0 || option.value === 'ALL'? <option id={option.value}>{option.label}</option>:null)}
+        </select>
+        )
+    }
+
+    const renderNewTeamButton = () =>{
+
+    }
+
     const renderTeamsTable = () => {
         const headers = ["title", "members", "private", "member", "bin"];
         return (
             <Page>
+                <h2>My teams</h2>
+                <span className="teamActionsBar"> {renderFilterDropdown()}{renderTeamsSearch()}</span>
                 <table>
                     <thead>
                     <tr>
@@ -77,7 +149,7 @@ export const MyTeams = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {teams.teamSummaries.map(team => renderTeamsRow(team))}
+                    {displayedTeams.map(team => renderTeamsRow(team))}
                     </tbody>
                 </table>
             </Page>
