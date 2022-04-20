@@ -17,7 +17,7 @@ I18n.translations.en = {
         },
         empty: "",
         private: "Private team",
-        add_members:"Add members"
+        add_members: "Add members"
     },
     profile: {
         admin: "Admin",
@@ -38,10 +38,22 @@ I18n.translations.en = {
     },
     details: {
         leave: "Leave team",
-        delete: "Delete team"
+        delete: "Delete team",
+        confirmations: {
+            leave: "Are you sure you want to leave this team?",
+            delete: "Are you sure you want to delete this team?"
+        }
     },
     breadcrumbs: {
         myTeams: "My teams"
+    },
+    confirmationDialog: {
+        title: "Please confirm",
+        confirm: "Confirm",
+        cancel: "Cancel",
+        questions: {
+            delete: "Are you sure you want to delete {{object}} {{name}}?"
+        }
     },
     footer: {
         faq: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>FAQ</a>",

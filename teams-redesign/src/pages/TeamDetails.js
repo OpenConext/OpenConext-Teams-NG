@@ -10,6 +10,7 @@ import {ActionMenu} from "../components/ActionMenu";
 import {actionDropDownTitle, getRole, ROLES} from "../utils/roles";
 import {SpinnerField} from "../components/SpinnerField";
 import "./TeamDetails.scss";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
 const TeamDetail = ({user}) => {
 
@@ -17,6 +18,10 @@ const TeamDetail = ({user}) => {
     const navigate = useNavigate();
     const [loaded, setLoaded] = useState(false);
     const [team, setTeam] = useState({});
+
+    const [confirmation, setConfirmation] = useState({});
+    const [confirmationOpen, setConfirmationOpen] = useState(false);
+
 
     useEffect(() => {
         getTeamDetail(params.teamId).then(res => {
@@ -30,10 +35,18 @@ const TeamDetail = ({user}) => {
         });
     }, [params.teamId, navigate])
 
-    const leaveTeam = () => {
-        //TODO - show confirmation
-        debugger;
-        alert("Leave team");
+    const leaveTeam = showConfirmation => () => {
+        if (showConfirmation) {
+            setConfirmation({
+                cancel: () => setConfirmationOpen(false),
+                action: leaveTeam(false),
+                warning: false,
+                question: I18n.t("details.confirmations.leave")
+            });
+            setConfirmationOpen(true);
+        } else {
+            alert("Leave team");
+        }
     }
 
     const deleteTeam = () => {
@@ -45,7 +58,7 @@ const TeamDetail = ({user}) => {
     const getActions = () => {
         const actions = [{
             name: I18n.t("details.leave"),
-            action: leaveTeam
+            action: leaveTeam(true)
         }];
         const role = getRole(team, user);
         if (role === ROLES.ADMIN || role === ROLES.OWNER) {
@@ -79,6 +92,11 @@ const TeamDetail = ({user}) => {
                                 actions={getActions()}/>
                 </div>
             </SubHeader>
+            {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}
+                                                     cancel={confirmation.cancel}
+                                                     confirm={confirmation.action}
+                                                     isWarning={confirmation.warning}
+                                                     question={confirmation.question}/>}
             <div className="team-details">
                 TDOO
             </div>

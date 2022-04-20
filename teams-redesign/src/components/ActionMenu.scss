@@ -29,9 +29,9 @@
         min-width: 175px;
         z-index: 99;
         background: white;
-        border: solid 1px $primary-grey;
+        border: solid 1px $tertiary-grey;
         border-radius: 4px;
-        box-shadow: 0 1px 0 1px $primary-grey;
+        box-shadow: 0 1px 0 1px $tertiary-grey;
 
         &:focus {
             outline: none;
@@ -42,9 +42,9 @@
             align-items: center;
             cursor: pointer;
 
-            a {
+            span {
                 padding: 15px 15px 15px 15px;
-                color: $tertiary-grey;
+                color: black;
                 text-decoration: none;
                 width: 100%;
             }
@@ -56,25 +56,11 @@
                 width: 24px;
                 height: auto;
 
-                &.svg-inline--fa {
-                    font-size: 14px;
-                    margin-right: 6px;
-                    width: 16px;
-                    height: auto;
-                }
             }
 
             &:hover {
-                background-color: $primary-grey;
+                background-color: $background;
 
-                a {
-                    color: $primary-orange;
-                    font-weight: bold;
-                }
-
-                svg {
-                    color: $primary-orange;
-                }
             }
 
             &:not(:first-child) {
