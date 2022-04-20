@@ -100,13 +100,6 @@ public class SecurityConfig {
         }
 
         @Override
-        public void configure(WebSecurity web) throws Exception {
-            super.configure(web);
-            web.ignoring()
-                    .antMatchers("/internal/health", "/internal/info");
-        }
-
-        @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .requestMatchers()
@@ -117,6 +110,8 @@ public class SecurityConfig {
                     .csrf().disable()
                     .addFilterBefore(new BasicAuthenticationFilter(authenticationManager()), BasicAuthenticationFilter.class)
                     .authorizeRequests()
+                    .antMatchers("/internal/**")
+                    .permitAll()
                     .antMatchers("/**").hasRole("USER");
         }
     }

@@ -1,4 +1,4 @@
-@import "../../stylesheets/vars.scss";
+@import "../styles/vars";
 
 .action-menu-container {
     margin-left: auto;
@@ -29,9 +29,9 @@
         min-width: 175px;
         z-index: 99;
         background: white;
-        border: solid 1px $lightest-grey;
+        border: solid 1px $primary-grey;
         border-radius: 4px;
-        box-shadow: 0 1px 0 1px $lighter-grey;
+        box-shadow: 0 1px 0 1px $primary-grey;
 
         &:focus {
             outline: none;
@@ -44,13 +44,13 @@
 
             a {
                 padding: 15px 15px 15px 15px;
-                color: $darker-grey;
+                color: $tertiary-grey;
                 text-decoration: none;
                 width: 100%;
             }
 
             svg {
-                color: $darker-grey;
+                color: $tertiary-grey;
                 display: inline-block;
                 margin: 2px 1px 2px 10px;
                 width: 24px;
@@ -65,7 +65,7 @@
             }
 
             &:hover {
-                background-color: $lightest-grey;
+                background-color: $primary-grey;
 
                 a {
                     color: $primary-orange;

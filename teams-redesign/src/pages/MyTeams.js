@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { deleteTeam, getMyTeams } from "../api";
+import {useEffect, useState} from "react";
+import {deleteTeam, getMyTeams} from "../api";
 import I18n from "i18n-js";
 import "./MyTeams.scss"
-import { Page } from "../components/Page";
+import {Page} from "../components/Page";
 import binIcon from "../icons/bin-1.svg";
 import blockedIcon from "../icons/allowances-no-talking.svg";
 
@@ -20,10 +20,10 @@ export const MyTeams = () => {
 
 
     const renderPrivateTag = viewable => {
-        const tag = <label className="private-label">
-            {<img src={blockedIcon} alt="Private" />}
-            {I18n.t("myteams.private")}
-        </label>
+        const tag = <span className="private-label">
+            <span><img src={blockedIcon} alt="Private"/>{I18n.t("myteams.private")}</span>
+
+        </span>
         return (
             <>{viewable ? I18n.t("myteams.empty") : tag}</>
         )
@@ -39,7 +39,8 @@ export const MyTeams = () => {
 
     const renderDeleteButton = team => {
         return (
-            <>{team.role=="ADMIN"?<img className="binIcon" src={binIcon} alt="Delete" onClick={e => processDelete(team)} />:I18n.t("myteams.empty")}</>
+            <>{team.role === "ADMIN" ? <img className="binIcon" src={binIcon} alt="Delete"
+                                           onClick={e => processDelete(team)}/> : I18n.t("myteams.empty")}</>
         )
     }
 
@@ -54,17 +55,19 @@ export const MyTeams = () => {
     }
 
     const renderTeamsTable = () => {
-        const headers = ["title", "members", "empty", "empty", "empty"]
+        const headers = ["title", "members", "private", "member", "bin"];
         return (
             <Page>
                 <table>
                     <thead>
-                        <tr>
-                            {headers.map(header => <th className="why"> {I18n.t(`myteams.${header}`)} </th>)}
-                        </tr>
+                    <tr>
+                        {headers.map(header => <th className={header}>
+                            {I18n.t(`myteams.columns.${header}`)}
+                        </th>)}
+                    </tr>
                     </thead>
                     <tbody>
-                        {teams.teamSummaries.map(team => renderTeamsRow(team))}
+                    {teams.teamSummaries.map(team => renderTeamsRow(team))}
                     </tbody>
                 </table>
             </Page>

@@ -8,9 +8,15 @@ import I18n from "i18n-js";
 I18n.translations.en = {
     code: "EN",
     myteams: {
-        title: "Title",
-        members: "Members",
-        empty: ""
+        columns: {
+            title: "Title",
+            members: "Members",
+            private: "",
+            member: "",
+            bin: ""
+        },
+        empty: "",
+        private: "Private team"
     },
     profile: {
         admin: "Admin",
