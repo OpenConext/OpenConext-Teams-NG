@@ -30,6 +30,7 @@ export const MyTeams = () => {
     }
 
     const processDelete = team => {
+        //TODO first show confirmation modal
         deleteTeam(team.id).then(() => {
             getMyTeams().then(teams => {
                 setTeams(teams);
@@ -76,6 +77,7 @@ export const MyTeams = () => {
 
     return (
         <div className="my-teams-container">
+            <div>TODO - header, drop-down (admin 4, members 3) - search box</div>
             {renderTeamsTable()}
         </div>
     );
