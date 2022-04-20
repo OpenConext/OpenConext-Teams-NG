@@ -16,7 +16,8 @@ I18n.translations.en = {
             bin: ""
         },
         empty: "",
-        private: "Private team"
+        private: "Private team",
+        add_members:"Add members"
     },
     profile: {
         admin: "Admin",

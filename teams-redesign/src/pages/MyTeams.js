@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import {deleteTeam, getMyTeams} from "../api";
 import I18n from "i18n-js";
 import "./MyTeams.scss"
@@ -38,19 +39,26 @@ export const MyTeams = () => {
         })
     }
 
-    const renderDeleteButton = team => {
+    const renderAddMemberLink = team => {
+        const link = <Link to={{ pathname: "/", state: { team: team } }}>{I18n.t("myteams.add_members")}</Link> 
         return (
-            <>{team.role === "ADMIN" ? <img className="binIcon" src={binIcon} alt="Delete"
-                                           onClick={e => processDelete(team)}/> : I18n.t("myteams.empty")}</>
+            <>{["ADMIN", "MANAGER"].includes(team.role) ? link: I18n.t("myteams.empty")}</>
+        )
+    }
+
+    const renderDeleteButton = team => {
+        const icon = <img className="binIcon" src={binIcon} alt="Delete" onClick={e => processDelete(team)} />
+        return (
+            <>{team.role == "ADMIN" ? icon : I18n.t("myteams.empty")}</>
         )
     }
 
     const renderTeamsRow = team => {
         return (<tr>
-            <td>{team.name}</td>
+            <td><Link to={`/team-details/${team.id}`}>{team.name}</Link></td>
             <td>{team.membershipCount}</td>
             <td>{renderPrivateTag(team.viewable)}</td>
-            <td>Todo</td>
+            <td>{renderAddMemberLink(team)}</td>
             <td>{renderDeleteButton(team)}</td>
         </tr>)
     }
