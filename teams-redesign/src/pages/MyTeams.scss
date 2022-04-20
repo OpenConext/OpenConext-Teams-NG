@@ -1,0 +1,56 @@
+@import "../styles/vars.scss";
+
+div.my-teams-container {
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  th {
+    border: solid;
+    border-top: none;
+    border-width: 2px 0;
+    border-color: $primary-black;
+    padding: 10px;
+  }
+
+  tr {
+    border: solid;
+    border-color: $primary-grey;
+    border-width: 1px 0;
+  }
+
+  tr:first-child {
+    border-top: none;
+  }
+  tr:last-child {
+    border-bottom: none;
+  }
+
+  td{
+    padding: 10px
+  }
+  td:last-child{
+    text-align: right;
+  }
+  td:first-child{
+    min-width: 10vw;
+  }
+
+  img {
+    width: 20px;
+    vertical-align:middle;
+  }
+  img.binIcon:hover {
+    filter: invert(28%) sepia(48%) saturate(2196%) hue-rotate(323deg) brightness(97%) contrast(94%);
+  }
+
+  label{
+    border:solid;
+    border-color: $primary-black;
+    border-width: 1px;
+    border-radius: 25px;
+    min-height: 20px;
+    padding: 5px;
+  }
+}

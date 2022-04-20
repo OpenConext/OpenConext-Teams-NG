@@ -10,7 +10,8 @@ I18n.translations.nl = {
     myteams: {
         title: "Title",
         members: "Members",
-        empty: ""
+        empty: "",
+        private:"private"
     },
     profile: {
         admin: "Admin",
