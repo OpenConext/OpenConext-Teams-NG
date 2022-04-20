@@ -7,31 +7,31 @@
     .unit-menu {
         display: flex;
         align-items: center;
-        padding: 5px 12px;
+        padding: 16px 21px;
+        border: 1px solid $primary-grey;
         color: black;
         font-weight: bold;
         background-color: white;
         border-radius: 4px;
         cursor: pointer;
+        width: 190px;
 
         svg {
-            fill: black;
-            margin-left: 15px;
-            width: 26px;
+            margin: 0 auto;
+            width: 22px;
         }
     }
 
     .action-menu {
         position: absolute;
         display: block;
-        top: 38px;
+        top: 58px;
         right: 0;
-        min-width: 175px;
+        width: 190px;
         z-index: 99;
         background: white;
-        border: solid 1px $tertiary-grey;
+        border: 1px solid $primary-grey;
         border-radius: 4px;
-        box-shadow: 0 1px 0 1px $tertiary-grey;
 
         &:focus {
             outline: none;
@@ -64,7 +64,7 @@
             }
 
             &:not(:first-child) {
-                border-top: 3px solid $background;
+                border-top: 0.5px solid $primary-grey;
             }
 
         }
