@@ -1,42 +1,48 @@
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+
 import {deleteTeam, getMyTeams} from "../api";
 import I18n from "i18n-js";
-import "./MyTeams.scss"
+import {ROLES} from "../utils/roles";
 import {Page} from "../components/Page";
+import {DropDownMenu} from "../components/DropDownMenu";
+import {ReactComponent as SearchIcon} from "../icons/search.svg";
 import binIcon from "../icons/bin-1.svg";
 import blockedIcon from "../icons/allowances-no-talking.svg";
-import { ROLES } from "../utils/roles";
+
+import "./MyTeams.scss"
+import {Button} from "../components/Button";
 
 
 export const MyTeams = () => {
-
+    const navigate = useNavigate();
     const [teams, setTeams] = useState({
         teamSummaries: []
     });
-    const [searchQuery,setSearchQuery] = useState("");
-    const [displayedTeams,setDisplayedTeams] = useState([]);
-    const [teamsFilter,setTeamsFilter] = useState('ALL');
+    const [searchQuery, setSearchQuery] = useState("");
+    const [displayedTeams, setDisplayedTeams] = useState([]);
+    const [teamsFilter, setTeamsFilter] = useState({value: "ALL", label: ""});
 
     useEffect(() => {
         getMyTeams().then(teams => {
             setTeams(teams);
+            setTeamsFilter({value: "ALL", label: `${I18n.t(`myteams.filters.all`)} (${teams.teamSummaries.length})`});
         })
     }, []);
 
     useEffect(() => {
         updateDisplayedTeams()
-    },[teams,searchQuery,teamsFilter])
+    }, [teams, searchQuery, teamsFilter])
 
-    const updateDisplayedTeams =()=>{
-        const toDisplay = teams.teamSummaries.filter(team =>{
-            if (teamsFilter != team.role && teamsFilter != 'ALL'){
+    const updateDisplayedTeams = () => {
+        const toDisplay = teams.teamSummaries.filter(team => {
+            if (teamsFilter.value != team.role && teamsFilter.value != 'ALL') {
                 return
             }
 
-            if (searchQuery === ""){
+            if (searchQuery === "") {
                 return team;
-            }else if (team.name.toLowerCase().includes(searchQuery.toLowerCase())){
+            } else if (team.name.toLowerCase().includes(searchQuery.toLowerCase())) {
                 return team
             }
         })
@@ -63,14 +69,14 @@ export const MyTeams = () => {
     }
 
     const renderAddMemberLink = team => {
-        const link = <Link to={{ pathname: "/", state: { team: team } }}>{I18n.t("myteams.add_members")}</Link> 
+        const link = <Link to={{pathname: "/", state: {team: team}}}>{I18n.t("myteams.add_members")}</Link>
         return (
-            <>{ROLES.MEMBER !== team.role ? link: I18n.t("myteams.empty")}</>
+            <>{ROLES.MEMBER !== team.role ? link : I18n.t("myteams.empty")}</>
         )
     }
 
     const renderDeleteButton = team => {
-        const icon = <img className="binIcon" src={binIcon} alt="Delete" onClick={() => processDelete(team)} />
+        const icon = <img className="binIcon" src={binIcon} alt="Delete" onClick={() => processDelete(team)}/>
         return (
             <>{[ROLES.OWNER, ROLES.ADMIN].includes(team.role) ? icon : I18n.t("myteams.empty")}</>
         )
@@ -86,52 +92,57 @@ export const MyTeams = () => {
         </tr>)
     }
 
-    const renderTeamsSearch = () =>{
-        return(
-            <input placeholder="Search" onChange={e => setSearchQuery(e.target.value)} />
+    const renderTeamsSearch = () => {
+        return (
+            <span className="teams-search-bar">
+                <input placeholder="Search" onChange={e => setSearchQuery(e.target.value)}/>
+                <SearchIcon/>
+            </span>
         )
     }
 
-    const renderFilterDropdown = () =>{
-        class FilterCount{
-            constructor(value){
-                if (value === 'ALL'){
-                    this.value = value;
+    const renderFilterDropdown = () => {
+        class FilterCount {
+            constructor(value) {
+                this.action = () => {
+                    setTeamsFilter({value: this.value, label: this.name})
+                }
+                this.value = value
+                if (value === 'ALL') {
                     this.count = teams.teamSummaries.length;
                     return this;
                 }
-                this.value = value
                 this.count = 0
             }
-            get label(){
-                return`${I18n.t(`myteams.filters.${this.value.toLowerCase()}`)} (${this.count})`
+
+            get name() {
+                return `${I18n.t(`myteams.filters.${this.value.toLowerCase()}`)} (${this.count})`
             }
         }
 
-        const filters = ['ALL',ROLES.OWNER, ROLES.ADMIN,ROLES.MANAGER,ROLES.MEMBER]
-        const options = filters.map(filter=>new FilterCount(filter))
+        const filters = ['ALL', ROLES.OWNER, ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER]
+        const options = filters.map(filter => new FilterCount(filter))
 
-        teams.teamSummaries.forEach(team=>{
-            options.forEach(option=>{
-                if (option.value === team.role){
-                    option.count ++;
+        teams.teamSummaries.forEach(team => {
+            options.forEach(option => {
+                if (option.value === team.role) {
+                    option.count++;
                 }
             })
         })
 
-        const why=(e)=>{
-            var hm =1
-        }
-
-        return(
-            <select className="filter_dropdown"  onChange={event => why(event.target)}>
-            {options.map(option=>option.count >0 || option.value === 'ALL'? <option id={option.value}>{option.label}</option>:null)}
-        </select>
+        return (
+            <span className={"filter-dropdown-span"}>
+                <DropDownMenu title={teamsFilter.label} actions={options}/>
+            </span>
         )
     }
 
-    const renderNewTeamButton = () =>{
-
+    const renderNewTeamButton = () => {
+        const buttonClicked = () => {
+            navigate("/");
+        }
+        return <Button onClick={buttonClicked} txt={I18n.t(`myteams.new_team`)} className="new-team-button"/>
     }
 
     const renderTeamsTable = () => {
@@ -139,7 +150,8 @@ export const MyTeams = () => {
         return (
             <Page>
                 <h2>My teams</h2>
-                <span className="teamActionsBar"> {renderFilterDropdown()}{renderTeamsSearch()}</span>
+                <span
+                    className="team-actions-bar"> {renderFilterDropdown()}{renderTeamsSearch()}{renderNewTeamButton()}</span>
                 <table>
                     <thead>
                     <tr>
@@ -158,7 +170,7 @@ export const MyTeams = () => {
 
     return (
         <div className="my-teams-container">
-            <div>TODO - header, drop-down (admin 4, members 3) - search box</div>
+            <div>TODO - delete confirmation modal</div>
             {renderTeamsTable()}
         </div>
     );
