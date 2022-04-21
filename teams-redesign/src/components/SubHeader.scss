@@ -5,6 +5,9 @@ div.sub-header-container {
     background-color: $tertiary-grey;
     padding: $padding-app;
 
+    &.child {
+        padding-top: 0;
+    }
     div.sub-header {
         width: $width-app;
         margin: 0 auto;

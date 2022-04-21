@@ -26,11 +26,9 @@ if (["nl", "en"].indexOf(parameterByName) === -1) {
 I18n.locale = parameterByName;
 const root = ReactDOM.createRoot(document.getElementById("app"));
 root.render(
-    <React.StrictMode>
-        <BrowserRouter>
-            <Routes>
-                <Route path="/*" element={<App/>}/>
-            </Routes>
-        </BrowserRouter>
-    </React.StrictMode>,
+    <BrowserRouter>
+        <Routes>
+            <Route path="/*" element={<App/>}/>
+        </Routes>
+    </BrowserRouter>
 );

@@ -8,6 +8,7 @@ import {Header} from "./components/Header";
 import {MyTeams} from "./pages/MyTeams";
 import TeamDetails from "./pages/TeamDetails";
 import {Footer} from "./components/Footer";
+import NewTeam from "./pages/NewTeam";
 
 const App = () => {
 
@@ -46,6 +47,7 @@ const App = () => {
                     <Route path="" element={<Home user={user}/>}/>
                 </Route>
                 <Route path={"my-teams"} element={<MyTeams/>}/>
+                <Route path={"new-team"} element={<NewTeam user={user}/>}/>
                 <Route path={"/team-details/:teamId"} element={<TeamDetails user={user}/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>}

@@ -1,19 +1,16 @@
 @import "../styles/vars.scss";
 
-div.team-actions {
+div.new-team {
     display: flex;
+    flex-direction: column;
     width: 50%;
 
     @media (max-width: $mobile) {
         width: 100%;
+        padding: 0 10px 10px 10px;
     }
 
     .action-menu-container {
         margin-left: auto;
     }
-}
-
-div.team-details {
-
-
 }

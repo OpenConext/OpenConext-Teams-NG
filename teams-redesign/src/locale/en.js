@@ -47,8 +47,19 @@ I18n.translations.en = {
             delete: "Are you sure you want to delete this team?"
         }
     },
+    newTeam: {
+        name: "Name",
+        description: "Team purpose",
+        placeholders: {
+            name: "Enter name (can not be altered)"
+        },
+        tooltips: {
+          description: "The purpose of the team. Will be show to new members who accept an invitation."
+        }
+    },
     breadcrumbs: {
-        myTeams: "My teams"
+        myTeams: "My teams",
+        newTeam: "Create new team"
     },
     confirmationDialog: {
         title: "Please confirm",
