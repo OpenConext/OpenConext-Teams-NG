@@ -1,0 +1,19 @@
+@import "../styles/vars";
+
+span.error-indication {
+  color: $primary-red;
+
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+
+  &.standalone {
+    margin-bottom: 15px;
+  }
+
+  img {
+    margin-right: 10px;
+    width: 18px;
+    height: auto;
+  }
+}

@@ -53,12 +53,31 @@ I18n.translations.en = {
     newTeam: {
         name: "Name",
         description: "Team purpose",
+        visibility: "Team privacy",
+        public: "Public team",
+        publicInfo: "List team in public team index. Others can request membership",
+        private: "Private team",
+        privateInfo: "Don't list antwhere. This team is member only",
+        object: "Team",
         placeholders: {
             name: "Enter name (can not be altered)"
         },
         tooltips: {
           description: "The purpose of the team. Will be show to new members who accept an invitation."
-        }
+        },
+
+        create: "Create team"
+    },
+    forms: {
+        cancel: "Cancel",
+        delete: "Delete",
+        submit: "Submit",
+        save: "Save",
+        update: "Update",
+        edit: "Edit",
+        required: "{{attribute}} is a required attribute",
+        alreadyExists: "A {{object}} with {{attribute}} {{value}} already exists.",
+        invalid: "{{value}} for {{attribute}} is invalid."
     },
     breadcrumbs: {
         myTeams: "My teams",

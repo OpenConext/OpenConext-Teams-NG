@@ -9,12 +9,6 @@ import "./Header.scss";
 export const Header = ({user}) => {
 
     const [droppedDown, setDroppedDown] = useState(false);
-    // const dropDownElement = useRef(null);
-    //
-    // const dropDownFocus = () => {
-    //     setDroppedDown(!droppedDown);
-    //     dropDownElement.current.focus()
-    // }
 
     return (
         <div className="header-container">

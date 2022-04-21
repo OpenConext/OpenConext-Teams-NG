@@ -4,11 +4,11 @@ div.team-actions {
     display: flex;
     width: 50%;
 
-    @media (max-width: $mobile) {
+    @media (max-width: $width-app) {
         width: 100%;
     }
 
-    .action-menu-container {
+    .button-container {
         margin-left: auto;
     }
 }

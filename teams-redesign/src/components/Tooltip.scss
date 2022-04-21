@@ -6,15 +6,26 @@ span.tool-tip-section {
     cursor: pointer;
     padding: 0 4px;
 
+    label {
+        display: inline-block;
+        margin: 12px 0 8px 0;
+        color: black;
+        position: relative;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
     img {
+        margin-left: 5px;
+        display: inline-block;
         width: 18px;
     }
 
     .tippy-box {
-        background-color: $hover-blue;
+        background-color: $primary-blue;
         color: $background;
         border-radius: 6px;
-        font-size: 16px;
+        font-size: 14px;
         text-align: center;
         line-height: 1.4;
         white-space: normal;
@@ -25,7 +36,7 @@ span.tool-tip-section {
     .tippy-arrow {
         width: 16px;
         height: 16px;
-        color: $hover-blue;
+        color: $primary-blue;
     }
 
 }

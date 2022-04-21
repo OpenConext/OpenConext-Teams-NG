@@ -1,0 +1,65 @@
+@import "../styles/vars";
+
+.input-field {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    max-width: 100%;
+
+    &:not(&:first-child) {
+        margin-top: 20px;
+    }
+
+    label {
+        display: inline-block;
+        margin: 12px 0 8px 0;
+        color: black;
+        position: relative;
+        font-weight: bold;
+    }
+
+    .inner-input-field {
+
+        input[type=text], input[type=number], textarea {
+            display: block;
+            background-color: white;
+            width: 100%;
+            border: 1px solid $quaternary-grey;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            height: 48px;
+            color: black;
+
+            &[disabled] {
+                background-color: $background;
+                cursor: not-allowed;
+                color: black;
+            }
+
+            &.error {
+                border: 1px solid $primary-red;
+            }
+
+            &:focus {
+                outline: none;
+                box-shadow: none;
+            }
+
+        }
+
+        textarea {
+            height: 90px;
+
+            &.large {
+                height: 170px;
+            }
+
+            &.file-upload {
+                height: 240px;
+            }
+        }
+
+    }
+
+}

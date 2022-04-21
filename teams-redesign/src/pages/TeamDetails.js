@@ -24,16 +24,18 @@ const TeamDetail = ({user}) => {
 
 
     useEffect(() => {
-        getTeamDetail(params.teamId).then(res => {
-            if (res.memberships) {
-                setTeam(res);
-                setLoaded(true);
-            } else {
-                navigate(`/join-request/${params.teamId}`)
-            }
+        getTeamDetail(params.teamId)
+            .then(res => {
+                if (res.memberships) {
+                    setTeam(res);
+                    setLoaded(true);
+                } else {
+                    navigate(`/join-request/${params.teamId}`)
+                }
 
-        });
+            }).catch(() => navigate("/404"));
     }, [params.teamId, navigate])
+
 
     const leaveTeam = showConfirmation => () => {
         if (showConfirmation) {

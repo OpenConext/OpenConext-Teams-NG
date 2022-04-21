@@ -1,6 +1,19 @@
+.component-container {
+  display: flex;
+}
+
+.inner-component {
+  max-width: $width-app;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  padding: $padding-app;
+}
+
+
 table {
 
-  @media (max-width: $mobile) {
+  @media (max-width: $width-app) {
 
     thead {
       display: none;
