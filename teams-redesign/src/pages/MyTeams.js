@@ -140,7 +140,7 @@ export const MyTeams = () => {
 
     const renderNewTeamButton = () => {
         const buttonClicked = () => {
-            navigate("/");
+            navigate("/new-team");
         }
         return <Button onClick={buttonClicked} txt={I18n.t(`myteams.new_team`)} className="new-team-button"/>
     }
