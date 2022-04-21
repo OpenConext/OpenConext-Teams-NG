@@ -20,7 +20,10 @@ I18n.translations.en = {
         empty: "",
         private: "Private team",
         add_members: "Add members",
-        new_team: "New Team"
+        new_team: "New Team",
+        confirmations: {
+            delete: "Are you sure you want to delete this team?"
+        }
     },
     profile: {
         admin: "Admin",

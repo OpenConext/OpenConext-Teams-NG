@@ -65,10 +65,18 @@ div.my-teams-container {
 
     &.title {
       width: 30%;
+
+      .title-wrapper {
+        display: flex;
+      }
     }
 
     &.members {
       width: 15%;
+
+      .members-wrapper {
+        display: flex;
+      }
     }
 
     &.private {

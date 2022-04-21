@@ -1,0 +1,36 @@
+.sort-button-container {
+  padding-top: 2px;
+  width: 20px;
+  height: 20px;
+
+  .up-caret-container {
+    display: flex;
+    margin: 0px;
+    height: 50%;
+    padding-top: 2px;
+
+    &:hover {
+      zoom: 1.5;
+      padding-bottom: 2px;
+      padding-top: 0px;
+    }
+
+    .up-caret {
+      width: 20px;
+    }
+  }
+
+  .down-caret-container {
+    display: flex;
+    margin: 0px;
+    height: 50%;
+
+    &:hover {
+      zoom: 1.5;
+    }
+
+    .down-caret {
+      width: 20px;
+    }
+  }
+}
