@@ -15,13 +15,13 @@ export const Tabs = ({ children }) => {
         <div className="tabs">
             <ul className="nav">
                 {children.map((tab, index) => {
-                    return <TabNavItem title={tab.props.title} id={index} activeTab={activeTab} setActiveTab={setActiveTab} />
+                    return <TabNavItem key={index} title={tab.props.title} id={index} activeTab={activeTab} setActiveTab={setActiveTab} />
                 })}
             </ul>
 
             <div className="tab-display">
                 {children.map((tab, index) => {
-                    return <TabContent id={index} activeTab={activeTab}>
+                    return <TabContent key={index} id={index} activeTab={activeTab}>
                         {tab.props.children}
                     </TabContent>
                 })}
@@ -38,7 +38,6 @@ const TabNavItem = ({ id, title, activeTab, setActiveTab }) => {
 
     return (
         <li onClick={handleClick} className={activeTab === id ? "active" : ""}>
-            <div className="active-indicator" />
             <h3>{title}</h3>
         </li>
     );

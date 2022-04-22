@@ -10,6 +10,9 @@ div.header-container {
     div.header {
         @extend .inner-component;
 
+        a.home {
+            line-height: 0;
+        }
         h2.conext {
             font-weight: bold;
             font-size: 18px;

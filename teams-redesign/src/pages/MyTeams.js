@@ -1,30 +1,29 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 
-import { deleteTeam, getMyTeams } from "../api";
+import {deleteTeam, getMyTeams} from "../api";
 import I18n from "i18n-js";
-import { ROLES } from "../utils/roles";
-import { Page } from "../components/Page";
-import { DropDownMenu } from "../components/DropDownMenu";
-import { ReactComponent as SearchIcon } from "../icons/search.svg";
-import binIcon from "../icons/bin-1.svg";
-import { ReactComponent as BinIcon } from "../icons/bin-1.svg";
+import {ROLES} from "../utils/roles";
+import {Page} from "../components/Page";
+import {DropDownMenu} from "../components/DropDownMenu";
+import {ReactComponent as SearchIcon} from "../icons/search.svg";
+import {ReactComponent as BinIcon} from "../icons/bin-1.svg";
 import blockedIcon from "../icons/allowances-no-talking.svg";
 
 import "./MyTeams.scss"
-import { Button } from "../components/Button";
-import { SortButton } from "../components/SortButton";
+import {Button} from "../components/Button";
+import {SortButton} from "../components/SortButton";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import { Tab, Tabs } from "../components/Tabs";
+import {Tab, Tabs} from "../components/Tabs";
 
 
 export const MyTeams = () => {
     const navigate = useNavigate();
-    const [teams, setTeams] = useState({ teamSummaries: [] });
+    const [teams, setTeams] = useState({teamSummaries: []});
 
     const [searchQuery, setSearchQuery] = useState("");
-    const [teamsFilter, setTeamsFilter] = useState({ value: "ALL", label: "" });
-    const [sort, setSort] = useState({ field: "membershipCount", direction: "ascending" });
+    const [teamsFilter, setTeamsFilter] = useState({value: "ALL", label: ""});
+    const [sort, setSort] = useState({field: "membershipCount", direction: "ascending"});
     const [displayedTeams, setDisplayedTeams] = useState([]);
 
     const [confirmation, setConfirmation] = useState({});
@@ -33,7 +32,7 @@ export const MyTeams = () => {
     useEffect(() => {
         getMyTeams().then(teams => {
             setTeams(teams);
-            setTeamsFilter({ value: "ALL", label: `${I18n.t(`myteams.filters.all`)} (${teams.teamSummaries.length})` });
+            setTeamsFilter({value: "ALL", label: `${I18n.t(`myteams.filters.all`)} (${teams.teamSummaries.length})`});
         })
     }, []);
 
@@ -83,7 +82,7 @@ export const MyTeams = () => {
         class FilterCount {
             constructor(value) {
                 this.action = () => {
-                    setTeamsFilter({ value: this.value, label: this.name })
+                    setTeamsFilter({value: this.value, label: this.name})
                 }
                 this.value = value
                 if (value === 'ALL') {
@@ -118,8 +117,8 @@ export const MyTeams = () => {
 
     const renderTeamsSearch = () => {
         return (<span className="teams-search-bar">
-            <input placeholder="Search" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-            <SearchIcon />
+            <input placeholder="Search" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}/>
+            <SearchIcon/>
         </span>)
     }
 
@@ -127,12 +126,13 @@ export const MyTeams = () => {
         const buttonClicked = () => {
             navigate("/new-team");
         }
-        return <Button onClick={buttonClicked} txt={I18n.t(`myteams.new_team`)} className="new-team-button" />
+        return <Button onClick={buttonClicked} txt={I18n.t(`myteams.new_team`)} className="new-team-button"/>
     }
 
-    const renderTeamsRow = team => {
-        return (<tr>
-            <td data-label={I18n.t("myteams.columns.title")}><Link to={`/team-details/${team.id}`}>{team.name}</Link></td>
+    const renderTeamsRow = (team, index) => {
+        return (<tr key={index}>
+            <td data-label={I18n.t("myteams.columns.title")}><Link to={`/team-details/${team.id}`}>{team.name}</Link>
+            </td>
             <td data-label={I18n.t("myteams.columns.members")}>{team.membershipCount}</td>
             <td data-label={I18n.t("myteams.columns.private")}>{renderPrivateTag(team.viewable)}</td>
             <td data-label={I18n.t("myteams.columns.member")}>{renderAddMemberLink(team)}</td>
@@ -142,7 +142,7 @@ export const MyTeams = () => {
 
     const renderPrivateTag = viewable => {
         const tag = <span className="private-label">
-            <span><img src={blockedIcon} alt="Private" />{I18n.t("myteams.private")}</span>
+            <span><img src={blockedIcon} alt="Private"/>{I18n.t("myteams.private")}</span>
 
         </span>
         return (<>{viewable ? I18n.t("myteams.empty") : tag}</>)
@@ -163,12 +163,12 @@ export const MyTeams = () => {
         const renderHeader = (header) => {
             const sortField = header === "title" ? "name" : "membershipCount";
             const handleSort = (direction) => {
-                setSort({ field: sortField, direction: direction })
+                setSort({field: sortField, direction: direction})
             }
-            return (<th className={header}>
+            return (<th className={header} key={header}>
                 <div className={`${header}-wrapper`}>
                     {I18n.t(`myteams.columns.${header}`)}
-                    {["title", "members"].includes(header) ? <SortButton onSort={handleSort} /> : null}
+                    {["title", "members"].includes(header) ? <SortButton onSort={handleSort}/> : null}
                 </div>
             </th>)
         }
@@ -183,19 +183,19 @@ export const MyTeams = () => {
                     </span>
 
                     {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}
-                        cancel={confirmation.cancel}
-                        confirm={confirmation.action}
-                        isWarning={confirmation.warning}
-                        question={confirmation.question} />}
+                                                             cancel={confirmation.cancel}
+                                                             confirm={confirmation.action}
+                                                             isWarning={confirmation.warning}
+                                                             question={confirmation.question}/>}
 
                     <table>
                         <thead>
-                            <tr>
-                                {headers.map(header => renderHeader(header))}
-                            </tr>
+                        <tr>
+                            {headers.map(header => renderHeader(header))}
+                        </tr>
                         </thead>
                         <tbody>
-                            {displayedTeams.map(team => renderTeamsRow(team))}
+                        {displayedTeams.map((team, index) => renderTeamsRow(team, index))}
                         </tbody>
                     </table>
                 </Tab>

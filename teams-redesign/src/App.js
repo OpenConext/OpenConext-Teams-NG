@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {Navigate, Route, Routes} from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import {getUser} from "./api";
-import Home from "./pages/Home";
 import {Header} from "./components/Header";
 import {MyTeams} from "./pages/MyTeams";
 import TeamDetails from "./pages/TeamDetails";
@@ -41,11 +40,7 @@ const App = () => {
         <div className="teams">
             <Header user={user}/>
             {<Routes>
-                <Route path="/" element={<Navigate replace to="home"/>}/>
-                <Route path="home">
-                    <Route path=":tab" element={<Home user={user}/>}/>
-                    <Route path="" element={<Home user={user}/>}/>
-                </Route>
+                <Route path="/" element={<Navigate replace to="my-teams"/>}/>
                 <Route path={"my-teams"} element={<MyTeams/>}/>
                 <Route path={"new-team"} element={<NewTeam user={user}/>}/>
                 <Route path={"/team-details/:teamId"} element={<TeamDetails user={user}/>}/>

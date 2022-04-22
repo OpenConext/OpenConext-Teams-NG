@@ -4,6 +4,7 @@ import arrowUp from "../icons/arrow-up-1.svg";
 import {useState} from "react";
 import I18n from "i18n-js";
 import "./Header.scss";
+import {Link} from "react-router-dom";
 
 
 export const Header = ({user}) => {
@@ -13,7 +14,8 @@ export const Header = ({user}) => {
     return (
         <div className="header-container">
             <div className="header">
-                <img src={surfLogo} alt=""/>
+                <Link className={"home"} to={"/"}><img src={surfLogo} alt=""/></Link>
+                {/*<img src={surfLogo} alt=""/>*/}
                 <h2 className="conext">Conext Teams</h2>
                 <div className="user-info">
                     <div className="user">

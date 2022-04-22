@@ -1,4 +1,3 @@
-import "./Home.scss";
 import {Page} from "../components/Page";
 import {SubHeader} from "../components/SubHeader";
 import {BreadCrumb} from "../components/BreadCrumb";
