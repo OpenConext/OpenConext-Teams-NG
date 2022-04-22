@@ -1,28 +1,29 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import {deleteTeam, getMyTeams} from "../api";
+import { deleteTeam, getMyTeams } from "../api";
 import I18n from "i18n-js";
-import {ROLES} from "../utils/roles";
-import {Page} from "../components/Page";
-import {DropDownMenu} from "../components/DropDownMenu";
-import {ReactComponent as SearchIcon} from "../icons/search.svg";
+import { ROLES } from "../utils/roles";
+import { Page } from "../components/Page";
+import { DropDownMenu } from "../components/DropDownMenu";
+import { ReactComponent as SearchIcon } from "../icons/search.svg";
 import binIcon from "../icons/bin-1.svg";
 import blockedIcon from "../icons/allowances-no-talking.svg";
 
 import "./MyTeams.scss"
-import {Button} from "../components/Button";
-import {SortButton} from "../components/SortButton";
+import { Button } from "../components/Button";
+import { SortButton } from "../components/SortButton";
 import ConfirmationDialog from "../components/ConfirmationDialog";
+import { Tab, Tabs } from "../components/Tabs";
 
 
 export const MyTeams = () => {
     const navigate = useNavigate();
-    const [teams, setTeams] = useState({teamSummaries: []});
+    const [teams, setTeams] = useState({ teamSummaries: [] });
 
     const [searchQuery, setSearchQuery] = useState("");
-    const [teamsFilter, setTeamsFilter] = useState({value: "ALL", label: ""});
-    const [sort, setSort] = useState({field: "membershipCount", direction: "ascending"});
+    const [teamsFilter, setTeamsFilter] = useState({ value: "ALL", label: "" });
+    const [sort, setSort] = useState({ field: "membershipCount", direction: "ascending" });
     const [displayedTeams, setDisplayedTeams] = useState([]);
 
     const [confirmation, setConfirmation] = useState({});
@@ -31,7 +32,7 @@ export const MyTeams = () => {
     useEffect(() => {
         getMyTeams().then(teams => {
             setTeams(teams);
-            setTeamsFilter({value: "ALL", label: `${I18n.t(`myteams.filters.all`)} (${teams.teamSummaries.length})`});
+            setTeamsFilter({ value: "ALL", label: `${I18n.t(`myteams.filters.all`)} (${teams.teamSummaries.length})` });
         })
     }, []);
 
@@ -81,7 +82,7 @@ export const MyTeams = () => {
         class FilterCount {
             constructor(value) {
                 this.action = () => {
-                    setTeamsFilter({value: this.value, label: this.name})
+                    setTeamsFilter({ value: this.value, label: this.name })
                 }
                 this.value = value
                 if (value === 'ALL') {
@@ -108,22 +109,22 @@ export const MyTeams = () => {
         })
 
         return (<span className={"filter-dropdown-span"}>
-                <DropDownMenu title={teamsFilter.label} actions={options}/>
-            </span>)
+            <DropDownMenu title={teamsFilter.label} actions={options} />
+        </span>)
     }
 
     const renderTeamsSearch = () => {
         return (<span className="teams-search-bar">
-                <input placeholder="Search" onChange={e => setSearchQuery(e.target.value)}/>
-                <SearchIcon/>
-            </span>)
+            <input placeholder="Search" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
+            <SearchIcon />
+        </span>)
     }
 
     const renderNewTeamButton = () => {
         const buttonClicked = () => {
             navigate("/new-team");
         }
-        return <Button onClick={buttonClicked} txt={I18n.t(`myteams.new_team`)} className="new-team-button"/>
+        return <Button onClick={buttonClicked} txt={I18n.t(`myteams.new_team`)} className="new-team-button" />
     }
 
     const renderTeamsRow = team => {
@@ -138,7 +139,7 @@ export const MyTeams = () => {
 
     const renderPrivateTag = viewable => {
         const tag = <span className="private-label">
-            <span><img src={blockedIcon} alt="Private"/>{I18n.t("myteams.private")}</span>
+            <span><img src={blockedIcon} alt="Private" />{I18n.t("myteams.private")}</span>
 
         </span>
         return (<>{viewable ? I18n.t("myteams.empty") : tag}</>)
@@ -150,7 +151,7 @@ export const MyTeams = () => {
     }
 
     const renderDeleteButton = team => {
-        const icon = <img className="binIcon" src={binIcon} alt="Delete" onClick={() => processDelete(team, true)}/>
+        const icon = <img className="binIcon" src={binIcon} alt="Delete" onClick={() => processDelete(team, true)} />
         return (<>{[ROLES.OWNER, ROLES.ADMIN].includes(team.role) ? icon : I18n.t("myteams.empty")}</>)
     }
 
@@ -159,43 +160,51 @@ export const MyTeams = () => {
         const renderHeader = (header) => {
             const sortField = header === "title" ? "name" : "membershipCount";
             const handleSort = (direction) => {
-                setSort({field: sortField, direction: direction})
+                setSort({ field: sortField, direction: direction })
             }
             return (<th className={header}>
-                    <div className={`${header}-wrapper`}>
-                        {I18n.t(`myteams.columns.${header}`)}
-                        {["title", "members"].includes(header) ? <SortButton onSort={handleSort}/> : null}
-                    </div>
-                </th>)
+                <div className={`${header}-wrapper`}>
+                    {I18n.t(`myteams.columns.${header}`)}
+                    {["title", "members"].includes(header) ? <SortButton onSort={handleSort} /> : null}
+                </div>
+            </th>)
         }
 
         return (<Page>
-                <h2>My teams</h2>
-                <span
-                    className="team-actions-bar"> {renderFilterDropdown()}{renderTeamsSearch()}{renderNewTeamButton()}
-                </span>
+            <Tabs>
+                <Tab title={I18n.t(`myteams.tabs.myteams`)}>
 
-                {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}
-                                                         cancel={confirmation.cancel}
-                                                         confirm={confirmation.action}
-                                                         isWarning={confirmation.warning}
-                                                         question={confirmation.question}/>}
+                    <h2>My teams</h2>
+                    <span
+                        className="team-actions-bar"> {renderFilterDropdown()}{renderTeamsSearch()}{renderNewTeamButton()}
+                    </span>
 
-                <table>
-                    <thead>
-                    <tr>
-                        {headers.map(header => renderHeader(header))}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {displayedTeams.map(team => renderTeamsRow(team))}
-                    </tbody>
-                </table>
-            </Page>)
+                    {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}
+                        cancel={confirmation.cancel}
+                        confirm={confirmation.action}
+                        isWarning={confirmation.warning}
+                        question={confirmation.question} />}
+
+                    <table>
+                        <thead>
+                            <tr>
+                                {headers.map(header => renderHeader(header))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {displayedTeams.map(team => renderTeamsRow(team))}
+                        </tbody>
+                    </table>
+                </Tab>
+                <Tab title={I18n.t(`myteams.tabs.publicteams`)}>
+                    public teams
+                </Tab>
+            </Tabs>
+        </Page>)
     }
 
     return (<div className="my-teams-container">
-            {renderMyTeams()}
-        </div>);
+        {renderMyTeams()}
+    </div>);
 
 }

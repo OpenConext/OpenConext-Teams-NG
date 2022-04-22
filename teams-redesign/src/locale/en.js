@@ -3,6 +3,10 @@ import I18n from "i18n-js";
 I18n.translations.en = {
     code: "EN",
     myteams: {
+        tabs:{
+            myteams:"My teams",
+            publicteams:"Public Teams"
+        },
         columns: {
             title: "Title",
             members: "Members",

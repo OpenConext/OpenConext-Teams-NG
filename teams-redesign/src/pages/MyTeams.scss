@@ -1,5 +1,10 @@
 @import "../styles/vars.scss";
 
+div.page-container {
+  background: linear-gradient($tertiary-grey 80px, white 1px);
+  padding-top: 21px;
+}
+
 div.my-teams-container {
   h2 {
     padding: 10px;
