@@ -6,13 +6,11 @@ import I18n from "i18n-js";
 import {ROLES} from "../utils/roles";
 import {Page} from "../components/Page";
 import {DropDownMenu} from "../components/DropDownMenu";
-import {ReactComponent as SearchIcon} from "../icons/search.svg";
 import {ReactComponent as BinIcon} from "../icons/bin-1.svg";
 import blockedIcon from "../icons/allowances-no-talking.svg";
 
 import "./MyTeams.scss"
 import {Button} from "../components/Button";
-import {SortButton} from "../components/SortButton";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import {Tab, Tabs} from "../components/Tabs";
 import {SortableTable} from "../components/SortableTable";
@@ -198,37 +196,39 @@ export const MyTeams = () => {
             }
         ]
 
-        return (<Page>
-            <Tabs>
-                <Tab title={I18n.t(`myteams.tabs.myTeams`)}>
-                    <h2>{I18n.t("myteams.tabs.myTeams")}</h2>
-                    <span className="team-actions-bar">
+        return (
+            <Page>
+                <Tabs>
+                    <Tab title={I18n.t(`myteams.tabs.myTeams`)}>
+                        <h2>{I18n.t("myteams.tabs.myTeams")}</h2>
+                        <span className="team-actions-bar">
                         {renderFilterDropdown()}
-                        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
-                        {renderNewTeamButton()}
+                            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+                            {renderNewTeamButton()}
                     </span>
 
-                    {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}
-                                                             cancel={confirmation.cancel}
-                                                             confirm={confirmation.action}
-                                                             isWarning={confirmation.warning}
-                                                             question={confirmation.question}/>}
+                        {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}
+                                                                 cancel={confirmation.cancel}
+                                                                 confirm={confirmation.action}
+                                                                 isWarning={confirmation.warning}
+                                                                 question={confirmation.question}/>}
 
-                    {teams.teamSummaries.length === 0 &&
-                    <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
-                    {(displayedTeams.length === 0 && teams.teamSummaries.length > 0) &&
-                    <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
-                    }
-                    {displayedTeams.length > 0 && <SortableTable columns={columns} setSort={setSort}>
-                        {displayedTeams.map((team, index) => renderTeamsRow(team, index))}
-                    </SortableTable>
-                    }
-                </Tab>
-                <Tab title={I18n.t(`myteams.tabs.publicTeams`)}>
-                    <PublicTeamsTab myteams={teams.teamSummaries}></PublicTeamsTab>
-                </Tab>
-            </Tabs>
-        </Page>)
+                        {teams.teamSummaries.length === 0 &&
+                        <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
+                        {(displayedTeams.length === 0 && teams.teamSummaries.length > 0) &&
+                        <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
+                        }
+                        {displayedTeams.length > 0 && <SortableTable columns={columns} setSort={setSort}>
+                            {displayedTeams.map((team, index) => renderTeamsRow(team, index))}
+                        </SortableTable>
+                        }
+                    </Tab>
+                    <Tab title={I18n.t(`myteams.tabs.publicTeams`)}>
+                        <PublicTeamsTab myteams={teams.teamSummaries}></PublicTeamsTab>
+                    </Tab>
+                </Tabs>
+            </Page>
+        )
     }
 
     return (

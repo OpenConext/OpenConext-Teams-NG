@@ -74,7 +74,7 @@ export const PublicTeamsTab = ({myteams}) => {
             </tr>)
     }
 
-    const actionBarClassName = searchQuery != "" ? "public-teams-actions-bar" : "public-teams-actions-bar-no-content";
+    const actionBarClassName = searchQuery !== "" ? "public-teams-actions-bar" : "public-teams-actions-bar-no-content";
 
     return (
         <div className="public-teams-tab">
