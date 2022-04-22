@@ -18,7 +18,7 @@ export const DropDownMenu = ({title, actions}) => {
             <div className="dropdown-control"
                  onClick={() => setDroppedDown(!droppedDown)}
                  tabIndex={1}
-                 onBlur={() => setTimeout(() => setDroppedDown(false), 100)}>
+                 onBlur={() => setTimeout(() => setDroppedDown(false), 250)}>
                 <span>{title}</span>
                 {droppedDown ? <ArrowUp/> : <ArrowDown/>}
             </div>

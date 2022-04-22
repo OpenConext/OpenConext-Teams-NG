@@ -1,11 +1,13 @@
 @import "../styles/vars.scss";
 
-div.page-container {
-  background: linear-gradient($tertiary-grey 80px, white 1px);
-  padding-top: 21px;
-}
 
 div.my-teams-container {
+
+    div.page-container {
+        background: linear-gradient($tertiary-grey 80px, white 1px);
+        padding-top: 21px;
+    }
+
     h2 {
         padding: 10px;
     }
@@ -56,6 +58,11 @@ div.my-teams-container {
             width: 100px;
             padding-top: 12px;
         }
+    }
+
+    h3.zero-state {
+        margin-top: 10px;
+        font-weight: normal;
     }
 
     table {

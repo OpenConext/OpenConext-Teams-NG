@@ -181,8 +181,11 @@ export const MyTeams = () => {
                                                              confirm={confirmation.action}
                                                              isWarning={confirmation.warning}
                                                              question={confirmation.question}/>}
-
-                    <table>
+                    {teams.teamSummaries.length === 0 && <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
+                    {(displayedTeams.length === 0 && teams.teamSummaries.length > 0) &&
+                        <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
+                    }
+                    {displayedTeams.length > 0 && <table>
                         <thead>
                         <tr>
                             {headers.map(header => renderHeader(header))}
@@ -191,7 +194,7 @@ export const MyTeams = () => {
                         <tbody>
                         {displayedTeams.map((team, index) => renderTeamsRow(team, index))}
                         </tbody>
-                    </table>
+                    </table>}
                 </Tab>
                 <Tab title={I18n.t(`myteams.tabs.publicteams`)}>
                     <h2>{I18n.t("myteams.tabs.publicteams")}</h2>
@@ -200,8 +203,10 @@ export const MyTeams = () => {
         </Page>)
     }
 
-    return (<div className="my-teams-container">
-        {renderMyTeams()}
-    </div>);
+    return (
+        <div className="my-teams-container">
+            {renderMyTeams()}
+        </div>
+    );
 
 }

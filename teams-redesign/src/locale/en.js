@@ -28,6 +28,10 @@ I18n.translations.en = {
         member: "You're a member",
         confirmations: {
             delete: "Are you sure you want to delete this team?"
+        },
+        zeroStates: {
+            noTeams: "You are not yet a member of any Team",
+            noResults: "No teams were found for your search"
         }
     },
     profile: {

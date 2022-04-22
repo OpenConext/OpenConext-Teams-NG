@@ -52,7 +52,6 @@ const TeamDetail = ({user}) => {
 
     const deleteTeam = () => {
         //TODO - show confirmation
-        debugger;
         alert("Leave team");
     }
 
