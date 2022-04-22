@@ -16,6 +16,7 @@ import {ReactComponent as privateTeam} from "../icons/allowances-no-talking.svg"
 import {ReactComponent as publicTeam} from "../icons/human-resources-offer-employee-1.svg";
 import {ButtonContainer} from "../components/ButtonContainer";
 import {Button} from "../components/Button";
+import {validEmailRegExp} from "../validations/regularExp";
 
 const visibilities = [
     {name: "public", icon: publicTeam},
@@ -37,6 +38,24 @@ const NewTeam = ({user}) => {
     }, [user, navigate])
 
     const viewableActive = name => (name === "public" && team.viewable) || (name === "private" && !team.viewable)
+
+    const validateBackupEmail = () => {
+        if (!isEmpty(team.backupEmail) && !validEmailRegExp.test(team.backupEmail)) {
+            setErrors({...errors, backupEmail: true});
+        }
+    }
+
+    const isValid = () => {
+        const hasErrors = Object.keys(errors).some(attr => errors[attr]);
+        return !hasErrors && !nameExist && !isEmpty(team.name);
+    }
+
+    const submit = () => {
+        setInitial(false);
+        if (isValid()) {
+            alert("submit");
+        }
+    }
 
     return (
         <>
@@ -86,7 +105,10 @@ const NewTeam = ({user}) => {
                         <div className="team-visibilities">
                             {visibilities.map((visibility, i) =>
                                 <div key={i} className={`visibility ${viewableActive(visibility.name) ? "active" : ""}`}
-                                     onClick={() => !viewableActive(visibility.name) && setTeam({...team, viewable: !team.viewable})}>
+                                     onClick={() => !viewableActive(visibility.name) && setTeam({
+                                         ...team,
+                                         viewable: !team.viewable
+                                     })}>
                                     <section className="header">
                                         <visibility.icon/>
                                         <h2>{I18n.t(`newTeam.${visibility.name}`)}</h2>
@@ -95,13 +117,37 @@ const NewTeam = ({user}) => {
                                 </div>)}
                         </div>
                     </div>
+                    <InputField value={team.backupEmail || ""}
+                                onChange={e => {
+                                    setTeam({...team, backupEmail: e.target.value});
+                                    setErrors({errors, backupEmail: false})
+                                }}
+                                placeholder={I18n.t("newTeam.placeholders.backupEmail")}
+                                onBlur={validateBackupEmail}
+                                error={!initial && errors.backupEmail}
+                                name={I18n.t("newTeam.backupEmail")}/>
+
+                    {(!initial && errors.backupEmail) &&
+                    <ErrorIndicator msg={I18n.t("forms.invalid", {
+                        value: team.backupEmail,
+                        attribute: I18n.t("newTeam.backupEmail").toLowerCase()
+                    })}/>}
+
+                    <InputField value={team.backupEmail || ""}
+                                onChange={e => {
+                                    setTeam({...team, backupEmail: e.target.value});
+                                    setErrors({errors, backupEmail: false})
+                                }}
+                                placeholder={I18n.t("newTeam.placeholders.backupEmail")}
+                                name={I18n.t("newTeam.backupEmail")}/>
 
                     <ButtonContainer>
                         <Button cancelButton={true}
                                 onClick={() => navigate("/my-teams")}
                                 txt={I18n.t("forms.cancel")}/>
                         <Button
-                            onClick={() => alert("create")}
+                            onClick={submit}
+                            disabled={!initial && !isValid()}
                             txt={I18n.t("newTeam.create")}/>
                     </ButtonContainer>
 

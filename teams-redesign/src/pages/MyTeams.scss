@@ -22,9 +22,9 @@ div.my-teams-container {
       width: 300px;
       background-color: white;
       border-radius: 4px;
-      padding: 8px;
-      padding-top: 10px;
+      padding: 10px 8px 8px;
       vertical-align: middle;
+      position: relative;
 
       input {
         border: none;
@@ -32,18 +32,17 @@ div.my-teams-container {
         width: 90%;
 
         &:focus {
-          outline: none;
-          outline-width: 0;
+          outline: none 0;
           box-shadow: none;
-          -moz-box-shadow: none;
-          -webkit-box-shadow: none;
         }
       }
 
       svg {
-        margin-left: 2px;
+        position: absolute;
         width: 22px;
         vertical-align: middle;
+        top: 8px;
+        right: 12px;
       }
     }
 

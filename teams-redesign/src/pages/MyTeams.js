@@ -128,11 +128,11 @@ export const MyTeams = () => {
 
     const renderTeamsRow = team => {
         return (<tr>
-            <td><Link to={`/team-details/${team.id}`}>{team.name}</Link></td>
-            <td>{team.membershipCount}</td>
-            <td>{renderPrivateTag(team.viewable)}</td>
-            <td>{renderAddMemberLink(team)}</td>
-            <td>{renderDeleteButton(team)}</td>
+            <td data-label={I18n.t("myteams.columns.title")}><Link to={`/team-details/${team.id}`}>{team.name}</Link></td>
+            <td data-label={I18n.t("myteams.columns.members")}>{team.membershipCount}</td>
+            <td data-label={I18n.t("myteams.columns.private")}>{renderPrivateTag(team.viewable)}</td>
+            <td data-label={I18n.t("myteams.columns.member")}>{renderAddMemberLink(team)}</td>
+            <td data-label={I18n.t("myteams.columns.bin")}>{renderDeleteButton(team)}</td>
         </tr>)
     }
 
@@ -146,7 +146,7 @@ export const MyTeams = () => {
 
     const renderAddMemberLink = team => {
         const link = <Link to={{pathname: "/", state: {team: team}}}>{I18n.t("myteams.add_members")}</Link>
-        return (<>{ROLES.MEMBER !== team.role ? link : I18n.t("myteams.empty")}</>)
+        return (<>{ROLES.MEMBER !== team.role ? link : I18n.t("myteams.member")}</>)
     }
 
     const renderDeleteButton = team => {

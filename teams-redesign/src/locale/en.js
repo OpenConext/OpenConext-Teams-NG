@@ -21,6 +21,7 @@ I18n.translations.en = {
         private: "Private team",
         add_members: "Add members",
         new_team: "New Team",
+        member: "You're a member",
         confirmations: {
             delete: "Are you sure you want to delete this team?"
         }
@@ -54,16 +55,18 @@ I18n.translations.en = {
         name: "Name",
         description: "Team purpose",
         visibility: "Team privacy",
+        backupEmail: "Backup admin",
         public: "Public team",
         publicInfo: "List team in public team index. Others can request membership",
         private: "Private team",
         privateInfo: "Don't list antwhere. This team is member only",
         object: "Team",
         placeholders: {
-            name: "Enter name (can not be altered)"
+            name: "Enter name (can not be altered)",
+            backupEmail: "Email of the backup admin",
         },
         tooltips: {
-          description: "The purpose of the team. Will be show to new members who accept an invitation."
+            description: "The purpose of the team. Will be show to new members who accept an invitation."
         },
 
         create: "Create team"
