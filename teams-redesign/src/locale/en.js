@@ -79,7 +79,9 @@ I18n.translations.en = {
         tooltips: {
             description: "The purpose of the team. Will be show to new members who accept an invitation."
         },
-
+        flash: {
+            created: "Team {{name}} is created"
+        },
         create: "Create team"
     },
     forms: {

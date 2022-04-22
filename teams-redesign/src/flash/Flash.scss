@@ -1,0 +1,67 @@
+@import "../styles/vars.scss";
+@import "../styles/responsive";
+
+div.flash-container {
+    @extend .component-container;
+
+    top: 0;
+    transition: top 750ms ease-in-out;
+    position: absolute;
+    width: 100%;
+    z-index: 9;
+
+    &.hide {
+        top: -80px;
+        transition: top 1750ms ease-in-out;
+    }
+
+
+    &.info {
+        background-color: $primary-green;
+        color: white;
+        font-weight: bold;
+    }
+
+    &.warning {
+        background-color: $primary-orange;
+    }
+
+    &.error {
+        background-color: $primary-red;
+    }
+
+
+    div.flash {
+        @extend .inner-component;
+        color: white;
+        z-index: 6;
+        opacity: .97;
+        position: relative;
+
+        padding: 0;
+
+        .message-container {
+            display: flex;
+
+            p {
+                padding: 10px 25px 10px 35px;
+            }
+        }
+
+        a.close {
+            text-decoration: none;
+            position: absolute;
+            right: 6px;
+            top: -2px;
+            color: white;
+            padding: 6px;
+            font-weight: normal;
+
+            svg {
+                width: 14px;
+            }
+        }
+
+
+    }
+}

@@ -8,6 +8,7 @@ import {MyTeams} from "./pages/MyTeams";
 import TeamDetails from "./pages/TeamDetails";
 import {Footer} from "./components/Footer";
 import NewTeam from "./pages/NewTeam";
+import Flash from "./flash/Flash";
 
 const App = () => {
 
@@ -38,6 +39,7 @@ const App = () => {
     }
     return (
         <div className="teams">
+            <Flash/>
             <Header user={user}/>
             {<Routes>
                 <Route path="/" element={<Navigate replace to="my-teams"/>}/>

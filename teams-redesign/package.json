@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@tippyjs/react": "^4.2.6",
     "@uiw/react-md-editor": "^3.12.1",
+    "events": "^3.3.0",
     "http-proxy-middleware": "^2.0.4",
     "i18n-js": "^3.9.2",
     "js-cookie": "^3.0.1",

@@ -23,5 +23,5 @@ public class NewTeamProperties {
     private Map<String, String> emails;
     private String roleOfCurrentUser;
     private String invitationMessage;
-    private Language language;
+    private Language language = Language.ENGLISH;
 }
