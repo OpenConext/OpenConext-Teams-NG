@@ -3,9 +3,9 @@ import I18n from "i18n-js";
 I18n.translations.en = {
     code: "EN",
     myteams: {
-        tabs:{
-            myteams:"My teams",
-            publicteams:"Public teams"
+        tabs: {
+            myTeams: "My teams",
+            publicTeams: "Public teams"
         },
         columns: {
             title: "Title",
@@ -33,6 +33,15 @@ I18n.translations.en = {
             noTeams: "You are not yet a member of any Team",
             noResults: "No teams were found for your search"
         }
+    },
+    publicTeams: {
+        columns: {
+            title: "Title",
+            description: "Description",
+            join: ""
+        },
+        joinRequest: "Request to join",
+        alreadyMember: "Already a member"
     },
     profile: {
         admin: "Admin",

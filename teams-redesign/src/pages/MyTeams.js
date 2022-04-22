@@ -15,6 +15,9 @@ import {Button} from "../components/Button";
 import {SortButton} from "../components/SortButton";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import {Tab, Tabs} from "../components/Tabs";
+import {SortableTable} from "../components/SortableTable";
+import {SearchBar} from "../components/SearchBar";
+import {PublicTeamsTab} from "../components/PublicTeamsTab";
 
 
 export const MyTeams = () => {
@@ -52,6 +55,25 @@ export const MyTeams = () => {
         }
         updateDisplayedTeams();
     }, [teams, searchQuery, teamsFilter, sort])
+
+    const updateDisplayedTeams = () => {
+        const toDisplay = teams.teamSummaries.filter(team => {
+            if (teamsFilter.value !== team.role && teamsFilter.value !== 'ALL') {
+                return
+            }
+
+            if (searchQuery === "") {
+                return team;
+            } else if (team.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+                return team
+            }
+        })
+        toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
+        if (sort.direction !== "ascending") {
+            toDisplay.reverse()
+        }
+        setDisplayedTeams(toDisplay)
+    }
 
     const processDelete = (team, showConfirmation) => {
         if (showConfirmation) {
@@ -109,13 +131,6 @@ export const MyTeams = () => {
         )
     }
 
-    const renderTeamsSearch = () => {
-        return (<span className="teams-search-bar">
-            <input placeholder="Search" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}/>
-            <SearchIcon/>
-        </span>)
-    }
-
     const renderNewTeamButton = () => {
         const buttonClicked = () => {
             navigate("/new-team");
@@ -153,27 +168,44 @@ export const MyTeams = () => {
     }
 
     const renderMyTeams = () => {
-        const headers = ["title", "members", "private", "member", "bin"];
-        const renderHeader = (header) => {
-            const sortField = header === "title" ? "name" : "membershipCount";
-            const handleSort = (direction) => {
-                setSort({field: sortField, direction: direction})
+        const columns = [
+            {
+                name: "title",
+                displayedName: I18n.t(`myteams.columns.title`),
+                sortable: true,
+                sortField: "name"
+            },
+            {
+                name: "members",
+                displayedName: I18n.t(`myteams.columns.members`),
+                sortable: true,
+                sortField: "membershipCount"
+            },
+            {
+                name: "private",
+                displayedName: I18n.t(`myteams.columns.private`),
+                sortable: false
+            },
+            {
+                name: "member",
+                displayedName: I18n.t(`myteams.columns.member`),
+                sortable: false
+            },
+            {
+                name: "bin",
+                displayedName: I18n.t(`myteams.columns.bin`),
+                sortable: false
             }
-            return (<th className={header} key={header}>
-                <div className={`${header}-wrapper`}>
-                    {I18n.t(`myteams.columns.${header}`)}
-                    {["title", "members"].includes(header) ? <SortButton onSort={handleSort}/> : null}
-                </div>
-            </th>)
-        }
+        ]
 
         return (<Page>
             <Tabs>
-                <Tab title={I18n.t(`myteams.tabs.myteams`)}>
-
-                    <h2>{I18n.t("myteams.tabs.myteams")}</h2>
-                    <span
-                        className="team-actions-bar"> {renderFilterDropdown()}{renderTeamsSearch()}{renderNewTeamButton()}
+                <Tab title={I18n.t(`myteams.tabs.myTeams`)}>
+                    <h2>{I18n.t("myteams.tabs.myTeams")}</h2>
+                    <span className="team-actions-bar">
+                        {renderFilterDropdown()}
+                        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+                        {renderNewTeamButton()}
                     </span>
 
                     {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}
@@ -181,23 +213,19 @@ export const MyTeams = () => {
                                                              confirm={confirmation.action}
                                                              isWarning={confirmation.warning}
                                                              question={confirmation.question}/>}
-                    {teams.teamSummaries.length === 0 && <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
+
+                    {teams.teamSummaries.length === 0 &&
+                        <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
                     {(displayedTeams.length === 0 && teams.teamSummaries.length > 0) &&
                         <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
                     }
-                    {displayedTeams.length > 0 && <table>
-                        <thead>
-                        <tr>
-                            {headers.map(header => renderHeader(header))}
-                        </tr>
-                        </thead>
-                        <tbody>
+                    {displayedTeams.length > 0 && <SortableTable columns={columns} setSort={setSort}>
                         {displayedTeams.map((team, index) => renderTeamsRow(team, index))}
-                        </tbody>
-                    </table>}
+                    </SortableTable>
+                    }
                 </Tab>
-                <Tab title={I18n.t(`myteams.tabs.publicteams`)}>
-                    <h2>{I18n.t("myteams.tabs.publicteams")}</h2>
+                <Tab title={I18n.t(`myteams.tabs.publicTeams`)}>
+                    <PublicTeamsTab myteams={teams.teamSummaries}></PublicTeamsTab>
                 </Tab>
             </Tabs>
         </Page>)

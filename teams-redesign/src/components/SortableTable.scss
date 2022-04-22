@@ -1,0 +1,46 @@
+@import "../styles/vars.scss";
+
+.sortable-table {
+  width: 100%;
+  table-layout: fixed;
+
+
+  th {
+    border-bottom: solid 1px $primary-black;
+    padding: 10px;
+
+    .header-wrapper {
+      display: flex;
+    }
+  }
+
+
+  tr {
+    border: solid;
+    border-color: $primary-grey;
+    border-width: 1px 0;
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+
+  td {
+    padding: 10px;
+
+    &:last-child {
+      text-align: right;
+    }
+
+    &:first-child {
+      min-width: 10vw;
+    }
+
+  }
+
+}

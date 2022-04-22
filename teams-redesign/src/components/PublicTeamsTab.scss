@@ -1,0 +1,41 @@
+@import "../styles/vars.scss";
+
+div.public-teams-tab {
+  .public-teams-actions-bar {
+    margin-top: 5px;
+    margin-bottom: 10px;
+
+    .search-bar {
+      display: block;
+      width: 38%;
+    }
+  }
+
+  .public-teams-actions-bar-no-content {
+    margin-top: 5px;
+    margin-bottom: 10px;
+
+    .search-bar {
+      display: block;
+      width: 38%;
+      border-color: $primary-blue;
+      box-shadow: 0 0 10px $light-blue;
+    }
+  }
+
+  .sortable-table {
+    th {
+      &.title {
+        width: 30%;
+      }
+
+      &.description {
+        width: 30%;
+      }
+
+      &.join {
+        width: 20%;
+      }
+    }
+  }
+}
