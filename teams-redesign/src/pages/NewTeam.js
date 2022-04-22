@@ -96,6 +96,7 @@ const NewTeam = ({user}) => {
                                      label={I18n.t("newTeam.description")}/>
                         <MDEditor
                             value={team.description || ""}
+                            textareaProps={{placeholder:I18n.t("newTeam.placeholders.markDown")}}
                             onChange={val => setTeam({...team, description: val})}
                         />
                     </div>
@@ -133,13 +134,13 @@ const NewTeam = ({user}) => {
                         attribute: I18n.t("newTeam.backupEmail").toLowerCase()
                     })}/>}
 
-                    <InputField value={team.backupEmail || ""}
+                    <InputField value={team.invitationMessage || ""}
                                 onChange={e => {
-                                    setTeam({...team, backupEmail: e.target.value});
-                                    setErrors({errors, backupEmail: false})
+                                    setTeam({...team, invitationMessage: e.target.value});
                                 }}
-                                placeholder={I18n.t("newTeam.placeholders.backupEmail")}
-                                name={I18n.t("newTeam.backupEmail")}/>
+                                multiline={true}
+                                placeholder={I18n.t("newTeam.placeholders.invitationMessage")}
+                                name={I18n.t("newTeam.invitationMessage")}/>
 
                     <ButtonContainer>
                         <Button cancelButton={true}

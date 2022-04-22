@@ -56,6 +56,7 @@ I18n.translations.en = {
         description: "Team purpose",
         visibility: "Team privacy",
         backupEmail: "Backup admin",
+        invitationMessage: "Note",
         public: "Public team",
         publicInfo: "List team in public team index. Others can request membership",
         private: "Private team",
@@ -63,7 +64,9 @@ I18n.translations.en = {
         object: "Team",
         placeholders: {
             name: "Enter name (can not be altered)",
-            backupEmail: "Email of the backup admin",
+            markDown: "Markdown supported",
+            backupEmail: "Email(s) of the backup admin",
+            invitationMessage: "Message for your backup admin"
         },
         tooltips: {
             description: "The purpose of the team. Will be show to new members who accept an invitation."

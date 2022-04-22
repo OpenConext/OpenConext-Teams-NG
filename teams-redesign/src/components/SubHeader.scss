@@ -5,12 +5,13 @@ div.sub-header-container {
     @extend .component-container;
     background-color: $tertiary-grey;
 
-    &.child {
-        padding-top: 0;
-    }
     div.sub-header {
         @extend .inner-component;
         flex-direction: column;
+
+        &.child {
+            padding-top: 0;
+        }
     }
 }
 

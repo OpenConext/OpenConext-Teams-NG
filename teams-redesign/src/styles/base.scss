@@ -1,5 +1,12 @@
 @import "./vars.scss";
 
-input::placeholder {
+input::placeholder, textarea::placeholder {
   color: #919191;
 }
+
+textarea {
+  font-family: "Source Sans Pro", sans-serif !important;
+  background-color: white;
+  font-size: 16px;
+}
+
