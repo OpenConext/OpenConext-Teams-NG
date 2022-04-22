@@ -37,7 +37,20 @@ export const MyTeams = () => {
     }, []);
 
     useEffect(() => {
-        updateDisplayedTeams()
+        const updateDisplayedTeams = () => {
+            const toDisplay = teams.teamSummaries.filter(team => {
+                if (teamsFilter.value !== team.role && teamsFilter.value !== 'ALL') {
+                    return false;
+                }
+                return searchQuery === "" || team.name.toLowerCase().includes(searchQuery.toLowerCase());
+            })
+            toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
+            if (sort.direction !== "ascending") {
+                toDisplay.reverse()
+            }
+            setDisplayedTeams(toDisplay)
+        }
+        updateDisplayedTeams();
     }, [teams, searchQuery, teamsFilter, sort])
 
     const processDelete = (team, showConfirmation) => {
@@ -57,25 +70,6 @@ export const MyTeams = () => {
             })
         })
         setConfirmationOpen(false);
-    }
-
-    const updateDisplayedTeams = () => {
-        const toDisplay = teams.teamSummaries.filter(team => {
-            if (teamsFilter.value !== team.role && teamsFilter.value !== 'ALL') {
-                return
-            }
-
-            if (searchQuery === "") {
-                return team;
-            } else if (team.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-                return team
-            }
-        })
-        toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
-        if (sort.direction !== "ascending") {
-            toDisplay.reverse()
-        }
-        setDisplayedTeams(toDisplay)
     }
 
     const renderFilterDropdown = () => {
