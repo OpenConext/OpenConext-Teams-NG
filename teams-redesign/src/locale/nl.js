@@ -1,7 +1,7 @@
 import I18n from "i18n-js";
 
 I18n.translations.nl = {
-    code: "NL",
+    code: "EN",
     myteams: {
         tabs:{
             myteams:"My teams",
@@ -28,6 +28,10 @@ I18n.translations.nl = {
         member: "You're a member",
         confirmations: {
             delete: "Are you sure you want to delete this team?"
+        },
+        zeroStates: {
+            noTeams: "You are not yet a member of any Team",
+            noResults: "No teams were found for your search"
         }
     },
     profile: {
@@ -75,7 +79,9 @@ I18n.translations.nl = {
         tooltips: {
             description: "The purpose of the team. Will be show to new members who accept an invitation."
         },
-
+        flash: {
+            created: "Team {{name}} is created"
+        },
         create: "Create team"
     },
     forms: {
