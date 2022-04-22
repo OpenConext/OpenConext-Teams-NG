@@ -2,15 +2,7 @@
 
 div.team-actions {
     display: flex;
-    width: 50%;
 
-    @media (max-width: $width-app) {
-        width: 100%;
-    }
-
-    .button-container {
-        margin-left: auto;
-    }
 }
 
 div.team-details {

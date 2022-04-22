@@ -8,6 +8,7 @@ import { Page } from "../components/Page";
 import { DropDownMenu } from "../components/DropDownMenu";
 import { ReactComponent as SearchIcon } from "../icons/search.svg";
 import binIcon from "../icons/bin-1.svg";
+import { ReactComponent as BinIcon } from "../icons/bin-1.svg";
 import blockedIcon from "../icons/allowances-no-talking.svg";
 
 import "./MyTeams.scss"
@@ -61,7 +62,7 @@ export const MyTeams = () => {
 
     const updateDisplayedTeams = () => {
         const toDisplay = teams.teamSummaries.filter(team => {
-            if (teamsFilter.value != team.role && teamsFilter.value != 'ALL') {
+            if (teamsFilter.value !== team.role && teamsFilter.value !== 'ALL') {
                 return
             }
 
@@ -72,7 +73,7 @@ export const MyTeams = () => {
             }
         })
         toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
-        if (sort.direction != "ascending") {
+        if (sort.direction !== "ascending") {
             toDisplay.reverse()
         }
         setDisplayedTeams(toDisplay)
@@ -108,9 +109,11 @@ export const MyTeams = () => {
             })
         })
 
-        return (<span className={"filter-dropdown-span"}>
-            <DropDownMenu title={teamsFilter.label} actions={options} />
-        </span>)
+        return (
+            <span className={"filter-dropdown-span"}>
+                <DropDownMenu title={teamsFilter.label} actions={options.filter(option => option.count !== 0)}/>
+            </span>
+        )
     }
 
     const renderTeamsSearch = () => {
@@ -151,7 +154,11 @@ export const MyTeams = () => {
     }
 
     const renderDeleteButton = team => {
+<<<<<<< HEAD
         const icon = <img className="binIcon" src={binIcon} alt="Delete" onClick={() => processDelete(team, true)} />
+=======
+        const icon = <span className="bin-icon" onClick={() => processDelete(team, true)}><BinIcon/></span>
+>>>>>>> 14fa6bb (Boy scout rule for svg hover)
         return (<>{[ROLES.OWNER, ROLES.ADMIN].includes(team.role) ? icon : I18n.t("myteams.empty")}</>)
     }
 
