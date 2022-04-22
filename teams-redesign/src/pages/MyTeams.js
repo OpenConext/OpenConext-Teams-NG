@@ -177,7 +177,7 @@ export const MyTeams = () => {
             <Tabs>
                 <Tab title={I18n.t(`myteams.tabs.myteams`)}>
 
-                    <h2>My teams</h2>
+                    <h2>{I18n.t("myteams.tabs.myteams")}</h2>
                     <span
                         className="team-actions-bar"> {renderFilterDropdown()}{renderTeamsSearch()}{renderNewTeamButton()}
                     </span>
@@ -200,7 +200,7 @@ export const MyTeams = () => {
                     </table>
                 </Tab>
                 <Tab title={I18n.t(`myteams.tabs.publicteams`)}>
-                    public teams
+                    <h2>{I18n.t("myteams.tabs.publicteams")}</h2>
                 </Tab>
             </Tabs>
         </Page>)

@@ -5,7 +5,7 @@ I18n.translations.en = {
     myteams: {
         tabs:{
             myteams:"My teams",
-            publicteams:"Public Teams"
+            publicteams:"Public teams"
         },
         columns: {
             title: "Title",
