@@ -2,16 +2,21 @@
 @import "../styles/responsive";
 
 div.sub-header-container {
+  margin-left: -20vw;
+  margin-right: -20vw;
+
+  .sub-header-inner {
     @extend .component-container;
     background-color: $tertiary-grey;
 
     div.sub-header {
-        @extend .inner-component;
-        flex-direction: column;
+      @extend .inner-component;
+      flex-direction: column;
 
-        &.child {
-            padding-top: 0;
-        }
+      &.child {
+        padding-top: 0;
+      }
     }
+  }
 }
 

@@ -1,0 +1,17 @@
+@import "../styles/vars.scss";
+
+span.private-label {
+  border: 1px solid $quaternary-grey;
+  border-radius: 25px;
+  height: 20px;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: white;
+
+  svg {
+    margin-right: 5px;
+    margin-bottom: 3px;
+    width: 15px;
+    vertical-align: middle;
+  }
+}

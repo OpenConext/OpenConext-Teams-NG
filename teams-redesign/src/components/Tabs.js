@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./Tabs.scss";
 
-export const Tab = ({ title, children }) => {
-
+export const Tab = ({title, children}) => {
     return (
-        { children }
+        {children}
     );
 };
 
 
-export const Tabs = ({ children }) => {
+export const Tabs = ({children}) => {
     const [activeTab, setActiveTab] = useState(0);
     return (
         <div className="tabs">
-            <ul className="nav">
-                {children.map((tab, index) => {
-                    return <TabNavItem key={index} title={tab.props.title} id={index} activeTab={activeTab} setActiveTab={setActiveTab} />
-                })}
-            </ul>
+            <div className={"tabs-nav-wrapper"}>
+                <ul className="nav">
+                    {children.map((tab, index) => {
+                        return <TabNavItem key={index} title={tab.props.title} id={index} activeTab={activeTab}
+                                           setActiveTab={setActiveTab}/>
+                    })}
+                </ul>
+            </div>
 
             <div className="tab-display">
                 {children.map((tab, index) => {
@@ -30,7 +32,7 @@ export const Tabs = ({ children }) => {
     );
 };
 
-const TabNavItem = ({ id, title, activeTab, setActiveTab }) => {
+const TabNavItem = ({id, title, activeTab, setActiveTab}) => {
 
     const handleClick = () => {
         setActiveTab(id);
@@ -43,7 +45,7 @@ const TabNavItem = ({ id, title, activeTab, setActiveTab }) => {
     );
 };
 
-const TabContent = ({ id, activeTab, children }) => {
+const TabContent = ({id, activeTab, children}) => {
     return (
         activeTab === id && <div className="TabContent">
             {children}

@@ -16,6 +16,7 @@ import {Tab, Tabs} from "../components/Tabs";
 import {SortableTable} from "../components/SortableTable";
 import {SearchBar} from "../components/SearchBar";
 import {PublicTeamsTab} from "../components/PublicTeamsTab";
+import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
 
 
 export const MyTeams = () => {
@@ -38,19 +39,6 @@ export const MyTeams = () => {
     }, []);
 
     useEffect(() => {
-        const updateDisplayedTeams = () => {
-            const toDisplay = teams.teamSummaries.filter(team => {
-                if (teamsFilter.value !== team.role && teamsFilter.value !== 'ALL') {
-                    return false;
-                }
-                return searchQuery === "" || team.name.toLowerCase().includes(searchQuery.toLowerCase());
-            })
-            toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
-            if (sort.direction !== "ascending") {
-                toDisplay.reverse()
-            }
-            setDisplayedTeams(toDisplay)
-        }
         updateDisplayedTeams();
     }, [teams, searchQuery, teamsFilter, sort])
 
@@ -141,18 +129,10 @@ export const MyTeams = () => {
             <td data-label={I18n.t("myteams.columns.title")}><Link to={`/team-details/${team.id}`}>{team.name}</Link>
             </td>
             <td data-label={I18n.t("myteams.columns.members")}>{team.membershipCount}</td>
-            <td data-label={I18n.t("myteams.columns.private")}>{renderPrivateTag(team.viewable)}</td>
+            <td data-label={I18n.t("myteams.columns.private")}>{!team.viewable && <PrivateTeamLabel/>}</td>
             <td data-label={I18n.t("myteams.columns.member")}>{renderAddMemberLink(team)}</td>
             <td data-label={I18n.t("myteams.columns.bin")}>{renderDeleteButton(team)}</td>
         </tr>)
-    }
-
-    const renderPrivateTag = viewable => {
-        const tag = <span className="private-label">
-            <span><img src={blockedIcon} alt="Private"/>{I18n.t("myteams.private")}</span>
-
-        </span>
-        return (<>{viewable ? I18n.t("myteams.empty") : tag}</>)
     }
 
     const renderAddMemberLink = team => {
@@ -214,9 +194,9 @@ export const MyTeams = () => {
                                                                  question={confirmation.question}/>}
 
                         {teams.teamSummaries.length === 0 &&
-                        <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
+                            <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
                         {(displayedTeams.length === 0 && teams.teamSummaries.length > 0) &&
-                        <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
+                            <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
                         }
                         {displayedTeams.length > 0 && <SortableTable columns={columns} setSort={setSort}>
                             {displayedTeams.map((team, index) => renderTeamsRow(team, index))}

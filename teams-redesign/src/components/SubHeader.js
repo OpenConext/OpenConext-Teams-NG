@@ -2,8 +2,10 @@ import "./SubHeader.scss";
 
 export const SubHeader = props =>
     <div className={"sub-header-container"}>
-        <div className={`sub-header ${props.child ? "child" : ""}`}>
-            {props.children}
+        <div className={"sub-header-inner"}>
+            <div className={`sub-header ${props.child ? "child" : ""}`}>
+                {props.children}
+            </div>
         </div>
 
     </div>

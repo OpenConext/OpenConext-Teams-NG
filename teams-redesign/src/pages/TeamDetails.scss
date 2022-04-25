@@ -1,11 +1,140 @@
 @import "../styles/vars.scss";
 
 div.team-actions {
-    display: flex;
+  display: flex;
+  position: relative;
+
+  p {
+    white-space: pre-line;
+  }
+
+  span.team-access-bar {
+    display: block;
+    margin: 20px 0 20px 0;
+
+    .private-label {
+      margin-right: 10px;
+    }
+
+    .urn-container {
+      height: 10px;
+      border: solid $quaternary-grey 1px;
+      border-radius: 5px;
+
+      label {
+        padding: 10px;
+        font-size: 12px;
+        color: $secondary-grey;
+        vertical-align: middle;
+        margin-bottom: 2px;
+      }
+
+      span {
+        border-left: solid $quaternary-grey 1px;
+        padding: 0 4px 0 4px;
+
+        &:hover {
+          background-color: $hover-blue;
+          cursor: pointer;
+
+          svg {
+            fill: white;
+          }
+        }
+
+        &:active {
+          background-color: $light-blue;
+        }
+
+      }
+
+      svg {
+        width: 13px;
+        vertical-align: middle;
+        margin-bottom: 2px;
+        fill: $inactive-grey;
+
+      }
+
+    }
+  }
 
 }
 
-div.team-details {
+div.team-members {
+  .team-actions-bar {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    margin-bottom: 10px;
 
+    .filter-dropdown-span {
+      width: 250px;
+      margin-right: 30px;
+    }
+    .search-bar{
+        margin-right: vw;
+    }
 
+    span.hide-invitees-wrapper{
+        display: flex;
+        padding: 15px;
+        column-gap: 10px;
+        vertical-align: middle;
+        .hide-invitees-checkbox{
+            transform: scale(1.5);
+            background-color: red;
+        }
+    }
+  }
+
+  .sortable-table {
+    width: 100%;
+    table-layout: fixed;
+
+    th {
+      &.name {
+        width: 30%;
+      }
+
+      &.idp {
+        width: 10%;
+      }
+
+      &.email {
+        width: 50%;
+      }
+
+      &.role {
+        width: 20%;
+      }
+
+      &.joined {
+        width: 20%;
+      }
+
+      &.bin {
+        width: 10%;
+      }
+    }
+  }
+
+  span.idp_valid svg {
+    width: 20px;
+    color: $primary-blue;
+  }
+
+  span.idp_invalid svg {
+    width: 20px;
+    color: $secondary-grey;
+  }
+
+  span.bin-icon svg {
+    width: 20px;
+    cursor: pointer;
+
+    &:hover {
+      color: $primary-red;
+    }
+  }
 }

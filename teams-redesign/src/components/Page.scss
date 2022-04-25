@@ -2,12 +2,13 @@
 @import "../styles/responsive";
 
 div.page-container {
-    @extend .component-container;
-    background-color: white;
+  @extend .component-container;
+  background-color: white;
 
-    div.page {
-        @extend .inner-component;
-        flex-direction: column;
-    }
+  div.page {
+    @extend .inner-component;
+    flex-direction: column;
+    padding-top: 0;
+  }
 }
 

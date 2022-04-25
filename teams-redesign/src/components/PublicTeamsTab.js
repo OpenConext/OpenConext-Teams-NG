@@ -83,6 +83,9 @@ export const PublicTeamsTab = ({myteams}) => {
                         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
                     </span>
             <SortableTable columns={columns} setSort={setSort}>
+                {(displayedTeams.length === 0) &&
+                    <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
+                }
                 {displayedTeams.map((team, index) => renderPublicTeamsRow(team, index))}
             </SortableTable>
         </div>

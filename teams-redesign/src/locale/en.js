@@ -43,6 +43,26 @@ I18n.translations.en = {
         joinRequest: "Request to join",
         alreadyMember: "Already a member"
     },
+    teamDetails: {
+        hideInvitees:"Hide invitees",
+        noInvitees:"No invitees to hide",
+        columns: {
+            name: "Name",
+            idp: "IdP",
+            email: "Email",
+            role: "Role",
+            joined: "Joined",
+            bin: ""
+        },
+        filters: {
+            all: 'All Members',
+            owner: "Owners",
+            admin: "Admins",
+            manager: "Managers",
+            member: "Members",
+            invitee: "Invitees"
+        }
+    },
     profile: {
         admin: "Admin",
         guest: "Guest",

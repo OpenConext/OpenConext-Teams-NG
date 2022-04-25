@@ -1,38 +1,48 @@
 @import "../styles/vars";
+@import "../styles/responsive";
 
 .tabs {
-    width: 100%;
+  width: 100%;
+}
+
+div.tabs-nav-wrapper {
+  display: flex;
+  padding-top: 40px;
+  margin-left: -20vw;
+  margin-right: -20vw;
+  background-color: $tertiary-grey;
+  justify-content: center;
 }
 
 ul.nav {
-    width: 100%;
-    margin: 0 auto 2rem;
-    display: flex;
-    align-items: center;
-    padding-left: 0;
-    column-gap: 10px;
+  @extend .component-container;
+  width: $width-app;
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+  column-gap: 10px;
 
-    @media (max-width: 768px) {
-        width: 90%;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+
+  li {
+    background-color: $quinary-grey;
+    border-top: 3px solid $quinary-grey;
+    padding: 0.45rem 1rem 0.5rem 1rem;
+    list-style: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.7s;
+
+    &:hover {
+      background: $primary-grey;
     }
 
-    li {
-        background-color: $quinary-grey;
-        border-top: 3px solid $quinary-grey;
-        padding: 0.45rem 1rem 0.5rem 1rem;
-        list-style: none;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.7s;
-
-        &:hover {
-            background: $primary-grey;
-        }
-
-        &.active {
-            background: white;
-            border-top: 3px solid $primary-green;
-            cursor: default;
-        }
+    &.active {
+      background: white;
+      border-top: 3px solid $primary-green;
+      cursor: default;
     }
+  }
 }
