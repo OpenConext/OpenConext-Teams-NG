@@ -3,7 +3,7 @@ import {SubHeader} from "../components/SubHeader";
 import {BreadCrumb} from "../components/BreadCrumb";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getTeamDetail} from "../api";
+import {deleteInvitation, deleteMember, getTeamDetail} from "../api";
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
 import {actionDropDownTitle, getRole, ROLES} from "../utils/roles";
@@ -13,10 +13,12 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 import {ReactComponent as CopyIcon} from "../icons/copy.svg";
 import {ReactComponent as BinIcon} from "../icons/bin-1.svg";
 import {ReactComponent as IDPIcon} from "../icons/single-neutral-id-card-3.svg";
+import {ReactComponent as EmailIcon} from "../icons/email-action-send-2.svg";
 import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
 import {SortableTable} from "../components/SortableTable";
 import {SearchBar} from "../components/SearchBar";
 import {DropDownMenu} from "../components/DropDownMenu";
+import {Button} from "../components/Button";
 
 const TeamDetail = ({user}) => {
     const params = useParams();
@@ -25,6 +27,7 @@ const TeamDetail = ({user}) => {
     const [membersFilter, setMembersFilter] = useState({value: "ALL", label: ""});
     const [team, setTeam] = useState({memberships: [], invitations: []});
     const [sort, setSort] = useState({field: "created", direction: "ascending"});
+    const [alerts, setAlerts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [memberList, setMembersList] = useState([]);
     const [displayedMembers, setDisplayedMembers] = useState([]);
@@ -35,16 +38,7 @@ const TeamDetail = ({user}) => {
     const [confirmationOpen, setConfirmationOpen] = useState(false);
 
     useEffect(() => {
-        getTeamDetail(params.teamId)
-            .then((res) => {
-                if (res.memberships) {
-                    setTeam(res);
-                    setLoaded(true);
-                } else {
-                    navigate(`/join-request/${params.teamId}`);
-                }
-            })
-            .catch(() => navigate("/404"));
+        updateTeam();
     }, [params.teamId, navigate]);
 
     useEffect(() => {
@@ -52,13 +46,35 @@ const TeamDetail = ({user}) => {
     }, [team, hideInvitees]);
 
     useEffect(() => {
-        updateDisplayedMemners();
+        updateDisplayedMembers();
     }, [memberList, sort, searchQuery, membersFilter]);
 
     useEffect(() => {
         const userMembership = team.memberships.find(membership => membership.person.id === user.person.id);
         setUserRoleInTeam(userMembership ? userMembership.role : ROLES.MEMBER);
     }, [team]);
+
+    useEffect(() => {
+        updateAlertBanners()
+    }, [memberList])
+
+    const updateTeam = () => {
+        getTeamDetail(params.teamId)
+            .then((res) => {
+                if (res.memberships) {
+                    const totalMembers = res.invitations ? res.invitations.length + res.memberships.length : res.memberships.length;
+                    setTeam(res);
+                    setMembersFilter(
+                        {
+                            value: "ALL", label: `${I18n.t(`teamDetails.filters.all`)} (${totalMembers})`
+                        });
+                    setLoaded(true);
+                } else {
+                    navigate(`/join-request/${params.teamId}`);
+                }
+            })
+            .catch(() => navigate("/404"));
+    }
 
     const updateMembersList = () => {
         if (hideInvitees || !team.invitations) {
@@ -71,7 +87,8 @@ const TeamDetail = ({user}) => {
                         person: {name: "-", email: invitation.email},
                         created: invitation.timestamp / 1000,
                         isInvitation: true,
-                        role: invitation.intendedRole
+                        role: invitation.intendedRole,
+                        invitationID: invitation.id,
                     })
                 }
                 return filtered;
@@ -81,7 +98,7 @@ const TeamDetail = ({user}) => {
         setMembersList(members)
     }
 
-    const updateDisplayedMemners = () => {
+    const updateDisplayedMembers = () => {
         const getSortField = (targetObject) => {
             return (sort.field.split('.').reduce((p, c) => p && p[c] || null, targetObject))
         }
@@ -103,6 +120,27 @@ const TeamDetail = ({user}) => {
             toDisplay.reverse()
         }
         setDisplayedMembers(toDisplay);
+    }
+
+    const updateAlertBanners = () => {
+        const pengingAlerts = [];
+        const adminAlert = memberList.filter(member => member.role === ROLES.ADMIN).length < 2;
+        if (adminAlert) {
+            pengingAlerts.push(<span>{I18n.t(`teamDetails.alerts.singleAdmin`)}</span>);
+        }
+        setAlerts(pengingAlerts);
+    }
+
+    const renderAlertBanners = () => {
+        return (
+            alerts.map(alert => {
+                return <div className="alert-banner-wrapper">
+                    <span className="alert-banner">
+                    {alert}
+                    </span>
+                </div>
+            })
+        )
     }
 
     const renderFilterDropdown = () => {
@@ -145,11 +183,27 @@ const TeamDetail = ({user}) => {
         )
     }
 
-    const processDelete = member => {
-
+    const processRemoveMember = (member, showConfirmation) => {
+        if (showConfirmation) {
+            setConfirmation({
+                cancel: () => setConfirmationOpen(false),
+                action: () => processRemoveMember(member, false),
+                warning: false,
+                question: I18n.t("teamDetails.confirmations.removeMember")
+            });
+            setConfirmationOpen(true);
+            return;
+        }
+        if (member.isInvitation) {
+            deleteInvitation(member.invitationID).then(updateTeam);
+        } else {
+            deleteMember(member.id).then(updateTeam);
+        }
+        setConfirmationOpen(false);
     }
+
     const renderDeleteButton = member => {
-        const icon = <span className="bin-icon" onClick={() => processDelete(team, true)}><BinIcon/></span>
+        const icon = <span className="bin-icon" onClick={() => processRemoveMember(member, true)}><BinIcon/></span>
         return (<>{[ROLES.OWNER, ROLES.ADMIN].includes(userRoleInTeam) ? icon : I18n.t("myteams.empty")}</>)
     }
     const getDateString = timestamp => {
@@ -200,7 +254,19 @@ const TeamDetail = ({user}) => {
         )
     }
 
+    const setRole = (member, role) => {
+
+    }
+
     const renderMembersRow = (member, index) => {
+        const roleActions = [ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER].map((role) => {
+            return {
+                name: role,
+                action: () => {
+                    setRole(member, role)
+                }
+            }
+        });
         return (<tr key={index}>
             <td data-label={I18n.t(`teamDetails.columns.name`)}>{member.person.name}</td>
             <td data-label={I18n.t(`teamDetails.columns.idp`)}>
@@ -209,9 +275,19 @@ const TeamDetail = ({user}) => {
                     </span>
             </td>
             <td data-label={I18n.t(`teamDetails.columns.email`)}>{member.person.email}</td>
-            <td data-label={I18n.t(`teamDetails.columns.role`)}>{member.role}</td>
-            <td data-label={I18n.t(`teamDetails.columns.joined`)}>{getDateString(member.created)}</td>
-            <td data-label={I18n.t(`teamDetails.columns.bin`)}>{renderDeleteButton()}</td>
+            <td data-label={I18n.t(`teamDetails.columns.role`)} className="roles-entry">
+                {
+                    userRoleInTeam === ROLES.ADMIN ?
+                        <DropDownMenu title={member.role} actions={roleActions}/> : member.role
+                }
+            </td>
+            <td data-label={I18n.t(`teamDetails.columns.joined`)} className="joined-entry">
+                <span className="joined-wrapper">
+                    {getDateString(member.created)}
+                    {member.isInvitation && <span>{I18n.t(`teamDetails.inviteSent`)}<EmailIcon/></span>}
+                </span>
+            </td>
+            <td data-label={I18n.t(`teamDetails.columns.bin`)}>{renderDeleteButton(member)}</td>
         </tr>)
     }
 
@@ -298,7 +374,9 @@ const TeamDetail = ({user}) => {
                     question={confirmation.question}
                 />
             )}
+            {renderAlertBanners()}
             <div className="team-members">
+                <h2>Members ({memberList.length})</h2>
                 <span className="team-actions-bar">
                     {renderFilterDropdown()}
                     <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
@@ -306,13 +384,19 @@ const TeamDetail = ({user}) => {
                         <input
                             className="hide-invitees-checkbox"
                             type="checkbox"
-                            disabled={(team.invitations && team.invitations.length >0)?"":"disabled"}
+                            disabled={(team.invitations && team.invitations.length > 0) ? "" : "disabled"}
                             checked={hideInvitees}
                             onChange={() => {
                                 setHideInvitees(!hideInvitees)
                             }}
                         />
-                        {(team.invitations && team.invitations.length>0)?I18n.t("teamDetails.hideInvitees"):I18n.t("teamDetails.noInvitees")}
+                        {(team.invitations && team.invitations.length > 0) ? I18n.t("teamDetails.hideInvitees") : I18n.t("teamDetails.noInvitees")}
+                    </span>
+                    <span className="action-button-wrapper">
+                    <Button onClick={() => navigate("/home")} txt={I18n.t(`teamDetails.includeTeam`)}
+                            className="include-team-button"/>
+                    <Button onClick={() => navigate("/home")} txt={I18n.t(`teamDetails.addMembers`)}
+                            className="add-member-button"/>
                     </span>
                 </span>
                 {renderMembersTable()}

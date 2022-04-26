@@ -2,8 +2,8 @@
 @import "../styles/responsive";
 
 div.sub-header-container {
-  margin-left: -20vw;
-  margin-right: -20vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 
   .sub-header-inner {
     @extend .component-container;

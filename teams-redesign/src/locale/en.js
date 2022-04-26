@@ -44,8 +44,12 @@ I18n.translations.en = {
         alreadyMember: "Already a member"
     },
     teamDetails: {
-        hideInvitees:"Hide invitees",
-        noInvitees:"No invitees to hide",
+        hideInvitees: "Hide invitees",
+        noInvitees: "No invitees",
+        inviteSent: "invite sent",
+        alerts: {singleAdmin: "It’s recommended to add at least one other administrator besides yourself."},
+        addMembers: "Add members",
+        includeTeam: "Include team",
         columns: {
             name: "Name",
             idp: "IdP",
@@ -61,6 +65,9 @@ I18n.translations.en = {
             manager: "Managers",
             member: "Members",
             invitee: "Invitees"
+        },
+        confirmations: {
+            removeMember: "Are you sure you want to remove this member?"
         }
     },
     profile: {
