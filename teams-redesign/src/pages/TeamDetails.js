@@ -1,9 +1,9 @@
 import {Page} from "../components/Page";
 import {SubHeader} from "../components/SubHeader";
 import {BreadCrumb} from "../components/BreadCrumb";
-import {useNavigate, useParams} from "react-router-dom";
+import {Route, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {deleteInvitation, deleteMember, getTeamDetail} from "../api";
+import {deleteInvitation, deleteMember, deleteTeam, getTeamDetail} from "../api";
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
 import {actionDropDownTitle, getRole, ROLES} from "../utils/roles";
@@ -124,7 +124,7 @@ const TeamDetail = ({user}) => {
 
     const updateAlertBanners = () => {
         const pengingAlerts = [];
-        const adminAlert = memberList.filter(member => member.role === ROLES.ADMIN).length < 2;
+        const adminAlert = memberList.filter(member => member.role === ROLES.ADMIN).length < 2 && [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam);
         if (adminAlert) {
             pengingAlerts.push(<span>{I18n.t(`teamDetails.alerts.singleAdmin`)}</span>);
         }
@@ -247,6 +247,9 @@ const TeamDetail = ({user}) => {
                 sortable: false
             }
         ]
+        if (![ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam)) {
+            columns.splice(1, 1)
+        }
         return (
             <SortableTable columns={columns} setSort={setSort}>
                 {displayedMembers.map((member, index) => renderMembersRow(member, index))}
@@ -267,28 +270,34 @@ const TeamDetail = ({user}) => {
                 }
             }
         });
-        return (<tr key={index}>
-            <td data-label={I18n.t(`teamDetails.columns.name`)}>{member.person.name}</td>
-            <td data-label={I18n.t(`teamDetails.columns.idp`)}>
-                <span className={`idp_${member.person.guest ? "invalid" : "valid"}`}>
-                <IDPIcon/>
-                    </span>
-            </td>
-            <td data-label={I18n.t(`teamDetails.columns.email`)}>{member.person.email}</td>
-            <td data-label={I18n.t(`teamDetails.columns.role`)} className="roles-entry">
-                {
-                    userRoleInTeam === ROLES.ADMIN ?
-                        <DropDownMenu title={member.role} actions={roleActions}/> : member.role
+        return (
+            <tr key={index}>
+                <td data-label={I18n.t(`teamDetails.columns.name`)}>{member.person.name}</td>
+                {[ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam) &&
+                    <td data-label={I18n.t(`teamDetails.columns.idp`)}>
+                        <span className={`idp_${member.person.guest ? "invalid" : "valid"}`}>
+                            <IDPIcon/>
+                        </span>
+                    </td>
                 }
-            </td>
-            <td data-label={I18n.t(`teamDetails.columns.joined`)} className="joined-entry">
-                <span className="joined-wrapper">
-                    {getDateString(member.created)}
-                    {member.isInvitation && <span>{I18n.t(`teamDetails.inviteSent`)}<EmailIcon/></span>}
-                </span>
-            </td>
-            <td data-label={I18n.t(`teamDetails.columns.bin`)}>{renderDeleteButton(member)}</td>
-        </tr>)
+                <td data-label={I18n.t(`teamDetails.columns.email`)}>{member.person.email}</td>
+                <td data-label={I18n.t(`teamDetails.columns.role`)} className="roles-entry">
+                    {userRoleInTeam === ROLES.ADMIN && !member.isInvitation?
+                        <DropDownMenu title={member.role} actions={roleActions}/> : member.role
+                    }
+                </td>
+                <td data-label={I18n.t(`teamDetails.columns.joined`)} className="joined-entry">
+                    <span className="joined-wrapper">
+                        {getDateString(member.created)}
+                        {member.isInvitation && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) &&
+                            <span>
+                                {I18n.t(`teamDetails.inviteSent`)}<EmailIcon/>
+                            </span>}
+                    </span>
+                </td>
+                <td data-label={I18n.t(`teamDetails.columns.bin`)}>{renderDeleteButton(member)}</td>
+            </tr>
+        )
     }
 
 
@@ -302,14 +311,29 @@ const TeamDetail = ({user}) => {
             });
             setConfirmationOpen(true);
         } else {
-            alert("Leave team");
+            deleteMember(
+                team.memberships.find(membership => membership.person.id === user.person.id).id
+            ).then(() => {
+                navigate("/my-teams")
+            })
         }
     };
 
-    const deleteTeam = () => {
-        //TODO - show confirmation
-        alert("Leave team");
-    };
+    const processDeleteTeam = (showConfirmation) => {
+        if (showConfirmation) {
+            setConfirmation({
+                cancel: () => setConfirmationOpen(false),
+                action: () => processDeleteTeam(false),
+                warning: false,
+                question: I18n.t("myteams.confirmations.delete")
+            });
+            setConfirmationOpen(true);
+            return;
+        }
+        deleteTeam(team.id).then(() => {
+            navigate("/my-teams")
+        })
+    }
 
     const getActions = () => {
         const actions = [
@@ -322,7 +346,7 @@ const TeamDetail = ({user}) => {
         if (role === ROLES.ADMIN || role === ROLES.OWNER) {
             actions.push({
                 name: I18n.t("details.delete"),
-                action: deleteTeam,
+                action: () => processDeleteTeam(true),
             });
         }
         return actions;
@@ -380,24 +404,29 @@ const TeamDetail = ({user}) => {
                 <span className="team-actions-bar">
                     {renderFilterDropdown()}
                     <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
-                    <span className="hide-invitees-wrapper">
-                        <input
-                            className="hide-invitees-checkbox"
-                            type="checkbox"
-                            disabled={(team.invitations && team.invitations.length > 0) ? "" : "disabled"}
-                            checked={hideInvitees}
-                            onChange={() => {
-                                setHideInvitees(!hideInvitees)
-                            }}
-                        />
-                        {(team.invitations && team.invitations.length > 0) ? I18n.t("teamDetails.hideInvitees") : I18n.t("teamDetails.noInvitees")}
-                    </span>
-                    <span className="action-button-wrapper">
-                    <Button onClick={() => navigate("/home")} txt={I18n.t(`teamDetails.includeTeam`)}
-                            className="include-team-button"/>
-                    <Button onClick={() => navigate("/home")} txt={I18n.t(`teamDetails.addMembers`)}
-                            className="add-member-button"/>
-                    </span>
+                    {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) &&
+                        <span className="hide-invitees-wrapper">
+                            <input
+                                className="hide-invitees-checkbox"
+                                type="checkbox"
+                                disabled={(team.invitations && team.invitations.length > 0) ? "" : "disabled"}
+                                checked={hideInvitees}
+                                onChange={() => {
+                                    setHideInvitees(!hideInvitees)
+                                }}
+                            />
+                            {
+                                (team.invitations && team.invitations.length > 0) ? I18n.t("teamDetails.hideInvitees") :
+                                    I18n.t("teamDetails.noInvitees")
+                            }
+                        </span>}
+                    {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) &&
+                        <span className="action-button-wrapper">
+                            <Button onClick={() => navigate("/home")} txt={I18n.t(`teamDetails.includeTeam`)}
+                                    className="include-team-button"/>
+                            <Button onClick={() => navigate("/home")} txt={I18n.t(`teamDetails.addMembers`)}
+                                    className="add-member-button"/>
+                        </span>}
                 </span>
                 {renderMembersTable()}
             </div>
