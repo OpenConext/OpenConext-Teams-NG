@@ -19,6 +19,7 @@ import {SortableTable} from "../components/SortableTable";
 import {SearchBar} from "../components/SearchBar";
 import {DropDownMenu} from "../components/DropDownMenu";
 import {Button} from "../components/Button";
+import { AddTeamMembersForm } from "../components/addTeamMembersForm";
 
 const TeamDetail = ({user}) => {
     const params = useParams();
@@ -27,6 +28,7 @@ const TeamDetail = ({user}) => {
     const [membersFilter, setMembersFilter] = useState({value: "ALL", label: ""});
     const [team, setTeam] = useState({memberships: [], invitations: []});
     const [sort, setSort] = useState({field: "created", direction: "ascending"});
+    const [showAddMembersForm,setShowAddMembersForm] = useState(false);
     const [alerts, setAlerts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [memberList, setMembersList] = useState([]);
@@ -369,7 +371,7 @@ const TeamDetail = ({user}) => {
             <SubHeader>
                 <div className="team-actions">
                     <div>
-                        <h1>{team.name}</h1>
+                        <h1 onClick={()=>setShowAddMembersForm(false)}>{team.name}</h1>
                         <span className="team-access-bar">
                             {!team.viewable && <PrivateTeamLabel/>}
                             <span className="urn-container">
@@ -399,7 +401,7 @@ const TeamDetail = ({user}) => {
                 />
             )}
             {renderAlertBanners()}
-            <div className="team-members">
+            {!showAddMembersForm && <div className="team-members">
                 <h2>Members ({memberList.length})</h2>
                 <span className="team-actions-bar">
                     {renderFilterDropdown()}
@@ -424,12 +426,14 @@ const TeamDetail = ({user}) => {
                         <span className="action-button-wrapper">
                             <Button onClick={() => navigate("/home")} txt={I18n.t(`teamDetails.includeTeam`)}
                                     className="include-team-button"/>
-                            <Button onClick={() => navigate("/home")} txt={I18n.t(`teamDetails.addMembers`)}
+                            <Button onClick={() => setShowAddMembersForm(true)} txt={I18n.t(`teamDetails.addMembers`)}
                                     className="add-member-button"/>
                         </span>}
                 </span>
                 {renderMembersTable()}
             </div>
+            }
+            {    showAddMembersForm && <AddTeamMembersForm team={team}/>}
         </Page>
     );
 };
