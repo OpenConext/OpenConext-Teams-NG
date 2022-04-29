@@ -20,14 +20,26 @@ div.add-members-form-container {
       a {
         width: 60px;
         height: 48px;
-        margin-top: auto;
         margin-left: 15px;
+      }
+    }
+
+    span.upload-email-filelink {
+      margin-top: 5px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      small {
+        color: $primary-blue;
       }
     }
   }
 
   div.configure-roles-wrapper {
     ul {
+      max-height: 20vh;
 
       li {
         display: flex;
@@ -51,21 +63,33 @@ div.add-members-form-container {
         .dropdown-menu-container {
           width: 140px;
 
+          ul {
+            column-gap: 0;
+          }
+
+          li {
+            height: 48px;
+            padding: 0;
+            margin: 0;
+            column-gap: 0;
+          }
+
           .dropdown-control {
             height: 48px;
             padding-left: 8px;
             border: solid 1px $secondary-grey;
             border-radius: 8px;
             color: $inactive-grey;
+          }
 
-            .dropwdown-menu-items {
-              height: 48px;
-            }
+          .dropwdown-menu-items {
+            border: solid 1px $secondary-grey;
+            border-radius: 8px;
+            color: $inactive-grey;
+          }
 
-            svg {
-              width: 17px;
-            }
-          ;
+          svg {
+            width: 17px;
           }
         }
 
@@ -95,5 +119,53 @@ div.add-members-form-container {
         }
       }
     }
+  }
+
+  div.extra-info-wrapper {
+    .extra-info-header {
+      display: flex;
+      max-width: 550px;
+
+      small {
+        margin: 45px 0 20px auto;
+        color: $quaternary-grey;
+      }
+    }
+
+    .custom-message-input {
+      padding: $padding-app;
+      width: 555px;
+      height: 140px;
+      resize: both;
+      border: solid $quaternary-grey 1px;
+      border-radius: 6px;
+      background-color: white;
+
+      &:focus {
+        outline: none;
+        border: solid $quaternary-grey 1px;
+        box-shadow: none;
+      }
+    }
+  }
+
+  div.language-selection-wrapper {
+    span.language-selection-buttons {
+      display: flex;
+      max-width: 180px;
+      justify-content: space-between;
+    }
+
+    input {
+      margin-right: 10px;
+    }
+  }
+
+  span.submit-button-wrapper {
+    display: flex;
+    justify-content: right;
+    column-gap: 15px;
+    margin-top: 40px;
+    max-width: 555px;
   }
 }

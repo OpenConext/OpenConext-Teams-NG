@@ -1,6 +1,13 @@
 import I18n from "i18n-js";
 
 I18n.translations.en = {
+    fileUploadDialog: {
+        title: "Upload file",
+        buttons: {
+            cancel: "cancel",
+            upload: "upload"
+        }
+    },
     code: "EN",
     myteams: {
         tabs: {
@@ -48,7 +55,34 @@ I18n.translations.en = {
         noInvitees: "No invitees",
         inviteSent: "invite sent",
         alerts: {singleAdmin: "It’s recommended to add at least one other administrator besides yourself."},
-        addMembers: "Add members",
+        addMembers: {
+            uploadFile: "You can also upload a csv or txt file.",
+            invitationExpiry: "Invitation expires after 30 days",
+            headers: {
+                addMembersHeader: "Add Members",
+                addRolesHeader: "Add roles",
+                additionalInformationHeader: "Additional information",
+                invitationLanguageHeader: "Invitation language"
+            },
+            buttons: {
+                add: "Add members",
+                sendInvite: "Send invite",
+                cancel: "cancel",
+                addEmails: "Add",
+                languageRadio: {
+                    dutch: "Dutch",
+                    english: "English"
+                }
+            },
+            placeholders: {
+                emails: "Emails, comma seperated",
+                customMessage: "Add a personal note to your invitation"
+            },
+            errors: {
+                invalidEmails: "The following emails were invalid: {{attribute}}",
+                noInput: "At least one valid email is required"
+            }
+        },
         includeTeam: "Include team",
         columns: {
             name: "Name",

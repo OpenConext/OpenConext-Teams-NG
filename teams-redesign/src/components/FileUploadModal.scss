@@ -1,0 +1,115 @@
+@import "../styles/vars";
+
+.file-upload-dialog-overlay {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.85);
+  z-index: 99;
+
+  .file-upload-dialog-content {
+    background-color: rgb(245, 245, 245);
+    overflow: auto;
+    border-radius: $br;
+    outline: none;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 2px 2px 0 rgba(0, 0, 0, 0.3);
+
+    .dialog-header {
+      background-color: $tertiary-grey;
+      padding: 15px;
+      color: black;
+      font-size: large;
+      font-weight: bold;
+
+      &.warning {
+        background-color: $primary-red;
+      }
+
+      &.error {
+        background-color: $primary-red;
+      }
+    }
+
+    .dialog-content {
+      margin-top: 30px;
+      text-align: center;
+
+      input {
+        margin: 20px;
+        width: 500px;
+        height: 60px;
+        border: solid 1px $quinary-grey;
+        border-radius: 10px;
+
+        &::file-selector-button {
+          background-color: $tertiary-grey;
+          box-shadow: none;
+          margin-right: 20px;
+          padding: $padding-app;
+          border: none;
+          border-right: solid 1px $quinary-grey;
+          height: 60px;
+
+          &:hover {
+            background-color: $light-blue;
+          }
+        }
+      }
+
+      h2 {
+        padding: 15px 10px;
+        line-height: 22px;
+        font-size: 16px;
+        font-weight: normal;
+      }
+    }
+
+    .dialog-buttons {
+      margin: 20px;
+      justify-content: right;
+      display: flex;
+
+      a:not(:last-child) {
+        margin-right: 10px;
+      }
+
+      a:last-child {
+        margin-left: 10px;
+
+        &.orphan {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+}
+
+.ReactModalPortal .confirmation-dialog-overlay {
+  transition: opacity 250ms ease-in-out;
+
+  &--before-close {
+    opacity: 0;
+  }
+}
+
+.ReactModalPortal .confirmation-dialog-content {
+  transition: top 250ms ease-in-out, bottom 250ms ease-in-out;
+  max-width: 400px;
+
+  &.large-width {
+    max-width: 750px;
+  }
+
+  &--before-close {
+    top: -50%;
+    bottom: 100%;
+  }
+}

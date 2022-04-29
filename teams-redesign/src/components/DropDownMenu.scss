@@ -31,15 +31,11 @@
     border: 1px solid $primary-grey;
     border-radius: 4px;
 
-    &:focus {
-      outline: none;
-    }
-
-    ul {
+    ul.dropdown-list {
       width: 100%;
     }
 
-    li {
+    li.dropdown-list-items {
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -53,15 +49,19 @@
 
       &:hover {
         background-color: $background;
+      }
 
+      &:first-child:hover {
+        border-radius: 4px;
+      }
+
+      &:last-child:hover {
+        border-radius: 4px;
       }
 
       &:not(:first-child) {
         border-top: 0.5px solid $primary-grey;
       }
-
     }
-
   }
-
 }

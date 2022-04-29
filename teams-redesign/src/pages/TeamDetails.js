@@ -3,7 +3,12 @@ import {SubHeader} from "../components/SubHeader";
 import {BreadCrumb} from "../components/BreadCrumb";
 import {Route, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {deleteInvitation, deleteMember, deleteTeam, getTeamDetail} from "../api";
+import {
+    deleteInvitation,
+    deleteMember,
+    deleteTeam,
+    getTeamDetail,
+} from "../api";
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
 import {actionDropDownTitle, getRole, ROLES} from "../utils/roles";
@@ -19,16 +24,22 @@ import {SortableTable} from "../components/SortableTable";
 import {SearchBar} from "../components/SearchBar";
 import {DropDownMenu} from "../components/DropDownMenu";
 import {Button} from "../components/Button";
-import { AddTeamMembersForm } from "../components/addTeamMembersForm";
+import {AddTeamMembersForm} from "../components/addTeamMembersForm";
 
 const TeamDetail = ({user}) => {
     const params = useParams();
     const navigate = useNavigate();
     const [loaded, setLoaded] = useState(false);
-    const [membersFilter, setMembersFilter] = useState({value: "ALL", label: ""});
+    const [membersFilter, setMembersFilter] = useState({
+        value: "ALL",
+        label: "",
+    });
     const [team, setTeam] = useState({memberships: [], invitations: []});
-    const [sort, setSort] = useState({field: "created", direction: "ascending"});
-    const [showAddMembersForm,setShowAddMembersForm] = useState(false);
+    const [sort, setSort] = useState({
+        field: "created",
+        direction: "ascending",
+    });
+    const [showAddMembersForm, setShowAddMembersForm] = useState(false);
     const [alerts, setAlerts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [memberList, setMembersList] = useState([]);
@@ -52,31 +63,35 @@ const TeamDetail = ({user}) => {
     }, [memberList, sort, searchQuery, membersFilter]);
 
     useEffect(() => {
-        const userMembership = team.memberships.find(membership => membership.person.id === user.person.id);
+        const userMembership = team.memberships.find(
+            (membership) => membership.person.id === user.person.id
+        );
         setUserRoleInTeam(userMembership ? userMembership.role : ROLES.MEMBER);
     }, [team]);
 
     useEffect(() => {
-        updateAlertBanners()
-    }, [memberList])
+        updateAlertBanners();
+    }, [memberList]);
 
     const updateTeam = () => {
         getTeamDetail(params.teamId)
             .then((res) => {
                 if (res.memberships) {
-                    const totalMembers = res.invitations ? res.invitations.length + res.memberships.length : res.memberships.length;
+                    const totalMembers = res.invitations
+                        ? res.invitations.length + res.memberships.length
+                        : res.memberships.length;
                     setTeam(res);
-                    setMembersFilter(
-                        {
-                            value: "ALL", label: `${I18n.t(`teamDetails.filters.all`)} (${totalMembers})`
-                        });
+                    setMembersFilter({
+                        value: "ALL",
+                        label: `${I18n.t(`teamDetails.filters.all`)} (${totalMembers})`,
+                    });
                     setLoaded(true);
                 } else {
                     navigate(`/join-request/${params.teamId}`);
                 }
             })
             .catch(() => navigate("/404"));
-    }
+    };
 
     const updateMembersList = () => {
         if (hideInvitees || !team.invitations) {
@@ -84,106 +99,125 @@ const TeamDetail = ({user}) => {
             return;
         }
         const pendingMembers = team.invitations.reduce((filtered, invitation) => {
-                if (!invitation.expired) {
-                    filtered.push({
-                        person: {name: "-", email: invitation.email},
-                        created: invitation.timestamp / 1000,
-                        isInvitation: true,
-                        role: invitation.intendedRole,
-                        invitationID: invitation.id,
-                    })
-                }
-                return filtered;
-            }, []
-        )
+            if (!invitation.expired) {
+                filtered.push({
+                    person: {name: "-", email: invitation.email},
+                    created: invitation.timestamp / 1000,
+                    isInvitation: true,
+                    role: invitation.intendedRole,
+                    invitationID: invitation.id,
+                });
+            }
+            return filtered;
+        }, []);
         const members = [...team.memberships].concat(pendingMembers);
-        setMembersList(members)
-    }
+        setMembersList(members);
+    };
 
     const updateDisplayedMembers = () => {
         const getSortField = (targetObject) => {
-            return (sort.field.split('.').reduce((p, c) => p && p[c] || null, targetObject))
-        }
-        const toDisplay = memberList.filter(member => {
-                if (membersFilter.value !== member.role && membersFilter.value !== 'ALL') {
-                    if (!(membersFilter.value == "INVITEE" && member.isInvitation)) {
-                        return
-                    }
-                }
-                if (searchQuery === "") {
-                    return member;
-                } else if (member.person.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-                    return member;
+            return sort.field
+                .split(".")
+                .reduce((p, c) => (p && p[c]) || null, targetObject);
+        };
+        const toDisplay = memberList.filter((member) => {
+            if (
+                membersFilter.value !== member.role &&
+                membersFilter.value !== "ALL"
+            ) {
+                if (!(membersFilter.value == "INVITEE" && member.isInvitation)) {
+                    return;
                 }
             }
-        )
-        toDisplay.sort((a, b) => (getSortField(a) > getSortField(b)) ? 1 : -1);
+            if (searchQuery === "") {
+                return member;
+            } else if (
+                member.person.name.toLowerCase().includes(searchQuery.toLowerCase())
+            ) {
+                return member;
+            }
+        });
+        toDisplay.sort((a, b) => (getSortField(a) > getSortField(b) ? 1 : -1));
         if (sort.direction !== "ascending") {
-            toDisplay.reverse()
+            toDisplay.reverse();
         }
         setDisplayedMembers(toDisplay);
-    }
+    };
 
     const updateAlertBanners = () => {
         const pengingAlerts = [];
-        const adminAlert = memberList.filter(member => member.role === ROLES.ADMIN).length < 2 && [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam);
+        const adminAlert =
+            memberList.filter((member) => member.role === ROLES.ADMIN).length < 2 &&
+            [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam);
         if (adminAlert) {
-            pengingAlerts.push(<span>{I18n.t(`teamDetails.alerts.singleAdmin`)}</span>);
+            pengingAlerts.push(
+                <span>{I18n.t(`teamDetails.alerts.singleAdmin`)}</span>
+            );
         }
         setAlerts(pengingAlerts);
-    }
+    };
 
     const renderAlertBanners = () => {
-        return (
-            alerts.map(alert => {
-                return <div className="alert-banner-wrapper">
-                    <span className="alert-banner">
-                    {alert}
-                    </span>
+        return alerts.map((alert) => {
+            return (
+                <div className="alert-banner-wrapper">
+                    <span className="alert-banner">{alert}</span>
                 </div>
-            })
-        )
-    }
+            );
+        });
+    };
 
     const renderFilterDropdown = () => {
         class FilterCount {
             constructor(value) {
                 this.action = () => {
-                    setMembersFilter({value: this.value, label: this.name})
-                }
-                this.value = value
-                if (value === 'ALL') {
+                    setMembersFilter({value: this.value, label: this.name});
+                };
+                this.value = value;
+                if (value === "ALL") {
                     this.count = memberList.length;
                     return this;
                 }
-                this.count = 0
+                this.count = 0;
             }
 
             get name() {
-                return `${I18n.t(`teamDetails.filters.${this.value.toLowerCase()}`)} (${this.count})`
+                return `${I18n.t(`teamDetails.filters.${this.value.toLowerCase()}`)} (${
+                    this.count
+                })`;
             }
         }
 
-        const filters = ['ALL', ROLES.OWNER, ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER, 'INVITEE']
-        const options = filters.map(filter => new FilterCount(filter))
+        const filters = [
+            "ALL",
+            ROLES.OWNER,
+            ROLES.ADMIN,
+            ROLES.MANAGER,
+            ROLES.MEMBER,
+            "INVITEE",
+        ];
+        const options = filters.map((filter) => new FilterCount(filter));
 
-        memberList.forEach(membership => {
-            options.forEach(option => {
+        memberList.forEach((membership) => {
+            options.forEach((option) => {
                 if (option.value === membership.role) {
                     option.count++;
                 }
-                if (option.value === 'INVITEE' && membership.isInvitation) {
+                if (option.value === "INVITEE" && membership.isInvitation) {
                     option.count++;
                 }
-            })
-        })
+            });
+        });
 
         return (
             <span className={"filter-dropdown-span"}>
-                <DropDownMenu title={membersFilter.label} actions={options.filter(option => option.count !== 0)}/>
-            </span>
-        )
-    }
+        <DropDownMenu
+            title={membersFilter.label}
+            actions={options.filter((option) => option.count !== 0)}
+        />
+      </span>
+        );
+    };
 
     const processRemoveMember = (member, showConfirmation) => {
         if (showConfirmation) {
@@ -191,7 +225,7 @@ const TeamDetail = ({user}) => {
                 cancel: () => setConfirmationOpen(false),
                 action: () => processRemoveMember(member, false),
                 warning: false,
-                question: I18n.t("teamDetails.confirmations.removeMember")
+                question: I18n.t("teamDetails.confirmations.removeMember"),
             });
             setConfirmationOpen(true);
             return;
@@ -202,16 +236,31 @@ const TeamDetail = ({user}) => {
             deleteMember(member.id).then(updateTeam);
         }
         setConfirmationOpen(false);
-    }
+    };
 
-    const renderDeleteButton = member => {
-        const icon = <span className="bin-icon" onClick={() => processRemoveMember(member, true)}><BinIcon/></span>
-        return (<>{[ROLES.OWNER, ROLES.ADMIN].includes(userRoleInTeam) ? icon : I18n.t("myteams.empty")}</>)
-    }
-    const getDateString = timestamp => {
+    const renderDeleteButton = (member) => {
+        const icon = (
+            <span
+                className="bin-icon"
+                onClick={() => processRemoveMember(member, true)}
+            >
+        <BinIcon/>
+      </span>
+        );
+        return (
+            <>
+                {[ROLES.OWNER, ROLES.ADMIN].includes(userRoleInTeam)
+                    ? icon
+                    : I18n.t("myteams.empty")}
+            </>
+        );
+    };
+    const getDateString = (timestamp) => {
         const date = new Date(timestamp * 1000);
-        return `${date.getMonth()} ${date.toLocaleString('default', {month: 'long'})}, ${date.getFullYear()}`
-    }
+        return `${date.getMonth()} ${date.toLocaleString("default", {
+            month: "long",
+        })}, ${date.getFullYear()}`;
+    };
 
     const renderMembersTable = () => {
         const columns = [
@@ -219,7 +268,7 @@ const TeamDetail = ({user}) => {
                 name: "name",
                 displayedName: I18n.t(`teamDetails.columns.name`),
                 sortable: true,
-                sortField: "person.name"
+                sortField: "person.name",
             },
             {
                 name: "idp",
@@ -230,78 +279,102 @@ const TeamDetail = ({user}) => {
                 name: "email",
                 displayedName: I18n.t(`teamDetails.columns.email`),
                 sortable: true,
-                sortField: "person.email"
+                sortField: "person.email",
             },
             {
                 name: "role",
                 displayedName: I18n.t(`teamDetails.columns.role`),
-                sortable: false
+                sortable: false,
             },
             {
                 name: "joined",
                 displayedName: I18n.t(`teamDetails.columns.joined`),
                 sortable: true,
-                sortField: "created"
+                sortField: "created",
             },
             {
                 name: "bin",
                 displayedName: I18n.t(`teamDetails.columns.bin`),
-                sortable: false
-            }
-        ]
+                sortable: false,
+            },
+        ];
         if (![ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam)) {
-            columns.splice(1, 1)
+            columns.splice(1, 1);
         }
         return (
             <SortableTable columns={columns} setSort={setSort}>
-                {displayedMembers.map((member, index) => renderMembersRow(member, index))}
+                {displayedMembers.map((member, index) =>
+                    renderMembersRow(member, index)
+                )}
             </SortableTable>
-        )
-    }
+        );
+    };
 
-    const setRole = (member, role) => {
-
-    }
+    const processChangeMemberRole = (member, role) => {
+        //TODO!
+    };
 
     const renderMembersRow = (member, index) => {
-        const roleActions = [ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER].map((role) => {
-            return {
-                name: role,
-                action: () => {
-                    setRole(member, role)
-                }
+        const roleActions = [ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER].map(
+            (role) => {
+                return {
+                    name: role,
+                    action: () => {
+                        processChangeMemberRole(member, role);
+                    },
+                };
             }
-        });
+        );
         return (
             <tr key={index}>
-                <td data-label={I18n.t(`teamDetails.columns.name`)}>{member.person.name}</td>
-                {[ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam) &&
+                <td data-label={I18n.t(`teamDetails.columns.name`)}>
+                    {member.person.name}
+                </td>
+                {[ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam) && (
                     <td data-label={I18n.t(`teamDetails.columns.idp`)}>
-                        <span className={`idp_${member.person.guest ? "invalid" : "valid"}`}>
-                            <IDPIcon/>
-                        </span>
+            <span
+                className={`idp_${member.person.guest ? "invalid" : "valid"}`}
+            >
+              <IDPIcon/>
+            </span>
                     </td>
-                }
-                <td data-label={I18n.t(`teamDetails.columns.email`)}>{member.person.email}</td>
-                <td data-label={I18n.t(`teamDetails.columns.role`)} className="roles-entry">
-                    {userRoleInTeam === ROLES.ADMIN && !member.isInvitation?
-                        <DropDownMenu title={member.role} actions={roleActions}/> : member.role
-                    }
+                )}
+                <td data-label={I18n.t(`teamDetails.columns.email`)}>
+                    {member.person.email}
                 </td>
-                <td data-label={I18n.t(`teamDetails.columns.joined`)} className="joined-entry">
-                    <span className="joined-wrapper">
-                        {getDateString(member.created)}
-                        {member.isInvitation && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) &&
-                            <span>
-                                {I18n.t(`teamDetails.inviteSent`)}<EmailIcon/>
-                            </span>}
-                    </span>
+                <td
+                    data-label={I18n.t(`teamDetails.columns.role`)}
+                    className="roles-entry"
+                >
+                    {userRoleInTeam === ROLES.ADMIN && !member.isInvitation ? (
+                        <DropDownMenu title={member.role} actions={roleActions}/>
+                    ) : (
+                        member.role
+                    )}
                 </td>
-                <td data-label={I18n.t(`teamDetails.columns.bin`)}>{renderDeleteButton(member)}</td>
+                <td
+                    data-label={I18n.t(`teamDetails.columns.joined`)}
+                    className="joined-entry"
+                >
+          <span className="joined-wrapper">
+            {getDateString(member.created)}
+              {member.isInvitation &&
+                  [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(
+                      userRoleInTeam
+                  ) && (
+                      <span>
+                  {I18n.t(`teamDetails.inviteSent`)}
+                          <EmailIcon/>
+                </span>
+                  )}
+          </span>
+                </td>
+                <td data-label={I18n.t(`teamDetails.columns.bin`)}>
+                    {renderDeleteButton(member)}
+                </td>
             </tr>
-        )
-    }
-
+        );
+    };
 
     const leaveTeam = (showConfirmation) => () => {
         if (showConfirmation) {
@@ -314,10 +387,12 @@ const TeamDetail = ({user}) => {
             setConfirmationOpen(true);
         } else {
             deleteMember(
-                team.memberships.find(membership => membership.person.id === user.person.id).id
+                team.memberships.find(
+                    (membership) => membership.person.id === user.person.id
+                ).id
             ).then(() => {
-                navigate("/my-teams")
-            })
+                navigate("/my-teams");
+            });
         }
     };
 
@@ -327,15 +402,15 @@ const TeamDetail = ({user}) => {
                 cancel: () => setConfirmationOpen(false),
                 action: () => processDeleteTeam(false),
                 warning: false,
-                question: I18n.t("myteams.confirmations.delete")
+                question: I18n.t("myteams.confirmations.delete"),
             });
             setConfirmationOpen(true);
             return;
         }
         deleteTeam(team.id).then(() => {
-            navigate("/my-teams")
-        })
-    }
+            navigate("/my-teams");
+        });
+    };
 
     const getActions = () => {
         const actions = [
@@ -371,18 +446,20 @@ const TeamDetail = ({user}) => {
             <SubHeader>
                 <div className="team-actions">
                     <div>
-                        <h1 onClick={()=>setShowAddMembersForm(false)}>{team.name}</h1>
+                        <h1 onClick={() => setShowAddMembersForm(false)}>{team.name}</h1>
                         <span className="team-access-bar">
-                            {!team.viewable && <PrivateTeamLabel/>}
+              {!team.viewable && <PrivateTeamLabel/>}
                             <span className="urn-container">
-                                 <label>{team.urn}</label>
-                                 <span onClick={() => {
-                                     navigator.clipboard.writeText(team.urn)
-                                 }}>
-                                <CopyIcon/>
-                                </span>
-                            </span>
-                        </span>
+                <label>{team.urn}</label>
+                <span
+                    onClick={() => {
+                        navigator.clipboard.writeText(team.urn);
+                    }}
+                >
+                  <CopyIcon/>
+                </span>
+              </span>
+            </span>
                         <p>{team.description}</p>
                     </div>
                     <ActionMenu
@@ -401,39 +478,60 @@ const TeamDetail = ({user}) => {
                 />
             )}
             {renderAlertBanners()}
-            {!showAddMembersForm && <div className="team-members">
-                <h2>Members ({memberList.length})</h2>
-                <span className="team-actions-bar">
-                    {renderFilterDropdown()}
-                    <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
-                    {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) &&
-                        <span className="hide-invitees-wrapper">
-                            <input
-                                className="hide-invitees-checkbox"
-                                type="checkbox"
-                                disabled={(team.invitations && team.invitations.length > 0) ? "" : "disabled"}
-                                checked={hideInvitees}
-                                onChange={() => {
-                                    setHideInvitees(!hideInvitees)
-                                }}
-                            />
-                            {
-                                (team.invitations && team.invitations.length > 0) ? I18n.t("teamDetails.hideInvitees") :
-                                    I18n.t("teamDetails.noInvitees")
-                            }
-                        </span>}
-                    {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) &&
-                        <span className="action-button-wrapper">
-                            <Button onClick={() => navigate("/home")} txt={I18n.t(`teamDetails.includeTeam`)}
-                                    className="include-team-button"/>
-                            <Button onClick={() => setShowAddMembersForm(true)} txt={I18n.t(`teamDetails.addMembers`)}
-                                    className="add-member-button"/>
-                        </span>}
-                </span>
-                {renderMembersTable()}
-            </div>
-            }
-            {    showAddMembersForm && <AddTeamMembersForm team={team}/>}
+            {!showAddMembersForm && (
+                <div className="team-members">
+                    <h2>Members ({memberList.length})</h2>
+                    <span className="team-actions-bar">
+            {renderFilterDropdown()}
+                        <SearchBar
+                            searchQuery={searchQuery}
+                            setSearchQuery={setSearchQuery}
+                        />
+                        {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(
+                            userRoleInTeam
+                        ) && (
+                            <span className="hide-invitees-wrapper">
+                <input
+                    className="hide-invitees-checkbox"
+                    type="checkbox"
+                    disabled={
+                        team.invitations && team.invitations.length > 0
+                            ? ""
+                            : "disabled"
+                    }
+                    checked={hideInvitees}
+                    onChange={() => {
+                        setHideInvitees(!hideInvitees);
+                    }}
+                />
+                                {team.invitations && team.invitations.length > 0
+                                    ? I18n.t("teamDetails.hideInvitees")
+                                    : I18n.t("teamDetails.noInvitees")}
+              </span>
+                        )}
+                        {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(
+                            userRoleInTeam
+                        ) && (
+                            <span className="action-button-wrapper">
+                <Button
+                    onClick={() => navigate("/home")}
+                    txt={I18n.t(`teamDetails.includeTeam`)}
+                    className="include-team-button"
+                />
+                <Button
+                    onClick={() => setShowAddMembersForm(true)}
+                    txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
+                    className="add-member-button"
+                />
+              </span>
+                        )}
+          </span>
+                    {renderMembersTable()}
+                </div>
+            )}
+            {showAddMembersForm && (
+                <AddTeamMembersForm team={team} setShowForm={setShowAddMembersForm}/>
+            )}
         </Page>
     );
 };
