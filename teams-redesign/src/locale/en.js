@@ -4,8 +4,8 @@ I18n.translations.en = {
     fileUploadDialog: {
         title: "Upload file",
         buttons: {
-            cancel: "cancel",
-            upload: "upload"
+            cancel: "Cancel",
+            upload: "Upload"
         }
     },
     code: "EN",

@@ -1,14 +1,9 @@
 import {Page} from "../components/Page";
 import {SubHeader} from "../components/SubHeader";
 import {BreadCrumb} from "../components/BreadCrumb";
-import {Route, useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {
-    deleteInvitation,
-    deleteMember,
-    deleteTeam,
-    getTeamDetail,
-} from "../api";
+import {useNavigate, useParams} from "react-router-dom";
+import {useCallback, useEffect, useState} from "react";
+import {deleteInvitation, deleteMember, deleteTeam, getTeamDetail,} from "../api";
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
 import {actionDropDownTitle, getRole, ROLES} from "../utils/roles";
@@ -24,7 +19,7 @@ import {SortableTable} from "../components/SortableTable";
 import {SearchBar} from "../components/SearchBar";
 import {DropDownMenu} from "../components/DropDownMenu";
 import {Button} from "../components/Button";
-import {AddTeamMembersForm} from "../components/addTeamMembersForm";
+import {AddTeamMembersForm} from "../components/AddTeamMembersForm";
 
 const TeamDetail = ({user}) => {
     const params = useParams();
@@ -50,30 +45,7 @@ const TeamDetail = ({user}) => {
     const [confirmation, setConfirmation] = useState({});
     const [confirmationOpen, setConfirmationOpen] = useState(false);
 
-    useEffect(() => {
-        updateTeam();
-    }, [params.teamId, navigate]);
-
-    useEffect(() => {
-        updateMembersList();
-    }, [team, hideInvitees]);
-
-    useEffect(() => {
-        updateDisplayedMembers();
-    }, [memberList, sort, searchQuery, membersFilter]);
-
-    useEffect(() => {
-        const userMembership = team.memberships.find(
-            (membership) => membership.person.id === user.person.id
-        );
-        setUserRoleInTeam(userMembership ? userMembership.role : ROLES.MEMBER);
-    }, [team]);
-
-    useEffect(() => {
-        updateAlertBanners();
-    }, [memberList]);
-
-    const updateTeam = () => {
+    const updateTeam = useCallback(() => {
         getTeamDetail(params.teamId)
             .then((res) => {
                 if (res.memberships) {
@@ -91,70 +63,86 @@ const TeamDetail = ({user}) => {
                 }
             })
             .catch(() => navigate("/404"));
-    };
+    }, [params.teamId, navigate]);
 
-    const updateMembersList = () => {
-        if (hideInvitees || !team.invitations) {
-            setMembersList([...team.memberships]);
-            return;
-        }
-        const pendingMembers = team.invitations.reduce((filtered, invitation) => {
-            if (!invitation.expired) {
-                filtered.push({
-                    person: {name: "-", email: invitation.email},
-                    created: invitation.timestamp / 1000,
-                    isInvitation: true,
-                    role: invitation.intendedRole,
-                    invitationID: invitation.id,
-                });
+    useEffect(() => {
+        updateTeam();
+    }, [params.teamId, navigate, updateTeam]);
+
+    useEffect(() => {
+        const updateMembersList = () => {
+            if (hideInvitees || !team.invitations) {
+                setMembersList([...team.memberships]);
+                return;
             }
-            return filtered;
-        }, []);
-        const members = [...team.memberships].concat(pendingMembers);
-        setMembersList(members);
-    };
-
-    const updateDisplayedMembers = () => {
-        const getSortField = (targetObject) => {
-            return sort.field
-                .split(".")
-                .reduce((p, c) => (p && p[c]) || null, targetObject);
-        };
-        const toDisplay = memberList.filter((member) => {
-            if (
-                membersFilter.value !== member.role &&
-                membersFilter.value !== "ALL"
-            ) {
-                if (!(membersFilter.value == "INVITEE" && member.isInvitation)) {
-                    return;
+            const pendingMembers = team.invitations.reduce((filtered, invitation) => {
+                if (!invitation.expired) {
+                    filtered.push({
+                        person: {name: "-", email: invitation.email},
+                        created: invitation.timestamp / 1000,
+                        isInvitation: true,
+                        role: invitation.intendedRole,
+                        invitationID: invitation.id,
+                    });
                 }
+                return filtered;
+            }, []);
+            const members = [...team.memberships].concat(pendingMembers);
+            setMembersList(members);
+        };
+        updateMembersList();
+    }, [team, hideInvitees]);
+
+    useEffect(() => {
+        const updateDisplayedMembers = () => {
+            const getSortField = (targetObject) => {
+                return sort.field
+                    .split(".")
+                    .reduce((p, c) => (p && p[c]) || null, targetObject);
+            };
+            const toDisplay = memberList.filter((member) => {
+                if (membersFilter.value !== member.role && membersFilter.value !== "ALL" &&
+                    !(membersFilter.value === "INVITEE" && member.isInvitation)) {
+                        return false;
+                }
+                if (searchQuery === "") {
+                    return true;
+                } else if (member.person.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+                    return true;
+                }
+                return false;
+            });
+            toDisplay.sort((a, b) => (getSortField(a) > getSortField(b) ? 1 : -1));
+            if (sort.direction !== "ascending") {
+                toDisplay.reverse();
             }
-            if (searchQuery === "") {
-                return member;
-            } else if (
-                member.person.name.toLowerCase().includes(searchQuery.toLowerCase())
-            ) {
-                return member;
-            }
-        });
-        toDisplay.sort((a, b) => (getSortField(a) > getSortField(b) ? 1 : -1));
-        if (sort.direction !== "ascending") {
-            toDisplay.reverse();
-        }
-        setDisplayedMembers(toDisplay);
-    };
+            setDisplayedMembers(toDisplay);
+        };
+        updateDisplayedMembers();
+    }, [memberList, sort, searchQuery, membersFilter]);
+
+    useEffect(() => {
+        const userMembership = team.memberships.find(
+            membership => membership.person.id === user.person.id
+        );
+        setUserRoleInTeam(userMembership ? userMembership.role : ROLES.MEMBER);
+    }, [team]);
+
+    useEffect(() => {
+        updateAlertBanners();
+    }, [memberList]);
 
     const updateAlertBanners = () => {
-        const pengingAlerts = [];
+        const pendingAlerts = [];
         const adminAlert =
             memberList.filter((member) => member.role === ROLES.ADMIN).length < 2 &&
             [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam);
         if (adminAlert) {
-            pengingAlerts.push(
+            pendingAlerts.push(
                 <span>{I18n.t(`teamDetails.alerts.singleAdmin`)}</span>
             );
         }
-        setAlerts(pengingAlerts);
+        setAlerts(pendingAlerts);
     };
 
     const renderAlertBanners = () => {
@@ -359,14 +347,14 @@ const TeamDetail = ({user}) => {
           <span className="joined-wrapper">
             {getDateString(member.created)}
               {member.isInvitation &&
-                  [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(
-                      userRoleInTeam
-                  ) && (
-                      <span>
+              [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(
+                  userRoleInTeam
+              ) && (
+                  <span>
                   {I18n.t(`teamDetails.inviteSent`)}
-                          <EmailIcon/>
+                      <EmailIcon/>
                 </span>
-                  )}
+              )}
           </span>
                 </td>
                 <td data-label={I18n.t(`teamDetails.columns.bin`)}>

@@ -1,7 +1,7 @@
 import I18n from "i18n-js";
 import {useState, React} from "react";
 import {ROLES} from "../utils/roles";
-import "./addTeamMembersForm.scss";
+import "./AddTeamMembersForm.scss";
 import {Button} from "./Button";
 import {FileUploadModal} from "./FileUploadModal";
 import {ReactComponent as BinIcon} from "../icons/bin-1.svg";
@@ -154,7 +154,7 @@ export const AddTeamMembersForm = ({team, setShowForm}) => {
                                             onClick={(e) => {
                                                 const newInvitations = [...invitations];
                                                 const newEmails = addedEmails.filter(
-                                                    (email) => email != invitation.email
+                                                    (email) => email !== invitation.email
                                                 );
                                                 newInvitations.splice(index, 1);
                                                 setInvitations(newInvitations);

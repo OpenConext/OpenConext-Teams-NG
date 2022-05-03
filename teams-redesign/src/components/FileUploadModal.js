@@ -41,7 +41,7 @@ export const FileUploadModal = ({
                         onClick={onCancel}
                     />
                 )}
-                {uploadedFile.name != "" && (
+                {uploadedFile.name !== "" && (
                     <Button
                         txt={I18n.t("fileUploadDialog.buttons.upload")}
                         onClick={() => {
