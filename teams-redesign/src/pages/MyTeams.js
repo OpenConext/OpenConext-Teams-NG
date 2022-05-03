@@ -7,7 +7,6 @@ import {ROLES} from "../utils/roles";
 import {Page} from "../components/Page";
 import {DropDownMenu} from "../components/DropDownMenu";
 import {ReactComponent as BinIcon} from "../icons/bin-1.svg";
-import blockedIcon from "../icons/allowances-no-talking.svg";
 
 import "./MyTeams.scss"
 import {Button} from "../components/Button";
@@ -25,7 +24,7 @@ export const MyTeams = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [teamsFilter, setTeamsFilter] = useState({value: "ALL", label: ""});
-    const [sort, setSort] = useState({field: "membershipCount", direction: "ascending"});
+    const [sort, setSort] = useState({field: "name", direction: "ascending"});
     const [displayedTeams, setDisplayedTeams] = useState([]);
 
     const [confirmation, setConfirmation] = useState({});
@@ -39,27 +38,22 @@ export const MyTeams = () => {
     }, []);
 
     useEffect(() => {
+        const updateDisplayedTeams = () => {
+            const toDisplay = teams.teamSummaries.filter(team => {
+                if (teamsFilter.value !== team.role && teamsFilter.value !== 'ALL') {
+                    return false
+                }
+                return searchQuery.trim() === "" || team.name.toLowerCase().includes(searchQuery.toLowerCase())
+            });
+            toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
+            if (sort.direction !== "ascending") {
+                toDisplay.reverse()
+            }
+            setDisplayedTeams(toDisplay);
+        }
         updateDisplayedTeams();
     }, [teams, searchQuery, teamsFilter, sort])
 
-    const updateDisplayedTeams = () => {
-        const toDisplay = teams.teamSummaries.filter(team => {
-            if (teamsFilter.value !== team.role && teamsFilter.value !== 'ALL') {
-                return
-            }
-
-            if (searchQuery === "") {
-                return team;
-            } else if (team.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-                return team
-            }
-        })
-        toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
-        if (sort.direction !== "ascending") {
-            toDisplay.reverse()
-        }
-        setDisplayedTeams(toDisplay)
-    }
 
     const processDelete = (team, showConfirmation) => {
         if (showConfirmation) {
@@ -194,9 +188,9 @@ export const MyTeams = () => {
                                                                  question={confirmation.question}/>}
 
                         {teams.teamSummaries.length === 0 &&
-                            <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
+                        <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
                         {(displayedTeams.length === 0 && teams.teamSummaries.length > 0) &&
-                            <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
+                        <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
                         }
                         {displayedTeams.length > 0 && <SortableTable columns={columns} setSort={setSort}>
                             {displayedTeams.map((team, index) => renderTeamsRow(team, index))}

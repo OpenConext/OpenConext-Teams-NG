@@ -1,5 +1,5 @@
 import I18n from "i18n-js";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {autoCompleteTeam} from "../api";
 import "./PublicTeamsTab.scss";
@@ -13,25 +13,25 @@ export const PublicTeamsTab = ({myteams}) => {
     const [teams, setTeams] = useState([]);
     const [displayedTeams, setDisplayedTeams] = useState([]);
 
-    useEffect(() => {
-        autoCompleteTeam(searchQuery).then(teams => {
-            setTeams(teams);
-            updateDisplayedTeams();
-        })
-    }, [searchQuery]);
-
-    useEffect(() => {
-        updateDisplayedTeams()
-    }, [sort, searchQuery]);
-
-    const updateDisplayedTeams = () => {
+    const updateDisplayedTeams = useCallback(() => {
         const toDisplay = [...teams];
         toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
         if (sort.direction !== "ascending") {
             toDisplay.reverse()
         }
         setDisplayedTeams(toDisplay)
-    }
+    }, [teams, sort.field, sort.direction])
+
+    useEffect(() => {
+        autoCompleteTeam(searchQuery).then(teams => {
+            setTeams(teams);
+            updateDisplayedTeams();
+        })
+    }, [searchQuery, updateDisplayedTeams]);
+
+    useEffect(() => {
+        updateDisplayedTeams()
+    }, [sort, searchQuery, updateDisplayedTeams]);
 
     const columns = [
         {

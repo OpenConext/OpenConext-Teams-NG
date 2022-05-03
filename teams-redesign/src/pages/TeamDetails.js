@@ -40,7 +40,7 @@ const TeamDetail = ({user}) => {
     const [memberList, setMembersList] = useState([]);
     const [displayedMembers, setDisplayedMembers] = useState([]);
     const [hideInvitees, setHideInvitees] = useState(false);
-    const [userRoleInTeam, setUserRoleInTeam] = useState([ROLES.MEMBER]);
+    const [userRoleInTeam, setUserRoleInTeam] = useState(ROLES.MEMBER);
 
     const [confirmation, setConfirmation] = useState({});
     const [confirmationOpen, setConfirmationOpen] = useState(false);
@@ -103,7 +103,7 @@ const TeamDetail = ({user}) => {
             const toDisplay = memberList.filter((member) => {
                 if (membersFilter.value !== member.role && membersFilter.value !== "ALL" &&
                     !(membersFilter.value === "INVITEE" && member.isInvitation)) {
-                        return false;
+                    return false;
                 }
                 if (searchQuery === "") {
                     return true;
@@ -126,24 +126,23 @@ const TeamDetail = ({user}) => {
             membership => membership.person.id === user.person.id
         );
         setUserRoleInTeam(userMembership ? userMembership.role : ROLES.MEMBER);
-    }, [team]);
+    }, [team, user.person.id]);
 
     useEffect(() => {
+        const updateAlertBanners = () => {
+            const pendingAlerts = [];
+            const adminAlert =
+                memberList.filter((member) => member.role === ROLES.ADMIN).length < 2 &&
+                [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam);
+            if (adminAlert) {
+                pendingAlerts.push(
+                    <span>{I18n.t(`teamDetails.alerts.singleAdmin`)}</span>
+                );
+            }
+            setAlerts(pendingAlerts);
+        };
         updateAlertBanners();
-    }, [memberList]);
-
-    const updateAlertBanners = () => {
-        const pendingAlerts = [];
-        const adminAlert =
-            memberList.filter((member) => member.role === ROLES.ADMIN).length < 2 &&
-            [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam);
-        if (adminAlert) {
-            pendingAlerts.push(
-                <span>{I18n.t(`teamDetails.alerts.singleAdmin`)}</span>
-            );
-        }
-        setAlerts(pendingAlerts);
-    };
+    }, [memberList, userRoleInTeam]);
 
     const renderAlertBanners = () => {
         return alerts.map((alert) => {
