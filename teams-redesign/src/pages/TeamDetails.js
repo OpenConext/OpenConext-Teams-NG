@@ -2,8 +2,8 @@ import {Page} from "../components/Page";
 import {SubHeader} from "../components/SubHeader";
 import {BreadCrumb} from "../components/BreadCrumb";
 import {useNavigate, useParams} from "react-router-dom";
-import {useCallback, useEffect, useState} from "react";
-import {deleteInvitation, deleteMember, deleteTeam, getTeamDetail,} from "../api";
+import {useCallback, useEffect, useRef, useState} from "react";
+import {deleteInvitation, deleteJoinRequest, deleteMember, deleteTeam, getTeamDetail,} from "../api";
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
 import {actionDropDownTitle, getRole, ROLES} from "../utils/roles";
@@ -12,8 +12,10 @@ import "./TeamDetails.scss";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import {ReactComponent as CopyIcon} from "../icons/copy.svg";
 import {ReactComponent as BinIcon} from "../icons/bin-1.svg";
-import {ReactComponent as IDPIcon} from "../icons/single-neutral-id-card-3.svg";
+import {ReactComponent as IDPIcon} from "../icons/single-neutral-id-card-valid.svg";
+import {ReactComponent as GuestIDPIcon} from "../icons/single-neutral-id-card-3.svg";
 import {ReactComponent as EmailIcon} from "../icons/email-action-send-2.svg";
+import {ReactComponent as EnvelopeIcon} from "../icons/envelope.svg";
 import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
 import {SortableTable} from "../components/SortableTable";
 import {SearchBar} from "../components/SearchBar";
@@ -29,9 +31,9 @@ const TeamDetail = ({user}) => {
         value: "ALL",
         label: "",
     });
-    const [team, setTeam] = useState({memberships: [], invitations: []});
+    const [team, setTeam] = useState({memberships: [], invitations: [], joinRequests: []});
     const [sort, setSort] = useState({
-        field: "created",
+        field: "person.name",
         direction: "ascending",
     });
     const [showAddMembersForm, setShowAddMembersForm] = useState(false);
@@ -45,19 +47,21 @@ const TeamDetail = ({user}) => {
     const [confirmation, setConfirmation] = useState({});
     const [confirmationOpen, setConfirmationOpen] = useState(false);
 
+    const searchInputRef = useRef(null);
+
     const updateTeam = useCallback(() => {
         getTeamDetail(params.teamId)
             .then((res) => {
                 if (res.memberships) {
-                    const totalMembers = res.invitations
-                        ? res.invitations.length + res.memberships.length
-                        : res.memberships.length;
+                    const totalMembers = res.memberships.length + (res.invitations || []).length +
+                        (res.joinRequests || []).length;
                     setTeam(res);
                     setMembersFilter({
                         value: "ALL",
                         label: `${I18n.t(`teamDetails.filters.all`)} (${totalMembers})`,
                     });
                     setLoaded(true);
+                    setTimeout(() => searchInputRef.current.focus(), 750);
                 } else {
                     navigate(`/join-request/${params.teamId}`);
                 }
@@ -72,7 +76,7 @@ const TeamDetail = ({user}) => {
     useEffect(() => {
         const updateMembersList = () => {
             if (hideInvitees || !team.invitations) {
-                setMembersList([...team.memberships]);
+                setMembersList([...team.memberships].concat([...team.joinRequests]));
                 return;
             }
             const pendingMembers = team.invitations.reduce((filtered, invitation) => {
@@ -87,7 +91,15 @@ const TeamDetail = ({user}) => {
                 }
                 return filtered;
             }, []);
-            const members = [...team.memberships].concat(pendingMembers);
+            const joinRequests = team.joinRequests.reduce((filtered, joinRequest) => {
+                filtered.push({
+                    ...joinRequest,
+                    isJoinRequest: true,
+                    role: ROLES.MEMBER
+                });
+                return filtered;
+            }, []);
+            const members = [...team.memberships].concat(pendingMembers).concat(joinRequests);
             setMembersList(members);
         };
         updateMembersList();
@@ -102,7 +114,8 @@ const TeamDetail = ({user}) => {
             };
             const toDisplay = memberList.filter((member) => {
                 if (membersFilter.value !== member.role && membersFilter.value !== "ALL" &&
-                    !(membersFilter.value === "INVITEE" && member.isInvitation)) {
+                    !(membersFilter.value === "INVITEE" && member.isInvitation) &&
+                    !(membersFilter.value === "JOIN_REQUEST" && member.isJoinRequest)) {
                     return false;
                 }
                 if (searchQuery === "") {
@@ -182,15 +195,19 @@ const TeamDetail = ({user}) => {
             ROLES.MANAGER,
             ROLES.MEMBER,
             "INVITEE",
+            "JOIN_REQUEST"
         ];
         const options = filters.map((filter) => new FilterCount(filter));
 
         memberList.forEach((membership) => {
             options.forEach((option) => {
-                if (option.value === membership.role) {
+                if (option.value === membership.role && !membership.isInvitation && !membership.isJoinRequest) {
                     option.count++;
                 }
                 if (option.value === "INVITEE" && membership.isInvitation) {
+                    option.count++;
+                }
+                if (option.value === "JOIN_REQUEST" && membership.isJoinRequest) {
                     option.count++;
                 }
             });
@@ -207,18 +224,21 @@ const TeamDetail = ({user}) => {
     };
 
     const processRemoveMember = (member, showConfirmation) => {
+        const confPart = member.isInvitation ? "Invitation" : member.isJoinRequest ? "JoinRequest" : "Member";
         if (showConfirmation) {
             setConfirmation({
                 cancel: () => setConfirmationOpen(false),
                 action: () => processRemoveMember(member, false),
                 warning: false,
-                question: I18n.t("teamDetails.confirmations.removeMember"),
+                question: I18n.t(`teamDetails.confirmations.remove${confPart}`),
             });
             setConfirmationOpen(true);
             return;
         }
         if (member.isInvitation) {
             deleteInvitation(member.invitationID).then(updateTeam);
+        } else if (member.isJoinRequest) {
+            deleteJoinRequest(member.id).then(updateTeam);
         } else {
             deleteMember(member.id).then(updateTeam);
         }
@@ -260,7 +280,8 @@ const TeamDetail = ({user}) => {
             {
                 name: "idp",
                 displayedName: I18n.t(`teamDetails.columns.idp`),
-                sortable: false,
+                sortable: true,
+                sortField: "person.guest",
             },
             {
                 name: "email",
@@ -303,15 +324,10 @@ const TeamDetail = ({user}) => {
 
     const renderMembersRow = (member, index) => {
         const roleActions = [ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER].map(
-            (role) => {
-                return {
-                    name: role,
-                    action: () => {
-                        processChangeMemberRole(member, role);
-                    },
-                };
-            }
-        );
+            role => ({
+                name: role,
+                action: () => processChangeMemberRole(member, role)
+            }))
         return (
             <tr key={index}>
                 <td data-label={I18n.t(`teamDetails.columns.name`)}>
@@ -319,42 +335,35 @@ const TeamDetail = ({user}) => {
                 </td>
                 {[ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam) && (
                     <td data-label={I18n.t(`teamDetails.columns.idp`)}>
-            <span
-                className={`idp_${member.person.guest ? "invalid" : "valid"}`}
-            >
-              <IDPIcon/>
-            </span>
+                        <span className="idp">
+                            {!member.person.guest && <IDPIcon/>}
+                            {member.person.guest && <GuestIDPIcon/>}
+                        </span>
                     </td>
                 )}
                 <td data-label={I18n.t(`teamDetails.columns.email`)}>
                     {member.person.email}
                 </td>
-                <td
-                    data-label={I18n.t(`teamDetails.columns.role`)}
-                    className="roles-entry"
-                >
-                    {userRoleInTeam === ROLES.ADMIN && !member.isInvitation ? (
-                        <DropDownMenu title={member.role} actions={roleActions}/>
-                    ) : (
-                        member.role
-                    )}
+                <td data-label={I18n.t(`teamDetails.columns.role`)}
+                    className="roles-entry">
+                    {(userRoleInTeam === ROLES.ADMIN && !member.isInvitation && !member.isJoinRequest) ?
+                        <DropDownMenu title={member.role} actions={roleActions}/> : member.role}
                 </td>
-                <td
-                    data-label={I18n.t(`teamDetails.columns.joined`)}
-                    className="joined-entry"
-                >
-          <span className="joined-wrapper">
-            {getDateString(member.created)}
-              {member.isInvitation &&
-              [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(
-                  userRoleInTeam
-              ) && (
-                  <span>
-                  {I18n.t(`teamDetails.inviteSent`)}
-                      <EmailIcon/>
-                </span>
-              )}
-          </span>
+                <td data-label={I18n.t(`teamDetails.columns.joined`)}
+                    className="joined-entry">
+                    <span className="joined-wrapper">
+                        <span>{getDateString(member.created)}</span>
+                        {(member.isInvitation && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam))
+                        && <span className="details">
+                            {I18n.t(`teamDetails.inviteSent`)}
+                            <EmailIcon/>
+                            </span>}
+                        {(member.isJoinRequest && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam))
+                        && <span className="details">
+                            {I18n.t(`teamDetails.joinRequest`)}
+                            <EnvelopeIcon/>
+                            </span>}
+                    </span>
                 </td>
                 <td data-label={I18n.t(`teamDetails.columns.bin`)}>
                     {renderDeleteButton(member)}
@@ -383,6 +392,10 @@ const TeamDetail = ({user}) => {
         }
     };
 
+    const editTeam = () => {
+        navigate(`/edit-team/${team.id}`);
+    }
+
     const processDeleteTeam = (showConfirmation) => {
         if (showConfirmation) {
             setConfirmation({
@@ -408,6 +421,10 @@ const TeamDetail = ({user}) => {
         ];
         const role = getRole(team, user);
         if (role === ROLES.ADMIN || role === ROLES.OWNER) {
+            actions.push({
+                name: I18n.t("details.edit"),
+                action: () => editTeam(),
+            });
             actions.push({
                 name: I18n.t("details.delete"),
                 action: () => processDeleteTeam(true),
@@ -469,50 +486,35 @@ const TeamDetail = ({user}) => {
                 <div className="team-members">
                     <h2>Members ({memberList.length})</h2>
                     <span className="team-actions-bar">
-            {renderFilterDropdown()}
+                        {renderFilterDropdown()}
                         <SearchBar
                             searchQuery={searchQuery}
                             setSearchQuery={setSearchQuery}
+                            searchInputRef={searchInputRef}
                         />
-                        {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(
-                            userRoleInTeam
-                        ) && (
+                        {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) && (
                             <span className="hide-invitees-wrapper">
-                <input
-                    className="hide-invitees-checkbox"
-                    type="checkbox"
-                    disabled={
-                        team.invitations && team.invitations.length > 0
-                            ? ""
-                            : "disabled"
-                    }
-                    checked={hideInvitees}
-                    onChange={() => {
-                        setHideInvitees(!hideInvitees);
-                    }}
-                />
+                             <input className="hide-invitees-checkbox"
+                                    type="checkbox"
+                                    disabled={team.invitations && team.invitations.length > 0 ? "" : "disabled"}
+                                    checked={hideInvitees}
+                                    onChange={() => setHideInvitees(!hideInvitees)}/>
                                 {team.invitations && team.invitations.length > 0
                                     ? I18n.t("teamDetails.hideInvitees")
                                     : I18n.t("teamDetails.noInvitees")}
-              </span>
+                            </span>
                         )}
-                        {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(
-                            userRoleInTeam
-                        ) && (
+                        {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) && (
                             <span className="action-button-wrapper">
-                <Button
-                    onClick={() => navigate("/home")}
-                    txt={I18n.t(`teamDetails.includeTeam`)}
-                    className="include-team-button"
-                />
-                <Button
-                    onClick={() => setShowAddMembersForm(true)}
-                    txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
-                    className="add-member-button"
-                />
-              </span>
+                                <Button onClick={() => navigate("/home")}
+                                        txt={I18n.t(`teamDetails.includeTeam`)}
+                                        className="include-team-button"/>
+                                <Button onClick={() => setShowAddMembersForm(true)}
+                                        txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
+                                        className="add-member-button"/>
+                            </span>
                         )}
-          </span>
+                    </span>
                     {renderMembersTable()}
                 </div>
             )}

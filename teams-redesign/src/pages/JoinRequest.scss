@@ -1,0 +1,96 @@
+@import "../styles/vars.scss";
+
+div.new-team {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-top: 20px;
+
+    @media (max-width: $width-app) {
+        width: 100%;
+        padding: 0 10px 10px 10px;
+    }
+
+    .w-md-editor {
+        border-radius: 8px;
+        font-size: 16px;
+        border: 1px solid $quaternary-grey;
+        box-shadow: none;
+
+        .w-md-editor-toolbar {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom: 1px solid $quaternary-grey;
+        }
+
+        .w-md-editor-content {
+            height: 170px !important;
+        }
+
+        &.w-md-editor-fullscreen {
+            .w-md-editor-content {
+                height: 100% !important;
+            }
+        }
+
+        .w-md-editor-bar {
+            display: none;
+        }
+
+        .w-md-editor-preview {
+            border-bottom: 1px solid $quaternary-grey;
+            border-left: 1px solid $quaternary-grey;
+            box-shadow: none;
+            border-bottom-right-radius: 8px;
+        }
+    }
+
+    div.team-visibilities {
+        display: flex;
+        justify-content: space-between;
+
+        div.visibility {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid $quaternary-grey;
+            border-radius: $br;
+            width: 47%;
+            padding: 20px;
+            background-color: #fdfdfd;
+            cursor: pointer;
+
+            section.header {
+                display: flex;
+                margin-bottom: 10px;
+
+                h2 {
+                    font-size: 24px;
+                    margin-left: 15px;
+                }
+
+                svg {
+                    width: 34px;
+                }
+            }
+
+            p {
+                font-size: 14px
+            }
+
+            &.active {
+                border: 3px solid $primary-green;
+                background-color: white;
+                cursor: default;
+
+                section.header {
+                    color: $primary-green;
+
+                    svg {
+                        color: $primary-green;
+                    }
+                }
+
+            }
+        }
+    }
+}

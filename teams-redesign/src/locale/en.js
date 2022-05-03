@@ -54,6 +54,7 @@ I18n.translations.en = {
         hideInvitees: "Hide invitees",
         noInvitees: "No invitees",
         inviteSent: "invite sent",
+        joinRequest: "join request",
         alerts: {singleAdmin: "It’s recommended to add at least one other administrator besides yourself."},
         addMembers: {
             uploadFile: "You can also upload a csv or txt file.",
@@ -93,15 +94,18 @@ I18n.translations.en = {
             bin: ""
         },
         filters: {
-            all: 'All Members',
+            all: 'All',
             owner: "Owners",
             admin: "Admins",
             manager: "Managers",
             member: "Members",
-            invitee: "Invitees"
+            invitee: "Invitees",
+            join_request: "Join requests"
         },
         confirmations: {
-            removeMember: "Are you sure you want to remove this member?"
+            removeMember: "Are you sure you want to remove this member?",
+            removeInvitation: "Are you sure you want to remove this invitation?",
+            removeJoinRequest: "Are you sure you want to remove this join request?"
         }
     },
     profile: {
@@ -124,6 +128,7 @@ I18n.translations.en = {
     details: {
         leave: "Leave team",
         delete: "Delete team",
+        edit: "Edit team",
         confirmations: {
             leave: "Are you sure you want to leave this team?",
             delete: "Are you sure you want to delete this team?"

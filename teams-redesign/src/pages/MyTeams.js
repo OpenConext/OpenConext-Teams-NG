@@ -1,5 +1,5 @@
 import {Link, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 import {deleteTeam, getMyTeams} from "../api";
 import I18n from "i18n-js";
@@ -30,11 +30,14 @@ export const MyTeams = () => {
     const [confirmation, setConfirmation] = useState({});
     const [confirmationOpen, setConfirmationOpen] = useState(false);
 
+    const searchInputRef = useRef(null);
+
     useEffect(() => {
         getMyTeams().then(teams => {
             setTeams(teams);
             setTeamsFilter({value: "ALL", label: `${I18n.t(`myteams.filters.all`)} (${teams.teamSummaries.length})`});
-        })
+        });
+        searchInputRef.current.focus();
     }, []);
 
     useEffect(() => {
@@ -177,7 +180,9 @@ export const MyTeams = () => {
                         <h2>{I18n.t("myteams.tabs.myTeams")}</h2>
                         <span className="team-actions-bar">
                         {renderFilterDropdown()}
-                            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+                            <SearchBar searchQuery={searchQuery}
+                                       setSearchQuery={setSearchQuery}
+                                       searchInputRef={searchInputRef}/>
                             {renderNewTeamButton()}
                     </span>
 

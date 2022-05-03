@@ -1,5 +1,5 @@
 import I18n from "i18n-js";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Link} from "react-router-dom";
 import "./PublicTeamsTab.scss";
 import {SearchBar} from "./SearchBar";
@@ -12,6 +12,11 @@ export const PublicTeamsTab = ({myteams}) => {
     const [sort, setSort] = useState({field: "name", direction: "ascending"});
     const [teams, setTeams] = useState([]);
     const [displayedTeams, setDisplayedTeams] = useState([]);
+    const searchInputRef = useRef(null);
+
+    useEffect(() => {
+        searchInputRef.current.focus();
+    }, []);
 
     const updateDisplayedTeams = useCallback(() => {
         const toDisplay = [...teams];
@@ -81,7 +86,7 @@ export const PublicTeamsTab = ({myteams}) => {
         <div className="public-teams-tab">
             <h2>{I18n.t("myteams.tabs.publicTeams")}</h2>
             <span className="public-teams-actions-bar">
-                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchInputRef={searchInputRef}/>
             </span>
             {(teams.length === 0 && searchQuery.trim().length > 0) &&
             <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>}

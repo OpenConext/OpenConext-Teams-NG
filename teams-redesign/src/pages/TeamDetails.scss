@@ -1,219 +1,225 @@
 @import "../styles/vars.scss";
 
 div.team-actions {
-  display: flex;
-  position: relative;
+    display: flex;
+    position: relative;
 
-  p {
-    white-space: pre-line;
-  }
-
-  span.team-access-bar {
-    display: block;
-    margin: 20px 0 20px 0;
-
-    .private-label {
-      margin-right: 10px;
+    @media (max-width: $width-app) {
+        flex-direction: column;
     }
 
-    .urn-container {
-      height: 10px;
-      border: solid $quaternary-grey 1px;
-      border-radius: 5px;
-
-      label {
-        padding: 10px;
-        font-size: 12px;
-        color: $secondary-grey;
-        vertical-align: middle;
-        margin-bottom: 2px;
-      }
-
-      span {
-        border-left: solid $quaternary-grey 1px;
-        padding: 0 4px 0 4px;
-
-        &:hover {
-          background-color: $hover-blue;
-          cursor: pointer;
-
-          svg {
-            fill: white;
-          }
-        }
-
-        &:active {
-          background-color: $light-blue;
-        }
-
-      }
-
-      svg {
-        width: 13px;
-        vertical-align: middle;
-        margin-bottom: 2px;
-        fill: $inactive-grey;
-
-      }
-
+    p {
+        white-space: pre-line;
     }
-  }
+
+    span.team-access-bar {
+        display: block;
+        margin: 20px 0 20px 0;
+
+        .private-label {
+            margin-right: 10px;
+        }
+
+        .urn-container {
+            height: 10px;
+            border: solid $quaternary-grey 1px;
+            border-radius: 5px;
+
+            label {
+                padding: 10px;
+                font-size: 12px;
+                color: $secondary-grey;
+                vertical-align: middle;
+                margin-bottom: 2px;
+            }
+
+            span {
+                border-left: solid $quaternary-grey 1px;
+                padding: 0 4px 0 4px;
+
+                &:hover {
+                    background-color: $hover-blue;
+                    cursor: pointer;
+
+                    svg {
+                        fill: white;
+                    }
+                }
+
+                &:active {
+                    background-color: $light-blue;
+                }
+
+            }
+
+            svg {
+                width: 13px;
+                vertical-align: middle;
+                margin-bottom: 2px;
+                fill: $inactive-grey;
+
+            }
+
+        }
+    }
 
 }
 
 div.alert-banner-wrapper {
-  display: flex;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  background-color: $surf-yellow;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    background-color: $surf-yellow;
+    align-items: center;
+    justify-content: center;
 
-  span.alert-banner {
-    width: $width-app;
-    padding: $padding-app;
-  }
+    span.alert-banner {
+        width: $width-app;
+        padding: $padding-app;
+    }
 }
 
 div.team-members {
-  h2 {
-    margin: 20px 0 20px 0;
-  }
+    h2 {
+        margin: 20px 0 20px 0;
+    }
 
-  .team-actions-bar {
-    display: flex;
-    flex-direction: row;
-    margin-top: 5px;
-    margin-bottom: 30px;
+    .team-actions-bar {
+        display: flex;
+        flex-direction: row;
+        margin-top: 5px;
+        margin-bottom: 30px;
 
-    .action-button-wrapper {
-      margin-left: auto;
-      padding-left: 11%;
+        @media (max-width: $width-app) {
+            flex-direction: column;
+        }
 
-      a {
-        height: 44px;
-        padding-top: 12px;
-      }
+        .action-button-wrapper {
+            margin-left: auto;
 
-      a.include-team-button {
-        background-color: white;
-        color: $quaternary-grey;
-        margin-right: 25px;
-        border: $primary-grey solid 1px;
+            @media (max-width: $width-app) {
+                margin-left: 0;
+            }
+
+            a {
+                height: 44px;
+                padding-top: 12px;
+            }
+
+            a.include-team-button {
+                background-color: white;
+                color: $quaternary-grey;
+                margin-right: 25px;
+                border: $primary-grey solid 1px;
+
+                &:hover {
+                    background-color: $light-blue;
+                }
+            }
+        }
+
+        .filter-dropdown-span {
+            margin-right: 25px;
+            height: 50px;
+            width: 200px;
+        }
+
+        .search-bar {
+            height: 44px;
+            width: 250px;
+            margin-right: 15px;
+        }
+
+        span.hide-invitees-wrapper {
+            display: flex;
+            padding: 15px;
+            column-gap: 10px;
+            vertical-align: middle;
+
+            .hide-invitees-checkbox {
+                transform: scale(1.5);
+            }
+        }
+    }
+
+    .sortable-table {
+        width: 100%;
+        table-layout: fixed;
+
+        th {
+            &.name {
+                width: 25%;
+            }
+
+            &.idp {
+                width: 5%;
+            }
+
+            &.email {
+                width: 30%;
+            }
+
+            &.role {
+                width: 15%;
+            }
+
+            &.joined {
+                width: 30%;
+            }
+
+            &.bin {
+                width: 5%;
+            }
+        }
+
+        tr {
+            td {
+                &.roles-entry {
+                    .dropdown-menu-container {
+                        .dropdown-control {
+                            padding-left: 0;
+                            color: $primary-blue;
+                            border: none;
+
+                            svg {
+                                margin-left: 10px;
+                                fill: $primary-blue;
+                            }
+                        ;
+                        }
+                    }
+                }
+
+                &.joined-entry {
+                    .joined-wrapper {
+                        display: flex;
+                        align-content: center;
+
+                        span.details {
+                            margin-left: 5px;
+                        }
+
+                        svg {
+                            margin-left: 10px;
+                            width: 20px;
+                            vertical-align: middle;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    span.idp svg {
+        width: 20px;
+    }
+
+    span.bin-icon svg {
+        width: 20px;
+        cursor: pointer;
 
         &:hover {
-          background-color: $light-blue;
+            color: $primary-red;
         }
-      }
     }
-
-    .filter-dropdown-span {
-      margin-right: 25px;
-      height: 50px;
-      width: 200px;
-    }
-
-    .search-bar {
-      height: 44px;
-      width: 250px;
-      margin-left: auto;
-      margin-right: 15px;
-    }
-
-    span.hide-invitees-wrapper {
-      display: flex;
-      padding: 15px;
-      column-gap: 10px;
-      vertical-align: middle;
-
-      .hide-invitees-checkbox {
-        transform: scale(1.5);
-      }
-    }
-  }
-
-  .sortable-table {
-    width: 100%;
-    table-layout: fixed;
-
-    th {
-      &.name {
-        width: 30%;
-      }
-
-      &.idp {
-        width: 5%;
-      }
-
-      &.email {
-        width: 40%;
-      }
-
-      &.role {
-        width: 15%;
-      }
-
-      &.joined {
-        width: 25%;
-      }
-
-      &.bin {
-        width: 5%;
-      }
-    }
-
-    tr {
-      td {
-        &.roles-entry {
-          .dropdown-menu-container {
-            .dropdown-control {
-              padding-left: 0;
-              color: $primary-blue;
-              border: none;
-
-              svg {
-                margin-left: 10px;
-                fill: $primary-blue;
-              }
-            ;
-            }
-          }
-        }
-
-        &.joined-entry {
-          .joined-wrapper {
-            span {
-              margin-left: 5px;
-            }
-
-            svg {
-              margin-left: 10px;
-              padding-top: 5px;
-              width: 20px;
-              vertical-align: middle;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  span.idp_valid svg {
-    width: 20px;
-    color: $primary-blue;
-  }
-
-  span.idp_invalid svg {
-    width: 20px;
-    color: $secondary-grey;
-  }
-
-  span.bin-icon svg {
-    width: 20px;
-    cursor: pointer;
-
-    &:hover {
-      color: $primary-red;
-    }
-  }
 }
