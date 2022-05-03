@@ -90,7 +90,7 @@ export function getUser() {
 }
 
 export function autoCompleteTeam(query) {
-    return isEmpty(query) || query.length < 2 ? Promise.resolve([]) : fetchJson("teams?query=" + encodeURIComponent(query));
+    return fetchJson("teams?query=" + encodeURIComponent(query));
 }
 
 export function autoCompletePerson(query) {

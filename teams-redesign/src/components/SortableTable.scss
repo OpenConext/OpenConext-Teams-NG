@@ -11,6 +11,10 @@
 
     .header-wrapper {
       display: flex;
+
+      &.sortable {
+        cursor: pointer;
+      }
     }
   }
 

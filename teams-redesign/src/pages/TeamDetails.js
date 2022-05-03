@@ -289,7 +289,7 @@ const TeamDetail = ({user}) => {
             columns.splice(1, 1);
         }
         return (
-            <SortableTable columns={columns} setSort={setSort}>
+            <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
                 {displayedMembers.map((member, index) =>
                     renderMembersRow(member, index)
                 )}

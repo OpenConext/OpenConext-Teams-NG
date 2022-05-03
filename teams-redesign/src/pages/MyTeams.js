@@ -192,7 +192,8 @@ export const MyTeams = () => {
                         {(displayedTeams.length === 0 && teams.teamSummaries.length > 0) &&
                         <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
                         }
-                        {displayedTeams.length > 0 && <SortableTable columns={columns} setSort={setSort}>
+                        {displayedTeams.length > 0 &&
+                        <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
                             {displayedTeams.map((team, index) => renderTeamsRow(team, index))}
                         </SortableTable>
                         }

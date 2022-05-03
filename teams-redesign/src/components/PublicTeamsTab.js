@@ -1,11 +1,11 @@
 import I18n from "i18n-js";
 import React, {useCallback, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {autoCompleteTeam} from "../api";
 import "./PublicTeamsTab.scss";
 import {SearchBar} from "./SearchBar";
 import {SortableTable} from "./SortableTable";
 import TooltipIcon from "./Tooltip";
+import {autoCompleteTeam} from "../api";
 
 export const PublicTeamsTab = ({myteams}) => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -19,19 +19,22 @@ export const PublicTeamsTab = ({myteams}) => {
         if (sort.direction !== "ascending") {
             toDisplay.reverse()
         }
-        setDisplayedTeams(toDisplay)
-    }, [teams, sort.field, sort.direction])
+        setDisplayedTeams(toDisplay);
+    }, [teams, sort])
 
     useEffect(() => {
-        autoCompleteTeam(searchQuery).then(teams => {
-            setTeams(teams);
-            updateDisplayedTeams();
-        })
-    }, [searchQuery, updateDisplayedTeams]);
+        if (searchQuery.trim().length > 0) {
+            autoCompleteTeam(searchQuery).then(teams => {
+                setTeams(teams);
+            });
+        } else {
+            setTeams([]);
+        }
+    }, [searchQuery]);
 
     useEffect(() => {
         updateDisplayedTeams()
-    }, [sort, searchQuery, updateDisplayedTeams]);
+    }, [sort, updateDisplayedTeams]);
 
     const columns = [
         {
@@ -74,20 +77,18 @@ export const PublicTeamsTab = ({myteams}) => {
             </tr>)
     }
 
-    const actionBarClassName = searchQuery !== "" ? "public-teams-actions-bar" : "public-teams-actions-bar-no-content";
-
     return (
         <div className="public-teams-tab">
             <h2>{I18n.t("myteams.tabs.publicTeams")}</h2>
-            <span className={actionBarClassName}>
-                        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
-                    </span>
-            <SortableTable columns={columns} setSort={setSort}>
-                {(displayedTeams.length === 0) &&
-                    <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
-                }
+            <span className="public-teams-actions-bar">
+                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+            </span>
+            {(teams.length === 0 && searchQuery.trim().length > 0) &&
+            <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>}
+            {displayedTeams.length > 0 &&
+            <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
                 {displayedTeams.map((team, index) => renderPublicTeamsRow(team, index))}
-            </SortableTable>
+            </SortableTable>}
         </div>
     )
 }

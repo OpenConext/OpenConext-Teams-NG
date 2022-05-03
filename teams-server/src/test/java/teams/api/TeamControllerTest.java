@@ -145,15 +145,15 @@ public class TeamControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void teamAutocompleteIllegalArgument() {
+    public void teamAutocompleteEmpty() {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:tdoe")
-                .param("query", "E ")
+                .param("query", " ")
                 .when()
                 .get("api/teams/teams")
                 .then()
-                .statusCode(SC_BAD_REQUEST)
-                .body("exception", equalTo(IllegalSearchParamException.class.getName()));
+                .statusCode(SC_OK)
+                .body("size()", is(0));
     }
 
     @Test

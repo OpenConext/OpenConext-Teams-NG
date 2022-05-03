@@ -11,18 +11,6 @@ div.public-teams-tab {
     }
   }
 
-  .public-teams-actions-bar-no-content {
-    margin-top: 5px;
-    margin-bottom: 10px;
-
-    .search-bar {
-      display: block;
-      width: 38%;
-      border-color: $primary-blue;
-      box-shadow: 0 0 10px $light-blue;
-    }
-  }
-
   .sortable-table {
     th {
       &.title {

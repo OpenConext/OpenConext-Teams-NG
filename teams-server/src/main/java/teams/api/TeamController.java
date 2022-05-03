@@ -76,8 +76,8 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @GetMapping("api/teams/teams")
     public List<TeamAutocomplete> teamSearch(@RequestParam("query") String query, HttpServletRequest httpServletRequest, FederatedUser federatedUser) {
-        if (query.trim().length() < 2) {
-            throw new IllegalSearchParamException("Minimal query length is 2");
+        if (query.trim().length() == 0) {
+            return Collections.emptyList();
         }
         Long id = federatedUser.getPerson().getId();
         boolean superAdmin = federatedUser.getPerson().isSuperAdmin() && Boolean.parseBoolean(httpServletRequest.getHeader(ADMIN_HEADER));;
@@ -93,7 +93,7 @@ public class TeamController extends ApiController implements TeamValidator {
                         (arr.length == 4 && arr[3] != null) ? arr[3].toString() : null))
                 .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), queryUpper.toLowerCase()))
                 .collect(toList());
-        return autoCompletes.subList(0, Math.max(0, Math.min(autoCompletes.size(), 11)));
+        return autoCompletes.subList(0, Math.min(autoCompletes.size(), 11));
     }
 
     @GetMapping("api/teams/team-exists-by-name")
