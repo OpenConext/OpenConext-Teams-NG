@@ -323,9 +323,9 @@ const TeamDetail = ({user}) => {
     };
 
     const renderMembersRow = (member, index) => {
-        const roleActions = [ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER].map(
+        const roleActions = [ROLES.OWNER, ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER].map(
             role => ({
-                name: role,
+                name: I18n.t(`roles.${role.toLowerCase()}`),
                 action: () => processChangeMemberRole(member, role)
             }))
         return (
@@ -346,8 +346,9 @@ const TeamDetail = ({user}) => {
                 </td>
                 <td data-label={I18n.t(`teamDetails.columns.role`)}
                     className="roles-entry">
-                    {(userRoleInTeam === ROLES.ADMIN && !member.isInvitation && !member.isJoinRequest) ?
-                        <DropDownMenu title={member.role} actions={roleActions}/> : member.role}
+                    {((userRoleInTeam === ROLES.ADMIN || userRoleInTeam === ROLES.OWNER)&& !member.isInvitation && !member.isJoinRequest) ?
+                        <DropDownMenu title={I18n.t(`roles.${member.role.toLowerCase()}`)} actions={roleActions}/> :
+                        I18n.t(`roles.${member.role.toLowerCase()}`)}
                 </td>
                 <td data-label={I18n.t(`teamDetails.columns.joined`)}
                     className="joined-entry">

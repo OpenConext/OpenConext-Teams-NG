@@ -184,7 +184,7 @@ export const MyTeams = () => {
                                        setSearchQuery={setSearchQuery}
                                        searchInputRef={searchInputRef}/>
                             {renderNewTeamButton()}
-                    </span>
+                        </span>
 
                         {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}
                                                                  cancel={confirmation.cancel}
