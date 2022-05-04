@@ -7,6 +7,7 @@ import {deleteInvitation, deleteJoinRequest, deleteMember, deleteTeam, getTeamDe
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
 import {actionDropDownTitle, getRole, ROLES} from "../utils/roles";
+import {getDateString} from "../utils/utils";
 import {SpinnerField} from "../components/SpinnerField";
 import "./TeamDetails.scss";
 import ConfirmationDialog from "../components/ConfirmationDialog";
@@ -15,13 +16,15 @@ import {ReactComponent as BinIcon} from "../icons/bin-1.svg";
 import {ReactComponent as IDPIcon} from "../icons/single-neutral-id-card-valid.svg";
 import {ReactComponent as GuestIDPIcon} from "../icons/single-neutral-id-card-3.svg";
 import {ReactComponent as EmailIcon} from "../icons/email-action-send-2.svg";
-import {ReactComponent as EnvelopeIcon} from "../icons/envelope.svg";
+import {ReactComponent as EnvelopeIcon} from "../icons/person-circle-plus-solid.svg";
 import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
 import {SortableTable} from "../components/SortableTable";
 import {SearchBar} from "../components/SearchBar";
 import {DropDownMenu} from "../components/DropDownMenu";
 import {Button} from "../components/Button";
 import {AddTeamMembersForm} from "../components/AddTeamMembersForm";
+import {InvitationForm} from "../components/InvitationForm";
+import {JoinRequestForm} from "../components/JoinRequestForm";
 
 const TeamDetail = ({user}) => {
     const params = useParams();
@@ -43,13 +46,15 @@ const TeamDetail = ({user}) => {
     const [displayedMembers, setDisplayedMembers] = useState([]);
     const [hideInvitees, setHideInvitees] = useState(false);
     const [userRoleInTeam, setUserRoleInTeam] = useState(ROLES.MEMBER);
-
+    const [selectedJoinRequest, setSelectedJoinRequest] = useState(null);
+    const [selectedInvitation, setSelectedInvitation] = useState(null);
     const [confirmation, setConfirmation] = useState({});
     const [confirmationOpen, setConfirmationOpen] = useState(false);
 
     const searchInputRef = useRef(null);
 
     const updateTeam = useCallback(() => {
+        setLoaded(false);
         getTeamDetail(params.teamId)
             .then((res) => {
                 if (res.memberships) {
@@ -61,7 +66,7 @@ const TeamDetail = ({user}) => {
                         label: `${I18n.t(`teamDetails.filters.all`)} (${totalMembers})`,
                     });
                     setLoaded(true);
-                    setTimeout(() => searchInputRef.current.focus(), 750);
+                    setTimeout(() => searchInputRef.current && searchInputRef.current.focus(), 750);
                 } else {
                     navigate(`/join-request/${params.teamId}`);
                 }
@@ -76,10 +81,14 @@ const TeamDetail = ({user}) => {
     useEffect(() => {
         const updateMembersList = () => {
             if (hideInvitees || !team.invitations) {
-                setMembersList([...team.memberships].concat([...team.joinRequests]));
+                let newMemberShips = [...team.memberships];
+                if (team.joinRequests) {
+                    newMemberShips = newMemberShips.concat([...team.joinRequests])
+                }
+                setMembersList(newMemberShips);
                 return;
             }
-            const pendingMembers = team.invitations.reduce((filtered, invitation) => {
+            const pendingMembers = (team.invitations || []).reduce((filtered, invitation) => {
                 if (!invitation.expired) {
                     filtered.push({
                         person: {name: "-", email: invitation.email},
@@ -87,11 +96,12 @@ const TeamDetail = ({user}) => {
                         isInvitation: true,
                         role: invitation.intendedRole,
                         invitationID: invitation.id,
+                        id: invitation.id,
                     });
                 }
                 return filtered;
             }, []);
-            const joinRequests = team.joinRequests.reduce((filtered, joinRequest) => {
+            const joinRequests = (team.joinRequests || []).reduce((filtered, joinRequest) => {
                 filtered.push({
                     ...joinRequest,
                     isJoinRequest: true,
@@ -158,9 +168,9 @@ const TeamDetail = ({user}) => {
     }, [memberList, userRoleInTeam]);
 
     const renderAlertBanners = () => {
-        return alerts.map((alert) => {
+        return alerts.map((alert, index) => {
             return (
-                <div className="alert-banner-wrapper">
+                <div key={index} className="alert-banner-wrapper">
                     <span className="alert-banner">{alert}</span>
                 </div>
             );
@@ -262,12 +272,6 @@ const TeamDetail = ({user}) => {
             </>
         );
     };
-    const getDateString = (timestamp) => {
-        const date = new Date(timestamp * 1000);
-        return `${date.getMonth()} ${date.toLocaleString("default", {
-            month: "long",
-        })}, ${date.getFullYear()}`;
-    };
 
     const renderMembersTable = () => {
         const columns = [
@@ -322,6 +326,18 @@ const TeamDetail = ({user}) => {
         //TODO!
     };
 
+    const tdClassName = member => {
+        return (member.isJoinRequest || member.isInvitation) ? "clickable" : "";
+    }
+
+    const tdClick = member => {
+        if (member.isJoinRequest) {
+            setSelectedJoinRequest(member);
+        } else if (member.isInvitation) {
+            setSelectedInvitation(member);
+        }
+    }
+
     const renderMembersRow = (member, index) => {
         const roleActions = [ROLES.OWNER, ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER].map(
             role => ({
@@ -329,29 +345,37 @@ const TeamDetail = ({user}) => {
                 action: () => processChangeMemberRole(member, role)
             }))
         return (
-            <tr key={index}>
-                <td data-label={I18n.t(`teamDetails.columns.name`)}>
+            <tr key={index} className={tdClassName(member)}>
+                <td data-label={I18n.t(`teamDetails.columns.name`)}
+                    className={tdClassName(member)}
+                    onClick={() => tdClick(member)}>
                     {member.person.name}
                 </td>
                 {[ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam) && (
-                    <td data-label={I18n.t(`teamDetails.columns.idp`)}>
+                    <td data-label={I18n.t(`teamDetails.columns.idp`)}
+                        className={tdClassName(member)}
+                        onClick={() => tdClick(member)}>
                         <span className="idp">
                             {!member.person.guest && <IDPIcon/>}
                             {member.person.guest && <GuestIDPIcon/>}
                         </span>
                     </td>
                 )}
-                <td data-label={I18n.t(`teamDetails.columns.email`)}>
+                <td data-label={I18n.t(`teamDetails.columns.email`)}
+                    className={tdClassName(member)}
+                    onClick={() => tdClick(member)}>
                     {member.person.email}
                 </td>
                 <td data-label={I18n.t(`teamDetails.columns.role`)}
-                    className="roles-entry">
-                    {((userRoleInTeam === ROLES.ADMIN || userRoleInTeam === ROLES.OWNER)&& !member.isInvitation && !member.isJoinRequest) ?
+                    className={`roles-entry ${tdClassName(member)}`}
+                    onClick={() => tdClick(member)}>
+                    {((userRoleInTeam === ROLES.ADMIN || userRoleInTeam === ROLES.OWNER) && !member.isInvitation && !member.isJoinRequest) ?
                         <DropDownMenu title={I18n.t(`roles.${member.role.toLowerCase()}`)} actions={roleActions}/> :
                         I18n.t(`roles.${member.role.toLowerCase()}`)}
                 </td>
                 <td data-label={I18n.t(`teamDetails.columns.joined`)}
-                    className="joined-entry">
+                    className={`joined-entry ${tdClassName(member)}`}
+                    onClick={() => tdClick(member)}>
                     <span className="joined-wrapper">
                         <span>{getDateString(member.created)}</span>
                         {(member.isInvitation && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam))
@@ -438,14 +462,24 @@ const TeamDetail = ({user}) => {
         return <SpinnerField/>;
     }
 
+    const paths = selectedJoinRequest ? [
+        {name: I18n.t("breadcrumbs.myTeams"), to: "/my-teams"},
+        {name: team.name, to: `/team-details/${team.id}`, action: () => setSelectedJoinRequest(null)},
+        {name: I18n.t("breadcrumbs.joinRequest", {name: selectedJoinRequest.person.name})}
+    ] : selectedInvitation ? [
+        {name: I18n.t("breadcrumbs.myTeams"), to: "/my-teams"},
+        {name: team.name, to: `/team-details/${team.id}`, action: () => setSelectedInvitation(null)},
+        {name: I18n.t("breadcrumbs.invitation", {email: selectedInvitation.person.email})}
+    ] : [
+        {name: I18n.t("breadcrumbs.myTeams"), to: "/my-teams"},
+        {name: team.name},
+    ];
+
     return (
         <Page>
             <SubHeader>
                 <BreadCrumb
-                    paths={[
-                        {name: I18n.t("breadcrumbs.myTeams"), to: "/my-teams"},
-                        {name: team.name},
-                    ]}
+                    paths={paths}
                 />
             </SubHeader>
             <SubHeader>
@@ -453,24 +487,18 @@ const TeamDetail = ({user}) => {
                     <div>
                         <h1 onClick={() => setShowAddMembersForm(false)}>{team.name}</h1>
                         <span className="team-access-bar">
-              {!team.viewable && <PrivateTeamLabel/>}
+                            {!team.viewable && <PrivateTeamLabel/>}
                             <span className="urn-container">
-                <label>{team.urn}</label>
-                <span
-                    onClick={() => {
-                        navigator.clipboard.writeText(team.urn);
-                    }}
-                >
-                  <CopyIcon/>
-                </span>
-              </span>
-            </span>
+                            <label>{team.urn}</label>
+                            <span onClick={() => navigator.clipboard.writeText(team.urn)}>
+                                <CopyIcon/>
+                            </span>
+                        </span>
+                        </span>
                         <p>{team.description}</p>
                     </div>
-                    <ActionMenu
-                        title={actionDropDownTitle(team, user)}
-                        actions={getActions()}
-                    />
+                    <ActionMenu title={actionDropDownTitle(team, user)}
+                                actions={getActions()}/>
                 </div>
             </SubHeader>
             {confirmationOpen && (
@@ -483,9 +511,9 @@ const TeamDetail = ({user}) => {
                 />
             )}
             {renderAlertBanners()}
-            {!showAddMembersForm && (
+            {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation) && (
                 <div className="team-members">
-                    <h2>Members ({memberList.length})</h2>
+                    <h2>{I18n.t("teamDetails.members")} ({memberList.length})</h2>
                     <span className="team-actions-bar">
                         {renderFilterDropdown()}
                         <SearchBar
@@ -522,6 +550,12 @@ const TeamDetail = ({user}) => {
             {showAddMembersForm && (
                 <AddTeamMembersForm team={team} setShowForm={setShowAddMembersForm}/>
             )}
+            {selectedInvitation && <InvitationForm updateTeam={updateTeam}
+                                                   setShowForm={setSelectedInvitation}
+                                                   invitation={selectedInvitation}/>}
+            {selectedJoinRequest && <JoinRequestForm updateTeam={updateTeam}
+                                                     setShowForm={setSelectedJoinRequest}
+                                                     joinRequest={selectedJoinRequest}/>}
         </Page>
     );
 };

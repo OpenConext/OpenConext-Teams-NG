@@ -9,6 +9,7 @@ import TeamDetails from "./pages/TeamDetails";
 import {Footer} from "./components/Footer";
 import NewTeam from "./pages/NewTeam";
 import Flash from "./flash/Flash";
+import {JoinRequest} from "./pages/JoinRequest";
 
 const App = () => {
 
@@ -46,6 +47,7 @@ const App = () => {
                 <Route path={"my-teams"} element={<MyTeams/>}/>
                 <Route path={"new-team"} element={<NewTeam user={user}/>}/>
                 <Route path={"/team-details/:teamId"} element={<TeamDetails user={user}/>}/>
+                <Route path={"/join-request/:teamId"} element={<JoinRequest user={user}/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>}
             <Footer user={user}/>

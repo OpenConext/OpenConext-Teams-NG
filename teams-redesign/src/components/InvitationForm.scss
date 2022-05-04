@@ -1,0 +1,28 @@
+@import "../styles/vars.scss";
+
+div.invitation-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+    @media (max-width: $width-app) {
+        width: 100%;
+        padding: 0 10px 10px 10px;
+    }
+
+    h3 {
+        margin: 40px 0 20px 0;
+    }
+
+    div.submit-button-wrapper {
+        display: flex;
+        column-gap: 15px;
+        margin-top: 40px;
+
+        a.cancel-invitation {
+            margin-left: auto;
+        }
+    }
+
+}
+

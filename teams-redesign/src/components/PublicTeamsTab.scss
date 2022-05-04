@@ -1,29 +1,34 @@
 @import "../styles/vars.scss";
 
 div.public-teams-tab {
-  .public-teams-actions-bar {
-    margin-top: 5px;
-    margin-bottom: 10px;
+    .public-teams-actions-bar {
+        margin-top: 5px;
+        margin-bottom: 10px;
 
-    .search-bar {
-      display: block;
-      width: 38%;
+        .search-bar {
+            display: block;
+            width: 50%;
+
+            @media (max-width: $width-app) {
+                width: 100%;
+            }
+
+        }
     }
-  }
 
-  .sortable-table {
-    th {
-      &.title {
-        width: 30%;
-      }
+    .sortable-table {
+        th {
+            &.title {
+                width: 30%;
+            }
 
-      &.description {
-        width: 30%;
-      }
+            &.description {
+                width: 30%;
+            }
 
-      &.join {
-        width: 20%;
-      }
+            &.join {
+                width: 20%;
+            }
+        }
     }
-  }
 }

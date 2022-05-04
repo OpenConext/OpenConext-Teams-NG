@@ -68,7 +68,8 @@ export const PublicTeamsTab = ({myteams}) => {
         return (
             <tr key={index}>
                 <td data-label={"title"}>
-                    <Link to={`/team-details/${team.id}`}>{team.name}</Link>
+                    {teamJoinable && <Link to={`/join-request/${team.id}`}>{team.name}</Link>}
+                    {!teamJoinable && <Link to={`/team-details/${team.id}`}>{team.name}</Link>}
                 </td>
                 <td data-label={"description"}>
                     <span className="team-description">

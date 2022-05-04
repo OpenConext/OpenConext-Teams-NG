@@ -1,6 +1,6 @@
 @import "../styles/vars.scss";
 
-div.new-team {
+div.join-request {
     display: flex;
     flex-direction: column;
     width: 50%;
@@ -11,86 +11,53 @@ div.new-team {
         padding: 0 10px 10px 10px;
     }
 
-    .w-md-editor {
+    .wmde-markdown {
+        background-color: $background;
+        cursor: not-allowed;
+        width: 100%;
+        border: 1px solid $quaternary-grey;
+        padding: 6px 12px;
         border-radius: 8px;
         font-size: 16px;
-        border: 1px solid $quaternary-grey;
-        box-shadow: none;
-
-        .w-md-editor-toolbar {
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            border-bottom: 1px solid $quaternary-grey;
-        }
-
-        .w-md-editor-content {
-            height: 170px !important;
-        }
-
-        &.w-md-editor-fullscreen {
-            .w-md-editor-content {
-                height: 100% !important;
-            }
-        }
-
-        .w-md-editor-bar {
-            display: none;
-        }
-
-        .w-md-editor-preview {
-            border-bottom: 1px solid $quaternary-grey;
-            border-left: 1px solid $quaternary-grey;
-            box-shadow: none;
-            border-bottom-right-radius: 8px;
-        }
+        height: 48px;
     }
 
-    div.team-visibilities {
+    .inner-email-field {
         display: flex;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        width: 100%;
+        border: 1px solid $quaternary-grey;
+        border-radius: $br;
+        font-size: 16px;
+        padding-bottom: 5px;
 
-        div.visibility {
-            display: flex;
-            flex-direction: column;
-            border: 1px solid $quaternary-grey;
+        div.email-tag {
+            border: 1px solid $tertiary-grey;
             border-radius: $br;
-            width: 47%;
-            padding: 20px;
-            background-color: #fdfdfd;
-            cursor: pointer;
+            margin: 5px 5px 0 5px;
+            display: inline-block;
+            position: relative;
+            background-color: $background;
+            padding: 4px 26px 4px 10px;
+            max-height: 32px;
 
-            section.header {
-                display: flex;
-                margin-bottom: 10px;
+            span.value {
+                word-break: break-all;
+            }
 
-                h2 {
-                    font-size: 24px;
-                    margin-left: 15px;
-                }
+            span.disabled {
+                padding: 8px 14px;
+                cursor: not-allowed;
+                color: $primary-green;
+                position: absolute;
+                right: -8px;
+                top: -5px;
 
                 svg {
-                    width: 34px;
+                    width: 12px;
                 }
-            }
-
-            p {
-                font-size: 14px
-            }
-
-            &.active {
-                border: 3px solid $primary-green;
-                background-color: white;
-                cursor: default;
-
-                section.header {
-                    color: $primary-green;
-
-                    svg {
-                        color: $primary-green;
-                    }
-                }
-
             }
         }
     }
+
 }

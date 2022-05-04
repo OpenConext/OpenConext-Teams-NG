@@ -174,7 +174,7 @@ export function deleteJoinRequest(id) {
 }
 
 export function joinRequest(clientJoinRequest) {
-    return postPutJson("join-requests", clientJoinRequest);
+    return postPutJson("join-requests", clientJoinRequest, "post");
 }
 
 export function getJoinRequest(id, showErrorDialog = true) {

@@ -173,6 +173,10 @@ div.team-members {
         }
 
         tr {
+            &.clickable:hover {
+                background-color: $background;
+            }
+
             td {
                 &.roles-entry {
                     .dropdown-menu-container {
@@ -205,6 +209,10 @@ div.team-members {
                             vertical-align: middle;
                         }
                     }
+                }
+
+                &.clickable {
+                    cursor: pointer;
                 }
             }
         }

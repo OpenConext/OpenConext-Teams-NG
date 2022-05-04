@@ -51,6 +51,7 @@ I18n.translations.en = {
         alreadyMember: "Already a member"
     },
     teamDetails: {
+        members: "Members",
         hideInvitees: "Hide invitees",
         noInvitees: "No invitees",
         inviteSent: "invite sent",
@@ -105,7 +106,18 @@ I18n.translations.en = {
         confirmations: {
             removeMember: "Are you sure you want to remove this member?",
             removeInvitation: "Are you sure you want to remove this invitation?",
-            removeJoinRequest: "Are you sure you want to remove this join request?"
+            resendInvitation: "Are you sure you want to resend this invitation?",
+            removeJoinRequest: "Are you sure you want to remove this join request?",
+            approveJoinRequest: "Are you sure you want to approve this join request?",
+            rejectJoinRequest: "Are you sure you want to reject this join request?",
+        },
+        flash: {
+            removeMember: "Member is removed",
+            removeInvitation: "Invitation is removed",
+            resendInvitation: "Invitation is resend",
+            removeJoinRequest: "Join request has been removed",
+            approveJoinRequest: "Join request has been approved",
+            rejectJoinRequest: "Join request has been denied",
         }
     },
     profile: {
@@ -159,20 +171,53 @@ I18n.translations.en = {
         },
         create: "Create team"
     },
+    invitationForm: {
+        header: "Resend invitation",
+        email: "Email invitee",
+        created: "Send at",
+        message: "Personal message",
+        messagePlaceholder: "Personal message for the invitee",
+        role: "Intended role",
+        language: "Language"
+    },
+    joinRequestForm: {
+        header: "Join request",
+        email: "Email invitee",
+        created: "Send at",
+        message: "Message",
+        name: "Name",
+    },
+    joinRequest: {
+        flash: "Join request is send",
+        teamAdmins: "Administrators",
+        invitationMessage: "Personal message",
+        invitationMessagePlaceholder: "Your personal invitation message for the administrator(s) of this team",
+        confirmation: "Share this information with the applications used by this team."
+    },
     forms: {
         cancel: "Cancel",
         delete: "Delete",
         submit: "Submit",
         save: "Save",
         update: "Update",
+        resend: "Resend",
+        approve: "Approve",
+        reject: "Reject",
         edit: "Edit",
         required: "{{attribute}} is a required attribute",
         alreadyExists: "A {{object}} with {{attribute}} {{value}} already exists.",
         invalid: "{{value}} for {{attribute}} is invalid."
     },
+    languages: {
+        DUTCH: "Dutch",
+        ENGLISH: "English"
+    },
     breadcrumbs: {
         myTeams: "My teams",
-        newTeam: "Create new team"
+        newTeam: "Create new team",
+        joinRequest: "Join request from {{name}}",
+        userJoinRequest: "Join request",
+        invitation: "Invitation for {{email}}"
     },
     confirmationDialog: {
         title: "Please confirm",

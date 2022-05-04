@@ -1,0 +1,72 @@
+@import "../styles/vars.scss";
+
+div.checkbox {
+
+    display: flex;
+    align-items: center;
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    label {
+        display: inline-block;
+        outline: none !important;
+        font-weight: bold;
+        margin-left: 4px;
+        &.info {
+            margin-left: 10px;
+        }
+
+        &.disabled {
+            color: $primary-grey;
+        }
+    }
+
+    input[type="checkbox"] + label span {
+        font-size: 11px;
+        background-color: white;
+        border: 1px solid $primary-green;
+        border-radius: 3px;
+        padding: 7px 4px 1px 4px;
+        margin: 2px 0;
+        cursor: pointer;
+
+        svg {
+            color: transparent;
+            width: 14px;
+        }
+    }
+
+    input[type="checkbox"]:disabled + label span {
+        border: 1px solid darken($primary-grey, 5%);
+        background-color: $background;
+        cursor: not-allowed;
+    }
+
+    input[type="checkbox"]:checked + label span {
+        border: 1px solid $primary-green;
+        background-color: $primary-green;
+        border-radius: 2px;
+        box-shadow: none;
+        padding: 7px 4px 1px 4px;
+        outline: none !important;
+
+        svg {
+            background-color: $primary-green;
+            color: white;
+            width: 14px;
+        }
+    }
+
+    input[type="checkbox"]:checked:disabled + label span {
+        border: 3px solid $primary-grey;
+        background-color: $primary-grey;
+        cursor: default;
+
+        svg {
+            background-color: $primary-grey;
+        }
+    }
+
+}

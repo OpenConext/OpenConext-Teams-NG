@@ -20,3 +20,10 @@ export const isEmpty = obj => {
     }
     return false;
 }
+
+export const getDateString = timestamp => {
+    const date = new Date(timestamp * 1000);
+    return `${date.getMonth()} ${date.toLocaleString("default", {
+        month: "long",
+    })}, ${date.getFullYear()}`;
+};

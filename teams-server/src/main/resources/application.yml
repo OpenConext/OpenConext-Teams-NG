@@ -103,6 +103,10 @@ spring:
   flyway:
     validate-on-migrate: false
     table: schema_version
+  security:
+    user:
+      name: na
+      password: na
 
 email:
   from: test@surf.nl
