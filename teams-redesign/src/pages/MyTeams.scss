@@ -3,82 +3,96 @@
 
 div.my-teams-container {
 
-  h2 {
-    padding: 10px 10px 10px 0px;
-  }
-
-  .team-actions-bar {
-    display: flex;
-    flex-direction: row;
-    margin-top: 5px;
-    margin-bottom: 10px;
-
-    .filter-dropdown-span {
-      width: 250px;
-      margin-right: 30px;
+    h2 {
+        padding: 10px 10px 10px 0;
     }
 
-    .new-team-button {
-      margin-left: auto;
-      width: 100px;
-      padding-top: 12px;
+    .team-actions-bar {
+        display: flex;
+        flex-direction: row;
+        margin-top: 5px;
+        margin-bottom: 10px;
+
+        @media (max-width: $width-app) {
+            flex-direction: column;
+        }
+
+        .filter-dropdown-span {
+            width: 250px;
+            margin-right: 30px;
+        }
+
+        .new-team-button {
+            margin-left: auto;
+            width: 100px;
+            padding-top: 12px;
+
+            @media (max-width: $width-app) {
+                margin-top: 12px;
+                margin-left: 0;
+            }
+        }
     }
-  }
 
-
-  h3.zero-state {
-    margin-top: 10px;
-    font-weight: normal;
-  }
-
-  .sortable-table {
-    width: 100%;
-    table-layout: fixed;
-
-    th {
-      &.title {
-        width: 30%;
-      }
-
-      &.members {
-        width: 15%;
-      }
-
-      &.private {
-        width: 20%;
-      }
-
-      &.member {
-        width: 25%;
-      }
-
-      &.bin {
-        width: 10%;
-      }
+    .search-bar {
+        @media (max-width: $width-app) {
+            margin-top: 12px;
+        }
     }
-  }
 
-  span.bin-icon svg {
-    width: 20px;
-    cursor: pointer;
-
-    &:hover {
-      color: $primary-red;
+    h3.zero-state {
+        margin-top: 10px;
+        font-weight: normal;
     }
-  }
 
-  span.private-label {
-    border: 1px solid $quaternary-grey;
-    border-radius: 25px;
-    min-height: 20px;
-    padding: 6px 10px;
-    font-size: 14px;
+    .sortable-table {
+        width: 100%;
+        table-layout: fixed;
 
-    img {
-      margin-right: 5px;
-      width: 20px;
-      vertical-align: middle;
+        th {
+            &.title {
+                width: 30%;
+            }
+
+            &.members {
+                width: 15%;
+            }
+
+            &.private {
+                width: 20%;
+            }
+
+            &.member {
+                width: 25%;
+            }
+
+            &.bin {
+                width: 10%;
+            }
+        }
     }
-  }
+
+    span.bin-icon svg {
+        width: 20px;
+        cursor: pointer;
+
+        &:hover {
+            color: $primary-red;
+        }
+    }
+
+    span.private-label {
+        border: 1px solid $quaternary-grey;
+        border-radius: 25px;
+        min-height: 20px;
+        padding: 6px 10px;
+        font-size: 14px;
+
+        img {
+            margin-right: 5px;
+            width: 20px;
+            vertical-align: middle;
+        }
+    }
 
 }

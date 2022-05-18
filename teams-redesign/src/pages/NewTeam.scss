@@ -21,10 +21,16 @@ div.new-team {
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
             border-bottom: 1px solid $quaternary-grey;
+            @media (max-width: $width-app) {
+                height: 47px !important;
+            }
         }
 
         .w-md-editor-content {
             height: 170px !important;
+            @media (max-width: $width-app) {
+                height: 152px !important;
+            }
         }
 
         &.w-md-editor-fullscreen {

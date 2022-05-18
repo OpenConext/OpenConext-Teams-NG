@@ -8,8 +8,6 @@
 div.tabs-nav-wrapper {
   display: flex;
   padding-top: 40px;
-  margin-left: -20vw;
-  margin-right: -20vw;
   background-color: $tertiary-grey;
   justify-content: center;
 }
@@ -22,7 +20,7 @@ ul.nav {
   padding-left: 0;
   column-gap: 10px;
 
-  @media (max-width: 768px) {
+  @media (max-width: $width-app) {
     width: 90%;
   }
 
@@ -33,7 +31,6 @@ ul.nav {
     list-style: none;
     text-align: center;
     cursor: pointer;
-    transition: all 0.7s;
 
     &:hover {
       background: $primary-grey;

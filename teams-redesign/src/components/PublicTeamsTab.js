@@ -63,7 +63,6 @@ export const PublicTeamsTab = ({myteams}) => {
     const renderPublicTeamsRow = (team, index) => {
         const shouldTruncateDescription = team.description.length > 50
         const teamJoinable = myteams.filter(myteam => myteam.id === team.id).length < 1
-        const joinLink = <Link to="/">{I18n.t("publicTeams.joinRequest")}</Link>
 
         return (
             <tr key={index}>
@@ -78,7 +77,8 @@ export const PublicTeamsTab = ({myteams}) => {
                     </span>
                 </td>
                 <td data-label={"join"}>
-                    {teamJoinable ? joinLink : I18n.t("publicTeams.alreadyMember")}
+                    {teamJoinable && <Link to={`/join-request/${team.id}`}>{I18n.t("publicTeams.joinRequest")}</Link>}
+                    {!teamJoinable && I18n.t("publicTeams.alreadyMember")}
                 </td>
             </tr>)
     }

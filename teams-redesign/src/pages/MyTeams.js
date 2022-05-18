@@ -1,7 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 
-import {deleteTeam, getMyTeams} from "../api";
+import {deleteJoinRequest, deleteTeam, getMyTeams} from "../api";
 import I18n from "i18n-js";
 import {ROLES} from "../utils/roles";
 import {Page} from "../components/Page";
@@ -16,12 +16,13 @@ import {SortableTable} from "../components/SortableTable";
 import {SearchBar} from "../components/SearchBar";
 import {PublicTeamsTab} from "../components/PublicTeamsTab";
 import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
+import {SpinnerField} from "../components/SpinnerField";
 
 
 export const MyTeams = () => {
     const navigate = useNavigate();
-    const [teams, setTeams] = useState({teamSummaries: []});
-
+    const [teams, setTeams] = useState([]);
+    const [loaded, setLoaded] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [teamsFilter, setTeamsFilter] = useState({value: "ALL", label: ""});
     const [sort, setSort] = useState({field: "name", direction: "ascending"});
@@ -32,21 +33,47 @@ export const MyTeams = () => {
 
     const searchInputRef = useRef(null);
 
-    useEffect(() => {
+    const updateAllTeams = useCallback(() => {
         getMyTeams().then(teams => {
-            setTeams(teams);
-            setTeamsFilter({value: "ALL", label: `${I18n.t(`myteams.filters.all`)} (${teams.teamSummaries.length})`});
+            const teamSummaries = teams.teamSummaries;
+            const joinRequests = teams.myJoinRequests.map(joinRequest => ({
+                name: joinRequest.teamName,
+                description: joinRequest.teamDescription,
+                role: "JOINREQUEST",
+                isJoinRequest: true,
+                membershipCount: "",
+                created: joinRequest.joinRequest.created,
+                message: joinRequest.joinRequest.message,
+                id: joinRequest.joinRequest.id,
+                teamId: joinRequest.teamId
+            }));
+            const allTeams = teamSummaries.concat(joinRequests);
+            setTeams(allTeams);
+            const hasJoinRequests = joinRequests.length > 0;
+            setTeamsFilter(hasJoinRequests ? {
+                value: "ALL",
+                label: `${I18n.t(`myteams.filters.all`)} (${allTeams.length})`
+            } : {
+                value: "ALLTEAMS",
+                label: `${I18n.t(`myteams.filters.allteams`)} (${allTeams.length})`
+            });
+            setLoaded(true);
+            setTimeout(() => searchInputRef.current.focus(), 500);
         });
-        searchInputRef.current.focus();
     }, []);
 
     useEffect(() => {
+        updateAllTeams();
+    }, [updateAllTeams]);
+
+    useEffect(() => {
         const updateDisplayedTeams = () => {
-            const toDisplay = teams.teamSummaries.filter(team => {
-                if (teamsFilter.value !== team.role && teamsFilter.value !== 'ALL') {
-                    return false
-                }
-                return searchQuery.trim() === "" || team.name.toLowerCase().includes(searchQuery.toLowerCase())
+            const toDisplay = teams.filter(team => {
+                const roleMatch =
+                    teamsFilter.value === team.role ||
+                    teamsFilter.value === "ALL" ||
+                    (!team.isJoinRequest && teamsFilter.value === "ALLTEAMS")
+                return roleMatch && (searchQuery.trim() === "" || team.name.toLowerCase().includes(searchQuery.toLowerCase()))
             });
             toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
             if (sort.direction !== "ascending") {
@@ -64,17 +91,16 @@ export const MyTeams = () => {
                 cancel: () => setConfirmationOpen(false),
                 action: () => processDelete(team, false),
                 warning: false,
-                question: I18n.t("myteams.confirmations.delete")
+                question: I18n.t(`myteams.confirmations.delete${team.isJoinRequest ? "JoinRequest" : ""}`)
             });
             setConfirmationOpen(true);
-            return;
+        } else {
+            const promise = team.isJoinRequest ? deleteJoinRequest : deleteTeam;
+            promise(team.id).then(() => {
+                updateAllTeams();
+            });
+            setConfirmationOpen(false);
         }
-        deleteTeam(team.id).then(() => {
-            getMyTeams().then(teams => {
-                setTeams(teams);
-            })
-        })
-        setConfirmationOpen(false);
     }
 
     const renderFilterDropdown = () => {
@@ -83,12 +109,14 @@ export const MyTeams = () => {
                 this.action = () => {
                     setTeamsFilter({value: this.value, label: this.name})
                 }
-                this.value = value
-                if (value === 'ALL') {
-                    this.count = teams.teamSummaries.length;
-                    return this;
+                this.value = value;
+                if (value === "ALL") {
+                    this.count = teams.length;
+                } else if (value === "ALLTEAMS") {
+                    this.count = teams.filter(team => !team.isJoinRequest).length;
+                } else {
+                    this.count = 0;
                 }
-                this.count = 0
             }
 
             get name() {
@@ -96,10 +124,22 @@ export const MyTeams = () => {
             }
         }
 
-        const filters = ['ALL', ROLES.OWNER, ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER]
-        const options = filters.map(filter => new FilterCount(filter))
+        const defaultFilters = [ROLES.OWNER, ROLES.ADMIN, ROLES.MANAGER, ROLES.MEMBER];
+        const filters = [];
+        const hasJoinRequests = teams.some(team => team.isJoinRequest);
+        const hasTeams = teams.some(team => !team.isJoinRequest);
+        if (hasJoinRequests && hasTeams) {
+            filters.push("ALL");
+        }
+        if (hasTeams) {
+            filters.push("ALLTEAMS");
+        }
+        if (hasJoinRequests) {
+            filters.push("JOINREQUEST");
+        }
+        const options = filters.concat(defaultFilters).map(filter => new FilterCount(filter))
 
-        teams.teamSummaries.forEach(team => {
+        teams.forEach(team => {
             options.forEach(option => {
                 if (option.value === team.role) {
                     option.count++;
@@ -122,24 +162,32 @@ export const MyTeams = () => {
     }
 
     const renderTeamsRow = (team, index) => {
+        const linkUrl = team.isJoinRequest ? `/join-request/${team.teamId}/${team.id}` : `/team-details/${team.id}`;
         return (<tr key={index}>
-            <td data-label={I18n.t("myteams.columns.title")}><Link to={`/team-details/${team.id}`}>{team.name}</Link>
+            <td data-label={I18n.t("myteams.columns.title")}>
+                <Link to={linkUrl}>{team.name}</Link>
             </td>
             <td data-label={I18n.t("myteams.columns.members")}>{team.membershipCount}</td>
-            <td data-label={I18n.t("myteams.columns.private")}>{!team.viewable && <PrivateTeamLabel/>}</td>
+            <td data-label={I18n.t("myteams.columns.private")}>{(!team.viewable && !team.isJoinRequest) &&
+            <PrivateTeamLabel/>}</td>
             <td data-label={I18n.t("myteams.columns.member")}>{renderAddMemberLink(team)}</td>
             <td data-label={I18n.t("myteams.columns.bin")}>{renderDeleteButton(team)}</td>
         </tr>)
     }
 
     const renderAddMemberLink = team => {
-        const link = <Link to={{pathname: "/", state: {team: team}}}>{I18n.t("myteams.add_members")}</Link>
-        return (<>{ROLES.MEMBER !== team.role ? link : I18n.t("myteams.member")}</>)
+        if (team.role === ROLES.MEMBER) {
+            return I18n.t("myteams.member");
+        }
+        if (team.role === "JOINREQUEST") {
+            return I18n.t("myteams.joinRequest");
+        }
+        return <Link to={`/team-details/${team.id}?add-members=true`}>{I18n.t("myteams.add_members")}</Link>
     }
 
     const renderDeleteButton = team => {
         const icon = <span className="bin-icon" onClick={() => processDelete(team, true)}><BinIcon/></span>
-        return (<>{[ROLES.OWNER, ROLES.ADMIN].includes(team.role) ? icon : I18n.t("myteams.empty")}</>)
+        return (<>{[ROLES.OWNER, ROLES.ADMIN, "JOINREQUEST"].includes(team.role) ? icon : I18n.t("myteams.empty")}</>)
     }
 
     const renderMyTeams = () => {
@@ -172,11 +220,13 @@ export const MyTeams = () => {
                 sortable: false
             }
         ]
-
+        if (!loaded) {
+            return <SpinnerField/>;
+        }
         return (
-            <Page>
-                <Tabs>
-                    <Tab title={I18n.t(`myteams.tabs.myTeams`)}>
+            <Tabs>
+                <Tab title={I18n.t(`myteams.tabs.myTeams`)}>
+                    <Page>
                         <h2>{I18n.t("myteams.tabs.myTeams")}</h2>
                         <span className="team-actions-bar">
                         {renderFilterDropdown()}
@@ -192,9 +242,9 @@ export const MyTeams = () => {
                                                                  isWarning={confirmation.warning}
                                                                  question={confirmation.question}/>}
 
-                        {teams.teamSummaries.length === 0 &&
+                        {teams.length === 0 &&
                         <h3 className="zero-state">{I18n.t("myteams.zeroStates.noTeams")}</h3>}
-                        {(displayedTeams.length === 0 && teams.teamSummaries.length > 0) &&
+                        {(displayedTeams.length === 0 && teams.length > 0) &&
                         <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>
                         }
                         {displayedTeams.length > 0 &&
@@ -202,12 +252,14 @@ export const MyTeams = () => {
                             {displayedTeams.map((team, index) => renderTeamsRow(team, index))}
                         </SortableTable>
                         }
-                    </Tab>
-                    <Tab title={I18n.t(`myteams.tabs.publicTeams`)}>
-                        <PublicTeamsTab myteams={teams.teamSummaries}></PublicTeamsTab>
-                    </Tab>
-                </Tabs>
-            </Page>
+                    </Page>
+                </Tab>
+                <Tab title={I18n.t(`myteams.tabs.publicTeams`)}>
+                    <Page>
+                        <PublicTeamsTab myteams={teams}/>
+                    </Page>
+                </Tab>
+            </Tabs>
         )
     }
 

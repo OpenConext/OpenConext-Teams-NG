@@ -15,7 +15,10 @@ export const Tabs = ({children}) => {
             <div className={"tabs-nav-wrapper"}>
                 <ul className="nav">
                     {children.map((tab, index) => {
-                        return <TabNavItem key={index} title={tab.props.title} id={index} activeTab={activeTab}
+                        return <TabNavItem key={index}
+                                           id={index}
+                                           title={tab.props.title}
+                                           activeTab={activeTab}
                                            setActiveTab={setActiveTab}/>
                     })}
                 </ul>

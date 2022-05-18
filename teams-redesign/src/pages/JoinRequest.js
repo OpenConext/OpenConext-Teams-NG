@@ -7,9 +7,9 @@ import React, {useEffect, useState} from "react";
 import I18n from "i18n-js";
 import "./JoinRequest.scss";
 import MDEditor from '@uiw/react-md-editor';
-import {getTeamDetail, joinRequest} from "../api";
+import {getJoinRequest, getTeamDetail, createJoinRequest} from "../api";
 import InputField from "../components/InputField";
-import {isEmpty} from "../utils/utils";
+import {getDateString, isEmpty} from "../utils/utils";
 import {ButtonContainer} from "../components/ButtonContainer";
 import {Button} from "../components/Button";
 import {setFlash} from "../flash/events";
@@ -22,27 +22,38 @@ export const JoinRequest = () => {
     const params = useParams();
     const navigate = useNavigate();
     const [team, setTeam] = useState({});
+    const [joinRequest, setJoinRequest] = useState({});
     const [message, setMessage] = useState("");
     const [loaded, setLoaded] = useState(false);
     const [confirmed, setConfirmed] = useState(true);
 
     useEffect(() => {
-        getTeamDetail(params.teamId, false).then(res => {
-            setTeam(res);
-            setLoaded(true)
-        }).catch(() => navigate("/404"));
+        const {teamId, joinRequestId} = params;
+        if (joinRequestId) {
+            Promise.all([getJoinRequest(joinRequestId, false), getTeamDetail(teamId, false)])
+                .then(res => {
+                    setJoinRequest(res[0]);
+                    setTeam(res[1]);
+                    setLoaded(true);
+                }).catch(() => navigate("/404"));
+        } else {
+            getTeamDetail(teamId, false).then(res => {
+                setTeam(res);
+                setLoaded(true);
+            }).catch(() => navigate("/404"));
+        }
     }, [navigate, params])
 
     const submit = () => {
-        joinRequest({
+        createJoinRequest({
             teamId: team.id,
             message: message
         }).then(() => {
             setFlash(I18n.t("joinRequest.flash", {name: team.name}));
             navigate("/my-teams")
         });
-
     }
+
     if (!loaded) {
         return <SpinnerField/>;
     }
@@ -81,6 +92,10 @@ export const JoinRequest = () => {
                                 </div>)}
                         </div>
                     </section>
+                    {joinRequest.id && <section className="input-field">
+                        <label>{I18n.t("joinRequest.existingJoinRequest")}</label>
+                        <span>{I18n.t("joinRequest.existingJoinRequestDetails", {date: getDateString(joinRequest.created)})}</span>
+                    </section>}
                     <InputField value={message}
                                 onChange={e => setMessage(e.target.value)}
                                 multiline={true}
@@ -99,7 +114,7 @@ export const JoinRequest = () => {
                         <Button
                             onClick={submit}
                             disabled={isEmpty(message) || !confirmed}
-                            txt={I18n.t("forms.submit")}/>
+                            txt={joinRequest.id ? I18n.t("forms.resend") : I18n.t("forms.submit")}/>
                     </ButtonContainer>
 
                 </div>

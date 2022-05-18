@@ -22,7 +22,9 @@ I18n.translations.en = {
             bin: ""
         },
         filters: {
-            all: 'All teams',
+            all: 'All',
+            allteams: 'All teams',
+            joinrequest: "Join requests",
             owner: "Owner of",
             admin: "Admin of",
             manager: "Manager of",
@@ -33,8 +35,10 @@ I18n.translations.en = {
         add_members: "Add members",
         new_team: "New Team",
         member: "You're a member",
+        joinRequest: "Join request",
         confirmations: {
-            delete: "Are you sure you want to delete this team?"
+            delete: "Are you sure you want to delete this team?",
+            deleteJoinRequest: "Are you sure you want to delete this join request?",
         },
         zeroStates: {
             noTeams: "You are not yet a member of any Team",
@@ -192,6 +196,8 @@ I18n.translations.en = {
         teamAdmins: "Administrators",
         invitationMessage: "Personal message",
         invitationMessagePlaceholder: "Your personal invitation message for the administrator(s) of this team",
+        existingJoinRequest: "Pending join request",
+        existingJoinRequestDetails: "You have already sent a join request for this Team on {{date}}",
         confirmation: "Share this information with the applications used by this team."
     },
     forms: {

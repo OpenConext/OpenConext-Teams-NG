@@ -76,6 +76,10 @@ const TeamDetail = ({user}) => {
 
     useEffect(() => {
         updateTeam();
+        const searchParam = new URLSearchParams(window.location.search);
+        if (searchParam.has("add-members")) {
+            setShowAddMembersForm(true);
+        }
     }, [params.teamId, navigate, updateTeam]);
 
     useEffect(() => {

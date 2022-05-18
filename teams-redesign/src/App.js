@@ -48,6 +48,7 @@ const App = () => {
                 <Route path={"new-team"} element={<NewTeam user={user}/>}/>
                 <Route path={"/team-details/:teamId"} element={<TeamDetails user={user}/>}/>
                 <Route path={"/join-request/:teamId"} element={<JoinRequest user={user}/>}/>
+                <Route path={"/join-request/:teamId/:joinRequestId"} element={<JoinRequest user={user}/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>}
             <Footer user={user}/>

@@ -173,7 +173,7 @@ export function deleteJoinRequest(id) {
     return fetchDelete("join-requests/" + id);
 }
 
-export function joinRequest(clientJoinRequest) {
+export function createJoinRequest(clientJoinRequest) {
     return postPutJson("join-requests", clientJoinRequest, "post");
 }
 
