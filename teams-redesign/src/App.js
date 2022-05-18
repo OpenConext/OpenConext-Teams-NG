@@ -10,6 +10,7 @@ import {Footer} from "./components/Footer";
 import NewTeam from "./pages/NewTeam";
 import Flash from "./flash/Flash";
 import {JoinRequest} from "./pages/JoinRequest";
+import {setSuperAdmin} from "./store/store";
 
 const App = () => {
 
@@ -35,17 +36,24 @@ const App = () => {
         ;
     }, []);
 
+    const toggleSuperAdminModus = val => {
+        const newUser = {...user, superAdminModus: val};
+        setUser(newUser);
+        setSuperAdmin(val);
+    }
+
     if (loading) {
         return null; // render null when app is not ready yet
     }
     return (
         <div className="teams">
             <Flash/>
-            <Header user={user}/>
+            <Header user={user} toggleSuperAdminModus={toggleSuperAdminModus}/>
             {<Routes>
                 <Route path="/" element={<Navigate replace to="my-teams"/>}/>
-                <Route path={"my-teams"} element={<MyTeams/>}/>
-                <Route path={"new-team"} element={<NewTeam user={user}/>}/>
+                <Route path={"/my-teams"} element={<MyTeams/>}/>
+                <Route path={"/new-team"} element={<NewTeam user={user}/>}/>
+                <Route path={"/edit-team/:teamId"} element={<NewTeam user={user}/>}/>
                 <Route path={"/team-details/:teamId"} element={<TeamDetails user={user}/>}/>
                 <Route path={"/join-request/:teamId"} element={<JoinRequest user={user}/>}/>
                 <Route path={"/join-request/:teamId/:joinRequestId"} element={<JoinRequest user={user}/>}/>

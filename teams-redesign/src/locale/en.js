@@ -1,6 +1,12 @@
 import I18n from "i18n-js";
 
 I18n.translations.en = {
+    header: {
+        superAdmin: {
+            modus: "Super-Admin modus enabled"
+        }
+    },
+
     fileUploadDialog: {
         title: "Upload file",
         buttons: {
@@ -52,7 +58,8 @@ I18n.translations.en = {
             join: ""
         },
         joinRequest: "Request to join",
-        alreadyMember: "Already a member"
+        alreadyMember: "Already a member",
+        superAdmin: "Super admin powers",
     },
     teamDetails: {
         members: "Members",
@@ -60,7 +67,9 @@ I18n.translations.en = {
         noInvitees: "No invitees",
         inviteSent: "invite sent",
         joinRequest: "join request",
-        alerts: {singleAdmin: "It’s recommended to add at least one other administrator besides yourself."},
+        alerts: {
+            singleAdmin: "It’s recommended to add at least one other administrator besides yourself."
+        },
         addMembers: {
             uploadFile: "You can also upload a csv or txt file.",
             invitationExpiry: "Invitation expires after 30 days",
@@ -155,7 +164,8 @@ I18n.translations.en = {
         description: "Team purpose",
         visibility: "Team privacy",
         backupEmail: "Backup admin",
-        invitationMessage: "Note",
+        personalNote: "Personal note",
+        invitationMessage: "Invitation message",
         public: "Public team",
         publicInfo: "List team in public team index. Others can request membership",
         private: "Private team",
@@ -165,15 +175,16 @@ I18n.translations.en = {
             name: "Enter name (can not be altered)",
             markDown: "Markdown supported",
             backupEmail: "Email(s) of the backup admin",
-            invitationMessage: "Message for your backup admin"
+            invitationMessage: "Personal message for your backup admin",
         },
         tooltips: {
-            description: "The purpose of the team. Will be show to new members who accept an invitation."
+            description: "The purpose of the team. Will be show to new members who accept an invitation.",
+            personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
         },
         flash: {
             created: "Team {{name}} is created"
         },
-        create: "Create team"
+        create: "Create team",
     },
     invitationForm: {
         header: "Resend invitation",
@@ -200,6 +211,15 @@ I18n.translations.en = {
         existingJoinRequestDetails: "You have already sent a join request for this Team on {{date}}",
         confirmation: "Share this information with the applications used by this team."
     },
+    externalTeams: {
+        header: "Include institutional teams(s)",
+        info: "Institutional teams are groups of people provide by your institution to SURF-conext teams. Only those you are a member of, are shown.",
+        info2: "You can link institutional Teams to any team you manage within SURFconext Teams. The result is that all members of that institutional team are also member of your team.",
+        table: {
+            name: "Name",
+            linked: "Linked"
+        }
+    },
     forms: {
         cancel: "Cancel",
         delete: "Delete",
@@ -210,6 +230,7 @@ I18n.translations.en = {
         approve: "Approve",
         reject: "Reject",
         edit: "Edit",
+        back: "Back",
         required: "{{attribute}} is a required attribute",
         alreadyExists: "A {{object}} with {{attribute}} {{value}} already exists.",
         invalid: "{{value}} for {{attribute}} is invalid."
@@ -221,6 +242,7 @@ I18n.translations.en = {
     breadcrumbs: {
         myTeams: "My teams",
         newTeam: "Create new team",
+        editTeam: "Edit {{name}}",
         joinRequest: "Join request from {{name}}",
         userJoinRequest: "Join request",
         invitation: "Invitation for {{email}}"

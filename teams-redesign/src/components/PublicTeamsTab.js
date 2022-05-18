@@ -8,8 +8,9 @@ import TooltipIcon from "./Tooltip";
 import {autoCompleteTeam} from "../api";
 import {SpinnerField} from "./SpinnerField";
 import {useDebounce} from "../utils/debounce";
+import {isSuperAdmin} from "../store/store";
 
-export const PublicTeamsTab = ({myteams}) => {
+export const PublicTeamsTab = ({user, myteams}) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [sort, setSort] = useState({field: "name", direction: "ascending"});
     const [teams, setTeams] = useState([]);
@@ -71,14 +72,14 @@ export const PublicTeamsTab = ({myteams}) => {
     ]
 
     const renderPublicTeamsRow = (team, index) => {
-        const shouldTruncateDescription = team.description.length > 50
-        const teamJoinable = myteams.filter(myteam => myteam.id === team.id).length < 1
+        const shouldTruncateDescription = team.description.length > 50;
+        const isMember = myteams.some(myteam => myteam.id === team.id);
 
         return (
             <tr key={index}>
                 <td data-label={"title"}>
-                    {teamJoinable && <Link to={`/join-request/${team.id}`}>{team.name}</Link>}
-                    {!teamJoinable && <Link to={`/team-details/${team.id}`}>{team.name}</Link>}
+                    {(!isMember && !isSuperAdmin) && <Link to={`/join-request/${team.id}`}>{team.name}</Link>}
+                    {(isMember || isSuperAdmin) && <Link to={`/team-details/${team.id}`}>{team.name}</Link>}
                 </td>
                 <td data-label={"description"}>
                     <span className="team-description">
@@ -87,8 +88,10 @@ export const PublicTeamsTab = ({myteams}) => {
                     </span>
                 </td>
                 <td data-label={"join"}>
-                    {teamJoinable && <Link to={`/join-request/${team.id}`}>{I18n.t("publicTeams.joinRequest")}</Link>}
-                    {!teamJoinable && I18n.t("publicTeams.alreadyMember")}
+                    {(!isMember && !isSuperAdmin) &&
+                    <Link to={`/join-request/${team.id}`}>{I18n.t("publicTeams.joinRequest")}</Link>}
+                    {(!isMember && isSuperAdmin) && I18n.t("publicTeams.superAdmin")}
+                    {(isMember) && I18n.t("publicTeams.alreadyMember")}
                 </td>
             </tr>)
     }

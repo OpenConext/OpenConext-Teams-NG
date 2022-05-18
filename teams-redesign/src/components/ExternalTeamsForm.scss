@@ -1,0 +1,65 @@
+@import "../styles/vars.scss";
+
+div.external-teams-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+
+    @media (max-width: $width-app) {
+        width: 100%;
+        padding: 0 10px 10px 10px;
+    }
+
+    .back {
+        margin: 25px 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: $primary-blue;
+
+        svg {
+            width: 16px;
+            height: auto;
+            margin-right: 14px;
+        }
+    }
+
+    p {
+        margin: 25px 0 0 0;
+
+        &.last {
+            margin: 25px 0;
+        }
+    }
+
+    table {
+        margin-bottom: 40px;
+        th, td {
+            padding: 10px 0;
+
+            &.name {
+                width: 75%;
+            }
+
+            &.linked {
+                width: 75%;
+            }
+
+        }
+
+        thead {
+            tr {
+                border-bottom: 1px solid black;
+            }
+        }
+
+        tbody {
+            tr {
+                border-bottom: 1px solid $primary-grey;
+
+            }
+        }
+
+    }
+}
+

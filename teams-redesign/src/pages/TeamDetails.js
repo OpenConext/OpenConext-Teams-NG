@@ -25,6 +25,8 @@ import {Button} from "../components/Button";
 import {AddTeamMembersForm} from "../components/AddTeamMembersForm";
 import {InvitationForm} from "../components/InvitationForm";
 import {JoinRequestForm} from "../components/JoinRequestForm";
+import {CheckBox} from "../components/CheckBox";
+import {ExternalTeamsForm} from "../components/ExternalTeamsForm";
 
 const TeamDetail = ({user}) => {
     const params = useParams();
@@ -48,6 +50,7 @@ const TeamDetail = ({user}) => {
     const [userRoleInTeam, setUserRoleInTeam] = useState(ROLES.MEMBER);
     const [selectedJoinRequest, setSelectedJoinRequest] = useState(null);
     const [selectedInvitation, setSelectedInvitation] = useState(null);
+    const [showExternalTeams, setShowExternalTeams] = useState(false);
     const [confirmation, setConfirmation] = useState({});
     const [confirmationOpen, setConfirmationOpen] = useState(false);
 
@@ -159,7 +162,7 @@ const TeamDetail = ({user}) => {
         const updateAlertBanners = () => {
             const pendingAlerts = [];
             const adminAlert =
-                memberList.filter((member) => member.role === ROLES.ADMIN).length < 2 &&
+                team.memberships.filter(member => member.role === ROLES.ADMIN).length < 2 &&
                 [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam);
             if (adminAlert) {
                 pendingAlerts.push(
@@ -169,7 +172,7 @@ const TeamDetail = ({user}) => {
             setAlerts(pendingAlerts);
         };
         updateAlertBanners();
-    }, [memberList, userRoleInTeam]);
+    }, [team, userRoleInTeam]);
 
     const renderAlertBanners = () => {
         return alerts.map((alert, index) => {
@@ -515,7 +518,7 @@ const TeamDetail = ({user}) => {
                 />
             )}
             {renderAlertBanners()}
-            {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation) && (
+            {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation && !showExternalTeams) && (
                 <div className="team-members">
                     <h2>{I18n.t("teamDetails.members")} ({memberList.length})</h2>
                     <span className="team-actions-bar">
@@ -527,21 +530,21 @@ const TeamDetail = ({user}) => {
                         />
                         {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) && (
                             <span className="hide-invitees-wrapper">
-                             <input className="hide-invitees-checkbox"
-                                    type="checkbox"
-                                    disabled={team.invitations && team.invitations.length > 0 ? "" : "disabled"}
-                                    checked={hideInvitees}
-                                    onChange={() => setHideInvitees(!hideInvitees)}/>
-                                {team.invitations && team.invitations.length > 0
-                                    ? I18n.t("teamDetails.hideInvitees")
-                                    : I18n.t("teamDetails.noInvitees")}
+                                <CheckBox name="hide-invitees-checkbox"
+                                          info={team.invitations && team.invitations.length > 0
+                                              ? I18n.t("teamDetails.hideInvitees")
+                                              : I18n.t("teamDetails.noInvitees")}
+                                          onChange={() => setHideInvitees(!hideInvitees)}
+                                          value={hideInvitees}
+                                          readOnly={!team.invitations || team.invitations.length === 0}/>
                             </span>
                         )}
                         {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) && (
                             <span className="action-button-wrapper">
-                                <Button onClick={() => navigate("/home")}
+                                {(user.externalTeams && user.externalTeams.length > 0) &&
+                                <Button onClick={() => setShowExternalTeams(true)}
                                         txt={I18n.t(`teamDetails.includeTeam`)}
-                                        className="include-team-button"/>
+                                        className="cancel"/>}
                                 <Button onClick={() => setShowAddMembersForm(true)}
                                         txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
                                         className="add-member-button"/>
@@ -560,6 +563,10 @@ const TeamDetail = ({user}) => {
             {selectedJoinRequest && <JoinRequestForm updateTeam={updateTeam}
                                                      setShowForm={setSelectedJoinRequest}
                                                      joinRequest={selectedJoinRequest}/>}
+            {showExternalTeams && <ExternalTeamsForm updateTeam={updateTeam}
+                                                     user={user}
+                                                     team={team}
+                                                     setShowForm={setShowExternalTeams}/>}
         </Page>
     );
 };

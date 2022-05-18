@@ -167,7 +167,7 @@ export const MyTeams = () => {
             <td data-label={I18n.t("myteams.columns.title")}>
                 <Link to={linkUrl}>{team.name}</Link>
             </td>
-            <td data-label={I18n.t("myteams.columns.members")}>{team.membershipCount}</td>
+            <td data-label={I18n.t("myteams.columns.members")} className={"membership-count"}>{team.membershipCount}</td>
             <td data-label={I18n.t("myteams.columns.private")}>{(!team.viewable && !team.isJoinRequest) &&
             <PrivateTeamLabel/>}</td>
             <td data-label={I18n.t("myteams.columns.member")}>{renderAddMemberLink(team)}</td>

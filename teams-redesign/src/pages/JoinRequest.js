@@ -16,9 +16,10 @@ import {setFlash} from "../flash/events";
 import {SpinnerField} from "../components/SpinnerField";
 import {CheckBox} from "../components/CheckBox";
 import {ReactComponent as EnvelopeIcon} from "../icons/envelope.svg";
+import {ROLES} from "../utils/roles";
 
 
-export const JoinRequest = () => {
+export const JoinRequest = ({user}) => {
     const params = useParams();
     const navigate = useNavigate();
     const [team, setTeam] = useState({});
@@ -83,7 +84,8 @@ export const JoinRequest = () => {
                     <section className="input-field">
                         <label>{I18n.t("joinRequest.teamAdmins")}</label>
                         <div className="inner-email-field">
-                            {(team.admins || []).map((admin, index) =>
+                            {((user.superAdmin ? team.admins :
+                                team.memberships.filter(m => m.role === ROLES.ADMIN).map(m => m.person)) || []).map((admin, index) =>
                                 <div key={index} className="email-tag">
                                     <span className="value">{`${admin.name} <${admin.email}>`}</span>
                                     <span className="disabled">

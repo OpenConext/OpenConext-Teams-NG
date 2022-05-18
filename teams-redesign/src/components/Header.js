@@ -5,18 +5,30 @@ import {useState} from "react";
 import I18n from "i18n-js";
 import "./Header.scss";
 import {Link} from "react-router-dom";
+import {CheckBox} from "./CheckBox";
 
 
-export const Header = ({user}) => {
+export const Header = ({user, toggleSuperAdminModus}) => {
 
     const [droppedDown, setDroppedDown] = useState(false);
+
+    const doToggleSuperAdminModus = e => {
+        toggleSuperAdminModus(e.target.checked);
+    }
 
     return (
         <div className="header-container">
             <div className="header">
-                <Link className={"home"} to={"/"}><img src={surfLogo} alt=""/></Link>
-                {/*<img src={surfLogo} alt=""/>*/}
+                <Link className={"home"} to={"/"}>
+                    <img src={surfLogo} alt=""/>
+                </Link>
                 <h2 className="conext">Conext Teams</h2>
+                {user.superAdmin &&
+                <CheckBox className="checkbox super-admin"
+                          onChange={doToggleSuperAdminModus}
+                          value={user.superAdminModus}
+                          name="super_admin"
+                          info={I18n.t("header.superAdmin.modus")}/>}
                 <div className="user-info">
                     <div className="user">
                         <span className="name">{user.person.name}</span>

@@ -106,15 +106,8 @@ div.team-members {
                 padding-top: 12px;
             }
 
-            a.include-team-button {
-                background-color: white;
-                color: $quaternary-grey;
+            a.cancel {
                 margin-right: 25px;
-                border: $primary-grey solid 1px;
-
-                &:hover {
-                    background-color: $light-blue;
-                }
             }
         }
 

@@ -2,12 +2,12 @@ import "./NewTeam.scss";
 import {Page} from "../components/Page";
 import {SubHeader} from "../components/SubHeader";
 import {BreadCrumb} from "../components/BreadCrumb";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import I18n from "i18n-js";
 import "./TeamDetails.scss";
 import MDEditor from '@uiw/react-md-editor';
-import {saveTeam, teamExistsByName} from "../api";
+import {getTeamDetail, saveTeam, teamExistsByName} from "../api";
 import TooltipIcon from "../components/Tooltip";
 import InputField from "../components/InputField";
 import ErrorIndicator from "../components/ErrorIndicator";
@@ -19,6 +19,7 @@ import {Button} from "../components/Button";
 import {EmailField} from "../components/EmailField";
 import {setFlash} from "../flash/events";
 import {ROLES} from "../utils/roles";
+import {SpinnerField} from "../components/SpinnerField";
 
 const visibilities = [
     {name: "public", icon: publicTeam},
@@ -26,9 +27,10 @@ const visibilities = [
 ];
 
 const NewTeam = ({user}) => {
-
+    const params = useParams();
     const navigate = useNavigate();
     const [team, setTeam] = useState({viewable: true});
+    const [loaded, setLoaded] = useState(false);
     const [backupEmails, setBackupEmails] = useState([]);
     const [errors, setErrors] = useState({});
     const [nameExist, setNameExists] = useState(false);
@@ -38,7 +40,16 @@ const NewTeam = ({user}) => {
         if (user.person.guest) {
             navigate("/404");
         }
-    }, [user, navigate])
+        const {teamId} = params;
+        if (teamId) {
+            getTeamDetail(teamId).then(res => {
+                setTeam(res);
+                setLoaded(true);
+            })
+        } else {
+            setLoaded(true);
+        }
+    }, [params, user, navigate])
 
     const viewableActive = name => (name === "public" && team.viewable) || (name === "private" && !team.viewable)
 
@@ -71,16 +82,22 @@ const NewTeam = ({user}) => {
         setBackupEmails(newBackupEmails);
     };
 
+    if (!loaded) {
+        return <SpinnerField/>;
+    }
+    const breadCrumbs = [{name: I18n.t("breadcrumbs.myTeams"), to: "/my-teams"}];
+    if (team.id) {
+        breadCrumbs.push({name: team.name, to: `/team-detail/${team.id}`});
+    }
+    breadCrumbs.push({name: I18n.t(`breadcrumbs.${team.id ? "editTeam" : "newTeam"}`, {name: ""})});
+
     return (
         <>
             <SubHeader>
-                <BreadCrumb paths={[
-                    {name: I18n.t("breadcrumbs.myTeams"), to: "/my-teams"},
-                    {name: I18n.t("breadcrumbs.newTeam")},
-                ]}/>
+                <BreadCrumb paths={breadCrumbs}/>
             </SubHeader>
             <SubHeader child={true}>
-                <h1>{I18n.t("breadcrumbs.newTeam")}</h1>
+                <h1>{I18n.t(`breadcrumbs.${team.id ? "editTeam" : "newTeam"}`, {name: team.name})}</h1>
             </SubHeader>
             <Page>
                 <div className="new-team">
@@ -89,8 +106,9 @@ const NewTeam = ({user}) => {
                                     setTeam({...team, name: e.target.value.replace(/[^\w\s-]/gi, "")});
                                     setNameExists(false)
                                 }}
+                                disabled={team.id}
                                 placeholder={I18n.t("newTeam.placeholders.name")}
-                                onBlur={e => teamExistsByName(e.target.value).then(exists => setNameExists(exists))}
+                                onBlur={e => team.id && teamExistsByName(e.target.value).then(exists => setNameExists(exists))}
                                 error={nameExist || (!initial && isEmpty(team.name))}
                                 name={I18n.t("newTeam.name")}/>
                     {(!initial && isEmpty(team.name)) &&
@@ -115,6 +133,14 @@ const NewTeam = ({user}) => {
                         />
                     </div>
 
+                    <InputField value={team.personalNote || ""}
+                                onChange={e => {
+                                    setTeam({...team, personalNote: e.target.value});
+                                }}
+                                multiline={true}
+                                toolTip={I18n.t("newTeam.tooltips.personalNote")}
+                                name={I18n.t("newTeam.personalNote")}/>
+
                     <div className="input-field ">
                         <label>{I18n.t("newTeam.visibility")}</label>
                         <div className="team-visibilities">
@@ -133,21 +159,21 @@ const NewTeam = ({user}) => {
                         </div>
                     </div>
 
-                    <EmailField emails={backupEmails}
-                                addEmail={addEmail}
-                                removeMail={removeMail}
-                                name={I18n.t("newTeam.backupEmail")}
-                                placeHolder={I18n.t("newTeam.placeholders.backupEmail")}
-                                pinnedEmails={[user.person.email]}
-                    />
+                    {!team.id && <EmailField emails={backupEmails}
+                                             addEmail={addEmail}
+                                             removeMail={removeMail}
+                                             name={I18n.t("newTeam.backupEmail")}
+                                             placeHolder={I18n.t("newTeam.placeholders.backupEmail")}
+                                             pinnedEmails={[user.person.email]}
+                    />}
 
-                    <InputField value={team.invitationMessage || ""}
-                                onChange={e => {
-                                    setTeam({...team, invitationMessage: e.target.value});
-                                }}
-                                multiline={true}
-                                placeholder={I18n.t("newTeam.placeholders.invitationMessage")}
-                                name={I18n.t("newTeam.invitationMessage")}/>
+                    {!team.id && <InputField value={team.invitationMessage || ""}
+                                             onChange={e => {
+                                                 setTeam({...team, invitationMessage: e.target.value});
+                                             }}
+                                             multiline={true}
+                                             placeholder={I18n.t("newTeam.placeholders.invitationMessage")}
+                                             name={I18n.t("newTeam.invitationMessage")}/>}
 
                     <ButtonContainer>
                         <Button cancelButton={true}
@@ -156,14 +182,13 @@ const NewTeam = ({user}) => {
                         <Button
                             onClick={submit}
                             disabled={!initial && !isValid()}
-                            txt={I18n.t("newTeam.create")}/>
+                            txt={I18n.t(`${team.id ? "forms.save" : "newTeam.create"}`)}/>
                     </ButtonContainer>
 
                 </div>
             </Page>
         </>
-    )
-        ;
+    );
 
 }
 export default NewTeam;

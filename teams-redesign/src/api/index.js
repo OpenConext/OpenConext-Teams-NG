@@ -1,4 +1,5 @@
 import {isEmpty} from "../utils/utils";
+import {isSuperAdmin} from "../store/store";
 
 const apiPath = "/api/teams/";
 let csrfToken = null;
@@ -43,7 +44,7 @@ function validFetch(path, options, headers = {}, showErrorDialog = true) {
         "Accept": "application/json",
         "Content-Type": "application/json",
         "X-CSRF-TOKEN": csrfToken,
-        "X-ADMIN-HEADER": false,
+        "X-ADMIN-HEADER": isSuperAdmin,
         ...headers
     };
 
