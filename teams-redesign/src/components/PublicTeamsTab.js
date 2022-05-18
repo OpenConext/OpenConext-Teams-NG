@@ -6,12 +6,17 @@ import {SearchBar} from "./SearchBar";
 import {SortableTable} from "./SortableTable";
 import TooltipIcon from "./Tooltip";
 import {autoCompleteTeam} from "../api";
+import {SpinnerField} from "./SpinnerField";
+import {useDebounce} from "../utils/debounce";
 
 export const PublicTeamsTab = ({myteams}) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [sort, setSort] = useState({field: "name", direction: "ascending"});
     const [teams, setTeams] = useState([]);
     const [displayedTeams, setDisplayedTeams] = useState([]);
+    const [searching, setSearching] = useState(false);
+    const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
     const searchInputRef = useRef(null);
 
     useEffect(() => {
@@ -27,15 +32,20 @@ export const PublicTeamsTab = ({myteams}) => {
         setDisplayedTeams(toDisplay);
     }, [teams, sort])
 
-    useEffect(() => {
-        if (searchQuery.trim().length > 0) {
-            autoCompleteTeam(searchQuery).then(teams => {
-                setTeams(teams);
-            });
-        } else {
-            setTeams([]);
-        }
-    }, [searchQuery]);
+    useEffect(
+        () => {
+            if (debouncedSearchQuery.trim().length > 0) {
+                setSearching(true);
+                autoCompleteTeam(debouncedSearchQuery).then(teams => {
+                    setTeams(teams);
+                    setSearching(false);
+                });
+            } else {
+                setTeams([]);
+            }
+        },
+        [debouncedSearchQuery] // Only call effect if debounced search term changes
+    );
 
     useEffect(() => {
         updateDisplayedTeams()
@@ -89,9 +99,10 @@ export const PublicTeamsTab = ({myteams}) => {
             <span className="public-teams-actions-bar">
                 <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchInputRef={searchInputRef}/>
             </span>
-            {(teams.length === 0 && searchQuery.trim().length > 0) &&
+            {searching && <SpinnerField/>}
+            {(!searching && teams.length === 0 && debouncedSearchQuery.trim().length > 0) &&
             <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>}
-            {displayedTeams.length > 0 &&
+            {(!searching && displayedTeams.length > 0) &&
             <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
                 {displayedTeams.map((team, index) => renderPublicTeamsRow(team, index))}
             </SortableTable>}
