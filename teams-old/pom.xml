@@ -8,9 +8,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>teams-gui</artifactId>
+    <artifactId>teams-old</artifactId>
     <packaging>pom</packaging>
-    <name>teams-gui</name>
+    <name>teams-old</name>
 
     <build>
         <plugins>

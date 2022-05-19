@@ -19,7 +19,7 @@
     <modules>
         <module>teams-server</module>
         <module>teams-gui</module>
-        <module>teams-redesign</module>
+<!--        <module>teams-old</module>-->
     </modules>
 
     <properties>

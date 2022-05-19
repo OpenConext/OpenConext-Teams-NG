@@ -52,7 +52,7 @@ public class MailBoxTest extends AbstractApplicationTest {
         String body = mailBody();
         assertTrue(body.contains("Uitnodiging voor Champions"));
         assertTrue(body.contains("<strong>Persoonlijk bericht van John Doe:</strong><br>\"Please join\""));
-        assertTrue(body.contains("<span><a href=\"http://localhost:8001/invitation/accept/"));
+        assertTrue(body.contains("<span><a href=\"http://localhost:3006/invitation/accept/"));
     }
 
     @Test
@@ -96,13 +96,13 @@ public class MailBoxTest extends AbstractApplicationTest {
         validateJoinRequestStatusMail("declined");
     }
 
-    private void validateJoinRequestStatusMail(String status) throws IOException, MessagingException, InterruptedException {
+    private void validateJoinRequestStatusMail(String status) throws MessagingException, InterruptedException {
         String mailBody = mailBody();
         assertTrue(mailBody.contains(String.format("has been <strong>%s</strong>", status)));
-        assertTrue(mailBody.contains("http://localhost:8001/teams/"));
+        assertTrue(mailBody.contains("http://localhost:3006/teams/"));
     }
 
-    private String mailBody() throws InterruptedException, MessagingException {
+    private String mailBody() throws MessagingException {
         await().until(() -> greenMail.getReceivedMessages().length != 0);
         MimeMessage mimeMessage = greenMail.getReceivedMessages()[0];
         assertEquals(EMAIL, mimeMessage.getRecipients(Message.RecipientType.TO)[0].toString());
