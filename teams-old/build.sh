@@ -2,4 +2,4 @@
 echo "zipping and uploading"
 rm -Rf dist/*
 rm -Rf target/*
-yarn install && CI=true yarn test && yarn build
+yarn install && yarn lint && yarn test && yarn run webpack
