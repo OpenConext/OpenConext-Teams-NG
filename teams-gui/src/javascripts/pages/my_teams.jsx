@@ -77,7 +77,6 @@ export default class MyTeams extends React.PureComponent {
     componentWillMount = () => this.fetchMyTeams();
 
     showTeam = team => () => {
-        debugger;
         if (team.isJoinRequest) {
             const possibleExistingJoinRequest = this.state.teams.filter(t => t.isJoinRequest && t.teamId === team.teamId);
             if (possibleExistingJoinRequest.length > 0) {

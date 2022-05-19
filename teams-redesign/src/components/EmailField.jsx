@@ -13,6 +13,7 @@ export const EmailField = ({
                                removeMail,
                                toolTip,
                                placeHolder,
+                               marginTop = true,
                                pinnedEmails = [],
                                error = false
                            }) => {
@@ -35,9 +36,8 @@ export const EmailField = ({
     }
 
     return (
-        <div className={`email-field ${error ? "error" : ""}`}>
-            {(name && !toolTip) && <label htmlFor={name}>{name}
-            </label>}
+        <div className={`email-field ${error ? "error" : ""} ${marginTop ? "" : "no-margin-top"}`}>
+            {(name && !toolTip) && <label htmlFor={name}>{name}</label>}
             {toolTip && <Tooltip tooltip={toolTip} name={name} label={name}/>}
             <div className={`inner-email-field ${error ? "error" : ""}`}>
                 {emails.map(mail =>

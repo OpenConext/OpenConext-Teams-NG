@@ -1,171 +1,84 @@
 @import "../styles/vars.scss";
 
 div.add-members-form-container {
-  h3 {
-    margin: 40px 0 20px 0;
-  }
-
-  div.add-emails-wrapper {
     display: flex;
     flex-direction: column;
 
-    span {
-      display: flex;
-      flex-basis: 100%;
+    width: 50%;
 
-      .input-field {
-        width: 400px;
-      }
-
-      a {
-        width: 60px;
-        height: 48px;
-        margin-left: 15px;
-      }
+    @media (max-width: $width-app) {
+        width: 100%;
+        padding: 0 10px 10px 10px;
     }
 
-    span.upload-email-filelink {
-      margin-top: 5px;
 
-      &:hover {
-        cursor: pointer;
-      }
-
-      small {
-        color: $primary-blue;
-      }
+    h3 {
+        margin: 40px 0 15px 0;
     }
-  }
 
-  div.configure-roles-wrapper {
-    ul {
-      max-height: 20vh;
-
-      li {
+    div.add-emails-wrapper {
         display: flex;
-        align-items: center;
-        column-gap: 15px;
+        flex-direction: column;
 
-        &:not(:last-child) {
-          margin-bottom: 15px;
-        }
+        span {
+            display: flex;
+            flex-basis: 100%;
 
-        label.email-label {
-          display: flex;
-          align-items: center;
-          padding-left: $padding-app;
-          border: solid 1px $secondary-grey;
-          border-radius: 8px;
-          width: 400px;
-          height: 48px;
-        }
-
-        .dropdown-menu-container {
-          width: 140px;
-
-          ul {
-            column-gap: 0;
-          }
-
-          li {
-            height: 48px;
-            padding: 0;
-            margin: 0;
-            column-gap: 0;
-          }
-
-          .dropdown-control {
-            height: 48px;
-            padding-left: 8px;
-            border: solid 1px $secondary-grey;
-            border-radius: 8px;
-            color: $inactive-grey;
-          }
-
-          .dropwdown-menu-items {
-            border: solid 1px $secondary-grey;
-            border-radius: 8px;
-            color: $inactive-grey;
-          }
-
-          svg {
-            width: 17px;
-          }
-        }
-
-        label.bin-button {
-          height: 48px;
-          padding: 10px;
-          cursor: pointer;
-
-          &:hover {
-            background-color: $primary-red;
-
-            svg {
-              color: white;
+            .input-field {
+                width: 400px;
             }
-          }
 
-          svg {
-            margin: 8px 8px 8px 8px;
-            width: 20px;
-            vertical-align: middle;
-            color: $inactive-grey;
-          }
-
-          border: solid 1px $secondary-grey;
-          border-radius: 8px;
-          padding: 5px;
+            a {
+                width: 60px;
+                height: 48px;
+                margin-left: 15px;
+            }
         }
-      }
+
     }
-  }
 
-  div.extra-info-wrapper {
-    .extra-info-header {
-      display: flex;
-      max-width: 550px;
 
-      small {
-        margin: 45px 0 20px auto;
-        color: $quaternary-grey;
-      }
+    div.extra-info-wrapper {
+
+        small {
+            margin: 45px 0 20px auto;
+            color: $quaternary-grey;
+        }
     }
 
     .custom-message-input {
-      padding: $padding-app;
-      width: 555px;
-      height: 140px;
-      resize: both;
-      border: solid $quaternary-grey 1px;
-      border-radius: 6px;
-      background-color: white;
-
-      &:focus {
-        outline: none;
+        padding: $padding-app;
+        width: 100%;
+        height: 140px;
+        resize: both;
         border: solid $quaternary-grey 1px;
-        box-shadow: none;
-      }
-    }
-  }
+        border-radius: 6px;
+        background-color: white;
 
-  div.language-selection-wrapper {
-    span.language-selection-buttons {
-      display: flex;
-      max-width: 180px;
-      justify-content: space-between;
+        &:focus {
+            outline: none;
+            border: solid $quaternary-grey 1px;
+            box-shadow: none;
+        }
     }
 
-    input {
-      margin-right: 10px;
-    }
-  }
 
-  span.submit-button-wrapper {
-    display: flex;
-    justify-content: right;
-    column-gap: 15px;
-    margin-top: 40px;
-    max-width: 555px;
-  }
+    .language-selection-wrapper {
+        div.language-selection-buttons {
+            display: flex;
+            max-width: 180px;
+            justify-content: space-between;
+        }
+
+        input {
+            margin-right: 10px;
+        }
+    }
+
+    .submit-button-wrapper {
+        display: flex;
+        justify-content: right;
+        column-gap: 15px;
+        margin-top: 40px;
+    }
 }

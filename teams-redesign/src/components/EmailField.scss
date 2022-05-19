@@ -6,6 +6,10 @@ div.email-field {
     flex-direction: column;
     margin-top: 20px;
 
+    &.no-margin-top {
+        margin-top: 0;
+    }
+
     label {
         display: inline-block;
         margin: 12px 0 6px 0;
@@ -37,7 +41,8 @@ div.email-field {
         background-color: transparent;
         font-size: 16px;
         margin: 14px 5px 5px 5px;
-        padding-right:4px;
+        padding-right: 4px;
+
         &:focus {
             border: none;
             outline: none;

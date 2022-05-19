@@ -71,13 +71,13 @@ I18n.translations.en = {
             singleAdmin: "It’s recommended to add at least one other administrator besides yourself."
         },
         addMembers: {
-            uploadFile: "You can also upload a csv or txt file.",
             invitationExpiry: "Invitation expires after 30 days",
             headers: {
                 addMembersHeader: "Add Members",
-                addRolesHeader: "Add roles",
                 additionalInformationHeader: "Additional information",
-                invitationLanguageHeader: "Invitation language"
+                invitationLanguageHeader: "Invitation language",
+                roleHeader: "The intended role for the invitees"
+
             },
             buttons: {
                 add: "Add members",
@@ -85,12 +85,16 @@ I18n.translations.en = {
                 cancel: "cancel",
                 addEmails: "Add",
                 languageRadio: {
-                    dutch: "Dutch",
-                    english: "English"
+                    nl: "Dutch",
+                    en: "English"
+                },
+                languageCode: {
+                    nl: "DUTCH",
+                    en: "ENGLISH"
                 }
             },
             placeholders: {
-                emails: "Emails, comma seperated",
+                emails: "Enter emails or copy / paste a csv or comma separated file",
                 customMessage: "Add a personal note to your invitation"
             },
             errors: {
@@ -123,14 +127,17 @@ I18n.translations.en = {
             removeJoinRequest: "Are you sure you want to remove this join request?",
             approveJoinRequest: "Are you sure you want to approve this join request?",
             rejectJoinRequest: "Are you sure you want to reject this join request?",
+            downgrade: "Are you sure you want to downgrade your role? You can not revert this.",
         },
         flash: {
             removeMember: "Member is removed",
             removeInvitation: "Invitation is removed",
+            sendInvitation: "Invitation(s) are send",
             resendInvitation: "Invitation is resend",
             removeJoinRequest: "Join request has been removed",
             approveJoinRequest: "Join request has been approved",
             rejectJoinRequest: "Join request has been denied",
+            memberChanged: "Membership changed for {{name}} to {{newRole}}",
         }
     },
     profile: {

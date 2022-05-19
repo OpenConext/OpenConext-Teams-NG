@@ -7,7 +7,7 @@ import React, {useEffect, useState} from "react";
 import I18n from "i18n-js";
 import "./JoinRequest.scss";
 import MDEditor from '@uiw/react-md-editor';
-import {getJoinRequest, getTeamDetail, createJoinRequest} from "../api";
+import {createJoinRequest, getJoinRequest, getTeamDetail} from "../api";
 import InputField from "../components/InputField";
 import {getDateString, isEmpty} from "../utils/utils";
 import {ButtonContainer} from "../components/ButtonContainer";
@@ -16,7 +16,6 @@ import {setFlash} from "../flash/events";
 import {SpinnerField} from "../components/SpinnerField";
 import {CheckBox} from "../components/CheckBox";
 import {ReactComponent as EnvelopeIcon} from "../icons/envelope.svg";
-import {ROLES} from "../utils/roles";
 
 
 export const JoinRequest = ({user}) => {
@@ -84,8 +83,7 @@ export const JoinRequest = ({user}) => {
                     <section className="input-field">
                         <label>{I18n.t("joinRequest.teamAdmins")}</label>
                         <div className="inner-email-field">
-                            {((user.superAdmin ? team.admins :
-                                team.memberships.filter(m => m.role === ROLES.ADMIN).map(m => m.person)) || []).map((admin, index) =>
+                            {(team.admins || []).map((admin, index) =>
                                 <div key={index} className="email-tag">
                                     <span className="value">{`${admin.name} <${admin.email}>`}</span>
                                     <span className="disabled">

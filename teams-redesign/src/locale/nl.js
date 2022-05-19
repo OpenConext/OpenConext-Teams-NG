@@ -1,6 +1,12 @@
 import I18n from "i18n-js";
 
 I18n.translations.nl = {
+    header: {
+        superAdmin: {
+            modus: "Super-Admin modus enabled"
+        }
+    },
+
     fileUploadDialog: {
         title: "Upload file",
         buttons: {
@@ -8,7 +14,7 @@ I18n.translations.nl = {
             upload: "Upload"
         }
     },
-    code: "NL",
+    code: "EN",
     myteams: {
         tabs: {
             myTeams: "My teams",
@@ -22,7 +28,9 @@ I18n.translations.nl = {
             bin: ""
         },
         filters: {
-            all: 'All teams',
+            all: 'All',
+            allteams: 'All teams',
+            joinrequest: "Join requests",
             owner: "Owner of",
             admin: "Admin of",
             manager: "Manager of",
@@ -33,8 +41,10 @@ I18n.translations.nl = {
         add_members: "Add members",
         new_team: "New Team",
         member: "You're a member",
+        joinRequest: "Join request",
         confirmations: {
-            delete: "Are you sure you want to delete this team?"
+            delete: "Are you sure you want to delete this team?",
+            deleteJoinRequest: "Are you sure you want to delete this join request?",
         },
         zeroStates: {
             noTeams: "You are not yet a member of any Team",
@@ -48,21 +58,26 @@ I18n.translations.nl = {
             join: ""
         },
         joinRequest: "Request to join",
-        alreadyMember: "Already a member"
+        alreadyMember: "Already a member",
+        superAdmin: "Super admin powers",
     },
     teamDetails: {
+        members: "Members",
         hideInvitees: "Hide invitees",
         noInvitees: "No invitees",
         inviteSent: "invite sent",
-        alerts: {singleAdmin: "It’s recommended to add at least one other administrator besides yourself."},
+        joinRequest: "join request",
+        alerts: {
+            singleAdmin: "It’s recommended to add at least one other administrator besides yourself."
+        },
         addMembers: {
-            uploadFile: "You can also upload a csv or txt file.",
             invitationExpiry: "Invitation expires after 30 days",
             headers: {
                 addMembersHeader: "Add Members",
-                addRolesHeader: "Add roles",
                 additionalInformationHeader: "Additional information",
-                invitationLanguageHeader: "Invitation language"
+                invitationLanguageHeader: "Invitation language",
+                roleHeader: "The intended role for the invitees"
+
             },
             buttons: {
                 add: "Add members",
@@ -70,12 +85,16 @@ I18n.translations.nl = {
                 cancel: "cancel",
                 addEmails: "Add",
                 languageRadio: {
-                    dutch: "Dutch",
-                    english: "English"
+                    nl: "Dutch",
+                    en: "English"
+                },
+                languageCode: {
+                    nl: "DUTCH",
+                    en: "ENGLISH"
                 }
             },
             placeholders: {
-                emails: "Emails, comma seperated",
+                emails: "Enter emails or copy / paste a csv or comma separated file",
                 customMessage: "Add a personal note to your invitation"
             },
             errors: {
@@ -93,15 +112,32 @@ I18n.translations.nl = {
             bin: ""
         },
         filters: {
-            all: 'All Members',
+            all: 'All',
             owner: "Owners",
             admin: "Admins",
             manager: "Managers",
             member: "Members",
-            invitee: "Invitees"
+            invitee: "Invitees",
+            join_request: "Join requests"
         },
         confirmations: {
-            removeMember: "Are you sure you want to remove this member?"
+            removeMember: "Are you sure you want to remove this member?",
+            removeInvitation: "Are you sure you want to remove this invitation?",
+            resendInvitation: "Are you sure you want to resend this invitation?",
+            removeJoinRequest: "Are you sure you want to remove this join request?",
+            approveJoinRequest: "Are you sure you want to approve this join request?",
+            rejectJoinRequest: "Are you sure you want to reject this join request?",
+            downgrade: "Are you sure you want to downgrade your role? You can not revert this.",
+        },
+        flash: {
+            removeMember: "Member is removed",
+            removeInvitation: "Invitation is removed",
+            sendInvitation: "Invitation(s) are send",
+            resendInvitation: "Invitation is resend",
+            removeJoinRequest: "Join request has been removed",
+            approveJoinRequest: "Join request has been approved",
+            rejectJoinRequest: "Join request has been denied",
+            memberChanged: "Membership changed for {{name}} to {{newRole}}",
         }
     },
     profile: {
@@ -124,6 +160,7 @@ I18n.translations.nl = {
     details: {
         leave: "Leave team",
         delete: "Delete team",
+        edit: "Edit team",
         confirmations: {
             leave: "Are you sure you want to leave this team?",
             delete: "Are you sure you want to delete this team?"
@@ -134,7 +171,8 @@ I18n.translations.nl = {
         description: "Team purpose",
         visibility: "Team privacy",
         backupEmail: "Backup admin",
-        invitationMessage: "Note",
+        personalNote: "Personal note",
+        invitationMessage: "Invitation message",
         public: "Public team",
         publicInfo: "List team in public team index. Others can request membership",
         private: "Private team",
@@ -144,15 +182,50 @@ I18n.translations.nl = {
             name: "Enter name (can not be altered)",
             markDown: "Markdown supported",
             backupEmail: "Email(s) of the backup admin",
-            invitationMessage: "Message for your backup admin"
+            invitationMessage: "Personal message for your backup admin",
         },
         tooltips: {
-            description: "The purpose of the team. Will be show to new members who accept an invitation."
+            description: "The purpose of the team. Will be show to new members who accept an invitation.",
+            personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
         },
         flash: {
             created: "Team {{name}} is created"
         },
-        create: "Create team"
+        create: "Create team",
+    },
+    invitationForm: {
+        header: "Resend invitation",
+        email: "Email invitee",
+        created: "Send at",
+        message: "Personal message",
+        messagePlaceholder: "Personal message for the invitee",
+        role: "Intended role",
+        language: "Language"
+    },
+    joinRequestForm: {
+        header: "Join request",
+        email: "Email invitee",
+        created: "Send at",
+        message: "Message",
+        name: "Name",
+    },
+    joinRequest: {
+        flash: "Join request is send",
+        teamAdmins: "Administrators",
+        invitationMessage: "Personal message",
+        invitationMessagePlaceholder: "Your personal invitation message for the administrator(s) of this team",
+        existingJoinRequest: "Pending join request",
+        existingJoinRequestDetails: "You have already sent a join request for this Team on {{date}}",
+        confirmation: "Share this information with the applications used by this team."
+    },
+    externalTeams: {
+        header: "Include institutional teams(s)",
+        info: "Institutional teams are groups of people provide by your institution to SURF-conext teams. Only those you are a member of, are shown.",
+        info2: "You can link institutional Teams to any team you manage within SURFconext Teams. The result is that all members of that institutional team are also member of your team.",
+        table: {
+            name: "Name",
+            linked: "Linked"
+        }
     },
     forms: {
         cancel: "Cancel",
@@ -160,14 +233,26 @@ I18n.translations.nl = {
         submit: "Submit",
         save: "Save",
         update: "Update",
+        resend: "Resend",
+        approve: "Approve",
+        reject: "Reject",
         edit: "Edit",
+        back: "Back",
         required: "{{attribute}} is a required attribute",
         alreadyExists: "A {{object}} with {{attribute}} {{value}} already exists.",
         invalid: "{{value}} for {{attribute}} is invalid."
     },
+    languages: {
+        DUTCH: "Dutch",
+        ENGLISH: "English"
+    },
     breadcrumbs: {
         myTeams: "My teams",
-        newTeam: "Create new team"
+        newTeam: "Create new team",
+        editTeam: "Edit {{name}}",
+        joinRequest: "Join request from {{name}}",
+        userJoinRequest: "Join request",
+        invitation: "Invitation for {{email}}"
     },
     confirmationDialog: {
         title: "Please confirm",

@@ -46,7 +46,7 @@ export const ExternalTeamsForm = ({setShowForm, user, team, updateTeam}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {user.externalTeams.map(externalTeam => <tr>
+                {user.externalTeams.map((externalTeam, index) => <tr key={index}>
                     <td>{externalTeam.identifier}</td>
                     <td>
                         <ToggleSwitch value={isInstitutionalTeamLinked(externalTeam)}
