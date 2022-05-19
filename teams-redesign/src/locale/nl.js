@@ -189,7 +189,8 @@ I18n.translations.nl = {
             personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
         },
         flash: {
-            created: "Team {{name}} is created"
+            created: "Team {{name}} is created",
+            updated: "Team {{name}} is updated"
         },
         create: "Create team",
     },
@@ -268,6 +269,15 @@ I18n.translations.nl = {
         privacy: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>Privacy policy</a>",
         powered: "Proudly powered by",
         surf: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>SURF</a>",
+    },
+    teamWelcomeDialog: {
+        title: "Welcome to {{name}}",
+        header: "Your role is {{role}}",
+        proceed: "All good, show me the team",
+        expired: "This invitation has expired.",
+        denied: "Bummer...",
+        titleDenied: "You can't join team {{name}}",
+        alreadyMember: "You are already a member of this team."
     }
 };
 

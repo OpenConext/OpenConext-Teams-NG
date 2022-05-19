@@ -20,6 +20,7 @@ import {EmailField} from "../components/EmailField";
 import {setFlash} from "../flash/events";
 import {ROLES} from "../utils/roles";
 import {SpinnerField} from "../components/SpinnerField";
+import rehypeSanitize from "rehype-sanitize";
 
 const visibilities = [
     {name: "public", icon: publicTeam},
@@ -66,9 +67,9 @@ const NewTeam = ({user}) => {
                 acc[val] = ROLES.ADMIN;
                 return acc;
             }, {});
-            saveTeam({...team, emails: emailMap}).then(() => {
-                setFlash(I18n.t("newTeam.flash.created", {name: team.name}));
-                navigate("/my-teams");
+            saveTeam({...team, emails: emailMap}).then(res => {
+                setFlash(I18n.t(`newTeam.flash.${team.id ? "updated": "created"}`, {name: team.name}));
+                navigate(`/team-details/${res.id}`);
             })
         }
     }
@@ -128,6 +129,9 @@ const NewTeam = ({user}) => {
                                      label={I18n.t("newTeam.description")}/>
                         <MDEditor
                             value={team.description || ""}
+                            previewOptions={{
+                                rehypePlugins: [[rehypeSanitize]],
+                            }}
                             textareaProps={{placeholder: I18n.t("newTeam.placeholders.markDown")}}
                             onChange={val => setTeam({...team, description: val})}
                         />

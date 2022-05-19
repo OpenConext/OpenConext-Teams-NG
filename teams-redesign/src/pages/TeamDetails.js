@@ -2,8 +2,18 @@ import {Page} from "../components/Page";
 import {SubHeader} from "../components/SubHeader";
 import {BreadCrumb} from "../components/BreadCrumb";
 import {useNavigate, useParams} from "react-router-dom";
-import {useCallback, useEffect, useRef, useState} from "react";
-import {changeRole, deleteInvitation, deleteJoinRequest, deleteMember, deleteTeam, getTeamDetail,} from "../api";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {
+    acceptInvitation,
+    changeRole,
+    deleteInvitation,
+    deleteJoinRequest,
+    deleteMember,
+    deleteTeam,
+    getInvitationInfo,
+    getTeamDetail,
+    getTeamDetailByHash,
+} from "../api";
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
 import {actionDropDownTitle, allowedToLeave, currentUserRoleInTeam, getRole, isOnlyAdmin, ROLES} from "../utils/roles";
@@ -28,6 +38,9 @@ import {JoinRequestForm} from "../components/JoinRequestForm";
 import {CheckBox} from "../components/CheckBox";
 import {ExternalTeamsForm} from "../components/ExternalTeamsForm";
 import {setFlash} from "../flash/events";
+import rehypeSanitize from "rehype-sanitize";
+import MDEditor from "@uiw/react-md-editor";
+import TeamWelcomeDialog from "../components/TeamWelcomeDialog";
 
 const TeamDetail = ({user}) => {
     const params = useParams();
@@ -54,64 +67,77 @@ const TeamDetail = ({user}) => {
     const [showExternalTeams, setShowExternalTeams] = useState(false);
     const [confirmation, setConfirmation] = useState({});
     const [confirmationOpen, setConfirmationOpen] = useState(false);
+    const [welcomeOpen, setWelcomeOpen] = useState(false);
+    const [invitation, setInvitation] = useState({});
 
     const searchInputRef = useRef(null);
 
     const updateTeam = useCallback(() => {
         setLoaded(false);
-        getTeamDetail(params.teamId)
-            .then((res) => {
-                if (res.memberships) {
-                    const totalMembers = res.memberships.length + (res.invitations || []).length +
-                        (res.joinRequests || []).length;
-                    setMembersFilter({
-                        value: "ALL",
-                        label: `${I18n.t(`teamDetails.filters.all`)} (${totalMembers})`,
-                    });
-                    const userMembershipRole = (res.memberships.find(m => m.person.id === user.person.id) || {role: ROLES.MEMBER}).role;
+        const promise = params.teamId ? getTeamDetail(params.teamId, false) : getTeamDetailByHash(params.hash, false)
+        promise.then((res) => {
+            if (res.memberships) {
+                const totalMembers = res.memberships.length + (res.invitations || []).length +
+                    (res.joinRequests || []).length;
+                setMembersFilter({
+                    value: "ALL",
+                    label: `${I18n.t(`teamDetails.filters.all`)} (${totalMembers})`,
+                });
+                const userMembershipRole = (res.memberships.find(m => m.person.id === user.person.id) || {role: ROLES.MEMBER}).role;
 
-                    const adminAlert =
-                        res.memberships.filter(member => member.role === ROLES.ADMIN).length < 2 &&
-                        [ROLES.ADMIN, ROLES.OWNER].includes(userMembershipRole);
-                    setAlerts(adminAlert ? [I18n.t(`teamDetails.alerts.singleAdmin`)] : []);
+                const adminAlert =
+                    res.memberships.filter(member => member.role === ROLES.ADMIN || member.role === ROLES.OWNER).length < 2 &&
+                    [ROLES.ADMIN].includes(userMembershipRole);
+                setAlerts(adminAlert ? [I18n.t(`teamDetails.alerts.singleAdmin`)] : []);
 
-                    const pendingInvitation = (res.invitations || [])
-                        .filter(invitation => !invitation.expired)
-                        .map(invitation => ({
-                            person: {name: "-", email: invitation.email},
-                            created: invitation.timestamp / 1000,
-                            isInvitation: true,
-                            role: invitation.intendedRole,
-                            invitationID: invitation.id,
-                            id: invitation.id,
-                        }));
+                const pendingInvitation = (res.invitations || [])
+                    .filter(invitation => !invitation.expired)
+                    .map(invitation => ({
+                        person: {name: "-", email: invitation.email},
+                        created: invitation.timestamp / 1000,
+                        isInvitation: true,
+                        role: invitation.intendedRole,
+                        invitationID: invitation.id,
+                        id: invitation.id,
+                    }));
 
-                    const joinRequests = (res.joinRequests || [])
-                        .map(joinRequest => ({
-                            ...joinRequest,
-                            isJoinRequest: true,
-                            role: ROLES.MEMBER
-                        }))
-                    const members = [...res.memberships].concat(pendingInvitation).concat(joinRequests);
-                    setTeam(res);
-                    setMembersList(members);
-                    setUserRoleInTeam(userMembershipRole);
-                    setLoaded(true);
-                    setTimeout(() => searchInputRef.current && searchInputRef.current.focus(), 750);
-                } else {
-                    navigate(`/join-request/${params.teamId}`);
-                }
-            })
-            .catch(() => navigate("/404"));
-    }, [params.teamId, user, navigate]);
+                const joinRequests = (res.joinRequests || [])
+                    .map(joinRequest => ({
+                        ...joinRequest,
+                        isJoinRequest: true,
+                        role: ROLES.MEMBER
+                    }))
+                const members = [...res.memberships].concat(pendingInvitation).concat(joinRequests);
+                setTeam(res);
+                setMembersList(members);
+                setUserRoleInTeam(userMembershipRole);
+                setLoaded(true);
+                setTimeout(() => searchInputRef.current && searchInputRef.current.focus(), 750);
+            } else {
+                navigate(`/join-request/${params.teamId}`);
+            }
+        })
+            .catch(e => {
+                navigate("/404");
+            });
+    }, [params, user, navigate]);
 
     useEffect(() => {
-        updateTeam();
         const searchParam = new URLSearchParams(window.location.search);
         if (searchParam.has("add-members")) {
             setShowAddMembersForm(true);
         }
-    }, [params.teamId, navigate, updateTeam]);
+        if (params.hash) {
+            getInvitationInfo(params.hash).then(invitation => {
+                setInvitation(invitation);
+                setWelcomeOpen(true);
+                updateTeam();
+            })
+        } else {
+            updateTeam();
+        }
+
+    }, [updateTeam, params]);
 
     useEffect(() => {
         const updateDisplayedMembers = () => {
@@ -205,6 +231,18 @@ const TeamDetail = ({user}) => {
       </span>
         );
     };
+
+    const doAcceptInvitation = () => {
+        acceptInvitation(params.hash)
+            .then(() => {
+                setWelcomeOpen(false);
+                navigate(`/team-details/${team.id}`);
+            });
+    }
+
+    const doDenyInvitation = () => {
+        navigate("/my-teams");
+    }
 
     const processRemoveMember = (member, showConfirmation) => {
         const confPart = member.isInvitation ? "Invitation" : member.isJoinRequest ? "JoinRequest" : "Member";
@@ -351,9 +389,6 @@ const TeamDetail = ({user}) => {
                 name: I18n.t(`roles.${role.toLowerCase()}`),
                 action: () => processChangeMemberRole(member, role, true)
             }));
-        if (!member.role && !member.isInvitation && !member.isJoinRequest) {
-            debugger;
-        }
         return (
             <tr key={index} className={tdClassName(member)}>
                 <td data-label={I18n.t(`teamDetails.columns.name`)}
@@ -506,7 +541,7 @@ const TeamDetail = ({user}) => {
                             </span>
                         </span>
                         </span>
-                        <p>{team.description}</p>
+                        <MDEditor.Markdown source={team.description} rehypePlugins={[[rehypeSanitize]]}/>
                     </div>
                     <ActionMenu title={actionDropDownTitle(team, user)}
                                 actions={getActions()}/>
@@ -519,6 +554,15 @@ const TeamDetail = ({user}) => {
                     confirm={confirmation.action}
                     isWarning={confirmation.warning}
                     question={confirmation.question}
+                />
+            )}
+            {welcomeOpen && (
+                <TeamWelcomeDialog
+                    isOpen={welcomeOpen}
+                    team={team}
+                    invitation={invitation}
+                    accept={doAcceptInvitation}
+                    denied={doDenyInvitation}
                 />
             )}
             {renderAlertBanners()}

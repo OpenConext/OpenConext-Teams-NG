@@ -16,7 +16,7 @@ import {setFlash} from "../flash/events";
 import {SpinnerField} from "../components/SpinnerField";
 import {CheckBox} from "../components/CheckBox";
 import {ReactComponent as EnvelopeIcon} from "../icons/envelope.svg";
-
+import rehypeSanitize from "rehype-sanitize";
 
 export const JoinRequest = ({user}) => {
     const params = useParams();
@@ -77,7 +77,7 @@ export const JoinRequest = ({user}) => {
 
                     <div className="input-field">
                         <label htmlFor={I18n.t("newTeam.name")}>{I18n.t("newTeam.description")}</label>
-                        <MDEditor.Markdown source={team.description}/>
+                        <MDEditor.Markdown source={team.description} rehypePlugins={[[rehypeSanitize]]}/>
                     </div>
 
                     <section className="input-field">

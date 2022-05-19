@@ -69,6 +69,15 @@ public class TeamController extends ApiController implements TeamValidator {
                 .orElse(new TeamSummary(team, federatedUser, true));
     }
 
+    @GetMapping("api/teams/teams/hash/{hash}")
+    public Object teamByHash(@PathVariable("hash") String hash, HttpServletRequest httpServletRequest, FederatedUser federatedUser) {
+        Invitation invitation = invitationRepository.findFirstByInvitationHash(hash).orElseThrow(() -> {
+            log.info("Invitation not found with hash %s for user %s", hash, federatedUser.getPerson().getEmail());
+            return new ResourceNotFoundException(format("Invitation %s not found", hash));
+        });
+        return lazyLoadTeam(invitation.getTeam(), Role.MEMBER, federatedUser);
+    }
+
     @GetMapping("api/teams/teamIdFromUrn/{urn:.+}")
     public Long teamIdFromUrn(@PathVariable("urn") String urn) {
         return teamRepository.findIdByUrn(urn).orElseThrow(() -> new ResourceNotFoundException(String.format("Team with urn %s does not exists", urn)));

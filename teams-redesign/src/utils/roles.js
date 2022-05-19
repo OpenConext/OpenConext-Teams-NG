@@ -23,7 +23,7 @@ export function allowedToLeave(team, currentUser) {
     const admins = team.memberships
         .filter(membership => (membership.role === ROLES.ADMIN || membership.role === ROLES.OWNER)
             && membership.urnPerson !== currentUser.urn);
-    return (admins.length > 0 && !isEmpty(isMember)) || (!isEmpty(isMember) && isMember.role !== ROLES.ADMIN);
+    return (admins.length > 0 && !isEmpty(isMember)) || (!isEmpty(isMember) && isMember.role !== ROLES.ADMIN && isMember.role !== ROLES.OWNER);
 }
 
 export function hasOneAdmin(team, currentUser) {
@@ -42,7 +42,7 @@ export function currentUserRoleInTeam(team, currentUser) {
     if (currentUser.superAdminModus) {
         return "SUPER_ADMIN";
     }
-    return team.memberships.filter(membership => membership.urnPerson === currentUser.urn)[0].role;
+    return (team.memberships.find(membership => membership.urnPerson === currentUser.urn) || {role: ROLES.GUEST}).role;
 }
 
 export function isOnlyAdmin(team, currentUser) {

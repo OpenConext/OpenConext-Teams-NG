@@ -1,0 +1,83 @@
+@import "../styles/vars";
+
+.team-welcome-overlay {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    z-index: 99;
+
+    .team-welcome-content {
+        background-color: rgb(245, 245, 245);
+        overflow: auto;
+        outline: none;
+        display: flex;
+        flex-direction: column;
+        border-radius: $br;
+    }
+
+    .team-welcome-header {
+        background-color: $tertiary-grey;
+        padding: 15px;
+        color: black;
+    }
+
+    .team-welcome-role {
+        background-color: $light-blue;
+        padding: 15px;
+        color: black;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        span {
+            margin-left: 12px;
+        }
+    }
+
+    .team-welcome-content {
+        margin-top: auto;
+        padding: 15px 10px;
+        background: white;
+    }
+
+    .team-welcome-buttons {
+        display: flex;
+        background: white;
+        a.button {
+            margin: 35px auto;
+        }
+
+    }
+
+
+}
+
+.ReactModalPortal .team-welcome-overlay {
+    transition: opacity 250ms ease-in-out;
+
+    &--before-close {
+        opacity: 0;
+    }
+}
+
+.ReactModalPortal .team-welcome-modal {
+    transition: top 250ms ease-in-out, bottom 250ms ease-in-out;
+    min-width: 550px;
+    box-shadow: 1px 2px 2px 0 rgba(0, 0, 0, 0.3);
+    border-radius: $br;
+    margin-bottom: 35%;
+
+    @media (max-width: $mobile) {
+        min-width: 350px;
+    }
+
+    &--before-close {
+        top: -50%;
+        bottom: 100%;
+    }
+}
