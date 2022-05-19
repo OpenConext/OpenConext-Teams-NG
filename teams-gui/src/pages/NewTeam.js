@@ -68,7 +68,7 @@ const NewTeam = ({user}) => {
                 return acc;
             }, {});
             saveTeam({...team, emails: emailMap}).then(res => {
-                setFlash(I18n.t(`newTeam.flash.${team.id ? "updated": "created"}`, {name: team.name}));
+                setFlash(I18n.t(`newTeam.flash.${team.id ? "updated" : "created"}`, {name: team.name}));
                 navigate(`/team-details/${res.id}`);
             })
         }
@@ -88,7 +88,7 @@ const NewTeam = ({user}) => {
     }
     const breadCrumbs = [{name: I18n.t("breadcrumbs.myTeams"), to: "/my-teams"}];
     if (team.id) {
-        breadCrumbs.push({name: team.name, to: `/team-detail/${team.id}`});
+        breadCrumbs.push({name: team.name, to: `/team-details/${team.id}`});
     }
     breadCrumbs.push({name: I18n.t(`breadcrumbs.${team.id ? "editTeam" : "newTeam"}`, {name: ""})});
 
@@ -181,7 +181,7 @@ const NewTeam = ({user}) => {
 
                     <ButtonContainer>
                         <Button cancelButton={true}
-                                onClick={() => navigate("/my-teams")}
+                                onClick={() => navigate(team.id ? `/team-details/${team.id}` : "/my-teams")}
                                 txt={I18n.t("forms.cancel")}/>
                         <Button
                             onClick={submit}
