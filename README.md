@@ -1,6 +1,4 @@
 # OpenConext-Teams-NG
-
-[![Build Status](https://travis-ci.org/OpenConext/OpenConext-Teams-NG.svg?branch=master)](https://travis-ci.org/OpenConext/OpenConext-Teams-NG)
 [![Build Status](https://github.com/OpenConext/OpenConext-Teams-NG/actions/workflows/maven.yml/badge.svg)](https://github.com/OpenConext/OpenConext-Teams-NG/actions/workflows/maven.yml/badge.svg)
 [![codecov.io](https://codecov.io/github/OpenConext/OpenConext-Teams-NG/coverage.svg)](https://codecov.io/github/OpenConext/OpenConext-Teams-NG)
 
