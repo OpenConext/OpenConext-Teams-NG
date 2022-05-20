@@ -28,6 +28,7 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class TeamController extends ApiController implements TeamValidator {
 
+    public static final int AUTOCOMPLETE_LIMIT = 11;
     private TeamMatcher teamMatcher = new TeamMatcher();
 
     @GetMapping("api/teams/my-teams")
@@ -91,8 +92,8 @@ public class TeamController extends ApiController implements TeamValidator {
         Long id = federatedUser.getPerson().getId();
         boolean superAdmin = federatedUser.getPerson().isSuperAdmin() && Boolean.parseBoolean(httpServletRequest.getHeader(ADMIN_HEADER));;
         String queryUpper = ("%" + query + "%").toUpperCase();
-        List<Object[]> autocompletes = superAdmin ? teamRepository.autocompleteSuperAdmin(id, queryUpper) : teamRepository
-                .autocomplete(id, queryUpper, id);
+        List<Object[]> autocompletes = superAdmin ? teamRepository.autocompleteSuperAdmin(id, queryUpper, AUTOCOMPLETE_LIMIT) : teamRepository
+                .autocomplete(id, queryUpper, id, AUTOCOMPLETE_LIMIT);
         List<TeamAutocomplete> autoCompletes = autocompletes
                 .stream()
                 .map(arr -> new TeamAutocomplete(
@@ -102,7 +103,7 @@ public class TeamController extends ApiController implements TeamValidator {
                         (arr.length == 4 && arr[3] != null) ? arr[3].toString() : null))
                 .sorted((a1, a2) -> teamMatcher.compare(a1.getName().toLowerCase(), a2.getName().toLowerCase(), queryUpper.toLowerCase()))
                 .collect(toList());
-        return autoCompletes.subList(0, Math.min(autoCompletes.size(), 11));
+        return autoCompletes;
     }
 
     @GetMapping("api/teams/team-exists-by-name")

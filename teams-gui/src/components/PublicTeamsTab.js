@@ -9,6 +9,7 @@ import {autoCompleteTeam} from "../api";
 import {SpinnerField} from "./SpinnerField";
 import {useDebounce} from "../utils/debounce";
 import {isSuperAdmin} from "../store/store";
+import informational from "../icons/alert-information-circle.svg";
 
 export const PublicTeamsTab = ({user, myteams}) => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -105,6 +106,12 @@ export const PublicTeamsTab = ({user, myteams}) => {
             {searching && <SpinnerField/>}
             {(!searching && teams.length === 0 && debouncedSearchQuery.trim().length > 0) &&
             <h3 className="zero-state">{I18n.t("myteams.zeroStates.noResults")}</h3>}
+
+            {(!searching && displayedTeams.length === 11) &&
+            <div className="more-results">
+                <img src={informational} alt="info"/>
+                <span>{I18n.t("publicTeams.moreResults")}</span>
+            </div>}
             {(!searching && displayedTeams.length > 0) &&
             <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
                 {displayedTeams.map((team, index) => renderPublicTeamsRow(team, index))}

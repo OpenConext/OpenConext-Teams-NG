@@ -16,7 +16,22 @@ div.public-teams-tab {
         }
     }
 
+    div.more-results {
+        display: flex;
+        align-content: center;
+
+        img {
+            width: 18px;
+            height: auto;
+            margin-right: 8px;
+        }
+
+        margin-top: 10px;
+    }
+
     .sortable-table {
+        margin-top: 10px;
+
         th {
             &.title {
                 width: 30%;

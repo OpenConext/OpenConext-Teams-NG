@@ -60,6 +60,7 @@ I18n.translations.en = {
         joinRequest: "Request to join",
         alreadyMember: "Already a member",
         superAdmin: "Super admin powers",
+        moreResults: "There are more matches then show. Please refine your search."
     },
     teamDetails: {
         members: "Members",

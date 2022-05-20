@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
+import static teams.api.TeamController.AUTOCOMPLETE_LIMIT;
 
 public class TeamRepositoryTest extends AbstractApplicationTest {
 
@@ -57,7 +58,7 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
 
     @Test
     public void autoComplete() {
-        List<Object[]> result = teamRepository.autocomplete(4L, "%ERS%", 4L);
+        List<Object[]> result = teamRepository.autocomplete(4L, "%ERS%", 4L, AUTOCOMPLETE_LIMIT);
         assertEquals(3, result.size());
 
         List<String> teamNames = result.stream().map(s -> s[0].toString()).collect(toList());
@@ -67,11 +68,17 @@ public class TeamRepositoryTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void autoCompleteLimit() {
+        List<Object[]> result = teamRepository.autocomplete(4L, "%E%", 4L, 2);
+        assertEquals(2, result.size());
+    }
+
+    @Test
     public void autoCompleteIncludeNonViewable() {
-        List<Object[]> result = teamRepository.autocompleteSuperAdmin(0L, "%PRIVAT%");
+        List<Object[]> result = teamRepository.autocompleteSuperAdmin(0L, "%PRIVAT%", AUTOCOMPLETE_LIMIT);
         assertEquals(1, result.size());
 
-        result = teamRepository.autocomplete(0L, "%PRIVAT%", 0L);
+        result = teamRepository.autocomplete(0L, "%PRIVAT%", 0L, AUTOCOMPLETE_LIMIT);
         assertEquals(0, result.size());
     }
 
