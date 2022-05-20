@@ -89,15 +89,6 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
     }
 
     @Test
-    public void getPreAuthenticatedPrincipalUTF8() {
-        Person person = new Person("urn", "Ã¤Ã¼-test-Ã¯Ã«", "mail", false, false);
-        Person principal = doGetPreAuthenticatedPrincipal(person);
-
-        assertEquals(person, principal);
-        assertEquals("au-test-ie", person.getName());
-    }
-
-    @Test
     public void getPreAuthenticatedPrincipalDoesChanged() {
         Person person = new Person("urn", "Name", "mail", true, false);
 
