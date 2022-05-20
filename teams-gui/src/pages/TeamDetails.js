@@ -18,7 +18,7 @@ import {
 } from "../api";
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
-import {actionDropDownTitle, allowedToLeave, currentUserRoleInTeam, getRole, isOnlyAdmin, ROLES} from "../utils/roles";
+import {actionDropDownTitle, allowedToLeave, getRole, isOnlyAdmin, ROLES} from "../utils/roles";
 import {getDateString} from "../utils/utils";
 import {SpinnerField} from "../components/SpinnerField";
 import "./TeamDetails.scss";
@@ -222,13 +222,10 @@ const TeamDetail = ({user}) => {
         });
 
         return (
-            <span className={"filter-dropdown-span"}>
-        <DropDownMenu
-            title={membersFilter.label}
-            actions={options.filter((option) => option.count !== 0)}
-        />
-      </span>
-        );
+            <span className="filter-dropdown-span">
+                <DropDownMenu title={membersFilter.label}
+                              actions={options.filter((option) => option.count !== 0)}/>
+            </span>);
     };
 
     const doAcceptInvitation = () => {
@@ -365,12 +362,11 @@ const TeamDetail = ({user}) => {
     const roleOptions = member => {
         const isUser = member.urnPerson === user.urn;
         const onlyAdmin = isOnlyAdmin(team, user);
-        const roleInTeam = currentUserRoleInTeam(team, user)
 
         if (isUser && onlyAdmin) {
             return [ROLES.ADMIN, ROLES.OWNER];
         }
-        if (roleInTeam === ROLES.ADMIN || roleInTeam === ROLES.OWNER) {
+        if (userRoleInTeam === ROLES.ADMIN || userRoleInTeam === ROLES.OWNER) {
             return [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER, ROLES.MEMBER];
         }
         return [ROLES[member.role]];
@@ -387,7 +383,7 @@ const TeamDetail = ({user}) => {
                 <td data-label={I18n.t(`teamDetails.columns.name`)}
                     className={`${tdClassName(member)} ${member.urnPerson === user.urn ? "me" : ""}`}
                     onClick={() => tdClick(member)}>
-                    {member.isInvitation ? <span>{member.person.name}</span>: <Tippy content={member.person.urn}>
+                    {member.isInvitation ? <span>{member.person.name}</span> : <Tippy content={member.person.urn}>
                         <span>{member.person.name}</span>
                     </Tippy>}
                 </td>
@@ -592,8 +588,8 @@ const TeamDetail = ({user}) => {
                                         txt={I18n.t(`teamDetails.includeTeam`)}
                                         className="cancel"/>}
                                 {<Button onClick={() => setShowAddMembersForm(true)}
-                                        txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
-                                        className="add-member-button"/>}
+                                         txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
+                                         className="add-member-button"/>}
                             </span>
                         )}
                     </span>
