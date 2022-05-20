@@ -33,7 +33,7 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
     @Query(value = "select distinct(teams.name), teams.id, teams.description, (select memberships.role from memberships " +
             "where memberships.person_id = ?1 and memberships.team_id = teams.id) as role " +
             "from teams as teams left outer join memberships on memberships.team_id = teams.id " +
-            "where upper(name) like ?2 limit ?4", nativeQuery = true)
+            "where upper(name) like ?2 limit ?3", nativeQuery = true)
     List<Object[]> autocompleteSuperAdmin(Long personId, String query, int limit);
 
     @Query(value = "select distinct(teams.urn) from teams where urn = ? LIMIT 1", nativeQuery = true)
