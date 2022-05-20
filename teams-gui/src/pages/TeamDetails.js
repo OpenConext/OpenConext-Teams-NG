@@ -152,7 +152,8 @@ const TeamDetail = ({user}) => {
             };
             const toDisplay = memberList.filter((member) => {
                 const filterMatches = member.filters.includes(membersFilter.value) || membersFilter.value === "ALL";
-                const searchQueryMatches = searchQuery.trim() === "" || member.person.name.toLowerCase().includes(searchQuery.toLowerCase());
+                const searchQueryMatches = searchQuery.trim() === "" || member.person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    member.person.email.toLowerCase().includes(searchQuery.toLowerCase());
                 return filterMatches && searchQueryMatches;
             });
             toDisplay.sort((a, b) => (getSortField(a) > getSortField(b) ? 1 : -1));
