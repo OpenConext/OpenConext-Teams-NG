@@ -96,6 +96,7 @@ const TeamDetail = ({user}) => {
                         person: {name: "-", email: invitation.email},
                         created: invitation.timestamp / 1000,
                         isInvitation: true,
+                        filters: ["INVITEE"],
                         role: invitation.intendedRole,
                         invitationID: invitation.id,
                         id: invitation.id,
@@ -105,9 +106,12 @@ const TeamDetail = ({user}) => {
                     .map(joinRequest => ({
                         ...joinRequest,
                         isJoinRequest: true,
+                        filters: ["JOIN_REQUEST"],
                         role: ROLES.MEMBER
                     }))
-                const members = [...res.memberships].concat(pendingInvitation).concat(joinRequests);
+                const newMemberList = [...res.memberships];
+                newMemberList.forEach(member => member.filters = [member.role]);
+                const members = newMemberList.concat(pendingInvitation).concat(joinRequests);
                 setTeam(res);
                 setMembersList(members);
                 setUserRoleInTeam(userMembershipRole);
@@ -147,17 +151,9 @@ const TeamDetail = ({user}) => {
                     .reduce((p, c) => (p && p[c]) || null, targetObject);
             };
             const toDisplay = memberList.filter((member) => {
-                if (membersFilter.value !== member.role && membersFilter.value !== "ALL" &&
-                    !(membersFilter.value === "INVITEE" && member.isInvitation) &&
-                    !(membersFilter.value === "JOIN_REQUEST" && member.isJoinRequest)) {
-                    return false;
-                }
-                if (searchQuery === "") {
-                    return true;
-                } else if (member.person.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-                    return true;
-                }
-                return false;
+                const filterMatches = member.filters.includes(membersFilter.value) || membersFilter.value === "ALL";
+                const searchQueryMatches = searchQuery.trim() === "" || member.person.name.toLowerCase().includes(searchQuery.toLowerCase());
+                return filterMatches && searchQueryMatches;
             });
             toDisplay.sort((a, b) => (getSortField(a) > getSortField(b) ? 1 : -1));
             if (sort.direction !== "ascending") {
@@ -276,11 +272,7 @@ const TeamDetail = ({user}) => {
       </span>
         );
         return (
-            <>
-                {[ROLES.OWNER, ROLES.ADMIN].includes(userRoleInTeam)
-                    ? icon
-                    : I18n.t("myteams.empty")}
-            </>
+            <>{[ROLES.OWNER, ROLES.ADMIN].includes(userRoleInTeam) ? icon : I18n.t("myteams.empty")} </>
         );
     };
 
@@ -340,13 +332,11 @@ const TeamDetail = ({user}) => {
                 cancel: () => setConfirmationOpen(false),
                 action: () => processChangeMemberRole(member, role, false),
                 warning: false,
-                question: I18n.t(`teamDetails.confirmations.downgrade`),
+                question: I18n.t("teamDetails.confirmations.downgrade"),
             });
             setConfirmationOpen(true);
         } else {
-            if (confirmationOpen) {
-                setConfirmationOpen(false);
-            }
+            setConfirmationOpen(false);
             changeRole({id: member.id, role: role}).then(() => {
                 updateTeam();
                 setFlash(I18n.t("teamDetails.flash.memberChanged", {
@@ -392,7 +382,7 @@ const TeamDetail = ({user}) => {
         return (
             <tr key={index} className={tdClassName(member)}>
                 <td data-label={I18n.t(`teamDetails.columns.name`)}
-                    className={tdClassName(member)}
+                    className={`${tdClassName(member)} ${member.urnPerson === user.urn ? "me" : ""}`}
                     onClick={() => tdClick(member)}>
                     {member.person.name}
                 </td>

@@ -191,6 +191,10 @@ div.team-members {
                     }
                 }
 
+                &.me {
+                    font-weight: bold;
+                }
+
                 &.joined-entry {
                     .joined-wrapper {
                         display: flex;
