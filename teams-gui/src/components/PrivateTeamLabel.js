@@ -5,10 +5,8 @@ import "./PrivateTeamLabel.scss";
 export const PrivateTeamLabel = () => {
     return (
         <span className="private-label">
-      <span>
-        <BlockedIcon/>
-          {I18n.t("myteams.private")}
-      </span>
-    </span>
+            <BlockedIcon/>
+            <span>{I18n.t("myteams.private")}</span>
+        </span>
     );
 };

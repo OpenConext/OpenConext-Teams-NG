@@ -16,42 +16,61 @@ div.team-actions {
         white-space: pre-line;
     }
 
-    span.team-access-bar {
-        display: block;
+    div.team-access-bar {
+        display: flex;
         margin: 20px 0 20px 0;
+        @media (max-width: $width-app) {
+            flex-direction: column;
+        }
 
         .private-label {
             margin-right: 10px;
+            height: auto;
+            padding: 6px 12px;
+            @media (max-width: $width-app) {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
         }
 
-        .urn-container {
-            height: 10px;
+        div.urn-container {
             border: solid $quaternary-grey 1px;
             border-radius: 5px;
+            display: flex;
+            align-content: center;
+            background-color: white;
 
             label {
-                padding: 10px;
+                padding: 6px;
                 font-size: 12px;
-                color: $secondary-grey;
-                vertical-align: middle;
-                margin-bottom: 2px;
+                color: $inactive-grey;
+                border-right: solid $quaternary-grey 1px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                @media (max-width: $width-app) {
+                    max-width: 100%;
+                }
+
             }
 
             span {
-                border-left: solid $quaternary-grey 1px;
-                padding: 0 4px 0 4px;
+                display: flex;
+                padding: 0 4px;
 
                 &:hover {
-                    background-color: $hover-blue;
+                    background-color: $light-blue;
                     cursor: pointer;
 
                     svg {
                         fill: white;
+                        margin: auto;
                     }
                 }
 
                 &:active {
-                    background-color: $light-blue;
+                    background-color: $primary-blue;
                 }
 
             }
@@ -133,9 +152,10 @@ div.team-members {
             column-gap: 10px;
             vertical-align: middle;
 
-            .hide-invitees-checkbox {
-                transform: scale(1.5);
+            @media (max-width: $width-app) {
+                padding-left: 0;
             }
+
         }
     }
 
@@ -221,6 +241,7 @@ div.team-members {
 
     span.idp {
         cursor: pointer;
+
         svg {
             width: 20px;
         }

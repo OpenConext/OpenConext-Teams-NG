@@ -392,11 +392,11 @@ const TeamDetail = ({user}) => {
                         className={tdClassName(member)}
                         onClick={() => tdClick(member)}>
                         <span className="idp">
-                            <Tippy content={<span dangerouslySetInnerHTML={{
+                            {!member.isInvitation && <Tippy content={<span dangerouslySetInnerHTML={{
                                 __html: I18n.t(`teamDetails.idp.${member.person.guest ? "guest" : "idp"}`)
                             }}/>}>
                                 {member.person.guest ? <GuestIDPIcon/> : <IDPIcon/>}
-                            </Tippy>
+                            </Tippy>}
                         </span>
                     </td>
                 )}
@@ -526,15 +526,15 @@ const TeamDetail = ({user}) => {
                 <div className="team-actions">
                     <div>
                         <h1 onClick={() => setShowAddMembersForm(false)}>{team.name}</h1>
-                        <span className="team-access-bar">
+                        <div className="team-access-bar">
                             {!team.viewable && <PrivateTeamLabel/>}
-                            <span className="urn-container">
-                            <label>{team.urn}</label>
-                            <span onClick={() => navigator.clipboard.writeText(`${user.groupNameContext}${team.urn}`)}>
-                                <CopyIcon/>
-                            </span>
-                        </span>
-                        </span>
+                            <div className="urn-container">
+                                <label>{`${user.groupNameContext}${team.urn}`}</label>
+                                <span onClick={() => navigator.clipboard.writeText(`${user.groupNameContext}${team.urn}`)}>
+                                    <CopyIcon/>
+                                </span>
+                        </div>
+                        </div>
                         <MDEditor.Markdown source={team.description} rehypePlugins={[[rehypeSanitize]]}/>
                     </div>
                     <ActionMenu title={actionDropDownTitle(team, user)}
