@@ -52,14 +52,9 @@ a.button, label.button {
 
     &.disabled {
         cursor: no-drop;
-        background-color: #cccccc;
-        border-color: #cccccc;
-        color: white;
-
-        &:hover {
-            background-color: #cccccc;
-            color: white;
-        }
+        background-color: #F4F6F8;
+        border-color: #B2B6BE;
+        color: #B2B6BE;
     }
 
 }

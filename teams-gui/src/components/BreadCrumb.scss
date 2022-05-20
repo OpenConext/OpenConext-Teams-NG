@@ -10,7 +10,7 @@ div.bread-crumb {
         display: flex;
         align-content: center;
         a {
-            color: $secondary-grey;
+            color: #5E6873;
         }
         img {
             width: 14px;
@@ -19,7 +19,8 @@ div.bread-crumb {
             margin: 0 8px;
         }
         span {
-            color: $inactive-grey;
+            color: #5E6873;
+            font-weight: bold;
             line-height: 22px;
         }
     }
