@@ -30,11 +30,11 @@ public class MockShibbolethFilter extends GenericFilterBean {
         String nameId = test ? userUrn : request.getHeader("name-id");
         wrapper.setHeader("name-id", nameId == null ? userUrn : nameId);
 
-        wrapper.setHeader("displayName", "John Doe");
+        wrapper.setHeader("displayName", "Jöäsęæhn Doe");
         wrapper.setHeader("Shib-InetOrgPerson-mail", "john.doe@example.org ; test@example.com");
 
         String isMemberOf = request.getHeader("is-member-of");
-        wrapper.setHeader("is-member-of", isMemberOf == null ? "urn:collab:org:surf.nl" : isMemberOf);
+        wrapper.setHeader("is-member-of", isMemberOf == null ? "XXXurn:collab:org:surf.nl" : isMemberOf);
 
         filterChain.doFilter(wrapper, servletResponse);
     }

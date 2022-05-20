@@ -19,7 +19,7 @@ import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
 import {SpinnerField} from "../components/SpinnerField";
 
 
-export const MyTeams = () => {
+export const MyTeams = ({user}) => {
     const navigate = useNavigate();
     const [teams, setTeams] = useState([]);
     const [loaded, setLoaded] = useState(false);
@@ -154,13 +154,6 @@ export const MyTeams = () => {
         )
     }
 
-    const renderNewTeamButton = () => {
-        const buttonClicked = () => {
-            navigate("/new-team");
-        }
-        return <Button onClick={buttonClicked} txt={I18n.t(`myteams.new_team`)} className="new-team-button"/>
-    }
-
     const renderTeamsRow = (team, index) => {
         const linkUrl = team.isJoinRequest ? `/join-request/${team.teamId}/${team.id}` : `/team-details/${team.id}`;
         return (<tr key={index}>
@@ -233,7 +226,9 @@ export const MyTeams = () => {
                             <SearchBar searchQuery={searchQuery}
                                        setSearchQuery={setSearchQuery}
                                        searchInputRef={searchInputRef}/>
-                            {renderNewTeamButton()}
+                            {!user.person.guest &&  <Button onClick={() => navigate("/new-team")}
+                                                            txt={I18n.t(`myteams.new_team`)}
+                                                            className="new-team-button"/>}
                         </span>
 
                         {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}

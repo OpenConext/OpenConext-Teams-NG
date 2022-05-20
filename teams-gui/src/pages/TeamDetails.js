@@ -2,6 +2,8 @@ import {Page} from "../components/Page";
 import {SubHeader} from "../components/SubHeader";
 import {BreadCrumb} from "../components/BreadCrumb";
 import {useNavigate, useParams} from "react-router-dom";
+import Tippy from '@tippyjs/react';
+
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {
     acceptInvitation,
@@ -91,7 +93,7 @@ const TeamDetail = ({user}) => {
                 setAlerts(adminAlert ? [I18n.t(`teamDetails.alerts.singleAdmin`)] : []);
 
                 const pendingInvitation = (res.invitations || [])
-                    .filter(invitation => !invitation.expired)
+                    .filter(invitation => !invitation.expired && !invitation.accepted && !invitation.denied)
                     .map(invitation => ({
                         person: {name: "-", email: invitation.email},
                         created: invitation.timestamp / 1000,
@@ -385,15 +387,20 @@ const TeamDetail = ({user}) => {
                 <td data-label={I18n.t(`teamDetails.columns.name`)}
                     className={`${tdClassName(member)} ${member.urnPerson === user.urn ? "me" : ""}`}
                     onClick={() => tdClick(member)}>
-                    {member.person.name}
+                    {member.isInvitation ? <span>{member.person.name}</span>: <Tippy content={member.person.urn}>
+                        <span>{member.person.name}</span>
+                    </Tippy>}
                 </td>
                 {[ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam) && (
                     <td data-label={I18n.t(`teamDetails.columns.idp`)}
                         className={tdClassName(member)}
                         onClick={() => tdClick(member)}>
                         <span className="idp">
-                            {!member.person.guest && <IDPIcon/>}
-                            {member.person.guest && <GuestIDPIcon/>}
+                            <Tippy content={<span dangerouslySetInnerHTML={{
+                                __html: I18n.t(`teamDetails.idp.${member.person.guest ? "guest" : "idp"}`)
+                            }}/>}>
+                                {member.person.guest ? <GuestIDPIcon/> : <IDPIcon/>}
+                            </Tippy>
                         </span>
                     </td>
                 )}
@@ -527,7 +534,7 @@ const TeamDetail = ({user}) => {
                             {!team.viewable && <PrivateTeamLabel/>}
                             <span className="urn-container">
                             <label>{team.urn}</label>
-                            <span onClick={() => navigator.clipboard.writeText(team.urn)}>
+                            <span onClick={() => navigator.clipboard.writeText(`${user.groupNameContext}${team.urn}`)}>
                                 <CopyIcon/>
                             </span>
                         </span>
@@ -584,9 +591,9 @@ const TeamDetail = ({user}) => {
                                 <Button onClick={() => setShowExternalTeams(true)}
                                         txt={I18n.t(`teamDetails.includeTeam`)}
                                         className="cancel"/>}
-                                <Button onClick={() => setShowAddMembersForm(true)}
+                                {<Button onClick={() => setShowAddMembersForm(true)}
                                         txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
-                                        className="add-member-button"/>
+                                        className="add-member-button"/>}
                             </span>
                         )}
                     </span>

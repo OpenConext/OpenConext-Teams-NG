@@ -1,3 +1,5 @@
+import I18n from "i18n-js";
+
 export const stopEvent = e => {
     if (e !== undefined && e !== null) {
         e.preventDefault();
@@ -23,7 +25,6 @@ export const isEmpty = obj => {
 
 export const getDateString = timestamp => {
     const date = new Date(timestamp * 1000);
-    return `${date.getMonth()} ${date.toLocaleString("default", {
-        month: "long",
-    })}, ${date.getFullYear()}`;
+    const locale = I18n.locale === "en" ? "en-GB" : "nl-NL";
+    return date.toLocaleString(locale, {day: "numeric", month: "long", year: "numeric"});
 };

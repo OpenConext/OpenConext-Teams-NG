@@ -51,7 +51,7 @@ const App = () => {
             <Header user={user} toggleSuperAdminModus={toggleSuperAdminModus}/>
             {<Routes>
                 <Route path="/" element={<Navigate replace to="my-teams"/>}/>
-                <Route path={"/my-teams"} element={<MyTeams/>}/>
+                <Route path={"/my-teams"} element={<MyTeams user={user}/>}/>
                 <Route path={"/new-team"} element={<NewTeam user={user}/>}/>
                 <Route path={"/edit-team/:teamId"} element={<NewTeam user={user}/>}/>
                 <Route path={"/team-details/:teamId"} element={<TeamDetails user={user}/>}/>

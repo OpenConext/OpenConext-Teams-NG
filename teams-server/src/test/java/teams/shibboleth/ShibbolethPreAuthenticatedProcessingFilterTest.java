@@ -98,12 +98,6 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
     }
 
     @Test
-    public void normalize() {
-        String res = subject.normalize("orčpžsíáýd");
-        assertEquals("orcpzsiayd", res);
-    }
-
-    @Test
     public void getPreAuthenticatedPrincipalDoesChanged() {
         Person person = new Person("urn", "Name", "mail", true, false);
 

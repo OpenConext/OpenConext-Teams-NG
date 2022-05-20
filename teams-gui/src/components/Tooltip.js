@@ -2,7 +2,7 @@ import React from "react";
 import informational from "../icons/alert-information-circle.svg";
 import "./Tooltip.scss";
 import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
+// import 'tippy.js/dist/tippy.css';
 
 const TooltipIcon = ({tooltip, name, label}) => {
     return <>

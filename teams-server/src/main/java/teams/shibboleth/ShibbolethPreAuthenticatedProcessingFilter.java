@@ -48,7 +48,6 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
         String name = getHeader("displayName", request);
         String email = getHeader("Shib-InetOrgPerson-mail", request);
         String memberOf = getHeader("is-member-of", request);
-        name = normalize(name);
 
         Person person = new Person(nameId, name, email, !nonGuestsMemberOf.equals(memberOf), false);
 
@@ -66,16 +65,6 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
         } else {
             return null;
         }
-    }
-
-    protected String normalize(String name) {
-        if (!StringUtils.hasText(name)) {
-            return name;
-        }
-        //Due to the current mysql UTF-8 encoding we will normalize the displayName
-        String normalized = Normalizer.normalize(name, Normalizer.Form.NFD);
-        normalized = normalized.replaceAll("[^\\p{ASCII}]", "");
-        return normalized;
     }
 
     @Override

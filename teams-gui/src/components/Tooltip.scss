@@ -21,24 +21,6 @@ span.tool-tip-section {
         width: 18px;
     }
 
-    .tippy-box {
-        background-color: $primary-blue;
-        color: $background;
-        border-radius: 6px;
-        font-size: 14px;
-        text-align: center;
-        line-height: 1.4;
-        white-space: normal;
-        outline: 0;
-        transition-property: transform, visibility, opacity
-    }
-
-    .tippy-arrow {
-        width: 16px;
-        height: 16px;
-        color: $primary-blue;
-    }
-
 }
 
 

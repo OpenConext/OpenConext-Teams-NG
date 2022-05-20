@@ -14,7 +14,7 @@ I18n.translations.nl = {
             upload: "Upload"
         }
     },
-    code: "EN",
+    code: "NL",
     myteams: {
         tabs: {
             myTeams: "My teams",
@@ -139,6 +139,10 @@ I18n.translations.nl = {
             approveJoinRequest: "Join request has been approved",
             rejectJoinRequest: "Join request has been denied",
             memberChanged: "Membership changed for {{name}} to {{newRole}}",
+        },
+        idp: {
+            guest: "User joined with guest account",
+            idp: "User joined with institutional account",
         }
     },
     profile: {
@@ -222,8 +226,8 @@ I18n.translations.nl = {
     },
     externalTeams: {
         header: "Include institutional teams(s)",
-        info: "Institutional teams are groups of people provide by your institution to SURF-conext teams. Only those you are a member of, are shown.",
-        info2: "You can link institutional Teams to any team you manage within SURFconext Teams. The result is that all members of that institutional team are also member of your team.",
+        info: "Institutional teams are groups of people provide by your institution to {{productName}} Teams. Only those you are a member of, are shown.",
+        info2: "You can link institutional Teams to any team you manage within {{productName}} Teams. The result is that all members of that institutional team are also member of your team.",
         table: {
             name: "Name",
             linked: "Linked"

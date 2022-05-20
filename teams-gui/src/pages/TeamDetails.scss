@@ -219,8 +219,11 @@ div.team-members {
         }
     }
 
-    span.idp svg {
-        width: 20px;
+    span.idp {
+        cursor: pointer;
+        svg {
+            width: 20px;
+        }
     }
 
     span.bin-icon svg {

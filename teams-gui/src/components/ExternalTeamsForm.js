@@ -35,8 +35,8 @@ export const ExternalTeamsForm = ({setShowForm, user, team, updateTeam}) => {
                 <BackIcon/><span>{I18n.t("forms.back")}</span>
             </div>
             <h2>{I18n.t("externalTeams.header")}</h2>
-            <p>{I18n.t("externalTeams.info")}</p>
-            <p className="last">{I18n.t("externalTeams.info2")}</p>
+            <p>{I18n.t("externalTeams.info", {productName: user.productName})}</p>
+            <p className="last">{I18n.t("externalTeams.info2", {productName: user.productName})}</p>
 
             <table className={"institutional-teams"}>
                 <thead>
