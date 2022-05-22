@@ -17,6 +17,7 @@ import {SearchBar} from "../components/SearchBar";
 import {PublicTeamsTab} from "../components/PublicTeamsTab";
 import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
 import {SpinnerField} from "../components/SpinnerField";
+import {setFlash} from "../flash/events";
 
 
 export const MyTeams = ({user}) => {
@@ -95,11 +96,15 @@ export const MyTeams = ({user}) => {
             });
             setConfirmationOpen(true);
         } else {
+            setLoaded(false);
+            setConfirmationOpen(false);
             const promise = team.isJoinRequest ? deleteJoinRequest : deleteTeam;
             promise(team.id).then(() => {
                 updateAllTeams();
+                setLoaded(true);
+                setFlash(I18n.t(`myteams.flash.${team.isJoinRequest ? "joinRequestDeleted" : "teamDeleted"}`, {name: team.name}));
             });
-            setConfirmationOpen(false);
+
         }
     }
 
@@ -160,7 +165,8 @@ export const MyTeams = ({user}) => {
             <td data-label={I18n.t("myteams.columns.title")}>
                 <Link to={linkUrl}>{team.name}</Link>
             </td>
-            <td data-label={I18n.t("myteams.columns.members")} className={"membership-count"}>{team.membershipCount}</td>
+            <td data-label={I18n.t("myteams.columns.members")}
+                className={"membership-count"}>{team.membershipCount}</td>
             <td data-label={I18n.t("myteams.columns.private")}>{(!team.viewable && !team.isJoinRequest) &&
             <PrivateTeamLabel/>}</td>
             <td data-label={I18n.t("myteams.columns.member")}>{renderAddMemberLink(team)}</td>
@@ -226,9 +232,9 @@ export const MyTeams = ({user}) => {
                             <SearchBar searchQuery={searchQuery}
                                        setSearchQuery={setSearchQuery}
                                        searchInputRef={searchInputRef}/>
-                            {!user.person.guest &&  <Button onClick={() => navigate("/new-team")}
-                                                            txt={I18n.t(`myteams.new_team`)}
-                                                            className="new-team-button"/>}
+                            {!user.person.guest && <Button onClick={() => navigate("/new-team")}
+                                                           txt={I18n.t(`myteams.new_team`)}
+                                                           className="new-team-button"/>}
                         </span>
 
                         {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}

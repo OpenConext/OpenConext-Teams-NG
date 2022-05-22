@@ -471,8 +471,10 @@ const TeamDetail = ({user}) => {
             setConfirmationOpen(true);
             return;
         }
+        setLoaded(false);
         deleteTeam(team.id).then(() => {
             navigate("/my-teams");
+            setFlash(I18n.t(`myteams.flash.${team.isJoinRequest ? "joinRequestDeleted" : "teamDeleted"}`, {name: team.name}));
         });
     };
 

@@ -49,6 +49,10 @@ I18n.translations.en = {
         zeroStates: {
             noTeams: "You are not yet a member of any Team",
             noResults: "No teams were found for your search"
+        },
+        flash: {
+            teamDeleted: "Team {{name}} is deleted",
+            joinRequestDeleted: "Join request {{name}} is deleted"
         }
     },
     publicTeams: {
