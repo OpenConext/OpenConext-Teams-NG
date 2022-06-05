@@ -6,7 +6,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import I18n from "i18n-js";
 import "./TeamDetails.scss";
-import MDEditor from '@uiw/react-md-editor';
 import {getTeamDetail, saveTeam, teamExistsByName} from "../api";
 import TooltipIcon from "../components/Tooltip";
 import InputField from "../components/InputField";
@@ -20,7 +19,7 @@ import {EmailField} from "../components/EmailField";
 import {setFlash} from "../flash/events";
 import {ROLES} from "../utils/roles";
 import {SpinnerField} from "../components/SpinnerField";
-import rehypeSanitize from "rehype-sanitize";
+import {MarkDown} from "../components/MarkDown";
 
 const visibilities = [
     {name: "public", icon: publicTeam},
@@ -76,6 +75,7 @@ const NewTeam = ({user}) => {
 
     const addEmail = emails => {
         setBackupEmails(backupEmails.concat(emails));
+        setTimeout(() => document.getElementById("invitation-messsage").focus(), 75);
     }
     const removeMail = email => e => {
         stopEvent(e);
@@ -107,6 +107,7 @@ const NewTeam = ({user}) => {
                                     setTeam({...team, name: e.target.value.replace(/[^\w\s-]/gi, "")});
                                     setNameExists(false)
                                 }}
+                                toolTip={team.id ? I18n.t("newTeam.tooltips.immutableName") : ""}
                                 disabled={team.id}
                                 placeholder={I18n.t("newTeam.placeholders.name")}
                                 onBlur={e => team.id && teamExistsByName(e.target.value).then(exists => setNameExists(exists))}
@@ -127,20 +128,15 @@ const NewTeam = ({user}) => {
                     <div className="input-field">
                         <TooltipIcon tooltip={I18n.t("newTeam.tooltips.description")} name="description"
                                      label={I18n.t("newTeam.description")}/>
-                        <MDEditor
-                            value={team.description || ""}
-                            previewOptions={{
-                                rehypePlugins: [[rehypeSanitize]],
-                            }}
-                            textareaProps={{placeholder: I18n.t("newTeam.placeholders.markDown")}}
-                            onChange={val => setTeam({...team, description: val})}
-                        />
+                        <MarkDown markdown={team.description || ""}
+                                  onChange={val => setTeam({...team, description: val})}/>
                     </div>
 
                     <InputField value={team.personalNote || ""}
                                 onChange={e => {
                                     setTeam({...team, personalNote: e.target.value});
                                 }}
+                                placeholder={I18n.t("teamDetails.personalNotesPlaceholder")}
                                 multiline={true}
                                 toolTip={I18n.t("newTeam.tooltips.personalNote")}
                                 name={I18n.t("newTeam.personalNote")}/>
@@ -165,6 +161,7 @@ const NewTeam = ({user}) => {
 
                     {!team.id && <EmailField emails={backupEmails}
                                              addEmail={addEmail}
+                                             singleEmail={true}
                                              removeMail={removeMail}
                                              name={I18n.t("newTeam.backupEmail")}
                                              placeHolder={I18n.t("newTeam.placeholders.backupEmail")}
@@ -175,6 +172,7 @@ const NewTeam = ({user}) => {
                                              onChange={e => {
                                                  setTeam({...team, invitationMessage: e.target.value});
                                              }}
+                                             id={"invitation-messsage"}
                                              multiline={true}
                                              placeholder={I18n.t("newTeam.placeholders.invitationMessage")}
                                              name={I18n.t("newTeam.invitationMessage")}/>}

@@ -37,7 +37,7 @@ I18n.translations.en = {
             member: "Member of"
         },
         empty: "",
-        private: "Private team",
+        private: "private team",
         add_members: "Add members",
         new_team: "New Team",
         member: "You're a member",
@@ -72,6 +72,12 @@ I18n.translations.en = {
         noInvitees: "No invitees",
         inviteSent: "invite sent",
         joinRequest: "join request",
+        markdownTabs: {
+            write: "Markdown text",
+            preview: "Preview",
+        },
+        markdownPlaceholder: "Team description support markdown",
+        personalNotesPlaceholder: "Personal notes for your fellow admin's to see",
         alerts: {
             singleAdmin: "It’s recommended to add at least one other administrator besides yourself."
         },
@@ -87,6 +93,7 @@ I18n.translations.en = {
             buttons: {
                 add: "Add members",
                 sendInvite: "Send invite",
+                addAdministrator: "Add administrator",
                 cancel: "cancel",
                 addEmails: "Add",
                 languageRadio: {
@@ -100,7 +107,7 @@ I18n.translations.en = {
             },
             placeholders: {
                 emails: "Enter emails or copy / paste a csv or comma separated file",
-                customMessage: "Add a personal note to your invitation"
+                customMessage: "Add a personal note to your invitation",
             },
             errors: {
                 invalidEmails: "The following emails were invalid: {{attribute}}",
@@ -155,6 +162,7 @@ I18n.translations.en = {
         email: "Email",
         name: "Name",
         role: "Role",
+        logout: "Logout",
         true: "{{productName}} guest",
         false: "{{productName}} admin"
     },
@@ -196,6 +204,7 @@ I18n.translations.en = {
         tooltips: {
             description: "The purpose of the team. Will be show to new members who accept an invitation.",
             personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
+            immutableName: "The name of a team can not be changed once the team is created"
         },
         flash: {
             created: "Team {{name}} is created",
@@ -204,7 +213,7 @@ I18n.translations.en = {
         create: "Create team",
     },
     invitationForm: {
-        header: "Resend invitation",
+        header: "Resent invitation",
         email: "Email invitee",
         created: "Send at",
         message: "Personal message",

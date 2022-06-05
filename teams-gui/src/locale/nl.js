@@ -196,6 +196,7 @@ I18n.translations.nl = {
         tooltips: {
             description: "The purpose of the team. Will be show to new members who accept an invitation.",
             personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
+            immutableName: "The name of a team can not be changed once the team is created"
         },
         flash: {
             created: "Team {{name}} is created",

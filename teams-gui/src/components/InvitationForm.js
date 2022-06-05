@@ -5,7 +5,7 @@ import {Button} from "./Button";
 import InputField from "./InputField";
 import {getDateString} from "../utils/utils";
 import ConfirmationDialog from "./ConfirmationDialog";
-import {deleteInvitation, getInvitation, resendInvitation} from "../api";
+import {getInvitation, resendInvitation} from "../api";
 import {setFlash} from "../flash/events";
 
 export const InvitationForm = ({setShowForm, invitation, updateTeam}) => {
@@ -22,24 +22,6 @@ export const InvitationForm = ({setShowForm, invitation, updateTeam}) => {
         });
     }, [invitation]);
 
-    const doDeleteInvitation = showConfirmation => {
-        if (showConfirmation) {
-            setConfirmation({
-                cancel: () => setConfirmationOpen(false),
-                action: () => doDeleteInvitation(false),
-                warning: false,
-                question: I18n.t(`teamDetails.confirmations.removeInvitation`),
-            });
-            setConfirmationOpen(true);
-        } else {
-            deleteInvitation(invitation.id).then(() => {
-                setShowForm(false);
-                updateTeam();
-                setFlash(I18n.t("teamDetails.flash.removeInvitation"))
-            });
-        }
-    }
-
     const doResendInvitation = showConfirmation => {
         if (showConfirmation) {
             setConfirmation({
@@ -50,7 +32,7 @@ export const InvitationForm = ({setShowForm, invitation, updateTeam}) => {
             });
             setConfirmationOpen(true);
         } else {
-            resendInvitation({ id: invitation.id, message: message }).then(() => {
+            resendInvitation({id: invitation.id, message: message}).then(() => {
                 setShowForm(false);
                 updateTeam();
                 window.scrollTo(0, 0);
@@ -101,10 +83,6 @@ export const InvitationForm = ({setShowForm, invitation, updateTeam}) => {
                     onChange={e => setMessage(e.target.value)}
                 />
                 <div className="submit-button-wrapper">
-                    <Button
-                        onClick={() => doDeleteInvitation(true)}
-                        deleteButton={true}
-                    />
                     <Button
                         onClick={() => setShowForm(false)}
                         className={"cancel-invitation"}

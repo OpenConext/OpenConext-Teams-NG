@@ -54,7 +54,7 @@ div.header-container {
                 cursor: pointer;
 
                 img {
-                    width: 20px;
+                    width: 17px;
                     margin: auto;
                 }
             }
@@ -62,8 +62,7 @@ div.header-container {
             .user-drop-down {
                 position: absolute;
                 z-index: 2;
-                padding: 10px;
-                min-width: 260px;
+                padding: 10px 10px 10px 25px;
                 top: 45px;
                 right: -5px;
                 color: black;

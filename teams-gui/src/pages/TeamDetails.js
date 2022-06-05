@@ -40,9 +40,8 @@ import {JoinRequestForm} from "../components/JoinRequestForm";
 import {CheckBox} from "../components/CheckBox";
 import {ExternalTeamsForm} from "../components/ExternalTeamsForm";
 import {setFlash} from "../flash/events";
-import rehypeSanitize from "rehype-sanitize";
-import MDEditor from "@uiw/react-md-editor";
 import TeamWelcomeDialog from "../components/TeamWelcomeDialog";
+import {MarkDown} from "../components/MarkDown";
 
 const TeamDetail = ({user}) => {
     const params = useParams();
@@ -71,8 +70,20 @@ const TeamDetail = ({user}) => {
     const [confirmationOpen, setConfirmationOpen] = useState(false);
     const [welcomeOpen, setWelcomeOpen] = useState(false);
     const [invitation, setInvitation] = useState({});
+    const [initial, setInitial] = useState(true);
 
     const searchInputRef = useRef(null);
+
+    useEffect(() => {
+        console.log(window.location.search);
+        if (window.location.search.indexOf("show-form") === -1) {
+            setSelectedInvitation(null);
+            setSelectedJoinRequest(null);
+            setShowExternalTeams(false);
+            setShowAddMembersForm(false);
+        }
+        // eslint-disable-next-line
+    }, [window.location.search])
 
     const updateTeam = useCallback(() => {
         setLoaded(false);
@@ -171,7 +182,12 @@ const TeamDetail = ({user}) => {
         return alerts.map((alert, index) => {
             return (
                 <div key={index} className="alert-banner-wrapper">
-                    <span className="alert-banner">{alert}</span>
+                    <div className="alert-banner-container">
+                        <span className="alert-banner">{alert}</span>
+                        {<Button onClick={() => setShowAddMembersForm(true)}
+                                 txt={I18n.t(`teamDetails.addMembers.buttons.addAdministrator`)}
+                                 className="cancel"/>}
+                    </div>
                 </div>
             );
         });
@@ -348,10 +364,18 @@ const TeamDetail = ({user}) => {
     };
 
     const tdClassName = member => {
-        return (member.isJoinRequest || member.isInvitation) ? "clickable" : "";
+        return (member.isJoinRequest || member.isInvitation) ? "clickable top-height" : "";
+    }
+
+    const addHistoryState = () => {
+        if (initial) {
+            window.history.pushState({}, "Details", `/team-details/${team.id}?path=show-form`);
+            setInitial(false);
+        }
     }
 
     const tdClick = member => {
+        addHistoryState();
         if (member.isJoinRequest) {
             setSelectedJoinRequest(member);
         } else if (member.isInvitation) {
@@ -379,7 +403,7 @@ const TeamDetail = ({user}) => {
                 action: () => processChangeMemberRole(member, role, true)
             }));
         return (
-            <tr key={index} className={tdClassName(member)}>
+            <tr key={index} className={`${tdClassName(member)} `}>
                 <td data-label={I18n.t(`teamDetails.columns.name`)}
                     className={`${tdClassName(member)} ${member.urnPerson === user.urn ? "me" : ""}`}
                     onClick={() => tdClick(member)}>
@@ -532,12 +556,13 @@ const TeamDetail = ({user}) => {
                             {!team.viewable && <PrivateTeamLabel/>}
                             <div className="urn-container">
                                 <label>{`${user.groupNameContext}${team.urn}`}</label>
-                                <span onClick={() => navigator.clipboard.writeText(`${user.groupNameContext}${team.urn}`)}>
+                                <span
+                                    onClick={() => navigator.clipboard.writeText(`${user.groupNameContext}${team.urn}`)}>
                                     <CopyIcon/>
                                 </span>
+                            </div>
                         </div>
-                        </div>
-                        <MDEditor.Markdown source={team.description} rehypePlugins={[[rehypeSanitize]]}/>
+                        <MarkDown markdown={team.description || ""}/>
                     </div>
                     <ActionMenu title={actionDropDownTitle(team, user)}
                                 actions={getActions()}/>
@@ -586,10 +611,16 @@ const TeamDetail = ({user}) => {
                         {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) && (
                             <span className="action-button-wrapper">
                                 {(user.externalTeams && user.externalTeams.length > 0) &&
-                                <Button onClick={() => setShowExternalTeams(true)}
+                                <Button onClick={() => {
+                                    addHistoryState();
+                                    setShowExternalTeams(true);
+                                }}
                                         txt={I18n.t(`teamDetails.includeTeam`)}
                                         className="cancel"/>}
-                                {<Button onClick={() => setShowAddMembersForm(true)}
+                                {<Button onClick={() => {
+                                    addHistoryState();
+                                    setShowAddMembersForm(true);
+                                }}
                                          txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
                                          className="add-member-button"/>}
                             </span>

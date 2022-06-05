@@ -161,15 +161,20 @@ export const MyTeams = ({user}) => {
 
     const renderTeamsRow = (team, index) => {
         const linkUrl = team.isJoinRequest ? `/join-request/${team.teamId}/${team.id}` : `/team-details/${team.id}`;
-        return (<tr key={index}>
-            <td data-label={I18n.t("myteams.columns.title")}>
+        return (<tr key={index} className={"clickable"}>
+            <td data-label={I18n.t("myteams.columns.title")} onClick={() => navigate(linkUrl)}>
                 <Link to={linkUrl}>{team.name}</Link>
             </td>
-            <td data-label={I18n.t("myteams.columns.members")}
+            <td data-label={I18n.t("myteams.columns.members")}  onClick={() => navigate(linkUrl)}
                 className={"membership-count"}>{team.membershipCount}</td>
-            <td data-label={I18n.t("myteams.columns.private")}>{(!team.viewable && !team.isJoinRequest) &&
-            <PrivateTeamLabel/>}</td>
-            <td data-label={I18n.t("myteams.columns.member")}>{renderAddMemberLink(team)}</td>
+            <td className={"private"} data-label={I18n.t("myteams.columns.private")}  onClick={() => navigate(linkUrl)}>
+                {(!team.viewable && !team.isJoinRequest) && <PrivateTeamLabel/>}
+            </td>
+            <td data-label={I18n.t("myteams.columns.member")}
+                onClick={() =>  (team.role === ROLES.MEMBER || team.isJoinRequest) ? navigate(linkUrl) :
+                    navigate(`/team-details/${team.id}?add-members=true`)}>
+                {renderAddMemberLink(team)}
+            </td>
             <td data-label={I18n.t("myteams.columns.bin")}>{renderDeleteButton(team)}</td>
         </tr>)
     }

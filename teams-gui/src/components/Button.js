@@ -7,7 +7,7 @@ export const Button = ({
                            onClick,
                            txt,
                            disabled = false,
-    deleteButton = false,
+                            deleteButton = false,
                            cancelButton = false,
                            className = ""
                        }) => {

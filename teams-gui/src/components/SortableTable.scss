@@ -24,6 +24,14 @@
     border-color: $primary-grey;
     border-width: 1px 0;
 
+    &.clickable {
+      cursor: pointer;
+    }
+
+    &.clickable:hover {
+      background-color: $background;
+    }
+
     &:first-child {
       border-top: none;
     }
@@ -44,6 +52,10 @@
 
     &:first-child {
       min-width: 10vw;
+    }
+
+    &.clickable {
+      cursor: pointer;
     }
 
   }

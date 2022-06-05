@@ -1,6 +1,6 @@
 import React from "react";
 import "./ErrorIndicator.scss";
-import critical from "../icons/critical.svg"
+import critical from "../icons/critical.svg";
 
 const ErrorIndicator = ({msg, standalone = false}) => {
     const className = `error-indication ${standalone ? "standalone" : ""}`;

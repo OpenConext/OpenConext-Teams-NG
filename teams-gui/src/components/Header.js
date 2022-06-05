@@ -6,6 +6,8 @@ import I18n from "i18n-js";
 import "./Header.scss";
 import {Link} from "react-router-dom";
 import {CheckBox} from "./CheckBox";
+import {unmountComponentAtNode} from "react-dom";
+import {logOut} from "../api";
 
 
 export const Header = ({user, toggleSuperAdminModus}) => {
@@ -15,6 +17,15 @@ export const Header = ({user, toggleSuperAdminModus}) => {
     const doToggleSuperAdminModus = e => {
         toggleSuperAdminModus(e.target.checked);
     }
+
+    const doLogOut = e => {
+        e.preventDefault();
+        const node = document.getElementById("app");
+        unmountComponentAtNode(node);
+        logOut();
+        window.location.href = "/Shibboleth.sso/Logout";
+    };
+
 
     return (
         <div className="header-container">
@@ -36,18 +47,18 @@ export const Header = ({user, toggleSuperAdminModus}) => {
                     </div>
                     <div className="user-toggle"
                          onClick={() => setDroppedDown(!droppedDown)}
-                         tabIndex="1" onBlur={() => setDroppedDown(false)}>
+                         tabIndex="1"
+                         onBlur={() => setTimeout(() => setDroppedDown(false), 125)}>
                         <img src={droppedDown ? arrowUp : arrowDown} alt="drop"/>
                     </div>
                     {droppedDown && <div className="user-drop-down">
                         <div>
-                            <span>{`${I18n.t("profile.email")}:`}</span>
                             <span className="value">{user.person.email}</span>
                         </div>
                         <div>
-                            <span>{`${I18n.t("profile.role")}:`}</span>
-                            <span
-                                className="value">{I18n.t("profile." + user.person.guest, {productName: user.productName})}</span>
+                            <span className="value">
+                                <a href="/logout" onClick={e => doLogOut(e)}>{I18n.t("profile.logout")}</a>
+                            </span>
                         </div>
                     </div>}
                 </div>

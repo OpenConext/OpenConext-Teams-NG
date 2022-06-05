@@ -16,8 +16,9 @@ div.footer-container {
             flex-direction: column;
 
             &.right {
-                span {
+                img {
                     margin-left: auto;
+                    max-width: 82px;
                 }
             }
         }

@@ -18,7 +18,8 @@ export default function InputField({
                                        cols = 5,
                                        maxLength = 255,
                                        displayLabel = true,
-                                       isNumeric = false
+                                       isNumeric = false,
+    id=null
                                    }) {
     placeholder = disabled ? "" : placeholder;
     if (error) {
@@ -34,6 +35,7 @@ export default function InputField({
                 <input type={isNumeric ? "number" :"text"}
                        disabled={disabled}
                        value={value || ""}
+                       id={id || name}
                        onChange={onChange}
                        onBlur={onBlur}
                        maxLength={maxLength}
@@ -47,6 +49,7 @@ export default function InputField({
                 {multiline &&
                 <textarea disabled={disabled}
                           value={value}
+                          id={id || name}
                           onChange={onChange}
                           onBlur={onBlur}
                           className={className}
@@ -55,7 +58,8 @@ export default function InputField({
                                   onEnter(e);
                               }
                           }}
-                          placeholder={placeholder} cols={cols}/>}
+                          placeholder={placeholder}
+                          cols={cols}/>}
             </div>
         </div>
     );

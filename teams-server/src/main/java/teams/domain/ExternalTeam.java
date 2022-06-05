@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -39,6 +40,9 @@ public class ExternalTeam implements Serializable {
 
     @Column(name = "admin_name")
     private String adminName;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
 
     @ManyToMany
     @JoinTable(name = "team_external_groups",

@@ -10,6 +10,7 @@ import teams.api.validations.ExternalTeamValidator;
 import teams.domain.*;
 import teams.exception.ResourceNotFoundException;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,7 @@ public class ExternalTeamController extends ApiController implements ExternalTea
         //There is the possibility that the external team is already linked another team of this person
         externalTeam = externalTeamRepository.findByIdentifier(externalTeamIdentifier).orElse(externalTeam);
         externalTeam.setAdminName(federatedUser.getUsername());
+        externalTeam.setCreatedAt(Instant.now());
 
         team.getExternalTeams().add(externalTeam);
         externalTeam.getTeams().add(team);

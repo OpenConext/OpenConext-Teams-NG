@@ -2,6 +2,7 @@ import {stopEvent} from "../utils/utils";
 import I18n from "i18n-js";
 import Cookies from "js-cookie";
 import "./Footer.scss";
+import logo from "../images/logo.svg";
 
 export const Footer = ({user}) => {
 
@@ -39,12 +40,7 @@ export const Footer = ({user}) => {
                     }
                 </div>
                 <div className="info right">
-                        <span dangerouslySetInnerHTML={{
-                            __html: I18n.t("footer.powered")
-                        }}/>
-                    <span dangerouslySetInnerHTML={{
-                        __html: I18n.t("footer.surf")
-                    }}/>
+                    <img src={logo} alt="logo"/>
                 </div>
             </div>
         </div>

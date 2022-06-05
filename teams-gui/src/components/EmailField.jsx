@@ -15,7 +15,8 @@ export const EmailField = ({
                                placeHolder,
                                marginTop = true,
                                pinnedEmails = [],
-                               error = false
+                               error = false,
+                               singleEmail = false
                            }) => {
 
     const [email, setEmail] = useState("");
@@ -51,7 +52,7 @@ export const EmailField = ({
                                         </span>}
 
                     </div>)}
-                <textarea id="email-field" value={email} onChange={e => setEmail(e.target.value)} onBlur={doAddEmail}
+                {!singleEmail && <textarea id="email-field" value={email} onChange={e => setEmail(e.target.value)} onBlur={doAddEmail}
                           onKeyDown={e => {
                               if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
                                   doAddEmail(e);
@@ -66,7 +67,26 @@ export const EmailField = ({
                                   doAddEmail(e);
                               }
                           }}
-                          placeholder={emails.length === 0 ? placeHolder : ""} cols={2}/>
+                          placeholder={emails.length === 0 ? placeHolder : ""} cols={2}/>}
+                {singleEmail && <input type="email"
+                                        id="email-field"
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
+                                        onBlur={doAddEmail}
+                                        onKeyDown={e => {
+                                              if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+                                                  doAddEmail(e);
+                                                  return e.key === "Enter" ? true : stopEvent(e);
+                                              } else if (e.key === "Backspace" && isEmpty(email) && emails.length > 0) {
+                                                  const mail = emails[emails.length - 1];
+                                                  if (!pinnedEmails.includes(mail)) {
+                                                      removeMail(mail)();
+                                                  }
+                                              } else if (e.key === "Tab") {
+                                                  doAddEmail(e);
+                                              }
+                                          }}
+                                          placeholder={emails.length === 0 ? placeHolder : ""} cols={2}/>}
             </div>
         </div>
     );

@@ -6,7 +6,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import I18n from "i18n-js";
 import "./JoinRequest.scss";
-import MDEditor from '@uiw/react-md-editor';
 import {createJoinRequest, getJoinRequest, getTeamDetail} from "../api";
 import InputField from "../components/InputField";
 import {getDateString, isEmpty} from "../utils/utils";
@@ -14,9 +13,8 @@ import {ButtonContainer} from "../components/ButtonContainer";
 import {Button} from "../components/Button";
 import {setFlash} from "../flash/events";
 import {SpinnerField} from "../components/SpinnerField";
-import {CheckBox} from "../components/CheckBox";
 import {ReactComponent as EnvelopeIcon} from "../icons/envelope.svg";
-import rehypeSanitize from "rehype-sanitize";
+import {MarkDown} from "../components/MarkDown";
 
 export const JoinRequest = ({user}) => {
     const params = useParams();
@@ -25,7 +23,6 @@ export const JoinRequest = ({user}) => {
     const [joinRequest, setJoinRequest] = useState({});
     const [message, setMessage] = useState("");
     const [loaded, setLoaded] = useState(false);
-    const [confirmed, setConfirmed] = useState(true);
 
     useEffect(() => {
         const {teamId, joinRequestId} = params;
@@ -77,7 +74,7 @@ export const JoinRequest = ({user}) => {
 
                     <div className="input-field">
                         <label htmlFor={I18n.t("newTeam.name")}>{I18n.t("newTeam.description")}</label>
-                        <MDEditor.Markdown source={team.description} rehypePlugins={[[rehypeSanitize]]}/>
+                        <MarkDown markdown={team.description}/>
                     </div>
 
                     <section className="input-field">
@@ -101,19 +98,13 @@ export const JoinRequest = ({user}) => {
                                 multiline={true}
                                 placeholder={I18n.t("joinRequest.invitationMessagePlaceholder")}
                                 name={I18n.t("joinRequest.invitationMessage")}/>
-                    <section className="input-field">
-                        <CheckBox name="approve"
-                                  value={confirmed}
-                                  onChange={() => setConfirmed(!confirmed)}
-                                  info={I18n.t("joinRequest.confirmation")}/>
-                    </section>
                     <ButtonContainer>
                         <Button cancelButton={true}
                                 onClick={() => navigate("/my-teams")}
                                 txt={I18n.t("forms.cancel")}/>
                         <Button
                             onClick={submit}
-                            disabled={isEmpty(message) || !confirmed}
+                            disabled={isEmpty(message)}
                             txt={joinRequest.id ? I18n.t("forms.resend") : I18n.t("forms.submit")}/>
                     </ButtonContainer>
 
