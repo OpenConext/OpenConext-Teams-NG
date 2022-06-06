@@ -476,7 +476,7 @@ export default class TeamDetail extends React.PureComponent {
                     <CopyToClipboard text={universalUrn} onCopy={this.copiedToClipboard}>
                         <span className="attribute">{universalUrn}
                             <a data-for="copy-to-clipboard" data-tip>
-                                <i className={`fa fa-clone ${copiedToClipBoardClassName}`}></i>
+                                <i className={`fa fa-clone ${copiedToClipBoardClassName}`}/>
                             </a>
                             <ReactTooltip id="copy-to-clipboard" place="right" getContent={[() => tooltip, 500]}/>
                         </span>

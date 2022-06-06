@@ -71,12 +71,21 @@ public class TeamController extends ApiController implements TeamValidator {
     }
 
     @GetMapping("api/teams/teams/hash/{hash}")
-    public Object teamByHash(@PathVariable("hash") String hash, HttpServletRequest httpServletRequest, FederatedUser federatedUser) {
+    public Object teamByHash(@PathVariable("hash") String hash, FederatedUser federatedUser) {
         Invitation invitation = invitationRepository.findFirstByInvitationHash(hash).orElseThrow(() -> {
-            log.info("Invitation not found with hash %s for user %s", hash, federatedUser.getPerson().getEmail());
+            log.info("Invitation not found with hash {} for user {}", hash, federatedUser.getPerson().getEmail());
             return new ResourceNotFoundException(format("Invitation %s not found", hash));
         });
         return lazyLoadTeam(invitation.getTeam(), Role.MEMBER, federatedUser);
+    }
+
+    @GetMapping("api/teams/teams/public-link/{public-link}")
+    public Object teamByPublicLink(@PathVariable("public-link") String publicLink,  FederatedUser federatedUser) {
+        Team team = teamRepository.findByPublicLinkAndPublicLinkDisabled(publicLink, false).orElseThrow(() -> {
+            log.info("Team not found with public link {} for user {}", publicLink, federatedUser.getPerson().getEmail());
+            return new ResourceNotFoundException(format("Team %s not found", publicLink));
+        });
+        return lazyLoadTeam(team, Role.MEMBER, federatedUser);
     }
 
     @GetMapping("api/teams/teamIdFromUrn/{urn:.+}")
@@ -139,6 +148,9 @@ public class TeamController extends ApiController implements TeamValidator {
         team.setViewable(teamProperties.isViewable());
         team.setPersonalNote(teamProperties.getPersonalNote());
         team.setPublicLinkDisabled(teamProperties.isPublicLinkDisabled());
+        if (teamProperties.isPublicLinkDisabled()) {
+            team.setPublicLink(null);
+        }
 
         log.info("Team {} updated by {}", team.getUrn(), federatedUserUrn);
 

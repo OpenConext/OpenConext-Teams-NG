@@ -7,6 +7,7 @@ import Tippy from '@tippyjs/react';
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {
     acceptInvitation,
+    acceptPublicLink,
     changeRole,
     deleteInvitation,
     deleteJoinRequest,
@@ -14,8 +15,11 @@ import {
     deleteTeam,
     delinkExternalTeam,
     getInvitationInfo,
+    getPublicLink,
     getTeamDetail,
     getTeamDetailByHash,
+    getTeamDetailByPublicLink,
+    resetPublicLink,
 } from "../api";
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
@@ -25,6 +29,7 @@ import {SpinnerField} from "../components/SpinnerField";
 import "./TeamDetails.scss";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import {ReactComponent as CopyIcon} from "../icons/copy.svg";
+import {ReactComponent as ReloadIcon} from "../icons/random.svg";
 import {ReactComponent as BinIcon} from "../icons/bin-1.svg";
 import {ReactComponent as IDPIcon} from "../icons/idp-institutionn.svg";
 import {ReactComponent as GuestIDPIcon} from "../icons/idp-guest.svg";
@@ -74,6 +79,7 @@ const TeamDetail = ({user, showMembers = false}) => {
     const [invitation, setInvitation] = useState({});
     const [initial, setInitial] = useState(true);
     const [copied, setCopied] = useState(false);
+    const [universalLinkCopied, setUniversalLinkCopied] = useState(false);
 
     const searchInputRef = useRef(null);
 
@@ -89,7 +95,9 @@ const TeamDetail = ({user, showMembers = false}) => {
 
     const updateTeam = useCallback(() => {
         setLoaded(false);
-        const promise = params.teamId ? getTeamDetail(params.teamId, false) : getTeamDetailByHash(params.hash, false)
+        const promise = params.teamId ? getTeamDetail(params.teamId, false) :
+            params.publicLink ? getTeamDetailByPublicLink(params.publicLink) : getTeamDetailByHash(params.hash, false)
+
         promise.then((res) => {
             if (res.memberships) {
                 const totalMembers = res.memberships.length + (res.invitations || []).length +
@@ -166,6 +174,12 @@ const TeamDetail = ({user, showMembers = false}) => {
         if (params.hash) {
             getInvitationInfo(params.hash).then(invitation => {
                 setInvitation(invitation);
+                setWelcomeOpen(true);
+                updateTeam();
+            })
+        } else if (params.publicLink) {
+            getPublicLink(params.publicLink).then(publicLink => {
+                setInvitation({alreadyMember: publicLink.alreadyMember, expired: false, intendedRole: ROLES.MEMBER});
                 setWelcomeOpen(true);
                 updateTeam();
             })
@@ -268,11 +282,11 @@ const TeamDetail = ({user, showMembers = false}) => {
     };
 
     const doAcceptInvitation = () => {
-        acceptInvitation(params.hash)
-            .then(() => {
-                setWelcomeOpen(false);
-                navigate(`/team-details/${team.id}`);
-            });
+        const promise = params.hash ? acceptInvitation(params.hash) : acceptPublicLink(params.publicLink);
+        promise.then(() => {
+            setWelcomeOpen(false);
+            navigate(`/team-details/${team.id}`);
+        });
     }
 
     const doDenyInvitation = () => {
@@ -302,6 +316,22 @@ const TeamDetail = ({user, showMembers = false}) => {
             setConfirmationOpen(false);
         }
     };
+
+    const handleResetPublicLink = showConfirmation => {
+        if (showConfirmation) {
+            setConfirmation({
+                cancel: () => setConfirmationOpen(false),
+                action: () => handleResetPublicLink(false),
+                warning: false,
+                question: I18n.t(`newTeam.publicLinkResetConfirmation`),
+            });
+            setConfirmationOpen(true);
+        } else {
+            resetPublicLink(team.id).then(updateTeam);
+            setConfirmationOpen(false);
+        }
+    };
+
 
     const renderDeleteButton = member => {
         const icon = (
@@ -538,6 +568,12 @@ const TeamDetail = ({user, showMembers = false}) => {
         setTimeout(() => setCopied(false), 1250);
     }
 
+    const copyPublicLinkToClipBoard = universalPublicLink => {
+        navigator.clipboard.writeText(universalPublicLink);
+        setUniversalLinkCopied(true);
+        setTimeout(() => setUniversalLinkCopied(false), 1250);
+    }
+
     const editTeam = () => {
         navigate(`/edit-team/${team.id}`);
     }
@@ -599,10 +635,13 @@ const TeamDetail = ({user, showMembers = false}) => {
         {name: team.name},
     ];
 
+    const location = window.location;
+    const universalPublicLink = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/public/${team.publicLink}`;
+
     return (
         <Page>
             <SubHeader>
-                <BreadCrumb paths={paths} />
+                <BreadCrumb paths={paths}/>
             </SubHeader>
             <SubHeader>
                 <div className="team-actions">
@@ -612,8 +651,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                             {!team.viewable && <PrivateTeamLabel/>}
                             <div className="urn-container">
                                 <label>{`${user.groupNameContext}${team.urn}`}</label>
-                                <span
-                                    onClick={copyToClipBoard}>
+                                <span onClick={copyToClipBoard}>
                                     {!copied && <CopyIcon/>}
                                     {copied && <Tippy content="Copied" visible={true}>
                                         <CopyIcon/>
@@ -621,6 +659,25 @@ const TeamDetail = ({user, showMembers = false}) => {
                                 </span>
                             </div>
                         </div>
+                        {((userRoleInTeam === ROLES.ADMIN || userRoleInTeam === ROLES.OWNER) &&
+                            !team.publicLinkDisabled) &&
+                        <div className="team-access-bar">
+                            <div className="urn-container">
+                                <label>{universalPublicLink}</label>
+                                <span onClick={() => copyPublicLinkToClipBoard(universalPublicLink)}>
+                                    {!universalLinkCopied && <CopyIcon/>}
+                                    {universalLinkCopied && <Tippy content="Copied" visible={true}>
+                                        <CopyIcon/>
+                                    </Tippy>}
+                                </span>
+                                <span onClick={() => handleResetPublicLink(true)}>
+                                     <Tippy content={I18n.t("newTeam.publicLinkReset")}>
+                                        <ReloadIcon/>
+                                    </Tippy>
+                                </span>
+                            </div>
+                        </div>}
+
                         <MarkDown markdown={team.description || ""}/>
                     </div>
                     <ActionMenu title={actionDropDownTitle(team, user)}

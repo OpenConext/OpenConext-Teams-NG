@@ -86,6 +86,10 @@ export function getTeamDetailByHash(hash, showErrorDialog = true) {
     return fetchJson("teams/hash/" + hash, {}, {}, showErrorDialog);
 }
 
+export function getTeamDetailByPublicLink(publicLink, showErrorDialog = true) {
+    return fetchJson("teams/public-link/" + publicLink, {}, {}, showErrorDialog);
+}
+
 export function teamIdFromUrn(urn) {
     return fetchJson(`teamIdFromUrn/${urn}`, {}, {}, false);
 }

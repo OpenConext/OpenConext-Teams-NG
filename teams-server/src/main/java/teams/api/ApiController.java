@@ -106,6 +106,7 @@ public abstract class ApiController implements TeamValidator {
         teamNameDuplicated(name, urns);
 
         Team team = new Team(urn, name, teamProperties.getDescription(), teamProperties.isViewable(), teamProperties.getPersonalNote());
+        team.setPublicLinkDisabled(teamProperties.isPublicLinkDisabled());
         Person person = federatedUser.getPerson();
         Team savedTeam = teamRepository.save(team);
 

@@ -131,5 +131,7 @@ public class Team implements HashGenerator, Serializable {
     @JsonIgnore
     public void resetPublicLink() {
         this.publicLink = generateHash(32, "UTF-8");
+        this.publicLinkDisabled = false;
+        this.viewable = true;
     }
 }

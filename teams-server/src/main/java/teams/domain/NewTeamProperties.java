@@ -19,6 +19,7 @@ public class NewTeamProperties {
     private String description;
     private String personalNote;
     private boolean viewable;
+    private boolean publicLinkDisabled;
 
     private Map<String, String> emails;
     private String roleOfCurrentUser;

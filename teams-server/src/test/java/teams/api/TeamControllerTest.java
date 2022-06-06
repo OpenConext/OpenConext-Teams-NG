@@ -160,7 +160,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     public void createTeam() {
         String urn = "demo:openconext:org:new_team_name";
         given()
-                .body(new NewTeamProperties("new team name", "Team champions ", null, true,
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,
                         null, Role.ADMIN.name(), null, Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
@@ -185,7 +185,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         Map<String, String> emails = new HashMap<>();
         emails.put(email, Role.ADMIN.name());
         given()
-                .body(new NewTeamProperties("new team name", "Team champions ", null, true,
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,
                         emails, null, invitationMessage, Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()

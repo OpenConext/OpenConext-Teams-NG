@@ -142,6 +142,7 @@ I18n.translations.en = {
             approveJoinRequest: "Are you sure you want to approve this join request?",
             rejectJoinRequest: "Are you sure you want to reject this join request?",
             downgrade: "Are you sure you want to downgrade your role? You can not revert this.",
+
         },
         flash: {
             removeMember: "Member is removed",
@@ -198,6 +199,9 @@ I18n.translations.en = {
         private: "Private team",
         privateInfo: "Don't list antwhere. This team is member only",
         object: "Team",
+        publicLinkDisabled: "Public link enabled",
+        publicLinkReset: "Reset public link",
+        publicLinkResetConfirmation: "Are you sure you want to reset the public link? The current public link will be no longer valid.",
         placeholders: {
             name: "Enter name (can not be altered)",
             markDown: "Markdown supported",
@@ -207,7 +211,8 @@ I18n.translations.en = {
         tooltips: {
             description: "The purpose of the team. Will be show to new members who accept an invitation.",
             personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
-            immutableName: "The name of a team can not be changed once the team is created"
+            immutableName: "The name of a team can not be changed once the team is created",
+            publicLinkDisabled: "If enabled, people who have the public link can join the Team as member without the need for approval by admins or managers.",
         },
         flash: {
             created: "Team {{name}} is created",

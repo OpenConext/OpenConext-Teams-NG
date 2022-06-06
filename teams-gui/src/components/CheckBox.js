@@ -1,8 +1,9 @@
 import React from "react";
 import "./CheckBox.scss";
 import {ReactComponent as CheckIcon} from "../icons/check.svg";
+import Tooltip from "./Tooltip";
 
-export const CheckBox = ({name, value, info, onChange, readOnly = false}) => {
+export const CheckBox = ({name, value, info, onChange, toolTip = null, readOnly = false}) => {
 
     const innerOnChange = e => {
         e.cancelBubble = true;
@@ -21,6 +22,7 @@ export const CheckBox = ({name, value, info, onChange, readOnly = false}) => {
             {info && <span>
                     <label htmlFor={name} className={`info ${readOnly ? "disabled" : ""}`}
                            dangerouslySetInnerHTML={{__html: info}}/>
+                    {toolTip && <Tooltip tooltip={toolTip} name={name} label={""}/>}
                 </span>}
         </div>
     );

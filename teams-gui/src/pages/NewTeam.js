@@ -20,6 +20,7 @@ import {setFlash} from "../flash/events";
 import {ROLES} from "../utils/roles";
 import {SpinnerField} from "../components/SpinnerField";
 import {MarkDown} from "../components/MarkDown";
+import {CheckBox} from "../components/CheckBox";
 
 const visibilities = [
     {name: "public", icon: publicTeam},
@@ -142,13 +143,23 @@ const NewTeam = ({user}) => {
                                 name={I18n.t("newTeam.personalNote")}/>
 
                     <div className="input-field ">
+                        <CheckBox name={"public-link"}
+                                  onChange={() => setTeam({...team, publicLinkDisabled: !team.publicLinkDisabled})}
+                                  readOnly={!team.viewable}
+                                  info={I18n.t("newTeam.publicLinkDisabled")}
+                                  toolTip={I18n.t("newTeam.tooltips.publicLinkDisabled")}
+                                  value={!team.publicLinkDisabled}/>
+                    </div>
+
+                    <div className="input-field ">
                         <label>{I18n.t("newTeam.visibility")}</label>
                         <div className="team-visibilities">
                             {visibilities.map((visibility, i) =>
                                 <div key={i} className={`visibility ${viewableActive(visibility.name) ? "active" : ""}`}
                                      onClick={() => !viewableActive(visibility.name) && setTeam({
                                          ...team,
-                                         viewable: !team.viewable
+                                         viewable: !team.viewable,
+                                         publicLinkDisabled: team.viewable || team.publicLinkDisabled
                                      })}>
                                     <section className="header">
                                         <visibility.icon/>
@@ -158,7 +169,6 @@ const NewTeam = ({user}) => {
                                 </div>)}
                         </div>
                     </div>
-
                     {!team.id && <EmailField emails={backupEmails}
                                              addEmail={addEmail}
                                              singleEmail={true}
