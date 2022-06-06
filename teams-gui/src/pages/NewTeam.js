@@ -68,7 +68,7 @@ const NewTeam = ({user}) => {
             }, {});
             saveTeam({...team, emails: emailMap}).then(res => {
                 setFlash(I18n.t(`newTeam.flash.${team.id ? "updated" : "created"}`, {name: team.name}));
-                navigate(`/team-details/${res.id}`);
+                navigate(`/team-details/${res.id}${team.id ? "" : "/members"}`);
             })
         }
     }

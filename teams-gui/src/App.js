@@ -55,6 +55,7 @@ const App = () => {
                 <Route path={"/new-team"} element={<NewTeam user={user}/>}/>
                 <Route path={"/edit-team/:teamId"} element={<NewTeam user={user}/>}/>
                 <Route path={"/team-details/:teamId"} element={<TeamDetails user={user}/>}/>
+                <Route path={"/team-details/:teamId/:members"} element={<TeamDetails user={user} showMembers={true}/>}/>
                 <Route path={"/invitation/accept/:hash"} element={<TeamDetails user={user}/>}/>
                 <Route path={"/join-request/:teamId"} element={<JoinRequest user={user}/>}/>
                 <Route path={"/join-request/:teamId/:joinRequestId"} element={<JoinRequest user={user}/>}/>

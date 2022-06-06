@@ -116,7 +116,7 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/teams")
-    public Object createTeam(HttpServletRequest request, @Validated @RequestBody NewTeamProperties teamProperties, FederatedUser federatedUser) throws IOException, MessagingException {
+    public Object createTeam(@Validated @RequestBody NewTeamProperties teamProperties, FederatedUser federatedUser) throws IOException, MessagingException {
         Team team = doCreateTeam(teamProperties, federatedUser);
 
         Person person = federatedUser.getPerson();

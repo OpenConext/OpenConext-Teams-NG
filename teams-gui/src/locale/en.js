@@ -76,6 +76,7 @@ I18n.translations.en = {
             write: "Markdown text",
             preview: "Preview",
         },
+        externalTeam: "Included team",
         markdownPlaceholder: "Team description support markdown",
         personalNotesPlaceholder: "Personal notes for your fellow admin's to see",
         alerts: {
@@ -134,6 +135,7 @@ I18n.translations.en = {
         },
         confirmations: {
             removeMember: "Are you sure you want to remove this member?",
+            removeExternalTeam: "Are you sure you want to remove this included team membership?",
             removeInvitation: "Are you sure you want to remove this invitation?",
             resendInvitation: "Are you sure you want to resend this invitation?",
             removeJoinRequest: "Are you sure you want to remove this join request?",
@@ -152,6 +154,7 @@ I18n.translations.en = {
             memberChanged: "Membership changed for {{name}} to {{newRole}}",
         },
         idp: {
+            unknown: "Unknown / invited user",
             guest: "User joined with guest account",
             idp: "User joined with institutional account",
         }

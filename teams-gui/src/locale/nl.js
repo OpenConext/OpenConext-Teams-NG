@@ -37,7 +37,7 @@ I18n.translations.nl = {
             member: "Member of"
         },
         empty: "",
-        private: "Private team",
+        private: "private team",
         add_members: "Add members",
         new_team: "New Team",
         member: "You're a member",
@@ -72,6 +72,13 @@ I18n.translations.nl = {
         noInvitees: "No invitees",
         inviteSent: "invite sent",
         joinRequest: "join request",
+        markdownTabs: {
+            write: "Markdown text",
+            preview: "Preview",
+        },
+        externalTeam: "Included team",
+        markdownPlaceholder: "Team description support markdown",
+        personalNotesPlaceholder: "Personal notes for your fellow admin's to see",
         alerts: {
             singleAdmin: "It’s recommended to add at least one other administrator besides yourself."
         },
@@ -87,6 +94,7 @@ I18n.translations.nl = {
             buttons: {
                 add: "Add members",
                 sendInvite: "Send invite",
+                addAdministrator: "Add administrator",
                 cancel: "cancel",
                 addEmails: "Add",
                 languageRadio: {
@@ -100,7 +108,7 @@ I18n.translations.nl = {
             },
             placeholders: {
                 emails: "Enter emails or copy / paste a csv or comma separated file",
-                customMessage: "Add a personal note to your invitation"
+                customMessage: "Add a personal note to your invitation",
             },
             errors: {
                 invalidEmails: "The following emails were invalid: {{attribute}}",
@@ -127,6 +135,7 @@ I18n.translations.nl = {
         },
         confirmations: {
             removeMember: "Are you sure you want to remove this member?",
+            removeExternalTeam: "Are you sure you want to remove this included team membership?",
             removeInvitation: "Are you sure you want to remove this invitation?",
             resendInvitation: "Are you sure you want to resend this invitation?",
             removeJoinRequest: "Are you sure you want to remove this join request?",
@@ -145,6 +154,7 @@ I18n.translations.nl = {
             memberChanged: "Membership changed for {{name}} to {{newRole}}",
         },
         idp: {
+            unknown: "Unknown / invited user",
             guest: "User joined with guest account",
             idp: "User joined with institutional account",
         }
@@ -155,6 +165,7 @@ I18n.translations.nl = {
         email: "Email",
         name: "Name",
         role: "Role",
+        logout: "Logout",
         true: "{{productName}} guest",
         false: "{{productName}} admin"
     },
@@ -205,7 +216,7 @@ I18n.translations.nl = {
         create: "Create team",
     },
     invitationForm: {
-        header: "Resend invitation",
+        header: "Resent invitation",
         email: "Email invitee",
         created: "Send at",
         message: "Personal message",

@@ -17,9 +17,7 @@ div.flash-container {
 
 
     &.info {
-        background-color: $primary-green;
-        color: white;
-        font-weight: bold;
+        background-color: #B8E3C9;
     }
 
     &.warning {
@@ -33,7 +31,6 @@ div.flash-container {
 
     div.flash {
         @extend .inner-component;
-        color: white;
         z-index: 6;
         opacity: .97;
         position: relative;
@@ -44,7 +41,10 @@ div.flash-container {
             display: flex;
 
             p {
-                padding: 10px 25px 10px 35px;
+                color: black;
+                font-weight: bold;
+                margin: 0;
+                padding: 10px 25px 10px 0;
             }
         }
 
@@ -53,7 +53,7 @@ div.flash-container {
             position: absolute;
             right: 6px;
             top: -2px;
-            color: white;
+            color: black;
             padding: 6px;
             font-weight: normal;
 

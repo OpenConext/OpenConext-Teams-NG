@@ -73,6 +73,7 @@
 
 .ReactModalPortal .team-welcome-modal {
     transition: top 250ms ease-in-out, bottom 250ms ease-in-out;
+    min-width: 450px;
     max-width: 550px;
     box-shadow: 0 3px 0 2px #949494;
     border-radius: $br;

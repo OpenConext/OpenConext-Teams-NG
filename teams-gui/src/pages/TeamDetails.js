@@ -12,6 +12,7 @@ import {
     deleteJoinRequest,
     deleteMember,
     deleteTeam,
+    delinkExternalTeam,
     getInvitationInfo,
     getTeamDetail,
     getTeamDetailByHash,
@@ -25,8 +26,9 @@ import "./TeamDetails.scss";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import {ReactComponent as CopyIcon} from "../icons/copy.svg";
 import {ReactComponent as BinIcon} from "../icons/bin-1.svg";
-import {ReactComponent as IDPIcon} from "../icons/single-neutral-id-card-valid.svg";
-import {ReactComponent as GuestIDPIcon} from "../icons/single-neutral-id-card-3.svg";
+import {ReactComponent as IDPIcon} from "../icons/idp-institutionn.svg";
+import {ReactComponent as GuestIDPIcon} from "../icons/idp-guest.svg";
+import {ReactComponent as UnknownIDPIcon} from "../icons/idp-unknown.svg";
 import {ReactComponent as EmailIcon} from "../icons/email-action-send-2.svg";
 import {ReactComponent as EnvelopeIcon} from "../icons/person-circle-plus-solid.svg";
 import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
@@ -43,7 +45,7 @@ import {setFlash} from "../flash/events";
 import TeamWelcomeDialog from "../components/TeamWelcomeDialog";
 import {MarkDown} from "../components/MarkDown";
 
-const TeamDetail = ({user}) => {
+const TeamDetail = ({user, showMembers = false}) => {
     const params = useParams();
     const navigate = useNavigate();
     const [loaded, setLoaded] = useState(false);
@@ -53,10 +55,10 @@ const TeamDetail = ({user}) => {
     });
     const [team, setTeam] = useState({memberships: [], invitations: [], joinRequests: []});
     const [sort, setSort] = useState({
-        field: "person.name",
-        direction: "ascending",
+        field: "initial",
+        direction: "descending",
     });
-    const [showAddMembersForm, setShowAddMembersForm] = useState(false);
+    const [showAddMembersForm, setShowAddMembersForm] = useState(showMembers);
     const [alerts, setAlerts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [memberList, setMembersList] = useState([]);
@@ -71,16 +73,16 @@ const TeamDetail = ({user}) => {
     const [welcomeOpen, setWelcomeOpen] = useState(false);
     const [invitation, setInvitation] = useState({});
     const [initial, setInitial] = useState(true);
+    const [copied, setCopied] = useState(false);
 
     const searchInputRef = useRef(null);
 
     useEffect(() => {
-        console.log(window.location.search);
         if (window.location.search.indexOf("show-form") === -1) {
             setSelectedInvitation(null);
             setSelectedJoinRequest(null);
             setShowExternalTeams(false);
-            setShowAddMembersForm(false);
+            setShowAddMembersForm(initial ? showMembers : false);
         }
         // eslint-disable-next-line
     }, [window.location.search])
@@ -103,12 +105,13 @@ const TeamDetail = ({user}) => {
                     [ROLES.ADMIN].includes(userMembershipRole);
                 setAlerts(adminAlert ? [I18n.t(`teamDetails.alerts.singleAdmin`)] : []);
 
-                const pendingInvitation = (res.invitations || [])
+                const pendingInvitations = (res.invitations || [])
                     .filter(invitation => !invitation.expired && !invitation.accepted && !invitation.denied)
                     .map(invitation => ({
                         person: {name: "-", email: invitation.email},
                         created: invitation.timestamp / 1000,
                         isInvitation: true,
+                        isExternalTeam: false,
                         filters: ["INVITEE"],
                         role: invitation.intendedRole,
                         invitationID: invitation.id,
@@ -119,12 +122,28 @@ const TeamDetail = ({user}) => {
                     .map(joinRequest => ({
                         ...joinRequest,
                         isJoinRequest: true,
+                        isExternalTeam: false,
                         filters: ["JOIN_REQUEST"],
                         role: ROLES.MEMBER
                     }))
                 const newMemberList = [...res.memberships];
-                newMemberList.forEach(member => member.filters = [member.role]);
-                const members = newMemberList.concat(pendingInvitation).concat(joinRequests);
+                newMemberList.forEach(member => {
+                    member.filters = [member.role];
+                    member.isExternalTeam = false
+                });
+                const externalTeams = (res.externalTeams || [])
+                    .map(externalTeam => ({
+                        ...externalTeam,
+                        isExternalTeam: true,
+                        filters: [ROLES.MEMBER],
+                        person: {
+                            name: externalTeam.name,
+                            email: I18n.t("teamDetails.externalTeam")
+                        },
+                        created: externalTeam.createdAt,
+                        role: ROLES.MEMBER
+                    }))
+                const members = externalTeams.concat(newMemberList).concat(pendingInvitations).concat(joinRequests);
                 setTeam(res);
                 setMembersList(members);
                 setUserRoleInTeam(userMembershipRole);
@@ -169,9 +188,13 @@ const TeamDetail = ({user}) => {
                     member.person.email.toLowerCase().includes(searchQuery.toLowerCase());
                 return filterMatches && searchQueryMatches;
             });
-            toDisplay.sort((a, b) => (getSortField(a) > getSortField(b) ? 1 : -1));
-            if (sort.direction !== "ascending") {
-                toDisplay.reverse();
+            if (sort.field === "initial") {
+                toDisplay.sort((a, b) => (+b.isExternalTeam) - (+a.isExternalTeam) || a.person.name.localeCompare(b.person.name));
+            } else {
+                toDisplay.sort((a, b) => (getSortField(a) > getSortField(b) ? 1 : -1));
+                if (sort.direction !== "ascending") {
+                    toDisplay.reverse();
+                }
             }
             setDisplayedMembers(toDisplay.filter(m => hideInvitees ? !m.isInvitation : true));
         };
@@ -257,7 +280,7 @@ const TeamDetail = ({user}) => {
     }
 
     const processRemoveMember = (member, showConfirmation) => {
-        const confPart = member.isInvitation ? "Invitation" : member.isJoinRequest ? "JoinRequest" : "Member";
+        const confPart = member.isInvitation ? "Invitation" : member.isJoinRequest ? "JoinRequest" : member.isExternalTeam ? "ExternalTeam" : "Member";
         if (showConfirmation) {
             setConfirmation({
                 cancel: () => setConfirmationOpen(false),
@@ -266,19 +289,21 @@ const TeamDetail = ({user}) => {
                 question: I18n.t(`teamDetails.confirmations.remove${confPart}`),
             });
             setConfirmationOpen(true);
-            return;
-        }
-        if (member.isInvitation) {
-            deleteInvitation(member.invitationID).then(updateTeam);
-        } else if (member.isJoinRequest) {
-            deleteJoinRequest(member.id).then(updateTeam);
         } else {
-            deleteMember(member.id).then(updateTeam);
+            if (member.isInvitation) {
+                deleteInvitation(member.invitationID).then(updateTeam);
+            } else if (member.isJoinRequest) {
+                deleteJoinRequest(member.id).then(updateTeam);
+            } else if (member.isExternalTeam) {
+                delinkExternalTeam(team.id, member.identifier).then(updateTeam);
+            } else {
+                deleteMember(member.id).then(updateTeam);
+            }
+            setConfirmationOpen(false);
         }
-        setConfirmationOpen(false);
     };
 
-    const renderDeleteButton = (member) => {
+    const renderDeleteButton = member => {
         const icon = (
             <span
                 className="bin-icon"
@@ -364,7 +389,13 @@ const TeamDetail = ({user}) => {
     };
 
     const tdClassName = member => {
-        return (member.isJoinRequest || member.isInvitation) ? "clickable top-height" : "";
+        if (member.isJoinRequest || member.isInvitation) {
+            return "clickable top-height";
+        }
+        if (member.isExternalTeam) {
+            return "top-height";
+        }
+        return "";
     }
 
     const addHistoryState = () => {
@@ -396,6 +427,35 @@ const TeamDetail = ({user}) => {
         return [ROLES[member.role]];
     };
 
+    const nameColumn = member => {
+        if (member.isInvitation) {
+            return <span>{member.person.name}</span>
+        }
+        if (member.isExternalTeam) {
+            return <Tippy content={member.identifier}>
+                <span>{member.name}</span>
+            </Tippy>
+        }
+        return <Tippy content={member.person.urn}>
+            <span>{member.person.name}</span>
+        </Tippy>
+    }
+
+    const idpColumn = member => {
+        if (member.isExternalTeam) {
+            return null;
+        }
+        return (
+            <span className="idp">
+                <Tippy content={<span dangerouslySetInnerHTML={{
+                    __html: I18n.t(`teamDetails.idp.${member.isInvitation ? "unknown" : member.person.guest ? "guest" : "idp"}`)
+                }}/>}>
+                    {member.isInvitation ? <UnknownIDPIcon/> : member.person.guest ? <GuestIDPIcon/> : <IDPIcon/>}
+                </Tippy>
+            </span>
+        )
+    }
+
     const renderMembersRow = (member, index) => {
         const roleActions = roleOptions(member).map(
             role => ({
@@ -406,22 +466,14 @@ const TeamDetail = ({user}) => {
             <tr key={index} className={`${tdClassName(member)} `}>
                 <td data-label={I18n.t(`teamDetails.columns.name`)}
                     className={`${tdClassName(member)} ${member.urnPerson === user.urn ? "me" : ""}`}
-                    onClick={() => tdClick(member)}>
-                    {member.isInvitation ? <span>{member.person.name}</span> : <Tippy content={member.person.urn}>
-                        <span>{member.person.name}</span>
-                    </Tippy>}
+                    onClick={() => !member.isExternalTeam && tdClick(member)}>
+                    {nameColumn(member)}
                 </td>
                 {[ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam) && (
                     <td data-label={I18n.t(`teamDetails.columns.idp`)}
                         className={tdClassName(member)}
                         onClick={() => tdClick(member)}>
-                        <span className="idp">
-                            {!member.isInvitation && <Tippy content={<span dangerouslySetInnerHTML={{
-                                __html: I18n.t(`teamDetails.idp.${member.person.guest ? "guest" : "idp"}`)
-                            }}/>}>
-                                {member.person.guest ? <GuestIDPIcon/> : <IDPIcon/>}
-                            </Tippy>}
-                        </span>
+                        {idpColumn(member)}
                     </td>
                 )}
                 <td data-label={I18n.t(`teamDetails.columns.email`)}
@@ -432,9 +484,9 @@ const TeamDetail = ({user}) => {
                 <td data-label={I18n.t(`teamDetails.columns.role`)}
                     className={`roles-entry ${tdClassName(member)}`}
                     onClick={() => tdClick(member)}>
-                    {((userRoleInTeam === ROLES.ADMIN || userRoleInTeam === ROLES.OWNER) && !member.isInvitation && !member.isJoinRequest) ?
+                    {((userRoleInTeam === ROLES.ADMIN || userRoleInTeam === ROLES.OWNER) && !member.isInvitation && !member.isJoinRequest && !member.isExternalTeam) ?
                         <DropDownMenu title={I18n.t(`roles.${member.role.toLowerCase()}`)} actions={roleActions}/> :
-                        I18n.t(`roles.${member.role.toLowerCase()}`)}
+                        <span className="read-only-role">{I18n.t(`roles.${member.role.toLowerCase()}`)}</span>}
                 </td>
                 <td data-label={I18n.t(`teamDetails.columns.joined`)}
                     className={`joined-entry ${tdClassName(member)}`}
@@ -479,6 +531,12 @@ const TeamDetail = ({user}) => {
             });
         }
     };
+
+    const copyToClipBoard = () => {
+        navigator.clipboard.writeText(`${user.groupNameContext}${team.urn}`);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1250);
+    }
 
     const editTeam = () => {
         navigate(`/edit-team/${team.id}`);
@@ -544,9 +602,7 @@ const TeamDetail = ({user}) => {
     return (
         <Page>
             <SubHeader>
-                <BreadCrumb
-                    paths={paths}
-                />
+                <BreadCrumb paths={paths} />
             </SubHeader>
             <SubHeader>
                 <div className="team-actions">
@@ -557,8 +613,11 @@ const TeamDetail = ({user}) => {
                             <div className="urn-container">
                                 <label>{`${user.groupNameContext}${team.urn}`}</label>
                                 <span
-                                    onClick={() => navigator.clipboard.writeText(`${user.groupNameContext}${team.urn}`)}>
-                                    <CopyIcon/>
+                                    onClick={copyToClipBoard}>
+                                    {!copied && <CopyIcon/>}
+                                    {copied && <Tippy content="Copied" visible={true}>
+                                        <CopyIcon/>
+                                    </Tippy>}
                                 </span>
                             </div>
                         </div>

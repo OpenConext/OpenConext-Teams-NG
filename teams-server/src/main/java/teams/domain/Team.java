@@ -85,7 +85,8 @@ public class Team implements HashGenerator, Serializable {
         this.description = StringUtils.hasText(description) ? description : null;
         this.viewable = viewable;
         this.personalNote = personalNote;
-        this.publicLink = generateHash(32, "UTF-8");
+        this.publicLink = viewable ? generateHash(32, "UTF-8") : null;
+        this.publicLinkDisabled = !viewable;
         this.created = Instant.now();
     }
 

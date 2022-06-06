@@ -27,7 +27,7 @@ const Flash = () => {
         <div className={`flash-container ${flash.className} ${flash.type}`}>
             <div className={`flash ${flash.className} ${flash.type}`}>
                 <div className="message-container">
-                    <p>{flash.msg}</p>
+                    <p className={`${flash.type}`}>{flash.msg}</p>
                 </div>
                 <a className="close" href="/close" onClick={clearFlash}>
                     <TimesIcon/>
