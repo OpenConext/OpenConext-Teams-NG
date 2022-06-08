@@ -2,17 +2,17 @@
 @import "../styles/responsive";
 
 div.flash-container {
-    @extend .component-container;
-
-    top: 0;
-    transition: top 750ms ease-in-out;
-    position: absolute;
-    width: 100%;
+    bottom: 10px;
+    right: 10px;
+    position: fixed;
     z-index: 9;
+    padding: 10px 16px;
+    border-radius: 6px;
+    max-width: 400px;
+    opacity: .97;
 
     &.hide {
-        top: -80px;
-        transition: top 1750ms ease-in-out;
+        opacity: 0;
     }
 
 
@@ -29,39 +29,8 @@ div.flash-container {
     }
 
 
-    div.flash {
-        @extend .inner-component;
-        z-index: 6;
-        opacity: .97;
-        position: relative;
-
-        padding: 0;
-
-        .message-container {
-            display: flex;
-
-            p {
-                color: black;
-                font-weight: bold;
-                margin: 0;
-                padding: 10px 25px 10px 0;
-            }
-        }
-
-        a.close {
-            text-decoration: none;
-            position: absolute;
-            right: 6px;
-            top: -2px;
-            color: black;
-            padding: 6px;
-            font-weight: normal;
-
-            svg {
-                width: 14px;
-            }
-        }
-
-
+    p {
+        color: black;
+        margin: 0;
     }
 }
