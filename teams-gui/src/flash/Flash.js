@@ -14,7 +14,7 @@ const Flash = () => {
         } else {
             setFlash({msg: flashCtx.msg, className: "", type: flashCtx.type || "info"});
             if (flashCtx && (flashCtx.type || "info") === "info") {
-                setTimeout(() => callback({}), 3500);
+                setTimeout(() => callback({}), 5000);
             }
         }
     }
