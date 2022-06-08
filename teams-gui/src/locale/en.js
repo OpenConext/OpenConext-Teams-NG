@@ -265,6 +265,7 @@ I18n.translations.en = {
         reject: "Reject",
         edit: "Edit",
         back: "Back",
+        skip: "Skip",
         required: "{{attribute}} is a required attribute",
         alreadyExists: "A {{object}} with {{attribute}} {{value}} already exists.",
         invalid: "{{value}} for {{attribute}} is invalid."

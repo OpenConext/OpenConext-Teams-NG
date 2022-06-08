@@ -10,7 +10,7 @@ import {invite} from "../api";
 import {setFlash} from "../flash/events";
 
 
-export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam}) => {
+export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTeam}) => {
 
     const [emails, setEmails] = useState([]);
     const [role, setRole] = useState({value: ROLES.MEMBER, label: I18n.t(`roles.${ROLES.MEMBER.toLowerCase()}`)});
@@ -115,7 +115,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam}) => {
             <div className="submit-button-wrapper">
                 <Button
                     onClick={() => setShowForm(false)}
-                    txt={I18n.t("forms.cancel")}
+                    txt={I18n.t(`forms.${isNewTeam ? "skip" : "cancel"}`)}
                     className="cancel-button"
                     cancelButton={true}/>
 

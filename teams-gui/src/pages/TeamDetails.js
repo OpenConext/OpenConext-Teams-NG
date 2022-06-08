@@ -746,8 +746,11 @@ const TeamDetail = ({user, showMembers = false}) => {
                 </div>
             )}
             {showAddMembersForm && (
-                <AddTeamMembersForm updateTeam={updateTeam} team={team} user={user}
-                                    setShowForm={setShowAddMembersForm}/>
+                <AddTeamMembersForm updateTeam={updateTeam}
+                                    team={team}
+                                    user={user}
+                                    setShowForm={setShowAddMembersForm}
+                                    isNewTeam={showMembers}/>
             )}
             {selectedInvitation && <InvitationForm updateTeam={updateTeam}
                                                    setShowForm={setSelectedInvitation}
