@@ -111,6 +111,7 @@ export const EmailField = ({
                                                   return e.key === "Enter" ? true : stopEvent(e);
                                               } else if (e.key === "Backspace" && isEmpty(email) && emails.length > 0) {
                                                   const mail = emails[emails.length - 1];
+                                                  setErrorMails([]);
                                                   if (!pinnedEmails.includes(mail)) {
                                                       removeMail(mail)();
                                                   }
