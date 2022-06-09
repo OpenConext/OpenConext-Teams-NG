@@ -50,13 +50,14 @@ div.email-field {
     }
 
     div.email-tag {
-        border: 1px solid $tertiary-grey;
-        border-radius: $br;
+        border: none;
+        border-radius: 100px;
         margin: 5px 5px 0 5px;
-        display: inline-block;
+        display: flex;
+        align-items: center;
         position: relative;
-        background-color: $background;
-        padding: 4px 26px 4px 10px;
+        background-color: #dbf1e5;
+        padding: 4px 32px 4px 12px;
         max-height: 32px;
 
         span.value {
@@ -68,11 +69,12 @@ div.email-field {
             cursor: pointer;
             color: $inactive-grey;
             position: absolute;
-            right: -8px;
-            top: -5px;
+            right: -3px;
+            top: 0;
 
             svg {
-                width: 12px;
+                width: 8px;
+                height: auto;
             }
 
             &:hover {
@@ -86,6 +88,9 @@ div.email-field {
 
         }
     }
-
+    span.error {
+        color: $primary-red;
+        margin-top: 10px;
+    }
 
 }

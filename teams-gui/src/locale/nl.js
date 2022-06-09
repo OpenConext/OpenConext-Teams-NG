@@ -305,6 +305,10 @@ I18n.translations.nl = {
         denied: "Bummer...",
         titleDenied: "You can't join team {{name}}",
         alreadyMember: "You are already a member of this team."
+    },
+    emails: {
+        singleInvalid: "Invalid email address: {{emails}}",
+        multipleInvalid: "Invalid email addresses: {{emails}}"
     }
 };
 

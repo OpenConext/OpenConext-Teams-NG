@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {emitter} from "./events";
 import {isEmpty} from "../utils/utils";
 import "./Flash.scss";
+import success from "../icons/success.svg";
 
 const Flash = () => {
 
@@ -14,7 +15,7 @@ const Flash = () => {
         } else {
             setFlash({msg: flashCtx.msg, className: "", type: flashCtx.type || "info"});
             if (flashCtx && (flashCtx.type || "info") === "info") {
-                setTimeout(() => callback({}), 5000);
+               setTimeout(() => callback({}), 6000);
             }
         }
     }
@@ -25,6 +26,7 @@ const Flash = () => {
 
     return (
         <div className={`flash-container ${flash.className} ${flash.type}`}>
+            <img src={success} alt="info"/>
             <p className={`${flash.type}`}>{flash.msg}</p>
         </div>
     );

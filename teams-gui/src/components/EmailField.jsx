@@ -5,6 +5,7 @@ import {ReactComponent as TimesIcon} from "../icons/times.svg";
 import {ReactComponent as EnvelopeIcon} from "../icons/envelope.svg";
 import Tooltip from "./Tooltip";
 import {validEmailRegExp} from "../validations/regularExp";
+import I18n from "i18n-js";
 
 export const EmailField = ({
                                name,
@@ -20,17 +21,44 @@ export const EmailField = ({
                            }) => {
 
     const [email, setEmail] = useState("");
-    const doAddEmail = () => {
+    const [errorMails, setErrorMails] = useState([]);
+
+    const updateEmail = e => {
+        if (e.key !== "Tab") {
+            setEmail(e.target.value);
+            setErrorMails([]);
+        }
+    }
+
+    const doAddEmail = e => {
         const delimiters = [",", " ", ";", "\n", "\t"];
         const newEmails = [];
+        const newErrorEmails = [];
         if (!emails.map(m => m.toLowerCase()).includes(email.toLowerCase())) {
             if (!isEmpty(email) && delimiters.some(delimiter => email.indexOf(delimiter) > -1)) {
-                const validEmails = email.replace(/[;\s]/g, ",").split(",")
-                    .filter(part => part.trim().length > 0 && validEmailRegExp.test(part));
-                newEmails.push(...validEmails);
-            } else if (!isEmpty(email) && validEmailRegExp.test(email.trim())) {
-                newEmails.push(email);
+                email.replace(/[;\s]/g, ",").split(",")
+                    .map(part => part.trim())
+                    .filter(part => part.trim().length > 0)
+                    .forEach(part => {
+                        if (validEmailRegExp.test(part)) {
+                            newEmails.push(part);
+                        } else {
+                            newErrorEmails.push(part);
+                        }
+                    });
+
+            } else if (!isEmpty(email)) {
+                const trimmedEmail = email.trim();
+                if (validEmailRegExp.test(trimmedEmail)) {
+                    newEmails.push(trimmedEmail);
+                } else {
+                    newErrorEmails.push(trimmedEmail)
+                }
             }
+        }
+        //Corner case where Tab leads to addEmail and also onBlur
+        if (e.type !== "blur" || newErrorEmails.length > 0) {
+            setErrorMails(newErrorEmails);
         }
         setEmail("");
         addEmail([...new Set(newEmails)]);
@@ -52,13 +80,17 @@ export const EmailField = ({
                                         </span>}
 
                     </div>)}
-                {!singleEmail && <textarea id="email-field" value={email} onChange={e => setEmail(e.target.value)} onBlur={doAddEmail}
+                {!singleEmail && <textarea id="email-field"
+                                           value={email}
+                                           onChange={updateEmail}
+                                           onBlur={doAddEmail}
                           onKeyDown={e => {
                               if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
                                   doAddEmail(e);
                                   setTimeout(() => document.getElementById("email-field").focus(), 50);
                                   return stopEvent(e);
                               } else if (e.key === "Backspace" && isEmpty(email) && emails.length > 0) {
+                                  setErrorMails([]);
                                   const mail = emails[emails.length - 1];
                                   if (!pinnedEmails.includes(mail)) {
                                       removeMail(mail)();
@@ -71,7 +103,7 @@ export const EmailField = ({
                 {singleEmail && <input type="email"
                                         id="email-field"
                                         value={email}
-                                        onChange={e => setEmail(e.target.value)}
+                                        onChange={updateEmail}
                                         onBlur={doAddEmail}
                                         onKeyDown={e => {
                                               if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
@@ -88,6 +120,10 @@ export const EmailField = ({
                                           }}
                                           placeholder={emails.length === 0 ? placeHolder : ""} cols={2}/>}
             </div>
+            {errorMails.length > 0 &&
+            <span className={"error"}>
+                {I18n.t(`emails.${errorMails.length === 0 ? "single":"multiple"}Invalid`, {emails: errorMails.join(", ")})}
+            </span>}
         </div>
     );
 }
