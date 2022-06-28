@@ -135,7 +135,7 @@ I18n.translations.en = {
         },
         confirmations: {
             removeMember: "Are you sure you want to remove this member?",
-            removeExternalTeam: "Are you sure you want to remove this included team membership?",
+            removeExternalTeam: "Are you sure you want to unlink this included team?",
             removeInvitation: "Are you sure you want to remove this invitation?",
             resendInvitation: "Are you sure you want to resend this invitation?",
             removeJoinRequest: "Are you sure you want to remove this join request?",
@@ -246,8 +246,8 @@ I18n.translations.en = {
     },
     externalTeams: {
         header: "Include institutional teams",
-        info: "Institutional teams are groups of people provided by your institution to {{productName}} Teams. Only those you are a member of, are shown.",
-        info2: "You can link institutional teams to any team you manage within {{productName}} Teams. The result is that all members of that institutional team will also be a member of your team.",
+        info: "Institutional teams are groups of people provided by your institution to {{productName}}. Only those you are a member of, are shown.",
+        info2: "You can link institutional teams to any team you manage within {{productName}}. The result is that all members of that institutional team will also be a member of your team.",
         table: {
             name: "Name",
             linked: "Linked"
@@ -265,7 +265,7 @@ I18n.translations.en = {
         edit: "Edit",
         back: "Back",
         skip: "Skip",
-        required: "{{attribute}} is a required attribute",
+        required: "{{attribute}} is a required field",
         alreadyExists: "A {{object}} with {{attribute}} {{value}} already exists.",
         invalid: "Value {{value}} for {{attribute}} is invalid."
     },

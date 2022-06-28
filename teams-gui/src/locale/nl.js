@@ -76,14 +76,14 @@ I18n.translations.nl = {
             write: "Markdown-tekst",
             preview: "Voorbeeldweergave",
         },
-        externalTeam: "Ingesloten team",
+        externalTeam: "Gekoppeld team",
         markdownPlaceholder: "Je kunt Markdown gebruiken in de omschrijving",
         personalNotesPlaceholder: "Interne notities voor jou en je mede-beheerders",
         alerts: {
             singleAdmin: "We raden aan minstens één andere beheerder toe te voegen."
         },
         addMembers: {
-            invitationExpiry: "Uitndoging is 30 dagen geldig",
+            invitationExpiry: "Uitnodiging is 30 dagen geldig",
             headers: {
                 addMembersHeader: "Leden toevoegen",
                 additionalInformationHeader: "Extra informatie",
@@ -115,7 +115,7 @@ I18n.translations.nl = {
                 noInput: "Geef minstens één geldig mailadres op"
             }
         },
-        includeTeam: "Team insluiten",
+        includeTeam: "Team koppelen",
         columns: {
             name: "Naam",
             idp: "IdP",
@@ -135,7 +135,7 @@ I18n.translations.nl = {
         },
         confirmations: {
             removeMember: "Weet je zeker dat je dit lid wilt verwijderen?",
-            removeExternalTeam: "Weet je zeker dat je dit ingesloten team wilt verwijderen?",
+            removeExternalTeam: "Weet je zeker dat je dit team wilt ontkoppelen?",
             removeInvitation: "Weet je zeker dat je deze uitnodiging wilt verwijderen?",
             resendInvitation: "Weet je zeker dat je deze uitnodiging opnieuw wilt versturen?",
             removeJoinRequest: "Weet je zeker dat je dit toetredingsverzoek wilt verwijderen?",
@@ -194,7 +194,7 @@ I18n.translations.nl = {
         backupEmail: "Backup-beheerder",
         personalNote: "Persoonlijke notitie",
         invitationMessage: "Uitnodigingsbericht",
-        public: "Openbaar team",
+        public: "Openbaar",
         publicInfo: "Geef het team weer in de publiek beschikbare lijst. Mensen kunnen om lidmaatschap verzoeken",
         private: "Privé-team",
         privateInfo: "Geef het team nergens weer. Het is alleen zichtbaar voor leden",
@@ -245,12 +245,12 @@ I18n.translations.nl = {
         existingJoinRequestDetails: "Je hebt alreeds op {{date}} verzocht om te mogen toetreden tot dit team"
     },
     externalTeams: {
-        header: "Insluiten van instellingsteams",
-        info: "Instellingsteams zijn groepen die geleverd worden door jouw instelling aan {{productName}} Teams. Hier worden alleen die groepen getoond waar je zelf ook lid van bent.",
-        info2: "Je kunt een instellings-team linken aan elk team dat je beheert binnen {{productName}} Teams. Alle leden van dat instellingsteam zijn dan automatisch ook lid van jouw team.",
+        header: "Koppelen van instellingsteams",
+        info: "Instellingsteams zijn groepen die geleverd worden door jouw instelling aan {{productName}}. Hier worden alleen die groepen getoond waar je zelf ook lid van bent.",
+        info2: "Je kunt een instellings-team koppelen aan elk team dat je beheert binnen {{productName}}. Alle leden van dat instellingsteam zijn dan automatisch ook lid van jouw team.",
         table: {
             name: "Naam",
-            linked: "Gelinkt"
+            linked: "Gekoppeld"
         }
     },
     forms: {
@@ -265,7 +265,7 @@ I18n.translations.nl = {
         edit: "Bewerken",
         back: "Terug",
         skip: "Overslaan",
-        required: "Attribuut {{attribute}} is vereist",
+        required: "{{attribute}} is vereist",
         alreadyExists: "Een {{object}} met {{attribute}} {{value}} bestaat al.",
         invalid: "Waarde {{value}} van {{attribute}} is ongeldig."
     },
@@ -279,7 +279,7 @@ I18n.translations.nl = {
         editTeam: "Bewerk {{name}}",
         joinRequest: "Toetredingsverzoek van {{name}}",
         userJoinRequest: "Toetredingsverzoek",
-        invitation: "Uitndoging aan {{email}}"
+        invitation: "Uitnodiging aan {{email}}"
     },
     confirmationDialog: {
         title: "Bevestig",
@@ -291,12 +291,12 @@ I18n.translations.nl = {
     },
     footer: {
         faq: "<a href='https://support.surfconext.nl/teams' target='_blank' referrerpolicy='origin'>FAQ</a>",
-        terms: "<a href='https://support.surfconext.nl/terms-nl' target='_blank' referrerpolicy='origin'>Terms of use</a>",
-        privacy: "<a href='https://support.surfconext.nl/privacy-nl' target='_blank' referrerpolicy='origin'>Privacy policy</a>"
+        terms: "<a href='https://support.surfconext.nl/terms-nl' target='_blank' referrerpolicy='origin'>Gebruiksvoorwaarden</a>",
+        privacy: "<a href='https://support.surfconext.nl/privacy-nl' target='_blank' referrerpolicy='origin'>Privacybeleid</a>"
     },
     teamWelcomeDialog: {
         title: "Welkom bij {{name}}",
-        header: "Je rol {{role}}",
+        header: "Je rol is {{role}}",
         proceed: "Uitstekend, toon me het team",
         expired: "Deze uitnodiging is inmiddels verlopen.",
         denied: "Helaas...",
