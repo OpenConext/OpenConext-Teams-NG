@@ -30,10 +30,11 @@ export const Header = ({user, toggleSuperAdminModus}) => {
     return (
         <div className="header-container">
             <div className="header">
-                <Link className={"home"} to={"/"}>
-                    <img src={surfLogo} alt=""/>
+                <Link to="/" className="logo-container">
+                    <img src={surfLogo} alt="SURF" />
+                    <span className="conext">CONEXT</span>
+                    <span className="idp-dashboard">Teams</span>
                 </Link>
-                <h2 className="conext">Conext Teams</h2>
                 {user.superAdmin &&
                 <CheckBox className="checkbox super-admin"
                           onChange={doToggleSuperAdminModus}
