@@ -70,14 +70,14 @@ I18n.translations.nl = {
         members: "Leden",
         hideInvitees: "Verberg genodigden",
         noInvitees: "Geen genodigden",
-        inviteSent: "uitnodiging verstuurd",
+        inviteSent: "uitgenodigd",
         joinRequest: "toetredingsverzoek",
         markdownTabs: {
             write: "Markdown-tekst",
             preview: "Voorbeeldweergave",
         },
         externalTeam: "Ingesloten team",
-        markdownPlaceholder: "Je kunt MarkDown gebruiken in de omschrijving",
+        markdownPlaceholder: "Je kunt Markdown gebruiken in de omschrijving",
         personalNotesPlaceholder: "Interne notities voor jou en je mede-beheerders",
         alerts: {
             singleAdmin: "We raden aan minstens één andere beheerder toe te voegen."
@@ -107,7 +107,7 @@ I18n.translations.nl = {
                 }
             },
             placeholders: {
-                emails: "Voer e-mailadressen in of knop en plak een csv of komma-gescheiden bestand",
+                emails: "Voer e-mailadressen in of knip en plak een csv of komma-gescheiden bestand",
                 customMessage: "Voeg een persoonlijk bericht toe aan de uitnodiging",
             },
             errors: {
@@ -155,7 +155,7 @@ I18n.translations.nl = {
             memberChanged: "Rol van {{name}} gewijzigd in {{newRole}}",
         },
         idp: {
-            unknown: "Onbekende of uitgenodigde gebruiker",
+            unknown: "Onbekende / uitgenodigde gebruiker",
             guest: "Gebruiker met gastaccount",
             idp: "Gebruiker met instellingsaccount",
         }
@@ -204,7 +204,7 @@ I18n.translations.nl = {
         publicLinkResetConfirmation: "Weet je zeker dat je de publieke link wil resetten? De huidige publieke link is dan niet meer geldig.",
         placeholders: {
             name: "Geef de naam in (kan later niet gewijzigd worden)",
-            markDown: "MarkDown wordt ondersteund",
+            markDown: "Markdown wordt ondersteund",
             backupEmail: "E-mailadres(sen) van de backup-beheerder(s)",
             invitationMessage: "Persoonlijk bericht voor de backup-beheerders",
         },

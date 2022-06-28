@@ -77,7 +77,7 @@ I18n.translations.en = {
             preview: "Preview",
         },
         externalTeam: "Included team",
-        markdownPlaceholder: "Team description supports MarkDown",
+        markdownPlaceholder: "Team description supports Markdown",
         personalNotesPlaceholder: "Personal notes for your fellow administrators to see",
         alerts: {
             singleAdmin: "It’s recommended to add at least one other administrator besides yourself."
