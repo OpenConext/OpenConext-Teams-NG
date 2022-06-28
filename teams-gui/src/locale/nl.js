@@ -3,103 +3,103 @@ import I18n from "i18n-js";
 I18n.translations.nl = {
     header: {
         superAdmin: {
-            modus: "Super-Admin modus enabled"
+            modus: "Super-Admin modus ingeschakeld"
         }
     },
 
     fileUploadDialog: {
-        title: "Upload file",
+        title: "Upload bestand",
         buttons: {
-            cancel: "Cancel",
+            cancel: "Annuleren",
             upload: "Upload"
         }
     },
     code: "NL",
     myteams: {
         tabs: {
-            myTeams: "My teams",
-            publicTeams: "Public teams"
+            myTeams: "Mijn teams",
+            publicTeams: "Publieke teams"
         },
         columns: {
-            title: "Title",
-            members: "Members",
+            title: "Teamnaam",
+            members: "Leden",
             private: "",
             member: "",
             bin: ""
         },
         filters: {
-            all: 'All',
-            allteams: 'All teams',
-            joinrequest: "Join requests",
-            owner: "Owner of",
-            admin: "Admin of",
-            manager: "Manager of",
-            member: "Member of"
+            all: 'Alles',
+            allteams: 'Alle teams',
+            joinrequest: "Toetredingsverzoeken",
+            owner: "Eigenaar van",
+            admin: "Beheerder van",
+            manager: "Manager van",
+            member: "Lid van"
         },
         empty: "",
-        private: "private team",
-        add_members: "Add members",
-        new_team: "New Team",
-        member: "You're a member",
-        joinRequest: "Join request",
+        private: "Niet-publiek team",
+        add_members: "Leden toevoegen",
+        new_team: "Nieuw Team",
+        member: "Je bent lid",
+        joinRequest: "Toetredingsverzoek",
         confirmations: {
-            delete: "Are you sure you want to delete this team?",
-            deleteJoinRequest: "Are you sure you want to delete this join request?",
+            delete: "Weet je zeker dat je dit team wilt verwijderen?",
+            deleteJoinRequest: "Weet je zeker dat je dit toetredingsverzoek wilt verwijderen?",
         },
         zeroStates: {
-            noTeams: "You are not yet a member of any Team",
-            noResults: "No teams were found for your search"
+            noTeams: "Je bent nog geen lid van een team",
+            noResults: "Geen teams gevonden op basis van je zoekopdracht"
         },
         flash: {
-            teamDeleted: "Team {{name}} is deleted",
-            joinRequestDeleted: "Join request {{name}} is deleted"
+            teamDeleted: "Team {{name}} is verwijderd",
+            joinRequestDeleted: "Toetredingsverzoek tot {{name}} is verwijderd"
         }
     },
     publicTeams: {
         columns: {
-            title: "Title",
-            description: "Description",
+            title: "Teamnaam",
+            description: "Omschrijving",
             join: ""
         },
-        joinRequest: "Request to join",
-        alreadyMember: "Already a member",
-        superAdmin: "Super admin powers",
-        moreResults: "There are more matches then show. Please refine your search."
+        joinRequest: "Word lid",
+        alreadyMember: "Je bent al lid",
+        superAdmin: "Super-adminkrachten",
+        moreResults: "Er zijn meer resultaten dan getoond kunnen worden. Maak je zoekopdracht specifieker."
     },
     teamDetails: {
-        members: "Members",
-        hideInvitees: "Hide invitees",
-        noInvitees: "No invitees",
-        inviteSent: "invite sent",
-        joinRequest: "join request",
+        members: "Leden",
+        hideInvitees: "Verberg genodigden",
+        noInvitees: "Geen genodigden",
+        inviteSent: "uitnodiging verstuurd",
+        joinRequest: "toetredingsverzoek",
         markdownTabs: {
-            write: "Markdown text",
-            preview: "Preview",
+            write: "Markdown-tekst",
+            preview: "Voorbeeldweergave",
         },
-        externalTeam: "Included team",
-        markdownPlaceholder: "Team description support markdown",
-        personalNotesPlaceholder: "Personal notes for your fellow admin's to see",
+        externalTeam: "Ingesloten team",
+        markdownPlaceholder: "Je kunt MarkDown gebruiken in de omschrijving",
+        personalNotesPlaceholder: "Interne notities voor jou en je mede-beheerders",
         alerts: {
-            singleAdmin: "It’s recommended to add at least one other administrator besides yourself."
+            singleAdmin: "We raden aan minstens één andere beheerder toe te voegen."
         },
         addMembers: {
-            invitationExpiry: "Invitation expires after 30 days",
+            invitationExpiry: "Uitndoging is 30 dagen geldig",
             headers: {
-                addMembersHeader: "Add Members",
-                additionalInformationHeader: "Additional information",
-                invitationLanguageHeader: "Invitation language",
-                roleHeader: "The intended role for the invitees"
+                addMembersHeader: "Leden toevoegen",
+                additionalInformationHeader: "Extra informatie",
+                invitationLanguageHeader: "Taal van het uitnodigingsbericht",
+                roleHeader: "Rol die de uitgenodigden zullen krijgen"
 
             },
             buttons: {
-                add: "Add members",
-                sendInvite: "Send invite",
-                addAdministrator: "Add administrator",
-                cancel: "cancel",
-                addEmails: "Add",
+                add: "Leden toevoegen",
+                sendInvite: "Uitnodiging verzenden",
+                addAdministrator: "Beheerder toevoegen",
+                cancel: "annuleren",
+                addEmails: "Toevoegen",
                 languageRadio: {
-                    nl: "Dutch",
-                    en: "English"
+                    nl: "Nederlands",
+                    en: "Engels"
                 },
                 languageCode: {
                     nl: "DUTCH",
@@ -107,208 +107,205 @@ I18n.translations.nl = {
                 }
             },
             placeholders: {
-                emails: "Enter emails or copy / paste a csv or comma separated file",
-                customMessage: "Add a personal note to your invitation",
+                emails: "Voer e-mailadressen in of knop en plak een csv of komma-gescheiden bestand",
+                customMessage: "Voeg een persoonlijk bericht toe aan de uitnodiging",
             },
             errors: {
-                invalidEmails: "The following emails were invalid: {{attribute}}",
-                noInput: "At least one valid email is required"
+                invalidEmails: "De volgende e-mailadressen zijn ongeldig: {{attribute}}",
+                noInput: "Geef minstens één geldig mailadres op"
             }
         },
-        includeTeam: "Include team",
+        includeTeam: "Team insluiten",
         columns: {
-            name: "Name",
+            name: "Naam",
             idp: "IdP",
-            email: "Email",
-            role: "Role",
-            joined: "Joined",
+            email: "E-mail",
+            role: "Rol",
+            joined: "Toegetreden",
             bin: ""
         },
         filters: {
-            all: 'All',
-            owner: "Owners",
-            admin: "Admins",
+            all: 'Alle',
+            owner: "Eigenaars",
+            admin: "Beheerders",
             manager: "Managers",
-            member: "Members",
-            invitee: "Invitees",
-            join_request: "Join requests"
+            member: "Leden",
+            invitee: "Genodigden",
+            join_request: "Toetredingsverzoeken"
         },
         confirmations: {
-            removeMember: "Are you sure you want to remove this member?",
-            removeExternalTeam: "Are you sure you want to remove this included team membership?",
-            removeInvitation: "Are you sure you want to remove this invitation?",
-            resendInvitation: "Are you sure you want to resend this invitation?",
-            removeJoinRequest: "Are you sure you want to remove this join request?",
-            approveJoinRequest: "Are you sure you want to approve this join request?",
-            rejectJoinRequest: "Are you sure you want to reject this join request?",
-            downgrade: "Are you sure you want to downgrade your role? You can not revert this.",
+            removeMember: "Weet je zeker dat je dit lid wilt verwijderen?",
+            removeExternalTeam: "Weet je zeker dat je dit ingesloten team wilt verwijderen?",
+            removeInvitation: "Weet je zeker dat je deze uitnodiging wilt verwijderen?",
+            resendInvitation: "Weet je zeker dat je deze uitnodiging opnieuw wilt versturen?",
+            removeJoinRequest: "Weet je zeker dat je dit toetredingsverzoek wilt verwijderen?",
+            approveJoinRequest: "Weet je zeker dat je dit toetredingsverzoek wilt goedkeuren?",
+            rejectJoinRequest: "Weet je zeker dat je dit toetredingsverzoek wilt afwijzen?",
+            downgrade: "Weet je zeker dat je een lagere rol wilt aannemen? Je kunt dit niet zelf ongedaan maken.",
 
         },
         flash: {
-            removeMember: "Member is removed",
-            removeInvitation: "Invitation is removed",
-            sendInvitation: "Invitation(s) are send",
-            resendInvitation: "Invitation is resend",
-            removeJoinRequest: "Join request has been removed",
-            approveJoinRequest: "Join request has been approved",
-            rejectJoinRequest: "Join request has been denied",
-            memberChanged: "Membership changed for {{name}} to {{newRole}}",
+            removeMember: "Lid is verwijderd",
+            removeInvitation: "Uitnodiging is verwijderd",
+            sendInvitation: "Uitnodiging(en) zijn verstuurd",
+            resendInvitation: "Uitnodiging is opnieuw verstuurd",
+            removeJoinRequest: "Toetredingsverzoek is verwijderd",
+            approveJoinRequest: "Toetredingsverzoek is goedgekeurd",
+            rejectJoinRequest: "Toetredingsverzoek is afgewezen",
+            memberChanged: "Rol van {{name}} gewijzigd in {{newRole}}",
         },
         idp: {
-            unknown: "Unknown / invited user",
-            guest: "User joined with guest account",
-            idp: "User joined with institutional account",
+            unknown: "Onbekende of uitgenodigde gebruiker",
+            guest: "Gebruiker met gastaccount",
+            idp: "Gebruiker met instellingsaccount",
         }
     },
     profile: {
-        admin: "Admin",
-        guest: "Guest",
-        email: "Email",
-        name: "Name",
-        role: "Role",
-        logout: "Logout",
-        true: "{{productName}} guest",
-        false: "{{productName}} admin"
+        admin: "Beheerder",
+        guest: "Gast",
+        email: "E-mail",
+        name: "Naam",
+        role: "Rol",
+        logout: "Uitloggen",
+        true: "{{productName}}-gast",
+        false: "{{productName}}-beheerder"
     },
     roles: {
-        guest: "Guest",
-        member: "Member",
+        guest: "Gast",
+        member: "Lid",
         manager: "Manager",
-        admin: "Admin",
-        owner: "Owner",
-        title: "You're {{role}}"
+        admin: "Beheerder",
+        owner: "Eigenaar",
+        title: "Je bent {{role}}"
     },
     details: {
-        leave: "Leave team",
-        delete: "Delete team",
-        edit: "Edit team",
+        leave: "Verlaat team",
+        delete: "Verwijder team",
+        edit: "Bewerk team",
         confirmations: {
-            leave: "Are you sure you want to leave this team?",
-            delete: "Are you sure you want to delete this team?"
+            leave: "Weet je zeker dat je dit team wilt verlaten?",
+            delete: "Weet je zeker dat je dit team wilt verwijderen?"
         }
     },
     newTeam: {
-        name: "Name",
-        description: "Team purpose",
-        visibility: "Team privacy",
-        backupEmail: "Backup admin",
-        personalNote: "Personal note",
-        invitationMessage: "Invitation message",
-        public: "Public team",
-        publicInfo: "List team in public team index. Others can request membership",
-        private: "Private team",
-        privateInfo: "Don't list antwhere. This team is member only",
+        name: "Naam",
+        description: "Doel van het team",
+        visibility: "Team-privacy",
+        backupEmail: "Backup-beheerder",
+        personalNote: "Persoonlijke notitie",
+        invitationMessage: "Uitnodigingsbericht",
+        public: "Openbaar team",
+        publicInfo: "Geef het team weer in de publiek beschikbare lijst. Mensen kunnen om lidmaatschap verzoeken",
+        private: "Privé-team",
+        privateInfo: "Geef het team nergens weer. Het is alleen zichtbaar voor leden",
         object: "Team",
-        publicLinkDisabled: "Public link enabled",
-        publicLinkReset: "Reset public link",
-        publicLinkResetConfirmation: "Are you sure you want to reset the public link? The current public link will be no longer valid.",
+        publicLinkDisabled: "Publieke link ingeschakeld",
+        publicLinkReset: "Reset publieke link",
+        publicLinkResetConfirmation: "Weet je zeker dat je de publieke link wil resetten? De huidige publieke link is dan niet meer geldig.",
         placeholders: {
-            name: "Enter name (can not be altered)",
-            markDown: "Markdown supported",
-            backupEmail: "Email(s) of the backup admin",
-            invitationMessage: "Personal message for your backup admin",
+            name: "Geef de naam in (kan later niet gewijzigd worden)",
+            markDown: "MarkDown wordt ondersteund",
+            backupEmail: "E-mailadres(sen) van de backup-beheerder(s)",
+            invitationMessage: "Persoonlijk bericht voor de backup-beheerders",
         },
         tooltips: {
-            description: "The purpose of the team. Will be show to new members who accept an invitation.",
-            personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
-            immutableName: "The name of a team can not be changed once the team is created",
-            publicLinkDisabled: "If enabled, people who have the public link can join the Team as member without the need for approval by admins or managers.",
+            description: "Het doel van dit team. Wordt getoond aan nieuwe leden als ze een uitnodiging accepteren.",
+            personalNote: "Deze notities zijn alleen zichtbaar voor jouzelf en andere beheerers van dit team. Je kunt hier bijvoorbeend nader specificeren waar het voor gebruikt wordt.",
+            immutableName: "De naam van het team kan niet meer worden aangepast als het eenmaal is aangemaakt",
+            publicLinkDisabled: "Indien ingeschakeld kan iedereen die over de publieke link beschikt lid worden van het team zonder verdere goedkeuring door de beheerders of managers.",
         },
         flash: {
-            created: "Team {{name}} is created",
-            updated: "Team {{name}} is updated"
+            created: "Team {{name}} aangemaakt",
+            updated: "Team {{name}} bijgewerkt"
         },
-        create: "Create team",
+        create: "Team aanmaken",
     },
     invitationForm: {
-        header: "Resent invitation",
-        email: "Email invitee",
-        created: "Send at",
-        message: "Personal message",
-        messagePlaceholder: "Personal message for the invitee",
-        role: "Intended role",
-        language: "Language"
+        header: "Uitnodiging opnieuw versturen",
+        email: "E-mailadres genodigde",
+        created: "Aanvankelijk verstuurd op",
+        message: "Persoonlijk bericht",
+        messagePlaceholder: "Persoonlijk bericht aan de genodigde",
+        role: "Rol die de genodigde zal krijgen",
+        language: "Taal van de uitnodiging"
     },
     joinRequestForm: {
-        header: "Join request",
-        email: "Email invitee",
-        created: "Send at",
-        message: "Message",
-        name: "Name",
+        header: "Toetredingsverzoek",
+        email: "E-mailadres van de verzoeker",
+        created: "Verstuurd op",
+        message: "Bericht",
+        name: "Naam van de verzoeker",
     },
     joinRequest: {
-        flash: "Join request is send",
-        teamAdmins: "Administrators",
-        invitationMessage: "Personal message",
-        invitationMessagePlaceholder: "Your personal invitation message for the administrator(s) of this team",
-        existingJoinRequest: "Pending join request",
-        existingJoinRequestDetails: "You have already sent a join request for this Team on {{date}}",
-        confirmation: "Share this information with the applications used by this team."
+        flash: "Toetredingsverzoek is verstuurd",
+        teamAdmins: "Beheerders",
+        invitationMessage: "Persoonlijk bericht",
+        invitationMessagePlaceholder: "Je persoonlijk bericht aan de beheerders waarom je wilt toetreden tot dit team",
+        existingJoinRequest: "Uitstaand toetredingsverzoek",
+        existingJoinRequestDetails: "Je hebt alreeds op {{date}} verzocht om te mogen toetreden tot dit team"
     },
     externalTeams: {
-        header: "Include institutional teams(s)",
-        info: "Institutional teams are groups of people provide by your institution to {{productName}} Teams. Only those you are a member of, are shown.",
-        info2: "You can link institutional Teams to any team you manage within {{productName}} Teams. The result is that all members of that institutional team are also member of your team.",
+        header: "Insluiten van instellingsteams",
+        info: "Instellingsteams zijn groepen die geleverd worden door jouw instelling aan {{productName}} Teams. Hier worden alleen die groepen getoond waar je zelf ook lid van bent.",
+        info2: "Je kunt een instellings-team linken aan elk team dat je beheert binnen {{productName}} Teams. Alle leden van dat instellingsteam zijn dan automatisch ook lid van jouw team.",
         table: {
-            name: "Name",
-            linked: "Linked"
+            name: "Naam",
+            linked: "Gelinkt"
         }
     },
     forms: {
-        cancel: "Cancel",
-        delete: "Delete",
-        submit: "Submit",
-        save: "Save",
-        update: "Update",
-        resend: "Resend",
-        approve: "Approve",
-        reject: "Reject",
-        edit: "Edit",
-        back: "Back",
-        skip: "Skip",
-        required: "{{attribute}} is a required attribute",
-        alreadyExists: "A {{object}} with {{attribute}} {{value}} already exists.",
-        invalid: "{{value}} for {{attribute}} is invalid."
+        cancel: "Annuleren",
+        delete: "Verwijderen",
+        submit: "Insturen",
+        save: "Opslaan",
+        update: "Bijwerken",
+        resend: "Opnieuw verzenden",
+        approve: "Goedkeuren",
+        reject: "Afwijzen",
+        edit: "Bewerken",
+        back: "Terug",
+        skip: "Overslaan",
+        required: "Attribuut {{attribute}} is vereist",
+        alreadyExists: "Een {{object}} met {{attribute}} {{value}} bestaat al.",
+        invalid: "Waarde {{value}} van {{attribute}} is ongeldig."
     },
     languages: {
-        DUTCH: "Dutch",
-        ENGLISH: "English"
+        DUTCH: "Nederlands",
+        ENGLISH: "Engels"
     },
     breadcrumbs: {
-        myTeams: "My teams",
-        newTeam: "Create new team",
-        editTeam: "Edit {{name}}",
-        joinRequest: "Join request from {{name}}",
-        userJoinRequest: "Join request",
-        invitation: "Invitation for {{email}}"
+        myTeams: "Mijn teams",
+        newTeam: "Team aanmaken",
+        editTeam: "Bewerk {{name}}",
+        joinRequest: "Toetredingsverzoek van {{name}}",
+        userJoinRequest: "Toetredingsverzoek",
+        invitation: "Uitndoging aan {{email}}"
     },
     confirmationDialog: {
-        title: "Please confirm",
-        confirm: "Confirm",
-        cancel: "Cancel",
+        title: "Bevestig",
+        confirm: "Bevestigen",
+        cancel: "Annuleren",
         questions: {
-            delete: "Are you sure you want to delete {{object}} {{name}}?"
+            delete: "Weet je zeker dat je {{object}} {{name}} wilt verwijderen?"
         }
     },
     footer: {
-        faq: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>FAQ</a>",
-        terms: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>Terms of use</a>",
-        privacy: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>Privacy policy</a>",
-        powered: "Proudly powered by",
-        surf: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>SURF</a>",
+        faq: "<a href='https://support.surfconext.nl/teams' target='_blank' referrerpolicy='origin'>FAQ</a>",
+        terms: "<a href='https://support.surfconext.nl/terms-nl' target='_blank' referrerpolicy='origin'>Terms of use</a>",
+        privacy: "<a href='https://support.surfconext.nl/privacy-nl' target='_blank' referrerpolicy='origin'>Privacy policy</a>"
     },
     teamWelcomeDialog: {
-        title: "Welcome to {{name}}",
-        header: "Your role is {{role}}",
-        proceed: "All good, show me the team",
-        expired: "This invitation has expired.",
-        denied: "Bummer...",
-        titleDenied: "You can't join team {{name}}",
-        alreadyMember: "You are already a member of this team."
+        title: "Welkom bij {{name}}",
+        header: "Je rol {{role}}",
+        proceed: "Uitstekend, toon me het team",
+        expired: "Deze uitnodiging is inmiddels verlopen.",
+        denied: "Helaas...",
+        titleDenied: "Je kunt nu niet toetreden tot {{name}}",
+        alreadyMember: "Je bent al lid van dit team."
     },
     emails: {
-        singleInvalid: "Invalid email address: {{emails}}",
-        multipleInvalid: "Invalid email addresses: {{emails}}"
+        singleInvalid: "Ongeldig e-mailadres: {{emails}}",
+        multipleInvalid: "Ongeldige e-mailadressen: {{emails}}"
     }
 };
 

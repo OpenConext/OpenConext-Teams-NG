@@ -21,7 +21,7 @@ I18n.translations.en = {
             publicTeams: "Public teams"
         },
         columns: {
-            title: "Title",
+            title: "Team name",
             members: "Members",
             private: "",
             member: "",
@@ -52,19 +52,19 @@ I18n.translations.en = {
         },
         flash: {
             teamDeleted: "Team {{name}} is deleted",
-            joinRequestDeleted: "Join request {{name}} is deleted"
+            joinRequestDeleted: "Join request for {{name}} is deleted"
         }
     },
     publicTeams: {
         columns: {
-            title: "Title",
+            title: "Team name",
             description: "Description",
             join: ""
         },
         joinRequest: "Request to join",
         alreadyMember: "Already a member",
         superAdmin: "Super admin powers",
-        moreResults: "There are more matches then show. Please refine your search."
+        moreResults: "There are more matches than can be shown. Please refine your search."
     },
     teamDetails: {
         members: "Members",
@@ -77,13 +77,13 @@ I18n.translations.en = {
             preview: "Preview",
         },
         externalTeam: "Included team",
-        markdownPlaceholder: "Team description support markdown",
-        personalNotesPlaceholder: "Personal notes for your fellow admin's to see",
+        markdownPlaceholder: "Team description supports MarkDown",
+        personalNotesPlaceholder: "Personal notes for your fellow administrators to see",
         alerts: {
             singleAdmin: "It’s recommended to add at least one other administrator besides yourself."
         },
         addMembers: {
-            invitationExpiry: "Invitation expires after 30 days",
+            invitationExpiry: "Invitation is valid for 30 days",
             headers: {
                 addMembersHeader: "Add Members",
                 additionalInformationHeader: "Additional information",
@@ -107,12 +107,12 @@ I18n.translations.en = {
                 }
             },
             placeholders: {
-                emails: "Enter emails or copy / paste a csv or comma separated file",
+                emails: "Enter email addresses or copy / paste a csv or comma separated file",
                 customMessage: "Add a personal note to your invitation",
             },
             errors: {
-                invalidEmails: "The following emails were invalid: {{attribute}}",
-                noInput: "At least one valid email is required"
+                invalidEmails: "The following email addresses were invalid: {{attribute}}",
+                noInput: "At least one valid email address is required"
             }
         },
         includeTeam: "Include team",
@@ -145,14 +145,14 @@ I18n.translations.en = {
 
         },
         flash: {
-            removeMember: "Member is removed",
-            removeInvitation: "Invitation is removed",
-            sendInvitation: "Invitation(s) are send",
-            resendInvitation: "Invitation is resend",
+            removeMember: "Member has been removed",
+            removeInvitation: "Invitation has been removed",
+            sendInvitation: "Invitation(s) have been sent",
+            resendInvitation: "Invitation has been resent",
             removeJoinRequest: "Join request has been removed",
             approveJoinRequest: "Join request has been approved",
             rejectJoinRequest: "Join request has been denied",
-            memberChanged: "Membership changed for {{name}} to {{newRole}}",
+            memberChanged: "Role for {{name}} changed to {{newRole}}",
         },
         idp: {
             unknown: "Unknown / invited user",
@@ -209,7 +209,7 @@ I18n.translations.en = {
             invitationMessage: "Personal message for your backup admin",
         },
         tooltips: {
-            description: "The purpose of the team. Will be show to new members who accept an invitation.",
+            description: "The purpose of the team. Will be shown to new members who accept an invitation.",
             personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
             immutableName: "The name of a team can not be changed once the team is created",
             publicLinkDisabled: "If enabled, people who have the public link can join the Team as member without the need for approval by admins or managers.",
@@ -221,9 +221,9 @@ I18n.translations.en = {
         create: "Create team",
     },
     invitationForm: {
-        header: "Resent invitation",
-        email: "Email invitee",
-        created: "Send at",
+        header: "Resend invitation",
+        email: "Email address of the invitee",
+        created: "Originally sent at",
         message: "Personal message",
         messagePlaceholder: "Personal message for the invitee",
         role: "Intended role",
@@ -231,24 +231,23 @@ I18n.translations.en = {
     },
     joinRequestForm: {
         header: "Join request",
-        email: "Email invitee",
-        created: "Send at",
+        email: "Email address of person who requests to join",
+        created: "Sent at",
         message: "Message",
-        name: "Name",
+        name: "Name of person who requests to join",
     },
     joinRequest: {
-        flash: "Join request is send",
+        flash: "Join request has been sent",
         teamAdmins: "Administrators",
         invitationMessage: "Personal message",
-        invitationMessagePlaceholder: "Your personal invitation message for the administrator(s) of this team",
+        invitationMessagePlaceholder: "Your personal message for the administratorsexplaining why you want to join this team",
         existingJoinRequest: "Pending join request",
-        existingJoinRequestDetails: "You have already sent a join request for this Team on {{date}}",
-        confirmation: "Share this information with the applications used by this team."
+        existingJoinRequestDetails: "You have already requested to join this Team on {{date}}"
     },
     externalTeams: {
-        header: "Include institutional teams(s)",
-        info: "Institutional teams are groups of people provide by your institution to {{productName}} Teams. Only those you are a member of, are shown.",
-        info2: "You can link institutional Teams to any team you manage within {{productName}} Teams. The result is that all members of that institutional team are also member of your team.",
+        header: "Include institutional teams",
+        info: "Institutional teams are groups of people provided by your institution to {{productName}} Teams. Only those you are a member of, are shown.",
+        info2: "You can link institutional teams to any team you manage within {{productName}} Teams. The result is that all members of that institutional team will also be a member of your team.",
         table: {
             name: "Name",
             linked: "Linked"
@@ -268,7 +267,7 @@ I18n.translations.en = {
         skip: "Skip",
         required: "{{attribute}} is a required attribute",
         alreadyExists: "A {{object}} with {{attribute}} {{value}} already exists.",
-        invalid: "{{value}} for {{attribute}} is invalid."
+        invalid: "Value {{value}} for {{attribute}} is invalid."
     },
     languages: {
         DUTCH: "Dutch",
@@ -291,11 +290,9 @@ I18n.translations.en = {
         }
     },
     footer: {
-        faq: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>FAQ</a>",
-        terms: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>Terms of use</a>",
-        privacy: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>Privacy policy</a>",
-        powered: "Proudly powered by",
-        surf: "<a href='https://surf.nl' target='_blank' referrerpolicy='no-referrer'>SURF</a>",
+        faq: "<a href='https://support.surfconext.nl/teams-en' target='_blank' referrerpolicy='origin'>FAQ</a>",
+        terms: "<a href='https://support.surfconext.nl/terms-en' target='_blank' referrerpolicy='origin'>Terms of use</a>",
+        privacy: "<a href='https://support.surfconext.nl/privacy-en' target='_blank' referrerpolicy='origin'>Privacy policy</a>"
     },
     teamWelcomeDialog: {
         title: "Welcome to {{name}}",
