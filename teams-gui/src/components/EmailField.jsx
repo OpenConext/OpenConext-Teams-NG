@@ -123,7 +123,7 @@ export const EmailField = ({
             </div>
             {errorMails.length > 0 &&
             <span className={"error"}>
-                {I18n.t(`emails.${errorMails.length === 0 ? "single":"multiple"}Invalid`, {emails: errorMails.join(", ")})}
+                {I18n.t(`emails.${errorMails.length === 1 ? "single":"multiple"}Invalid`, {emails: errorMails.join(", ")})}
             </span>}
         </div>
     );
