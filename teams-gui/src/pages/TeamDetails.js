@@ -681,7 +681,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                                 <label>{universalPublicLink}</label>
                                 <span onClick={() => copyPublicLinkToClipBoard(universalPublicLink)}>
                                     {!universalLinkCopied && <CopyIcon/>}
-                                    {universalLinkCopied && <Tippy content="Copied" visible={true}>
+                                    {universalLinkCopied && <Tippy content={I18n.t("teamDetails.copied")} visible={true}>
                                         <CopyIcon/>
                                     </Tippy>}
                                 </span>
