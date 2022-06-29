@@ -54,7 +54,7 @@ export function isOnlyAdmin(team, currentUser) {
 export const actionDropDownTitle = (team, user) => {
     const membership = getMembership(team, user);
     if (!membership) {
-        return I18n.t("roles.title", {role: "guest"});
+        return I18n.t("roles.title", {role: I18n.t("roles.guest")});
     }
-    return I18n.t("roles.title", {role: membership.role.toLowerCase()});
+    return I18n.t("roles.title", {role: I18n.t(`roles.${membership.role.toLowerCase()}`).toLowerCase()});
 }

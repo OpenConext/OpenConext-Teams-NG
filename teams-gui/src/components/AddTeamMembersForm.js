@@ -13,7 +13,7 @@ import {setFlash} from "../flash/events";
 export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTeam}) => {
 
     const [emails, setEmails] = useState([]);
-    const [role, setRole] = useState({value: ROLES.MEMBER, label: I18n.t(`roles.${ROLES.MEMBER.toLowerCase()}`)});
+    const [role, setRole] = useState({value: ROLES.ADMIN, label: I18n.t(`roles.${ROLES.ADMIN.toLowerCase()}`)});
     const [customMessage, setCustomMessage] = useState("");
     const [invitationLanguage, setInvitationLanguage] = useState(I18n.t(`teamDetails.addMembers.buttons.languageCode.${I18n.locale}`));
 

@@ -16,7 +16,7 @@ export const Footer = ({user}) => {
     };
 
     return (
-        <div className="footer-container">
+        <footer className="footer-container">
             <div className="footer">
                 <div className="info">
                     <span dangerouslySetInnerHTML={{
@@ -43,6 +43,6 @@ export const Footer = ({user}) => {
                     <img src={logo} alt="logo"/>
                 </div>
             </div>
-        </div>
+        </footer>
     );
 }

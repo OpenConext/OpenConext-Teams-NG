@@ -30,7 +30,7 @@ const visibilities = [
 const NewTeam = ({user}) => {
     const params = useParams();
     const navigate = useNavigate();
-    const [team, setTeam] = useState({viewable: true});
+    const [team, setTeam] = useState({viewable: true, publicLinkDisabled: true});
     const [loaded, setLoaded] = useState(false);
     const [backupEmails, setBackupEmails] = useState([]);
     const [errors, setErrors] = useState({});
@@ -69,7 +69,7 @@ const NewTeam = ({user}) => {
             }, {});
             saveTeam({...team, emails: emailMap}).then(res => {
                 setFlash(I18n.t(`newTeam.flash.${team.id ? "updated" : "created"}`, {name: team.name}));
-                navigate(`/team-details/${res.id}${team.id ? "" : "/members"}`);
+                navigate(`/team-details/${res.id}${team.id ? "" : "/members?initial=true"}`);
             })
         }
     }

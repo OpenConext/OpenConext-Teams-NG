@@ -28,7 +28,7 @@ export const Header = ({user, toggleSuperAdminModus}) => {
 
 
     return (
-        <div className="header-container">
+        <header className="header-container">
             <div className="header">
                 <Link to="/" className="logo-container">
                     <img src={surfLogo} alt="SURF" />
@@ -49,7 +49,7 @@ export const Header = ({user, toggleSuperAdminModus}) => {
                     <div className="user-toggle"
                          onClick={() => setDroppedDown(!droppedDown)}
                          tabIndex="1"
-                         onBlur={() => setTimeout(() => setDroppedDown(false), 125)}>
+                         onBlur={() => setTimeout(() => setDroppedDown(false), 750)}>
                         <img src={droppedDown ? arrowUp : arrowDown} alt="drop"/>
                     </div>
                     {droppedDown && <div className="user-drop-down">
@@ -64,6 +64,6 @@ export const Header = ({user, toggleSuperAdminModus}) => {
                     </div>}
                 </div>
             </div>
-        </div>
+        </header>
     );
 }

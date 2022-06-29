@@ -72,6 +72,7 @@ I18n.translations.en = {
         noInvitees: "No invitees",
         inviteSent: "invite sent",
         joinRequest: "join request",
+        copied: "Copied",
         markdownTabs: {
             write: "Markdown text",
             preview: "Preview",
@@ -258,6 +259,7 @@ I18n.translations.en = {
         delete: "Delete",
         submit: "Submit",
         save: "Save",
+        search: "Search",
         update: "Update",
         resend: "Resend",
         approve: "Approve",

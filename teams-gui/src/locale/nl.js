@@ -72,6 +72,7 @@ I18n.translations.nl = {
         noInvitees: "Geen genodigden",
         inviteSent: "uitgenodigd",
         joinRequest: "toetredingsverzoek",
+        copied: "Gekopieerd",
         markdownTabs: {
             write: "Markdown-tekst",
             preview: "Voorbeeldweergave",
@@ -258,6 +259,7 @@ I18n.translations.nl = {
         delete: "Verwijderen",
         submit: "Insturen",
         save: "Opslaan",
+        search: "Zoek",
         update: "Bijwerken",
         resend: "Opnieuw verzenden",
         approve: "Goedkeuren",

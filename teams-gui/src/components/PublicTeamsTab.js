@@ -10,6 +10,7 @@ import {SpinnerField} from "./SpinnerField";
 import {useDebounce} from "../utils/debounce";
 import {isSuperAdmin} from "../store/store";
 import informational from "../icons/alert-information-circle.svg";
+import removeMd from "remove-markdown";
 
 export const PublicTeamsTab = ({user, myteams}) => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -73,7 +74,8 @@ export const PublicTeamsTab = ({user, myteams}) => {
     ]
 
     const renderPublicTeamsRow = (team, index) => {
-        const shouldTruncateDescription = team.description.length > 50;
+        const description = removeMd(team.description);
+        const shouldTruncateDescription = description.length > 50;
         const isMember = myteams.some(myteam => myteam.id === team.id);
 
         return (
@@ -84,8 +86,8 @@ export const PublicTeamsTab = ({user, myteams}) => {
                 </td>
                 <td data-label={"description"}>
                     <span className="team-description">
-                        {shouldTruncateDescription ? team.description.substring(0, 50) + "..." : team.description}
-                        {shouldTruncateDescription && <TooltipIcon tooltip={team.description} name={"desc"}/>}
+                        {shouldTruncateDescription ? description.substring(0, 50) + "..." : description}
+                        {shouldTruncateDescription && <TooltipIcon tooltip={description} name={`desc${index}}`}/>}
                     </span>
                 </td>
                 <td data-label={"join"}>

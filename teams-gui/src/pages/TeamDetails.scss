@@ -101,6 +101,7 @@ div.alert-banner-wrapper {
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
     padding: 10px;
+    min-height: 56px;
 
     div.alert-banner-container {
         width: $width-app;

@@ -27,7 +27,7 @@ export default function InputField({
     }
     return (
         <div className="input-field">
-            {(name && displayLabel && !toolTip) && <label htmlFor={name}>{name}
+            {(name && displayLabel && !toolTip) && <label htmlFor={id || name}>{name}
             </label>}
             {toolTip && <Tooltip tooltip={toolTip} name={name} label={name}/>}
             <div className="inner-input-field">

@@ -69,6 +69,7 @@ const TeamDetail = ({user, showMembers = false}) => {
     const [memberList, setMembersList] = useState([]);
     const [displayedMembers, setDisplayedMembers] = useState([]);
     const [hideInvitees, setHideInvitees] = useState(false);
+    const [showAddAdminsButton, setShowAddAdminsButton] = useState(true);
     const [userRoleInTeam, setUserRoleInTeam] = useState(ROLES.MEMBER);
     const [selectedJoinRequest, setSelectedJoinRequest] = useState(null);
     const [selectedInvitation, setSelectedInvitation] = useState(null);
@@ -83,12 +84,21 @@ const TeamDetail = ({user, showMembers = false}) => {
 
     const searchInputRef = useRef(null);
 
+    const hideAddMembersForm = () => {
+        setShowAddMembersForm(false);
+        setShowAddAdminsButton(true);
+    };
+
     useEffect(() => {
         if (window.location.search.indexOf("show-form") === -1) {
             setSelectedInvitation(null);
             setSelectedJoinRequest(null);
             setShowExternalTeams(false);
             setShowAddMembersForm(initial ? showMembers : false);
+        }
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        if (urlSearchParams.get("initial")) {
+            setShowAddAdminsButton(false);
         }
         // eslint-disable-next-line
     }, [window.location.search])
@@ -170,6 +180,7 @@ const TeamDetail = ({user, showMembers = false}) => {
         const searchParam = new URLSearchParams(window.location.search);
         if (searchParam.has("add-members")) {
             setShowAddMembersForm(true);
+            setShowAddAdminsButton(false);
         }
         if (params.hash) {
             getInvitationInfo(params.hash).then(invitation => {
@@ -221,7 +232,11 @@ const TeamDetail = ({user, showMembers = false}) => {
                 <div key={index} className="alert-banner-wrapper">
                     <div className="alert-banner-container">
                         <span className="alert-banner">{alert}</span>
-                        {<Button onClick={() => setShowAddMembersForm(true)}
+                        {showAddAdminsButton && <Button onClick={() => {
+                            setShowAddMembersForm(true);
+                            setShowAddAdminsButton(false);
+                            setShowExternalTeams(false);
+                        }}
                                  txt={I18n.t(`teamDetails.addMembers.buttons.addAdministrator`)}
                                  className="cancel"/>}
                     </div>
@@ -653,7 +668,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                                 <label>{`${user.groupNameContext}${team.urn}`}</label>
                                 <span onClick={copyToClipBoard}>
                                     {!copied && <CopyIcon/>}
-                                    {copied && <Tippy content="Copied" visible={true}>
+                                    {copied && <Tippy content={I18n.t("teamDetails.copied")} visible={true}>
                                         <CopyIcon/>
                                     </Tippy>}
                                 </span>
@@ -749,7 +764,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                 <AddTeamMembersForm updateTeam={updateTeam}
                                     team={team}
                                     user={user}
-                                    setShowForm={setShowAddMembersForm}
+                                    setShowForm={hideAddMembersForm}
                                     isNewTeam={showMembers}/>
             )}
             {selectedInvitation && <InvitationForm updateTeam={updateTeam}

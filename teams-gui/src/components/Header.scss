@@ -1,7 +1,7 @@
 @import "../styles/vars.scss";
 @import "../styles/responsive";
 
-div.header-container {
+header.header-container {
     @extend .component-container;
     background-color: $primary-blue;
     color: white;
