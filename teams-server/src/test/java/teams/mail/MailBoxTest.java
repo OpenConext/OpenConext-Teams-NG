@@ -96,10 +96,10 @@ public class MailBoxTest extends AbstractApplicationTest {
         validateJoinRequestStatusMail("declined");
     }
 
-    private void validateJoinRequestStatusMail(String status) throws MessagingException, InterruptedException {
+    private void validateJoinRequestStatusMail(String status) throws MessagingException {
         String mailBody = mailBody();
         assertTrue(mailBody.contains(String.format("has been <strong>%s</strong>", status)));
-        assertTrue(mailBody.contains("http://localhost:3006/teams/"));
+        assertTrue(mailBody.contains("http://localhost:3006/team-details/"));
     }
 
     private String mailBody() throws MessagingException {
