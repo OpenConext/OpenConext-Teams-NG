@@ -1,5 +1,5 @@
 package teams.api;
-
+import static org.hamcrest.Matchers.equalTo;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
 import teams.AbstractApplicationTest;
@@ -84,9 +84,9 @@ public class UserControllerTest extends AbstractApplicationTest implements Seed 
     public void logout() throws Exception {
         given()
                 .when()
-                .delete("api/teams/users/logout")
+                .get("api/teams/users/logout")
                 .then()
-                .statusCode(SC_OK);
+                .body("url", equalTo("/Shibboleth.sso/Logout"));
     }
 
     @Test

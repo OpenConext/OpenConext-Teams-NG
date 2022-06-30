@@ -6,7 +6,6 @@ import I18n from "i18n-js";
 import "./Header.scss";
 import {Link} from "react-router-dom";
 import {CheckBox} from "./CheckBox";
-import {unmountComponentAtNode} from "react-dom";
 import {logOut} from "../api";
 
 
@@ -20,10 +19,9 @@ export const Header = ({user, toggleSuperAdminModus}) => {
 
     const doLogOut = e => {
         e.preventDefault();
-        const node = document.getElementById("app");
-        unmountComponentAtNode(node);
-        logOut();
-        window.location.href = "/Shibboleth.sso/Logout";
+        logOut().then(res => {
+            window.location.href = res.url;
+        });
     };
 
 
@@ -31,7 +29,7 @@ export const Header = ({user, toggleSuperAdminModus}) => {
         <header className="header-container">
             <div className="header">
                 <Link to="/" className="logo-container">
-                    <img src={surfLogo} alt="SURF" />
+                    <img src={surfLogo} alt="SURF"/>
                     <span className="conext">CONEXT</span>
                     <span className="idp-dashboard">Teams</span>
                 </Link>

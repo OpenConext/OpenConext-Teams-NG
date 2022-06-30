@@ -13,11 +13,14 @@ import teams.domain.PersonAutocomplete;
 import teams.exception.IllegalSearchParamException;
 import teams.repository.PersonRepository;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
 import static teams.domain.Feature.PERSON_EMAIL_PICKER;
@@ -38,10 +41,20 @@ public class UserController {
         return federatedUser;
     }
 
-    @DeleteMapping("api/teams/users/logout")
-    public void logout(HttpServletRequest request) {
+    @GetMapping("api/teams/users/logout")
+    public Map<String, String> logout(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            Stream.of(cookies).forEach(cookie -> {
+                Cookie dup = new Cookie(cookie.getName(), null);
+                dup.setMaxAge(0);
+                response.addCookie(dup);
+            });
+        }
         SecurityContextHolder.clearContext();
+        SecurityContextHolder.getContext().setAuthentication(null);
+        return Collections.singletonMap("url", "/Shibboleth.sso/Logout");
     }
 
     @GetMapping("api/teams/users")

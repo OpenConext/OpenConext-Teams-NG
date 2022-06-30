@@ -211,5 +211,5 @@ export function reportError(error) {
 }
 
 export function logOut() {
-    return fetchDelete("users/logout");
+    return fetchJson("users/logout");
 }
