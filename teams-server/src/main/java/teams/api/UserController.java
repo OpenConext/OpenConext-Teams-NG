@@ -46,7 +46,7 @@ public class UserController {
         request.getSession().invalidate();
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            Stream.of(cookies).forEach(cookie -> {
+            Stream.of(cookies).filter(cookie -> !"lang".equals(cookie.getName())).forEach(cookie -> {
                 Cookie dup = new Cookie(cookie.getName(), null);
                 dup.setMaxAge(0);
                 response.addCookie(dup);
