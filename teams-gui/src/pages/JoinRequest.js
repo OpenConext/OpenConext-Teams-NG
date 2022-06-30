@@ -35,11 +35,17 @@ export const JoinRequest = ({user}) => {
                 }).catch(() => navigate("/404"));
         } else {
             getTeamDetail(teamId, false).then(res => {
+                if (!isEmpty(res.memberships)) {
+                    const member = res.memberships.find(membership => membership.urnPerson === user.urn);
+                    if (member) {
+                        navigate(`/team-details/${res.id}`);
+                    }
+                }
                 setTeam(res);
                 setLoaded(true);
             }).catch(() => navigate("/404"));
         }
-    }, [navigate, params])
+    }, [navigate, params, user])
 
     const submit = () => {
         createJoinRequest({
