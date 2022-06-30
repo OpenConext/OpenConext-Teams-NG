@@ -13,8 +13,8 @@ import {ButtonContainer} from "../components/ButtonContainer";
 import {Button} from "../components/Button";
 import {setFlash} from "../flash/events";
 import {SpinnerField} from "../components/SpinnerField";
-import {ReactComponent as EnvelopeIcon} from "../icons/envelope.svg";
 import {MarkDown} from "../components/MarkDown";
+import {EmailField} from "../components/EmailField";
 
 export const JoinRequest = ({user}) => {
     const params = useParams();
@@ -61,6 +61,8 @@ export const JoinRequest = ({user}) => {
         return <SpinnerField/>;
     }
 
+    const emails = (team.admins || []).map((admin, index) =>
+        `${admin.name} <${admin.email}>`);
     return (
         <>
             <SubHeader>
@@ -85,15 +87,11 @@ export const JoinRequest = ({user}) => {
 
                     <section className="input-field">
                         <label>{I18n.t("joinRequest.teamAdmins")}</label>
-                        <div className="inner-email-field">
-                            {(team.admins || []).map((admin, index) =>
-                                <div key={index} className="email-tag">
-                                    <span className="value">{`${admin.name} <${admin.email}>`}</span>
-                                    <span className="disabled">
-                                        <EnvelopeIcon/>
-                                    </span>
-                                </div>)}
-                        </div>
+                        <EmailField emails={emails}
+                                    marginTop={false}
+                                    disabled={true}
+                                    pinnedEmails={emails}/>
+
                     </section>
                     {joinRequest.id && <section className="input-field">
                         <label>{I18n.t("joinRequest.existingJoinRequest")}</label>

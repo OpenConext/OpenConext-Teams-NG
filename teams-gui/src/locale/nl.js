@@ -37,7 +37,7 @@ I18n.translations.nl = {
             member: "Lid van"
         },
         empty: "",
-        private: "Niet-publiek team",
+        private: "Privé team",
         add_members: "Leden toevoegen",
         new_team: "Nieuw Team",
         member: "Je bent lid",

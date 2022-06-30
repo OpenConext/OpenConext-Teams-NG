@@ -6,7 +6,7 @@ import Tippy from '@tippyjs/react';
 const TooltipIcon = ({tooltip, name, label}) => {
     return <>
             <span className="tool-tip-section">
-                <label htmlFor={name}>{label}</label>
+                {label && <label htmlFor={name}>{label}</label>}
                  <Tippy content={<span dangerouslySetInnerHTML={{
                      __html: tooltip
                  }}/>}>

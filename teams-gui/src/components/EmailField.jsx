@@ -17,7 +17,8 @@ export const EmailField = ({
                                marginTop = true,
                                pinnedEmails = [],
                                error = false,
-                               singleEmail = false
+                               singleEmail = false,
+                               disabled = false
                            }) => {
 
     const [email, setEmail] = useState("");
@@ -68,19 +69,20 @@ export const EmailField = ({
         <div className={`email-field ${error ? "error" : ""} ${marginTop ? "" : "no-margin-top"}`}>
             {(name && !toolTip) && <label htmlFor={"email-field"}>{name}</label>}
             {toolTip && <Tooltip tooltip={toolTip} name={name} label={name}/>}
-            <div className={`inner-email-field ${error ? "error" : ""}`}>
+            <div className={`inner-email-field ${error ? "error" : ""} ${disabled ? "disabled" : ""}`}>
                 {emails.map(mail =>
                     <div key={mail} className="email-tag">
                         <span className="value">{mail}</span>
                         {pinnedEmails.includes(mail) ?
-                            <span className="disabled">
-                                <EnvelopeIcon/></span> :
+                            <span className={`action ${disabled ? "disabled" : ""}`}>
+                                <EnvelopeIcon/>
+                            </span> :
                             <span className="action" onClick={removeMail(mail)}>
-                                            <TimesIcon/>
-                                        </span>}
+                                <TimesIcon/>
+                            </span>}
 
                     </div>)}
-                {!singleEmail && <textarea id="email-field"
+                {(!singleEmail && !disabled) && <textarea id="email-field"
                                            value={email}
                                            onChange={updateEmail}
                                            onBlur={doAddEmail}
@@ -100,7 +102,7 @@ export const EmailField = ({
                               }
                           }}
                           placeholder={emails.length === 0 ? placeHolder : ""} cols={2}/>}
-                {singleEmail && <input type="email"
+                {(singleEmail && !disabled) && <input type="email"
                                         id="email-field"
                                         value={email}
                                         onChange={updateEmail}

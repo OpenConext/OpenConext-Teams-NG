@@ -34,15 +34,21 @@ div.public-teams-tab {
 
         th {
             &.title {
-                width: 30%;
+                width: 35%;
             }
 
             &.description {
-                width: 30%;
+                width: 45%;
             }
 
             &.join {
                 width: 20%;
+            }
+        }
+
+        td {
+            span.team-description {
+                display: flex;
             }
         }
     }

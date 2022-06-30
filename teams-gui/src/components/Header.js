@@ -42,7 +42,6 @@ export const Header = ({user, toggleSuperAdminModus}) => {
                 <div className="user-info">
                     <div className="user">
                         <span className="name">{user.person.name}</span>
-                        <span className="role">{I18n.t(`profile.${user.person.guest ? "guest" : "admin"}`)}</span>
                     </div>
                     <div className="user-toggle"
                          onClick={() => setDroppedDown(!droppedDown)}

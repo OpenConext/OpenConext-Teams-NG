@@ -32,6 +32,10 @@ div.email-field {
             border: 1px solid $primary-red;
         }
 
+        &.disabled {
+            padding-bottom: 5px;
+        }
+
     }
 
     textarea, input {
@@ -47,6 +51,11 @@ div.email-field {
             border: none;
             outline: none;
         }
+    }
+
+    input {
+        margin: 11px 6px;
+        padding-right: 2px;
     }
 
     div.email-tag {
@@ -83,11 +92,17 @@ div.email-field {
 
             &.disabled {
                 cursor: not-allowed;
+                top: -3px;
                 color: $primary-green;
+
+                svg {
+                    width: 12px;
+                }
             }
 
         }
     }
+
     span.error {
         color: $primary-red;
         margin-top: 10px;

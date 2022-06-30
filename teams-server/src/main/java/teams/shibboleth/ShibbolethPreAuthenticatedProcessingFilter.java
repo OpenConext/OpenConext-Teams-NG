@@ -4,21 +4,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
-import org.springframework.util.StringUtils;
-import teams.domain.Membership;
 import teams.domain.Person;
 import teams.domain.Role;
+import teams.exception.MissingAttributesException;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 import teams.security.SuperAdmin;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.text.Normalizer;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static org.springframework.util.StringUtils.hasText;
 
 public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedProcessingFilter {
 
@@ -63,7 +63,17 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
             provisionedPerson.markAsSuperAdmin(isMemberButNoOwner);
             return provisionedPerson;
         } else {
-            return null;
+            List<String> missingAttributes = new ArrayList<>();
+            if (!hasText(nameId)) {
+                missingAttributes.add("name-id");
+            }
+            if (!hasText(name)) {
+                missingAttributes.add("name");
+            }
+            if (!hasText(email)) {
+                missingAttributes.add("email");
+            }
+            throw new MissingAttributesException(missingAttributes);
         }
     }
 

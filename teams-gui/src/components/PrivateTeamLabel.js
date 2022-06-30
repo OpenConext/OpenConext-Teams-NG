@@ -1,5 +1,5 @@
 import I18n from "i18n-js";
-import {ReactComponent as BlockedIcon} from "../icons/allowances-no-talking.svg";
+import {ReactComponent as BlockedIcon} from "../icons/view-off.svg";
 import "./PrivateTeamLabel.scss";
 
 export const PrivateTeamLabel = () => {

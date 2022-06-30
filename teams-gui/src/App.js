@@ -1,6 +1,6 @@
 import './App.scss';
 import {useEffect, useState} from "react";
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import {getUser} from "./api";
 import {Header} from "./components/Header";
@@ -16,6 +16,7 @@ const App = () => {
 
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         getUser()
@@ -30,11 +31,16 @@ const App = () => {
                     setUser(currentUser);
                 }
             })
-            .catch(() => {
-                //Show generic error dialog
+            .catch(e => {
+                if (e.response && e.response.status === 409) {
+                    e.response.json().then(res => {
+                        setLoading(false);
+                        navigate(`/missing-attributes?${encodeURIComponent(JSON.stringify(res.missing_attributes))}`);
+                    })
+                }
             })
         ;
-    }, []);
+    }, [navigate]);
 
     const toggleSuperAdminModus = val => {
         const newUser = {...user, superAdminModus: val};

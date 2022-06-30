@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
+import teams.exception.MissingAttributesException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -44,6 +45,9 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
             //https://github.com/spring-projects/spring-boot/issues/3057
             ResponseStatus annotation = AnnotationUtils.getAnnotation(error.getClass(), ResponseStatus.class);
             statusCode = annotation != null ? annotation.value() : status(error);
+        }
+        if (error instanceof MissingAttributesException) {
+            result.put("missing_attributes", ((MissingAttributesException) error).getMissingAttributes());
         }
         result.remove("message");
         return new ResponseEntity<>(result, statusCode);
