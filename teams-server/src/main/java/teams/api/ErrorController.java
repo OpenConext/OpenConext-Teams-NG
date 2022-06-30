@@ -47,7 +47,7 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
             statusCode = annotation != null ? annotation.value() : status(error);
         }
         if (error instanceof MissingAttributesException) {
-            result.put("missing_attributes", ((MissingAttributesException) error).getMissingAttributes());
+            result.putAll(((MissingAttributesException) error).getMissingAttributes());
         }
         result.remove("message");
         return new ResponseEntity<>(result, statusCode);

@@ -253,7 +253,7 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             ShibbolethPreAuthenticatedProcessingFilter filter =
                     new ShibbolethPreAuthenticatedProcessingFilter(authenticationManager(), personRepository,
-                            membershipRepository, nonGuestsMemberOf, superAdmin);
+                            membershipRepository, nonGuestsMemberOf, superAdmin, config());
 
             http
                     .antMatcher("/api/teams/**")

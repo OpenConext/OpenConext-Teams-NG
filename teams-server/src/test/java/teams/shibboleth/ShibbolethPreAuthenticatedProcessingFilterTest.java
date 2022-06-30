@@ -12,6 +12,7 @@ import teams.repository.PersonRepository;
 import teams.security.SuperAdmin;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -35,7 +36,7 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
         personRepository = mock(PersonRepository.class);
         membershipRepository = mock(MembershipRepository.class);
         subject = new ShibbolethPreAuthenticatedProcessingFilter(mock(AuthenticationManager.class), personRepository,
-                membershipRepository, "urn:collab:org:surf.nl", superAdmin);
+                membershipRepository, "urn:collab:org:surf.nl", superAdmin, Collections.emptyMap());
         when(membershipRepository.findByUrnTeamAndUrnPerson(anyString(), anyString()))
                 .thenReturn(Optional.empty());
     }

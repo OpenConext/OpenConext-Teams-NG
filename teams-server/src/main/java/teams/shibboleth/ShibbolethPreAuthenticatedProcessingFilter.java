@@ -13,10 +13,9 @@ import teams.security.SuperAdmin;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.util.StringUtils.hasText;
 
@@ -28,17 +27,20 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
     private final MembershipRepository membershipRepository;
     private final String nonGuestsMemberOf;
     private final SuperAdmin superAdmin;
+    private final Map<String, String> config;
 
     public ShibbolethPreAuthenticatedProcessingFilter(AuthenticationManager authenticationManager,
                                                       PersonRepository personRepository,
                                                       MembershipRepository membershipRepository,
                                                       String nonGuestsMemberOf,
-                                                      SuperAdmin superAdmin) {
+                                                      SuperAdmin superAdmin,
+                                                      Map<String, String> config) {
         super();
         this.personRepository = personRepository;
         this.membershipRepository = membershipRepository;
         this.nonGuestsMemberOf = nonGuestsMemberOf;
         this.superAdmin = superAdmin;
+        this.config = config;
         setAuthenticationManager(authenticationManager);
     }
 
@@ -63,16 +65,19 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
             provisionedPerson.markAsSuperAdmin(isMemberButNoOwner);
             return provisionedPerson;
         } else {
-            List<String> missingAttributes = new ArrayList<>();
+            Map<String, Object> missingAttributes = new HashMap<>();
+            List<String> missingAttributesList = new ArrayList<>();
             if (!hasText(nameId)) {
-                missingAttributes.add("name-id");
+                missingAttributesList.add("name-id");
             }
             if (!hasText(name)) {
-                missingAttributes.add("name");
+                missingAttributesList.add("name");
             }
             if (!hasText(email)) {
-                missingAttributes.add("email");
+                missingAttributesList.add("email");
             }
+            missingAttributes.put("missing_attributes", missingAttributesList);
+            missingAttributes.put("config", config);
             throw new MissingAttributesException(missingAttributes);
         }
     }
@@ -101,7 +106,7 @@ public class ShibbolethPreAuthenticatedProcessingFilter extends AbstractPreAuthe
         String header = request.getHeader(name);
         try {
             return org.springframework.util.StringUtils.hasText(header) ?
-                    new String(header.getBytes("ISO8859-1"), "UTF-8") : header;
+                    new String(header.getBytes("ISO8859-1"), StandardCharsets.UTF_8) : header;
         } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException(e);
         }

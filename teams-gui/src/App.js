@@ -11,11 +11,13 @@ import NewTeam from "./pages/NewTeam";
 import Flash from "./flash/Flash";
 import {JoinRequest} from "./pages/JoinRequest";
 import {setSuperAdmin} from "./store/store";
+import {MissingAttributes} from "./pages/MissingAttributes";
 
 const App = () => {
 
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({person: {}, config: {supportedLanguageCodes: "nl,en"}});
+    const [missingAttributes, setMissingAttributes] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,7 +37,8 @@ const App = () => {
                 if (e.response && e.response.status === 409) {
                     e.response.json().then(res => {
                         setLoading(false);
-                        navigate(`/missing-attributes?${encodeURIComponent(JSON.stringify(res.missing_attributes))}`);
+                        setMissingAttributes(res);
+                        navigate("/missing-attributes");
                     })
                 }
             })
@@ -69,6 +72,7 @@ const App = () => {
                     <Route path={"/teams/:teamId"} element={<JoinRequest user={user}/>}/>
                     <Route path={"/join-request/:teamId"} element={<JoinRequest user={user}/>}/>
                     <Route path={"/join-request/:teamId/:joinRequestId"} element={<JoinRequest user={user}/>}/>
+                    <Route path={"/missing-attributes"} element={<MissingAttributes missingAttributes={missingAttributes}/>}/>
                     <Route path="*" element={<NotFound/>}/>
                 </Routes>}
             </main>
