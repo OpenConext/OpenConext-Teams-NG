@@ -78,7 +78,7 @@ const NewTeam = ({user}) => {
         setBackupEmails(backupEmails.concat(emails));
         setTimeout(() => document.getElementById("invitation-messsage").focus(), 75);
     }
-    
+
     const removeMail = email => e => {
         stopEvent(e);
         const newBackupEmails = backupEmails.filter(mail => mail !== email);

@@ -63,6 +63,7 @@ const TeamDetail = ({user, showMembers = false}) => {
         field: "initial",
         direction: "descending",
     });
+    const [isNewTeam, setIsNewTeam] = useState(showMembers);
     const [showAddMembersForm, setShowAddMembersForm] = useState(showMembers);
     const [alerts, setAlerts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -81,12 +82,14 @@ const TeamDetail = ({user, showMembers = false}) => {
     const [initial, setInitial] = useState(true);
     const [copied, setCopied] = useState(false);
     const [universalLinkCopied, setUniversalLinkCopied] = useState(false);
+    const [defaultRole, setDefaultRole] = useState(ROLES.MEMBER);
 
     const searchInputRef = useRef(null);
 
     const hideAddMembersForm = () => {
         setShowAddMembersForm(false);
         setShowAddAdminsButton(true);
+        setIsNewTeam(false);
     };
 
     useEffect(() => {
@@ -94,7 +97,7 @@ const TeamDetail = ({user, showMembers = false}) => {
             setSelectedInvitation(null);
             setSelectedJoinRequest(null);
             setShowExternalTeams(false);
-            setShowAddMembersForm(initial ? showMembers : false);
+            setShowAddMembersForm(initial ? isNewTeam : false);
         }
         const urlSearchParams = new URLSearchParams(window.location.search);
         if (urlSearchParams.get("initial")) {
@@ -117,10 +120,10 @@ const TeamDetail = ({user, showMembers = false}) => {
                     label: `${I18n.t(`teamDetails.filters.all`)} (${totalMembers})`,
                 });
                 const userMembershipRole = (res.memberships.find(m => m.person.id === user.person.id) || {role: ROLES.MEMBER}).role;
-
                 const adminAlert =
                     res.memberships.filter(member => member.role === ROLES.ADMIN || member.role === ROLES.OWNER).length < 2 &&
-                    [ROLES.ADMIN].includes(userMembershipRole);
+                    [ROLES.ADMIN].includes(userMembershipRole) &&
+                    res.invitations.filter(inv => inv.intendedRole === ROLES.ADMIN).length === 0;
                 setAlerts(adminAlert ? [I18n.t(`teamDetails.alerts.singleAdmin`)] : []);
 
                 const pendingInvitations = (res.invitations || [])
@@ -180,6 +183,7 @@ const TeamDetail = ({user, showMembers = false}) => {
         const searchParam = new URLSearchParams(window.location.search);
         if (searchParam.has("add-members")) {
             setShowAddMembersForm(true);
+            setDefaultRole(ROLES.MEMBER);
             setShowAddAdminsButton(false);
         }
         if (params.hash) {
@@ -226,7 +230,8 @@ const TeamDetail = ({user, showMembers = false}) => {
         updateDisplayedMembers();
     }, [memberList, sort, searchQuery, membersFilter, hideInvitees]);
 
-    const renderAlertBanners = () => {
+    const renderAlertBanners = team => {
+
         return alerts.map((alert, index) => {
             return (
                 <div key={index} className="alert-banner-wrapper">
@@ -234,11 +239,12 @@ const TeamDetail = ({user, showMembers = false}) => {
                         <span className="alert-banner">{alert}</span>
                         {showAddAdminsButton && <Button onClick={() => {
                             setShowAddMembersForm(true);
+                            setDefaultRole(ROLES.ADMIN);
                             setShowAddAdminsButton(false);
                             setShowExternalTeams(false);
                         }}
-                                 txt={I18n.t(`teamDetails.addMembers.buttons.addAdministrator`)}
-                                 className="cancel"/>}
+                                                        txt={I18n.t(`teamDetails.addMembers.buttons.addAdministrator`)}
+                                                        className="cancel"/>}
                     </div>
                 </div>
             );
@@ -681,7 +687,8 @@ const TeamDetail = ({user, showMembers = false}) => {
                                 <label>{universalPublicLink}</label>
                                 <span onClick={() => copyPublicLinkToClipBoard(universalPublicLink)}>
                                     {!universalLinkCopied && <CopyIcon/>}
-                                    {universalLinkCopied && <Tippy content={I18n.t("teamDetails.copied")} visible={true}>
+                                    {universalLinkCopied &&
+                                    <Tippy content={I18n.t("teamDetails.copied")} visible={true}>
                                         <CopyIcon/>
                                     </Tippy>}
                                 </span>
@@ -717,7 +724,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                     denied={doDenyInvitation}
                 />
             )}
-            {renderAlertBanners()}
+            {renderAlertBanners(team)}
             {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation && !showExternalTeams) && (
                 <div className="team-members">
                     <h2>{I18n.t("teamDetails.members")} ({memberList.length})</h2>
@@ -751,6 +758,8 @@ const TeamDetail = ({user, showMembers = false}) => {
                                 {<Button onClick={() => {
                                     addHistoryState();
                                     setShowAddMembersForm(true);
+                                    setShowAddAdminsButton(false);
+                                    setDefaultRole(ROLES.MEMBER);
                                 }}
                                          txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
                                          className="add-member-button"/>}
@@ -765,7 +774,8 @@ const TeamDetail = ({user, showMembers = false}) => {
                                     team={team}
                                     user={user}
                                     setShowForm={hideAddMembersForm}
-                                    isNewTeam={showMembers}/>
+                                    isNewTeam={isNewTeam}
+                                    defaultRole={defaultRole}/>
             )}
             {selectedInvitation && <InvitationForm updateTeam={updateTeam}
                                                    setShowForm={setSelectedInvitation}

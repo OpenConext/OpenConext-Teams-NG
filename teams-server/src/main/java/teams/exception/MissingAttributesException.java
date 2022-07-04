@@ -11,7 +11,7 @@ import java.util.Map;
 @Getter
 public class MissingAttributesException extends RuntimeException {
 
-    private Map<String, Object> missingAttributes;
+    private final Map<String, Object> missingAttributes;
 
     public MissingAttributesException(Map<String, Object> missingAttributes) {
         this.missingAttributes = missingAttributes;

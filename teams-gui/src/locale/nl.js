@@ -308,7 +308,18 @@ I18n.translations.nl = {
     emails: {
         singleInvalid: "Ongeldig e-mailadres: {{emails}}",
         multipleInvalid: "Ongeldige e-mailadressen: {{emails}}"
-    }
+    },
+    missingAttributes: {
+        title: "Ontbrekende attributen",
+        missingAttribute: "Je bent succesvol ingelogd, maar helaas heeft {{productName}} tijdens het inloggen niet alle benodigde attributen ontvangen om correct te functioneren.",
+        missingAttributeDescriptionHtml: "Ga naar de <a href=\"{{helpUrl}}\">{{productName}} helppagina's</a> om te bekijken hoe je dit probleem kunt oplossen.",
+        missingAttributesNotProvided: "Ontbrekende attributen:",
+        attributes: {
+            name: "Naam",
+            email: "E-mail"
+        }
+    },
+
 };
 
 export default I18n.translations.nl;
