@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import teams.domain.Membership;
 import teams.domain.Person;
 import teams.domain.Role;
+import teams.exception.MissingAttributesException;
 import teams.repository.MembershipRepository;
 import teams.repository.PersonRepository;
 import teams.security.SuperAdmin;
@@ -41,11 +42,10 @@ public class ShibbolethPreAuthenticatedProcessingFilterTest {
                 .thenReturn(Optional.empty());
     }
 
-    @Test
+    @Test(expected = MissingAttributesException.class)
     public void getPreAuthenticatedPrincipalNotValid() {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        Object preAuthenticatedPrincipal = subject.getPreAuthenticatedPrincipal(request);
-        assertNull(preAuthenticatedPrincipal);
+        subject.getPreAuthenticatedPrincipal(request);
     }
 
     @Test
