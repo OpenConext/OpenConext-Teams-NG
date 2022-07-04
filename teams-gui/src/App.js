@@ -43,7 +43,9 @@ const App = () => {
                 }
             })
         ;
-    }, [navigate]);
+        // eslint-disable-next-line
+    }, []);
+
 
     const toggleSuperAdminModus = val => {
         const newUser = {...user, superAdminModus: val};
