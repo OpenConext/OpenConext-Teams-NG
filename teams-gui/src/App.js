@@ -29,8 +29,8 @@ const App = () => {
                     //shortcut notation
                     currentUser.superAdmin = currentUser.person.superAdmin;
                     currentUser.superAdminModus = false;
-                    setLoading(false);
                     setUser(currentUser);
+                    setLoading(false);
                 }
             })
             .catch(e => {
