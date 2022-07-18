@@ -13,7 +13,17 @@ a.button, label.button {
     font-weight: bold;
 
     &:hover {
-        background-color: §§§
+        background-color: $hover-green;
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 3px #b3e5ff;
+        background-color: #008939;
+    }
+
+    &:active {
+        background-color: #dcf2e5;
+        color: #006731;
     }
 
     &:hover, &:visited {
@@ -27,7 +37,22 @@ a.button, label.button {
         border: 1px solid $inactive-grey;
 
         &:hover {
-            background-color: #fcfcfc;
+            border: solid 1px #006731;
+            background-color: #dcf2e5;
+            color: #006731;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 3px #b3e5ff;
+            border: solid 1px #8c969f;
+            background-color: #fff;
+            color: #5e6873;
+        }
+
+        &:active {
+            border: solid 1px #006731;
+            background-color: #008939;
+            color: #ffffff;
         }
 
     }
@@ -43,6 +68,7 @@ a.button, label.button {
         &:hover {
             background-color: #BE1817;
         }
+
         svg {
             width: 24px;
             height: auto;
@@ -52,8 +78,9 @@ a.button, label.button {
 
     &.disabled {
         cursor: no-drop;
-        background-color: #F4F6F8;
+        background-color: #f4f6f8;
         border-color: #B2B6BE;
+        box-shadow: none;
         color: #B2B6BE;
     }
 

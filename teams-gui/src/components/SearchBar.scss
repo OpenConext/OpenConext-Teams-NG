@@ -1,31 +1,41 @@
 @import "../styles/vars.scss";
 
 .search-bar {
-  border: 1px solid $primary-grey;
-  color: black;
-  width: 300px;
-  background-color: white;
-  border-radius: 4px;
-  padding: 10px 8px 8px;
-  vertical-align: middle;
-  position: relative;
-
-  input {
-    border: none;
-    background: none;
-    width: 90%;
-
-    &:focus {
-      outline: none 0;
-      box-shadow: none;
-    }
-  }
-
-  svg {
-    position: absolute;
-    width: 22px;
+    border: 1px solid $primary-grey;
+    color: black;
+    width: 300px;
+    background-color: white;
+    border-radius: 4px;
+    padding: 10px 8px 8px;
     vertical-align: middle;
-    top: 10px;
-    right: 12px;
-  }
+    position: relative;
+
+    &:hover {
+        border: 1px solid #050e1d;
+    }
+
+    &.focus {
+        box-shadow: 0 0 0 3px #b3e5ff;
+        border: solid 1px #8c969f;
+        background-color: #fff;
+    }
+
+    input {
+        border: none;
+        background: none;
+        width: 90%;
+
+        &:focus {
+            outline: none 0;
+            box-shadow: none;
+        }
+    }
+
+    svg {
+        position: absolute;
+        width: 22px;
+        vertical-align: middle;
+        top: 10px;
+        right: 12px;
+    }
 }

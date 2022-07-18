@@ -37,6 +37,11 @@ div.checkbox {
             border: 1px solid #0077C8;
         }
 
+        &:focus {
+            box-shadow: 0 0 0 3px #94d6ff;
+            border: solid 1px #004c97;
+        }
+
         svg {
             color: transparent;
             width: 14px;
@@ -57,10 +62,19 @@ div.checkbox {
         padding: 7px 4px 1px 4px;
         outline: none !important;
 
+        &:hover {
+            border: solid 1px #004c97;
+            background-color: #004c97;
+        }
+
         svg {
             background-color: $primary-blue;
             color: white;
             width: 14px;
+
+            &:hover {
+                background-color: #004c97;
+            }
         }
     }
 

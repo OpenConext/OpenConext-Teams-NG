@@ -27,6 +27,12 @@ div.email-field {
         border-radius: $br;
         font-size: 16px;
 
+        &.focus {
+            box-shadow: 0 0 0 3px #b3e5ff;
+            border: solid 1px #8c969f;
+            background-color: #fff;
+        }
+
         &.error {
             background-color: $primary-red;
             border: 1px solid $primary-red;

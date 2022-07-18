@@ -15,7 +15,7 @@ export const DropDownMenu = ({title, actions}) => {
     return (
         <div className="dropdown-menu-container">
             <div
-                className="dropdown-control"
+                className={`dropdown-control ${droppedDown ? "focus":""}`}
                 onClick={() => setDroppedDown(!droppedDown)}
                 tabIndex={1}
                 onBlur={() => setTimeout(() => setDroppedDown(false), 250)}

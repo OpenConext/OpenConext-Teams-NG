@@ -20,6 +20,9 @@ label.switch {
         right: 0;
         bottom: 0;
         background-color: $quinary-grey;
+        &:hover {
+            background-color:  #8c969f;
+        }
 
         &::before {
             position: absolute;
@@ -45,8 +48,13 @@ label.switch {
         background-color: $primary-blue;
     }
 
+    input:hover + .slider.checked {
+        background-color: #004c97;
+    }
+
     input:focus + .slider.checked {
-        box-shadow: 0 0 1px $primary-blue;
+        box-shadow: 0 0 0 3px #b3e5ff;
+        background-color: #0077c8;
     }
 
     input:checked + .slider.checked:before {

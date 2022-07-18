@@ -22,6 +22,7 @@ export const EmailField = ({
 
     const [email, setEmail] = useState("");
     const [errorMails, setErrorMails] = useState([]);
+    const [hasFocus, setFocus] = useState(false);
 
     const updateEmail = e => {
         if (e.key !== "Tab") {
@@ -68,7 +69,7 @@ export const EmailField = ({
         <div className={`email-field ${error ? "error" : ""} ${marginTop ? "" : "no-margin-top"}`}>
             {(name && !toolTip) && <label htmlFor={"email-field"}>{name}</label>}
             {toolTip && <Tooltip tooltip={toolTip} name={name} label={name}/>}
-            <div className={`inner-email-field ${error ? "error" : ""} ${disabled ? "disabled" : ""}`}>
+            <div className={`inner-email-field ${error ? "error" : ""} ${disabled ? "disabled" : ""} ${hasFocus ? "focus" : ""}`}>
                 {emails.map(mail =>
                     <div key={mail} className="email-tag">
                         <span className="value">{mail}</span>
@@ -80,7 +81,11 @@ export const EmailField = ({
                 {(!singleEmail && !disabled) && <textarea id="email-field"
                                                           value={email}
                                                           onChange={updateEmail}
-                                                          onBlur={doAddEmail}
+                                                          onBlur={e => {
+                                                              setFocus(false);
+                                                              doAddEmail(e)}
+                                                          }
+                                                          onFocus={() => setFocus(true)}
                                                           onKeyDown={e => {
                                                               if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
                                                                   doAddEmail(e);
@@ -101,8 +106,12 @@ export const EmailField = ({
                 {(singleEmail && !disabled) && <input type="email"
                                                       id="email-field"
                                                       value={email}
+                                                      onFocus={() => setFocus(true)}
                                                       onChange={updateEmail}
-                                                      onBlur={doAddEmail}
+                                                      onBlur={e => {
+                                                          setFocus(false);
+                                                          doAddEmail(e)
+                                                      }}
                                                       onKeyDown={e => {
                                                           if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
                                                               doAddEmail(e);
