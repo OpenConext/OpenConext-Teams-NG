@@ -201,6 +201,7 @@ I18n.translations.nl = {
         privateInfo: "Geef het team nergens weer. Het is alleen zichtbaar voor leden",
         object: "Team",
         publicLinkDisabled: "Publieke link ingeschakeld",
+        hideMembers: "Verberg leden voor elkaar",
         publicLinkReset: "Reset publieke link",
         publicLinkResetConfirmation: "Weet je zeker dat je de publieke link wil resetten? De huidige publieke link is dan niet meer geldig.",
         placeholders: {
@@ -214,6 +215,7 @@ I18n.translations.nl = {
             personalNote: "Deze notities zijn alleen zichtbaar voor jouzelf en andere beheerers van dit team. Je kunt hier bijvoorbeend nader specificeren waar het voor gebruikt wordt.",
             immutableName: "De naam van het team kan niet meer worden aangepast als het eenmaal is aangemaakt",
             publicLinkDisabled: "Indien ingeschakeld kan iedereen die over de publieke link beschikt lid worden van het team zonder verdere goedkeuring door de beheerders of managers.",
+            hideMembers: "Indien ingeschakeld, kunnen teamleden hun medeleden niet zien. Overweeg dit als het team alleen voor autorisatie gebruikt wordt"
         },
         flash: {
             created: "Team {{name}} aangemaakt",
