@@ -112,7 +112,7 @@ const NewTeam = ({user}) => {
                                 toolTip={team.id ? I18n.t("newTeam.tooltips.immutableName") : ""}
                                 disabled={team.id}
                                 placeholder={I18n.t("newTeam.placeholders.name")}
-                                onBlur={e => team.id && teamExistsByName(e.target.value).then(exists => setNameExists(exists))}
+                                onBlur={e => teamExistsByName(e.target.value).then(exists => setNameExists(exists))}
                                 error={nameExist || (!initial && isEmpty(team.name))}
                                 name={I18n.t("newTeam.name")}/>
                     {(!initial && isEmpty(team.name)) &&
