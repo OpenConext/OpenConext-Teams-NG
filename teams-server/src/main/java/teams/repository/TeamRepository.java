@@ -39,6 +39,12 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
     @Query(value = "select distinct(teams.urn) from teams where urn = ? LIMIT 1", nativeQuery = true)
     List<Object> existsByUrn(String urn);
 
+    @Query(value = "select distinct(team_name_history.name) from team_name_history where name = ? LIMIT 1", nativeQuery = true)
+    List<Object> existsByHistoryName(String name);
+
+    @Query(value = "insert into team_name_history (name) values (?)", nativeQuery = true)
+    void insertTeamNameHistory(String name);
+
     @EntityGraph(value = "findById", type = EntityGraph.EntityGraphType.LOAD, attributePaths = "memberships")
     Optional<Team> findById(Long id);
 

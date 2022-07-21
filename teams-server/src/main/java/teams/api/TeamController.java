@@ -120,7 +120,9 @@ public class TeamController extends ApiController implements TeamValidator {
         if (name.equals("malpura")) {
             throw new IllegalArgumentException(name);
         }
-        return !teamRepository.existsByUrn(constructUrn(name)).isEmpty();
+        List<Object> urns = teamRepository.existsByUrn(constructUrn(name));
+        List<Object> names = teamRepository.existsByHistoryName(name.toLowerCase());
+        return !urns.isEmpty() || !names.isEmpty();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -184,6 +186,8 @@ public class TeamController extends ApiController implements TeamValidator {
         externalTeams.forEach(externalTeam -> removeTeamFromExternalTeam(externalTeam, team));
 
         teamRepository.delete(team);
+        teamRepository.insertTeamNameHistory(team.getName().toLowerCase());
+
         log.info("Team {} deleted by {}", team.getUrn(), federatedUserUrn);
     }
 

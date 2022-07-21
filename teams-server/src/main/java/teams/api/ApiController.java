@@ -102,6 +102,8 @@ public abstract class ApiController implements TeamValidator {
 
         String urn = constructUrn(name);
         List<Object> urns = teamRepository.existsByUrn(urn);
+        List<Object> names = teamRepository.existsByHistoryName(name.toLowerCase());
+        urns.addAll(names);
 
         teamNameDuplicated(name, urns);
 
