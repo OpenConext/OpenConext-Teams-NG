@@ -1,0 +1,5 @@
+CREATE TABLE team_name_history (
+  id          MEDIUMINT    NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name        VARCHAR(255) NOT NULL UNIQUE
+)
+  ENGINE = InnoDB;
