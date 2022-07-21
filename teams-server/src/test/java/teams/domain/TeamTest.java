@@ -12,7 +12,7 @@ public class TeamTest implements Seed {
 
     @Test
     public void containsMessage() {
-        Team team = new Team("urn", "name", " ", true, null);
+        Team team = new Team("urn", "name", " ", true, false,null);
         assertEquals("", team.getHtmlDescription());
 
         team.setDescription("*Nice*");

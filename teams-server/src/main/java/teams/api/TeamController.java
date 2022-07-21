@@ -150,6 +150,8 @@ public class TeamController extends ApiController implements TeamValidator {
         team.setViewable(teamProperties.isViewable());
         team.setPersonalNote(teamProperties.getPersonalNote());
         team.setPublicLinkDisabled(teamProperties.isPublicLinkDisabled());
+        team.setHideMembers(teamProperties.isHideMembers());
+
         if (teamProperties.isPublicLinkDisabled()) {
             team.setPublicLink(null);
         }

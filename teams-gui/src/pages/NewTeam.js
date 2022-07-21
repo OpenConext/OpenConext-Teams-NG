@@ -153,6 +153,14 @@ const NewTeam = ({user}) => {
                     </div>
 
                     <div className="input-field ">
+                        <CheckBox name={"hide-members"}
+                                  onChange={() => setTeam({...team, hideMembers: !team.hideMembers})}
+                                  info={I18n.t("newTeam.hideMembers")}
+                                  toolTip={I18n.t("newTeam.tooltips.hideMembers")}
+                                  value={team.hideMembers}/>
+                    </div>
+
+                    <div className="input-field ">
                         <label>{I18n.t("newTeam.visibility")}</label>
                         <div className="team-visibilities">
                             {visibilities.map((visibility, i) =>

@@ -160,7 +160,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     public void createTeam() {
         String urn = "demo:openconext:org:new_team_name";
         given()
-                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,false,
                         null, Role.ADMIN.name(), null, Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
@@ -185,7 +185,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         Map<String, String> emails = new HashMap<>();
         emails.put(email, Role.ADMIN.name());
         given()
-                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,false,
                         emails, null, invitationMessage, Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
@@ -204,7 +204,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     @Test
     public void createTeamInvalidTeamName() {
         given()
-                .body(new Team("urn", "invalid $", null, true, null))
+                .body(new Team("urn", "invalid $", null, true,false, null))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")
@@ -215,7 +215,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     @Test
     public void createTeamDuplicateTeamName() {
         given()
-                .body(new Team("urn", "riders", null, true, null))
+                .body(new Team("urn", "riders", null, true,false, null))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
                 .post("api/teams/teams")
@@ -227,7 +227,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     @Test
     public void createTeamAsGuest() {
         given()
-                .body(new Team("urn", "valid", null, true, null))
+                .body(new Team("urn", "valid", null, true,false, null))
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .header("is-member-of", "guest-org")
@@ -242,7 +242,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
-                .body(new TeamProperties(1L, "changed", "personalNote", false, true))
+                .body(new TeamProperties(1L, "changed", "personalNote", false, true, false))
                 .when()
                 .put("api/teams/teams")
                 .then()
@@ -279,7 +279,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .header("is-member-of", "guest-org")
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(2L, null, null, true, false))
+                .body(new TeamProperties(2L, null, null, true, false, false))
                 .when()
                 .put("api/teams/teams")
                 .then()
@@ -291,7 +291,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(2L, null, null, true, false))
+                .body(new TeamProperties(2L, null, null, true, false, false))
                 .when()
                 .put("api/teams/teams")
                 .then()
@@ -303,7 +303,7 @@ public class TeamControllerTest extends AbstractApplicationTest {
     public void updateTeamWithoutBeingMember() {
         given()
                 .header(CONTENT_TYPE, "application/json")
-                .body(new TeamProperties(8L, null, null, true, false))
+                .body(new TeamProperties(8L, null, null, true, false, false))
                 .when()
                 .put("api/teams/teams")
                 .then()

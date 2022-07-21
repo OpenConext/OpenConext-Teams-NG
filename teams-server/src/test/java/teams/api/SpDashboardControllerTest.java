@@ -35,7 +35,7 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
         String urn = "demo:openconext:org:new_team_name";
         given()
                 .auth().preemptive().basic("spdashboard", "secret")
-                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,false,
                         Collections.singletonMap("test@test.com", "ADMIN"), Role.ADMIN.name(), "Please..", Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
@@ -190,7 +190,7 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
         //First ensure the dashboard user is created
         given()
                 .auth().preemptive().basic("spdashboard", "secret")
-                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,false,
                         Collections.singletonMap("test@test.com", "ADMIN"), Role.ADMIN.name(), "Please..", Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()

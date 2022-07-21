@@ -115,10 +115,6 @@ const TeamDetail = ({user, showMembers = false}) => {
             if (res.memberships) {
                 const totalMembers = res.memberships.length + (res.invitations || []).length +
                     (res.joinRequests || []).length;
-                setMembersFilter({
-                    value: "ALL",
-                    label: `${I18n.t(`teamDetails.filters.all`)} (${totalMembers})`,
-                });
                 const userMembershipRole = (res.memberships.find(m => m.person.id === user.person.id) || {role: ROLES.MEMBER}).role;
                 const adminAlert =
                     res.memberships.filter(member => member.role === ROLES.ADMIN || member.role === ROLES.OWNER).length < 2 &&
@@ -165,6 +161,10 @@ const TeamDetail = ({user, showMembers = false}) => {
                         role: ROLES.MEMBER
                     }))
                 const members = externalTeams.concat(newMemberList).concat(pendingInvitations).concat(joinRequests);
+                setMembersFilter({
+                    value: "ALL",
+                    label: `${I18n.t(`teamDetails.filters.all`)} (${members.length})`,
+                });
                 setTeam(res);
                 setMembersList(members);
                 setUserRoleInTeam(userMembershipRole);

@@ -64,6 +64,9 @@ public class Team implements HashGenerator, Serializable {
     @Column
     private boolean publicLinkDisabled = true;
 
+    @Column
+    private boolean hideMembers;
+
     @Formula("(select count(*) from memberships m where m.team_id = id and m.role <> 'OWNER')")
     private int membershipCount;
 
@@ -79,11 +82,12 @@ public class Team implements HashGenerator, Serializable {
     @ManyToMany(mappedBy = "teams", cascade = ALL)
     private Set<ExternalTeam> externalTeams = new HashSet<>();
 
-    public Team(String urn, String name, String description, boolean viewable, String personalNote) {
+    public Team(String urn, String name, String description, boolean viewable, boolean hideMembers, String personalNote) {
         this.urn = urn;
         this.name = name;
         this.description = StringUtils.hasText(description) ? description : null;
         this.viewable = viewable;
+        this.hideMembers = hideMembers;
         this.personalNote = personalNote;
         this.publicLink = viewable ? generateHash(32, "UTF-8") : null;
         this.publicLinkDisabled = !viewable;

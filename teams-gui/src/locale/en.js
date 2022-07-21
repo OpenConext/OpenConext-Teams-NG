@@ -201,6 +201,7 @@ I18n.translations.en = {
         privateInfo: "Don't list antwhere. This team is member only",
         object: "Team",
         publicLinkDisabled: "Public link enabled",
+        hideMembers: "Hide members from each other",
         publicLinkReset: "Reset public link",
         publicLinkResetConfirmation: "Are you sure you want to reset the public link? The current public link will be no longer valid.",
         placeholders: {
@@ -214,6 +215,7 @@ I18n.translations.en = {
             personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
             immutableName: "The name of a team can not be changed once the team is created",
             publicLinkDisabled: "If enabled, people who have the public link can join the Team as member without the need for approval by admins or managers.",
+            hideMembers: "If enabled, team members can't see their fellow members. Consider this is the team is solely used for authorization"
         },
         flash: {
             created: "Team {{name}} is created",
@@ -241,7 +243,7 @@ I18n.translations.en = {
         flash: "Join request has been sent",
         teamAdmins: "Administrators",
         invitationMessage: "Personal message",
-        invitationMessagePlaceholder: "Your personal message for the administratorsexplaining why you want to join this team",
+        invitationMessagePlaceholder: "Your personal message for the administrators explaining why you want to join this team",
         existingJoinRequest: "Pending join request",
         existingJoinRequestDetails: "You have already requested to join this Team on {{date}}"
     },
