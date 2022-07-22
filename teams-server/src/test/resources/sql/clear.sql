@@ -6,4 +6,5 @@ DELETE FROM team_external_groups;
 DELETE FROM teams;
 DELETE FROM persons;
 DELETE FROM external_groups;
+DELETE FROM team_name_history;
 
