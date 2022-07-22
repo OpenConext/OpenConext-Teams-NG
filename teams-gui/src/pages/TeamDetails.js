@@ -113,8 +113,6 @@ const TeamDetail = ({user, showMembers = false}) => {
 
         promise.then((res) => {
             if (res.memberships) {
-                const totalMembers = res.memberships.length + (res.invitations || []).length +
-                    (res.joinRequests || []).length;
                 const userMembershipRole = (res.memberships.find(m => m.person.id === user.person.id) || {role: ROLES.MEMBER}).role;
                 const adminAlert =
                     res.memberships.filter(member => member.role === ROLES.ADMIN || member.role === ROLES.OWNER).length < 2 &&
