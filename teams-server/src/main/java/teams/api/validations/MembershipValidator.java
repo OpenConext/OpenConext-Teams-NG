@@ -15,6 +15,12 @@ public interface MembershipValidator {
         }
     }
 
+    default void roleForChangingExpiryDate(Role roleOfLoggedInPerson) {
+        if (Role.ADMIN.isLessImportant(roleOfLoggedInPerson)) {
+            throw new IllegalMembershipException("Only admins and managers are allowed to change expiry dates");
+        }
+    }
+
     default void oneAdminIsRequired(Team team, Person person, Role futureRole) {
         boolean isMember = team.getMemberships().stream().anyMatch(membership ->
                 membership.getUrnPerson().equals(person.getUrn()) && (membership.getRole().equals(Role.MEMBER) ||

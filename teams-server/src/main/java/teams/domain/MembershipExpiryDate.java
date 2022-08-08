@@ -7,16 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MembershipProperties {
+public class MembershipExpiryDate {
 
     @NotNull
     private Long id;
 
-    @NotNull
-    private Role role;
+    private Instant expiryDate;
 }

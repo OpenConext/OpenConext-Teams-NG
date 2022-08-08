@@ -47,6 +47,26 @@ public class MembershipController extends ApiController implements MembershipVal
         return membership;
     }
 
+    @PutMapping("api/teams/memberships/expiry-date")
+    public Membership changeExpiryDate(@Validated @RequestBody MembershipExpiryDate membershipExpiryDate, FederatedUser federatedUser) {
+        Long id = membershipExpiryDate.getId();
+        Membership membership = membershipRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Membership not found:" + id));
+        assertNotNull(Membership.class.getSimpleName(), membership, id);
+        Team team = membership.getTeam();
+        Person person = membership.getPerson();
+
+        Role roleOfLoggedInPerson = membership(team, federatedUser.getUrn()).getRole();
+        roleForChangingExpiryDate(roleOfLoggedInPerson);
+
+        membership.setExpiryDate(membershipExpiryDate.getExpiryDate());
+        membershipRepository.save(membership);
+
+        log.info("Changed membership expiry date {} of {} in team {} to {} by {}",
+                membership.getExpiryDate(), person.getUrn(), team.getUrn(), membershipExpiryDate.getExpiryDate(), federatedUser.getUrn());
+
+        return membership;
+    }
 
     @DeleteMapping("api/teams/memberships/{id}")
     public void deleteMembership(@PathVariable("id") Long id, FederatedUser federatedUser) {
