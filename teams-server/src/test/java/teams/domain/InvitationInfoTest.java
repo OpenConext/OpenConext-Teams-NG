@@ -8,13 +8,13 @@ import java.time.Instant;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class InvitationInfoTest implements Seed{
+public class InvitationInfoTest implements Seed {
 
     @Test
     public void getExpiryDate() throws Exception {
         Instant now = Instant.now();
         InvitationInfo invitationInfo = getInvitationInfo(now);
-        assertEquals(now.getEpochSecond(), invitationInfo.getExpiryDate().longValue() );
+        assertEquals(now.getEpochSecond(), invitationInfo.getExpiryDate().longValue());
     }
 
     @Test
@@ -24,7 +24,7 @@ public class InvitationInfoTest implements Seed{
     }
 
     private InvitationInfo getInvitationInfo(Instant now) {
-        Invitation invitation = new Invitation(team(), "mail@example.org", Role.ADMIN, Language.DUTCH, now);
+        Invitation invitation = new Invitation(team(), "mail@example.org", Role.ADMIN, Language.DUTCH, now, null);
         invitation.addInvitationMessage(person(), "Please join");
         return new InvitationInfo(
                 invitation,

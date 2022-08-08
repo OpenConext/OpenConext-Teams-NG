@@ -35,7 +35,7 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
         String urn = "demo:openconext:org:new_team_name";
         given()
                 .auth().preemptive().basic("spdashboard", "secret")
-                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,false,
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true, false,
                         Collections.singletonMap("test@test.com", "ADMIN"), Role.ADMIN.name(), "Please..", Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
@@ -148,7 +148,7 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
     public void invitations() {
         ClientInvitation clientInvitation = new ClientInvitation(
                 2L, Role.ADMIN, Arrays.asList("test@test.org", "test2@test.org"),
-                Instant.now().plus(365, ChronoUnit.DAYS), "Please join", null, Language.ENGLISH);
+                Instant.now().plus(365, ChronoUnit.DAYS), null, "Please join", null, Language.ENGLISH);
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .auth().preemptive().basic("spdashboard", "secret")
@@ -190,7 +190,7 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
         //First ensure the dashboard user is created
         given()
                 .auth().preemptive().basic("spdashboard", "secret")
-                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true,false,
+                .body(new NewTeamProperties("new team name", "Team champions ", null, true, true, false,
                         Collections.singletonMap("test@test.com", "ADMIN"), Role.ADMIN.name(), "Please..", Language.DUTCH))
                 .header(CONTENT_TYPE, "application/json")
                 .when()
@@ -206,7 +206,6 @@ public class SpDashboardControllerTest extends AbstractApplicationTest {
         int removed = scheduler.removeOrphanPersons();
         assertEquals(0, removed);
     }
-
 
 
 }

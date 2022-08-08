@@ -1,0 +1,62 @@
+@import "../styles/vars";
+
+.date-field {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+
+    label.date-picker-container {
+        display: flex;
+        width: 100%;
+        position: relative;
+        border-radius: 8px;
+
+        &:focus {
+            outline: none;
+            box-shadow: 3px 3px 3px $hover-blue, -3px -3px 1px $hover-blue;
+        }
+
+        svg.calendar-alt {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            color: $primary-blue;
+            cursor: pointer;
+            width: 20px;
+        }
+
+        .react-datepicker__input-container {
+            input {
+                display: block;
+                background-color: white;
+                width: 100%;
+                border: 1px solid #8C969F;
+                padding: 6px 12px;
+                border-radius: 8px;
+                font-size: 16px;
+                height: 48px;
+                color: black;
+            }
+
+            button.react-datepicker__close-icon {
+                right: 38px;
+                &::after {
+                    cursor: pointer;
+                    background-color: $primary-blue;
+                    color: #fff;
+                    border-radius: 50%;
+                    height: 20px;
+                    width: 22px;
+                    padding: 2px;
+                    font-size: 18px;
+                    line-height: 1;
+                    text-align: center;
+                    display: table-cell;
+                    vertical-align: middle;
+                    content: "×";
+                }
+            }
+        }
+    }
+
+}

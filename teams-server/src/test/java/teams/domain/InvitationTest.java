@@ -65,8 +65,8 @@ public class InvitationTest implements Seed {
         return invitation("email@test.org");
     }
 
-    private Invitation invitation(String email) throws UnsupportedEncodingException {
-        Invitation invitation = new Invitation(team(), email, ADMIN, DUTCH, null);
+    private Invitation invitation(String email) {
+        Invitation invitation = new Invitation(team(), email, ADMIN, DUTCH, null, null);
         invitation.addInvitationMessage(person(), "Please join");
         return invitation;
     }

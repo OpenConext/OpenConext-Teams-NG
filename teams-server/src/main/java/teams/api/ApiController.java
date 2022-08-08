@@ -122,6 +122,7 @@ public abstract class ApiController implements TeamValidator {
                         email,
                         Role.valueOf(role),
                         teamProperties.getLanguage(),
+                        null,
                         null);
                 invitation.addInvitationMessage(person, teamProperties.getInvitationMessage());
                 Invitation saved = saveAndSendInvitation(Collections.singletonList(invitation), team, person, federatedUser).get(0);

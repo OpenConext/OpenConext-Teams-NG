@@ -3,6 +3,7 @@ package teams;
 import teams.domain.*;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +52,7 @@ public interface Seed {
 
     default InvitationMessage invitationMessage(String message) {
         return new InvitationMessage(
-                new Invitation(team(), "email", ADMIN, DUTCH, null), person("urn"), message);
+                new Invitation(team(), "email", ADMIN, DUTCH, null, null), person("urn"), message);
     }
 
     default ClientInvitation clientInvitation(List<String> emails, String csvEmails) {
@@ -59,7 +60,8 @@ public interface Seed {
     }
 
     default ClientInvitation clientInvitation(List<String> emails, String csvEmails, Instant instant) {
-        return new ClientInvitation(1L, Role.MANAGER, emails, instant, "Message", csvEmails, Language.DUTCH);
+        Instant membershipExpiryDate = instant.plus(30, ChronoUnit.DAYS);
+        return new ClientInvitation(1L, Role.MANAGER, emails, instant, membershipExpiryDate, "Message", csvEmails, Language.DUTCH);
     }
 
     default JoinRequest joinRequest(String personUrn) {

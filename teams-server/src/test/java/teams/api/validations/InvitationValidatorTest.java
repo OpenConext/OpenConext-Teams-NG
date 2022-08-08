@@ -156,7 +156,7 @@ public class InvitationValidatorTest implements Seed {
     }
 
     private Invitation invitation(boolean accepted, boolean declined) throws UnsupportedEncodingException {
-        Invitation invitation = new Invitation(team(), "jdoe@example.com", Role.ADMIN, Language.DUTCH, null);
+        Invitation invitation = new Invitation(team(), "jdoe@example.com", Role.ADMIN, Language.DUTCH, null, null);
         ReflectionTestUtils.setField(invitation, "accepted", accepted);
         ReflectionTestUtils.setField(invitation, "declined", declined);
         return invitation;

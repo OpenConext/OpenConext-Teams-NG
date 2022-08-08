@@ -44,7 +44,7 @@ public class MailBoxTest extends AbstractApplicationTest {
         Team team = new Team("urn", "Champions", "description", true, false,null);
         Person person = new Person("urn", "John Doe", EMAIL, false, false);
 
-        Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.DUTCH, null);
+        Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.DUTCH, null, null);
         invitation.addInvitationMessage(person, "Please join");
 
         mailBox.sendInviteMail(invitation, federatedUser());
@@ -60,7 +60,7 @@ public class MailBoxTest extends AbstractApplicationTest {
         Team team = new Team("urn", "Champions", "description", true, false,null);
         Person person = new Person("urn", "John Doe", EMAIL, false, false);
 
-        Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.PORTUGUESE, null);
+        Invitation invitation = new Invitation(team, EMAIL, Role.ADMIN, Language.PORTUGUESE, null, null);
         invitation.addInvitationMessage(person, "Please join");
 
         mailBox.sendInviteMail(invitation, federatedUser());

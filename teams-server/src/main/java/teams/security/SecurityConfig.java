@@ -172,9 +172,6 @@ public class SecurityConfig {
         @Value("${teams.product-name}")
         private String productName;
 
-        @Value("${feature-toggles.expiry-date-membership}")
-        private boolean expiryDateMembership;
-
         @Value("${feature-toggles.person-email-picker}")
         private boolean personEmailPicker;
 
@@ -244,7 +241,6 @@ public class SecurityConfig {
 
         private Map<Feature, Boolean> featureToggles() {
             Map<Feature, Boolean> toggles = new HashMap<>();
-            toggles.put(Feature.EXPIRY_DATE_MEMBERSHIP, expiryDateMembership);
             toggles.put(Feature.PERSON_EMAIL_PICKER, personEmailPicker);
             return toggles;
         }

@@ -24,7 +24,7 @@ public interface InvitationValidator {
         Instant expiryDate = clientInvitation.getExpiryDate();
         Instant now = Instant.now();
         if (expiryDate != null && now.isAfter(expiryDate)) {
-            throw new IllegalInviteException(String.format("Expiry date %s must be before %s", expiryDate, now));
+            throw new IllegalInviteException(String.format("Expiry date %s must be after %s", expiryDate, now));
         }
     }
 

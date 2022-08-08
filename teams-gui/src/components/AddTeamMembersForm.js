@@ -3,11 +3,13 @@ import {React, useState} from "react";
 import "./AddTeamMembersForm.scss";
 import {Button} from "./Button";
 import {EmailField} from "./EmailField";
-import {stopEvent} from "../utils/utils";
+import {addDays, stopEvent} from "../utils/utils";
 import Select from "react-select";
 import {currentUserRoleInTeam, ROLES} from "../utils/roles";
 import {invite} from "../api";
 import {setFlash} from "../flash/events";
+import {DateField} from "./DateField";
+import Tooltip from "./Tooltip";
 
 
 export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTeam, defaultRole}) => {
@@ -16,6 +18,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
     const [role, setRole] = useState({value: defaultRole, label: I18n.t(`roles.${defaultRole.toLowerCase()}`)});
     const [customMessage, setCustomMessage] = useState("");
     const [invitationLanguage, setInvitationLanguage] = useState(I18n.t(`teamDetails.addMembers.buttons.languageCode.${I18n.locale}`));
+    const [expiryDate, setExpiryDate] = useState(null);
 
     const roleOptions = () => {
         const role = currentUserRoleInTeam(team, user);
@@ -37,7 +40,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
                 teamId: team.id,
                 intendedRole: role.value,
                 emails,
-                expiryDate: null,
+                membershipExpiryDate: expiryDate,
                 message: customMessage,
                 language: invitationLanguage
             }
@@ -91,6 +94,17 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
                       placeholder={I18n.t("teamDetails.addMembers.placeholders.customMessage")}
                       onChange={(e) => setCustomMessage(e.target.value)}
                       value={customMessage}/>
+            <div className="extra-info-header">
+                <h3>
+                    {I18n.t("teamDetails.addMembers.expiryDate")}<Tooltip
+                    tooltip={I18n.t("teamDetails.addMembers.expiryDateTooltip")}/>
+                </h3>
+            </div>
+            <DateField onChange={setExpiryDate}
+                       value={expiryDate}
+                       performValidateOnBlur={true}
+                       minDate={addDays(30)}
+            />
             <div className="language-selection-wrapper">
                 <h3>{I18n.t("teamDetails.addMembers.headers.invitationLanguageHeader")}</h3>
                 <div className="language-selection-buttons">

@@ -75,14 +75,19 @@ public class Invitation implements HashGenerator, Serializable {
     @Column
     private Instant expiryDate;
 
-    public Invitation(Team team, String email, Role intendedRole, Language language, Instant expiryDate) {
+    @Column
+    private Instant membershipExpiryDate;
+
+    public Invitation(Team team, String email, Role intendedRole, Language language, Instant expiryDate,
+                      Instant membershipExpiryDate) {
         this.team = team;
         this.email = email;
         this.invitationHash = generateHash();
         this.timestamp = new Date().getTime();
         this.language = language;
         this.intendedRole = intendedRole;
-        this.expiryDate = expiryDate;
+        this.expiryDate = expiryDate != null ? expiryDate : Instant.now().plus(30, DAYS);
+        this.membershipExpiryDate = membershipExpiryDate;
     }
 
     @JsonProperty(value = "expired", access = JsonProperty.Access.READ_ONLY)

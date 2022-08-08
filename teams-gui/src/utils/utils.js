@@ -28,6 +28,13 @@ export const getDateString = timestamp => {
     const locale = I18n.locale === "en" ? "en-GB" : "nl-NL";
     return date.toLocaleString(locale, {day: "numeric", month: "long", year: "numeric"});
 };
+
 export const capitalize = s => {
     return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+export const addDays = days => {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    return date;
 }

@@ -85,7 +85,8 @@ public class SpDashboardController extends ApiController implements TeamValidato
                         email,
                         clientInvitation.getIntendedRole(),
                         clientInvitation.getLanguage(),
-                        clientInvitation.getExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
+                        clientInvitation.getExpiryDate(),
+                        null).addInvitationMessage(person, clientInvitation.getMessage()))
                 .collect(toList());
         log.info("Saving {} invitations for emails: {}", invitations.size(), String.join(",", emails));
         saveAndSendInvitation(invitations, team, person, this.federatedUser());

@@ -1,9 +1,6 @@
 package teams.api;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import teams.AbstractApplicationTest;
 import teams.domain.*;
 import teams.exception.NotAllowedException;
@@ -64,7 +61,7 @@ public class InvitationControllerTest extends AbstractApplicationTest {
     private void doInvitation(Language language) throws UnsupportedEncodingException {
         ClientInvitation clientInvitation = new ClientInvitation(
                 2L, Role.ADMIN, Arrays.asList("test@test.org", "test2@test.org"),
-                Instant.now().plus(365, ChronoUnit.DAYS), "Please join", null, language);
+                Instant.now().plus(365, ChronoUnit.DAYS), null, "Please join", null, language);
         given()
                 .header(CONTENT_TYPE, "application/json")
                 .header("name-id", "urn:collab:person:surfnet.nl:jdoe")

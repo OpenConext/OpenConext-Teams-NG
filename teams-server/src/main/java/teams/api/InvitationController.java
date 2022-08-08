@@ -13,7 +13,6 @@ import java.time.Instant;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static teams.domain.Feature.EXPIRY_DATE_MEMBERSHIP;
 
 @RestController
 public class InvitationController extends ApiController implements MembershipValidator, InvitationValidator {
@@ -29,7 +28,7 @@ public class InvitationController extends ApiController implements MembershipVal
 
     @PostMapping("api/teams/invitations")
     public List<Invitation> invite(@Validated @RequestBody ClientInvitation clientInvitation,
-                                   FederatedUser federatedUser) throws IOException, MessagingException {
+                                   FederatedUser federatedUser) throws IOException {
         Team team = teamById(clientInvitation.getTeamId(), false);
         Person person = federatedUser.getPerson();
 
@@ -44,9 +43,12 @@ public class InvitationController extends ApiController implements MembershipVal
                         email,
                         role,
                         clientInvitation.getLanguage(),
-                        clientInvitation.getExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
+                        clientInvitation.getExpiryDate(),
+                        clientInvitation.getMembershipExpiryDate()).addInvitationMessage(person, clientInvitation.getMessage()))
                 .collect(toList());
+
         log.info("Saving {} invitations for emails: {}", invitations.size(), String.join(",", emails));
+
         return saveAndSendInvitation(invitations, team, person, federatedUser);
     }
 
@@ -100,7 +102,7 @@ public class InvitationController extends ApiController implements MembershipVal
         Person person = federatedUser.getPerson();
         Invitation invitation = doAcceptOrDeny(key, true, person);
         Team team = invitation.getTeam();
-        Instant expiryDate = federatedUser.featureEnabled(EXPIRY_DATE_MEMBERSHIP) ? invitation.getExpiryDate() : null;
+        Instant expiryDate = invitation.getMembershipExpiryDate();
         new Membership(invitation.getIntendedRole(), team, person, expiryDate, MembershipOrigin.INVITATION_ACCEPTED,
                 invitation.getFirstInviter().map(inviter -> inviter.getName()).orElse(person.getName()));
 

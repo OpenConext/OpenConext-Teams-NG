@@ -85,6 +85,8 @@ I18n.translations.en = {
         },
         addMembers: {
             invitationExpiry: "Invitation is valid for 30 days",
+            expiryDate: "Membership expiry date",
+            expiryDateTooltip: "The membership expiry date is an optional date after which this membership will be ended.",
             headers: {
                 addMembersHeader: "Add Members",
                 additionalInformationHeader: "Additional information",
