@@ -85,6 +85,8 @@ I18n.translations.nl = {
         },
         addMembers: {
             invitationExpiry: "Uitnodiging is 30 dagen geldig",
+            expiryDate: "Vervaldatum lidmaatschap",
+            expiryDateTooltip: "De optionele vervaldatum van het lidmaatschap. Hierna wordt het lidmaatschap beëindigd.",
             headers: {
                 addMembersHeader: "Leden toevoegen",
                 additionalInformationHeader: "Extra informatie",

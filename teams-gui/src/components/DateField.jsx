@@ -4,7 +4,7 @@ import {ReactComponent as CalendarIcon} from "../icons/calendar-alt.svg";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DateField.scss"
 
-import {addDays, stopEvent} from "../utils/utils";
+import {stopEvent} from "../utils/utils";
 
 export const DateField = ({
                               onChange,
