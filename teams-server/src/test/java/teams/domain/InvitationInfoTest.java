@@ -5,22 +5,21 @@ import teams.Seed;
 
 import java.time.Instant;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class InvitationInfoTest implements Seed {
 
     @Test
-    public void getExpiryDate() throws Exception {
+    public void getExpiryDate() {
         Instant now = Instant.now();
         InvitationInfo invitationInfo = getInvitationInfo(now);
         assertEquals(now.getEpochSecond(), invitationInfo.getExpiryDate().longValue());
     }
 
     @Test
-    public void getExpiryDateNull() throws Exception {
+    public void getExpiryDateDefault() {
         InvitationInfo invitationInfo = getInvitationInfo(null);
-        assertNull(invitationInfo.getExpiryDate());
+        assertNotNull(invitationInfo.getExpiryDate());
     }
 
     private InvitationInfo getInvitationInfo(Instant now) {

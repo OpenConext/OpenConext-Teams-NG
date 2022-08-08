@@ -60,7 +60,7 @@ public interface Seed {
     }
 
     default ClientInvitation clientInvitation(List<String> emails, String csvEmails, Instant instant) {
-        Instant membershipExpiryDate = instant.plus(30, ChronoUnit.DAYS);
+        Instant membershipExpiryDate = instant != null ? instant.plus(30, ChronoUnit.DAYS) : instant;
         return new ClientInvitation(1L, Role.MANAGER, emails, instant, membershipExpiryDate, "Message", csvEmails, Language.DUTCH);
     }
 
