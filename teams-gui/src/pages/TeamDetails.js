@@ -420,16 +420,11 @@ const TeamDetail = ({user, showMembers = false}) => {
             columns.splice(1, 1);
         }
         return (
-            <div>
-                <span>{expiryDate ? expiryDate.toString() : "null"}</span>
-                <div><span>{showMemberExpiryDate}</span></div>
-
                 <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
                     {displayedMembers.map((member, index) =>
                         renderMembersRow(member, index)
                     )}
                 </SortableTable>
-            </div>
         );
     };
 
@@ -764,7 +759,6 @@ const TeamDetail = ({user, showMembers = false}) => {
                     isWarning={confirmation.warning}
                     question={confirmation.question}>
                     {showMemberExpiryDate && <div className={"change-expiry-date"}>
-                        <span>{expiryDate ? expiryDate.toString() : "null"}</span>
                         <DateField onChange={d => setExpiryDate(d)}
                                    value={expiryDate}
                                    isOpen={true}

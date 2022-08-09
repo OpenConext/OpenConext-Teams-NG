@@ -220,7 +220,7 @@ I18n.translations.en = {
             personalNote: "This note is only visible for you and other administrators of this Team. You can use this field to specify what this Team is used for, for instance.",
             immutableName: "The name of a team can not be changed once the team is created",
             publicLinkDisabled: "If enabled, people who have the public link can join the Team as member without the need for approval by admins or managers.",
-            hideMembers: "If enabled, team members can't see their fellow members. Consider this is the team is solely used for authorization"
+            hideMembers: "If enabled, team members can't see their fellow members. Consider this if the team is solely used for authorization"
         },
         flash: {
             created: "Team {{name}} is created",
