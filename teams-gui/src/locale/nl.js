@@ -81,7 +81,7 @@ I18n.translations.nl = {
         markdownPlaceholder: "Je kunt Markdown gebruiken in de omschrijving",
         personalNotesPlaceholder: "Interne notities voor jou en je mede-beheerders",
         expires: "(verloopt op {{expiryDate}})",
-        noExpires: "(geen verloop datum)",
+        noExpires: "(geen verloopdatum)",
         alerts: {
             singleAdmin: "We raden aan minstens één andere beheerder toe te voegen."
         },
