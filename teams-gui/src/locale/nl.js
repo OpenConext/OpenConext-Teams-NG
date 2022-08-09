@@ -232,6 +232,8 @@ I18n.translations.nl = {
         header: "Uitnodiging opnieuw versturen",
         email: "E-mailadres genodigde",
         created: "Aanvankelijk verstuurd op",
+        expiryDate: "Vervaldatum lidmaatschap",
+        noExpires: "Geen vervaldatum",
         message: "Persoonlijk bericht",
         messagePlaceholder: "Persoonlijk bericht aan de genodigde",
         role: "Rol die de genodigde zal krijgen",

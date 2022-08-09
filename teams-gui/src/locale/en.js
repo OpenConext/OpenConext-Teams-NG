@@ -232,6 +232,8 @@ I18n.translations.en = {
         header: "Resend invitation",
         email: "Email address of the invitee",
         created: "Originally sent at",
+        expiryDate: "Membership expiry date",
+        noExpires: "No expiry date",
         message: "Personal message",
         messagePlaceholder: "Personal message for the invitee",
         role: "Intended role",

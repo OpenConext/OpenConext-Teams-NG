@@ -71,6 +71,11 @@ export const InvitationForm = ({setShowForm, invitation, updateTeam}) => {
                     disabled={true}
                 />
                 <InputField
+                    name={I18n.t("invitationForm.expiryDate")}
+                    value={invitationDetails.membershipExpiryDate ? getDateString(invitationDetails.membershipExpiryDate) : I18n.t("invitationForm.noExpires")}
+                    disabled={true}
+                />
+                <InputField
                     name={I18n.t("invitationForm.language")}
                     value={I18n.t(`languages.${invitationDetails.language}`)}
                     disabled={true}
