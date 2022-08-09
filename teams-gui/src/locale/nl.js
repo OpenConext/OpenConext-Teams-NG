@@ -80,6 +80,8 @@ I18n.translations.nl = {
         externalTeam: "Gekoppeld team",
         markdownPlaceholder: "Je kunt Markdown gebruiken in de omschrijving",
         personalNotesPlaceholder: "Interne notities voor jou en je mede-beheerders",
+        expires: "(verloopt op {{expiryDate}})",
+        noExpires: "(geen verloop datum)",
         alerts: {
             singleAdmin: "We raden aan minstens één andere beheerder toe te voegen."
         },
@@ -145,7 +147,7 @@ I18n.translations.nl = {
             approveJoinRequest: "Weet je zeker dat je dit toetredingsverzoek wilt goedkeuren?",
             rejectJoinRequest: "Weet je zeker dat je dit toetredingsverzoek wilt afwijzen?",
             downgrade: "Weet je zeker dat je een lagere rol wilt aannemen? Je kunt dit niet zelf ongedaan maken.",
-
+            expiryDate: "Je kan de vervaldatum wijzigen / resetten en bevestigen als je het zeker weet."
         },
         flash: {
             removeMember: "Lid is verwijderd",
@@ -156,6 +158,7 @@ I18n.translations.nl = {
             approveJoinRequest: "Toetredingsverzoek is goedgekeurd",
             rejectJoinRequest: "Toetredingsverzoek is afgewezen",
             memberChanged: "Rol van {{name}} gewijzigd in {{newRole}}",
+            expiryDateChanged: "Vervaldatum voor {{name}} is aangepast",
         },
         idp: {
             unknown: "Onbekende / uitgenodigde gebruiker",

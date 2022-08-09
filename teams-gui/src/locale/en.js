@@ -80,6 +80,8 @@ I18n.translations.en = {
         externalTeam: "Included team",
         markdownPlaceholder: "Team description supports Markdown",
         personalNotesPlaceholder: "Personal notes for your fellow administrators to see",
+        expires: " (expires on {{expiryDate}})",
+        noExpires: " (no expiry date)",
         alerts: {
             singleAdmin: "It’s recommended to add at least one other administrator besides yourself."
         },
@@ -145,7 +147,7 @@ I18n.translations.en = {
             approveJoinRequest: "Are you sure you want to approve this join request?",
             rejectJoinRequest: "Are you sure you want to reject this join request?",
             downgrade: "Are you sure you want to downgrade your role? You can not revert this.",
-
+            expiryDate: "You can change / reset the expiry date and confirm if you're sure."
         },
         flash: {
             removeMember: "Member has been removed",
@@ -156,6 +158,7 @@ I18n.translations.en = {
             approveJoinRequest: "Join request has been approved",
             rejectJoinRequest: "Join request has been denied",
             memberChanged: "Role for {{name}} changed to {{newRole}}",
+            expiryDateChanged: "Expiry date for {{name}} is updated",
         },
         idp: {
             unknown: "Unknown / invited user",

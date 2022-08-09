@@ -8,6 +8,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import {
     acceptInvitation,
     acceptPublicLink,
+    changeExpiryDate,
     changeRole,
     deleteInvitation,
     deleteJoinRequest,
@@ -24,7 +25,7 @@ import {
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
 import {actionDropDownTitle, allowedToLeave, getRole, isOnlyAdmin, ROLES} from "../utils/roles";
-import {getDateString} from "../utils/utils";
+import {addDays, getDateString, stopEvent} from "../utils/utils";
 import {SpinnerField} from "../components/SpinnerField";
 import "./TeamDetails.scss";
 import ConfirmationDialog from "../components/ConfirmationDialog";
@@ -49,6 +50,9 @@ import {ExternalTeamsForm} from "../components/ExternalTeamsForm";
 import {setFlash} from "../flash/events";
 import TeamWelcomeDialog from "../components/TeamWelcomeDialog";
 import {MarkDown} from "../components/MarkDown";
+import {DateField} from "../components/DateField";
+
+let currentExpiryDate;
 
 const TeamDetail = ({user, showMembers = false}) => {
     const params = useParams();
@@ -83,6 +87,8 @@ const TeamDetail = ({user, showMembers = false}) => {
     const [copied, setCopied] = useState(false);
     const [universalLinkCopied, setUniversalLinkCopied] = useState(false);
     const [defaultRole, setDefaultRole] = useState(ROLES.MEMBER);
+    const [expiryDate, setExpiryDate] = useState(null);
+    const [showMemberExpiryDate, setShowMemberExpiryDate] = useState(false);
 
     const searchInputRef = useRef(null);
 
@@ -105,6 +111,10 @@ const TeamDetail = ({user, showMembers = false}) => {
         }
         // eslint-disable-next-line
     }, [window.location.search])
+
+    useEffect(() => {
+        currentExpiryDate = expiryDate;
+    }, [expiryDate])
 
     const updateTeam = useCallback(() => {
         setLoaded(false);
@@ -144,7 +154,8 @@ const TeamDetail = ({user, showMembers = false}) => {
                 const newMemberList = [...res.memberships];
                 newMemberList.forEach(member => {
                     member.filters = [member.role];
-                    member.isExternalTeam = false
+                    member.isExternalTeam = false;
+                    member.isMember = true;
                 });
                 const externalTeams = (res.externalTeams || [])
                     .map(externalTeam => ({
@@ -228,21 +239,22 @@ const TeamDetail = ({user, showMembers = false}) => {
         updateDisplayedMembers();
     }, [memberList, sort, searchQuery, membersFilter, hideInvitees]);
 
-    const renderAlertBanners = team => {
+    const renderAlertBanners = () => {
 
         return alerts.map((alert, index) => {
             return (
                 <div key={index} className="alert-banner-wrapper">
                     <div className="alert-banner-container">
                         <span className="alert-banner">{alert}</span>
-                        {showAddAdminsButton && <Button onClick={() => {
-                            setShowAddMembersForm(true);
-                            setDefaultRole(ROLES.ADMIN);
-                            setShowAddAdminsButton(false);
-                            setShowExternalTeams(false);
-                        }}
-                                                        txt={I18n.t(`teamDetails.addMembers.buttons.addAdministrator`)}
-                                                        className="cancel"/>}
+                        {showAddAdminsButton && <Button
+                            onClick={() => {
+                                setShowAddMembersForm(true);
+                                setDefaultRole(ROLES.ADMIN);
+                                setShowAddAdminsButton(false);
+                                setShowExternalTeams(false);
+                            }}
+                            txt={I18n.t(`teamDetails.addMembers.buttons.addAdministrator`)}
+                            className="cancel"/>}
                     </div>
                 </div>
             );
@@ -408,11 +420,16 @@ const TeamDetail = ({user, showMembers = false}) => {
             columns.splice(1, 1);
         }
         return (
-            <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
-                {displayedMembers.map((member, index) =>
-                    renderMembersRow(member, index)
-                )}
-            </SortableTable>
+            <div>
+                <span>{expiryDate ? expiryDate.toString() : "null"}</span>
+                <div><span>{showMemberExpiryDate}</span></div>
+
+                <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
+                    {displayedMembers.map((member, index) =>
+                        renderMembersRow(member, index)
+                    )}
+                </SortableTable>
+            </div>
         );
     };
 
@@ -505,6 +522,37 @@ const TeamDetail = ({user, showMembers = false}) => {
         )
     }
 
+    const processChangeExpiryDate = (memberId) => {
+        const member = memberList.find(m => m.id === memberId && m.isMember === true);
+        const membershipExpiryDate = {id: member.id, expiryDate: currentExpiryDate};
+        setConfirmationOpen(false);
+        setShowMemberExpiryDate(false);
+        setLoaded(false);
+        changeExpiryDate(membershipExpiryDate).then(() => {
+            updateTeam();
+            setFlash(I18n.t("teamDetails.flash.expiryDateChanged", {
+                name: member.person.name
+            }));
+        });
+    }
+
+    const showExpiryDate = (e, memberId) => {
+        stopEvent(e);
+        const member = memberList.find(m => m.id === memberId && m.isMember === true);
+        setShowMemberExpiryDate(true);
+        setExpiryDate(member.expiryDate ? new Date(member.expiryDate * 1000) : null);
+        setConfirmation({
+            cancel: () => {
+                setConfirmationOpen(false);
+                setShowMemberExpiryDate(false);
+            },
+            action: () => processChangeExpiryDate(memberId),
+            warning: false,
+            question: I18n.t("teamDetails.confirmations.expiryDate"),
+        });
+        setConfirmationOpen(true);
+    }
+
     const renderMembersRow = (member, index) => {
         const roleActions = roleOptions(member).map(
             role => ({
@@ -542,6 +590,10 @@ const TeamDetail = ({user, showMembers = false}) => {
                     onClick={() => tdClick(member)}>
                     <span className="joined-wrapper">
                         <span>{getDateString(member.created)}</span>
+                        {(member.isMember && [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam))
+                        && <a className={"expiry-date"} href={"/#"} onClick={e => showExpiryDate(e, member.id)}>
+                            {I18n.t(`teamDetails.${member.expiryDate ? "expires" : "noExpires"}`, {expiryDate: getDateString(member.expiryDate)})}
+                        </a>}
                         {(member.isInvitation && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam))
                         && <span className="details">
                             {I18n.t(`teamDetails.inviteSent`)}
@@ -710,8 +762,17 @@ const TeamDetail = ({user, showMembers = false}) => {
                     cancel={confirmation.cancel}
                     confirm={confirmation.action}
                     isWarning={confirmation.warning}
-                    question={confirmation.question}
-                />
+                    question={confirmation.question}>
+                    {showMemberExpiryDate && <div className={"change-expiry-date"}>
+                        <span>{expiryDate ? expiryDate.toString() : "null"}</span>
+                        <DateField onChange={d => setExpiryDate(d)}
+                                   value={expiryDate}
+                                   isOpen={true}
+                                   performValidateOnBlur={true}
+                                   minDate={addDays(30)}
+                        />
+                    </div>}
+                </ConfirmationDialog>
             )}
             {welcomeOpen && (
                 <TeamWelcomeDialog
@@ -722,7 +783,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                     denied={doDenyInvitation}
                 />
             )}
-            {renderAlertBanners(team)}
+            {renderAlertBanners()}
             {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation && !showExternalTeams) && (
                 <div className="team-members">
                     <h2>{I18n.t("teamDetails.members")} ({memberList.length})</h2>

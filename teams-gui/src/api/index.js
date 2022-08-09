@@ -202,6 +202,10 @@ export function changeRole(membershipProperties) {
     return postPutJson("memberships", membershipProperties);
 }
 
+export function changeExpiryDate(membershipExpiryDate) {
+    return postPutJson("memberships/expiry-date", membershipExpiryDate);
+}
+
 export function deleteMember(memberId) {
     return fetchDelete("memberships/" + memberId);
 }

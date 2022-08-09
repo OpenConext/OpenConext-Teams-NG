@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {useRef, useState} from "react";
 import DatePicker from "react-datepicker";
 import {ReactComponent as CalendarIcon} from "../icons/calendar-alt.svg";
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,12 +9,14 @@ import {stopEvent} from "../utils/utils";
 export const DateField = ({
                               onChange,
                               value,
+                              isOpen = false,
                               maxDate = null,
                               minDate = null,
                               performValidateOnBlur = true
                           }) => {
 
     const component = useRef(null);
+    const [initial, setInitial] = useState(true);
 
     const toggle = () => {
         component.current.setOpen(true);
@@ -38,6 +40,14 @@ export const DateField = ({
                 setTimeout(() => onChange(null), 250);
             }
         }
+    }
+
+    if (isOpen && initial) {
+        setTimeout(() => {
+            isOpen = false;
+            setInitial(false);
+            toggle();
+        }, 500);
     }
 
     return (

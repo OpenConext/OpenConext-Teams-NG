@@ -53,8 +53,8 @@ INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `ur
 VALUES (8, 'ADMIN', 3, 'demo:openconext:org:gliders', 5, 'urn:collab:person:surfnet.nl:rdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
 VALUES (9, 'ADMIN', 4, 'demo:openconext:org:masters', 5, 'urn:collab:person:surfnet.nl:rdoe');
-INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
-VALUES (10, 'MEMBER', 1, 'demo:openconext:org:riders', 5, 'urn:collab:person:surfnet.nl:rdoe');
+INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`, `expiry_date`)
+VALUES (10, 'MEMBER', 1, 'demo:openconext:org:riders', 5, 'urn:collab:person:surfnet.nl:rdoe', '2032-05-17 09:32:12');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
 VALUES (11, 'ADMIN', 5, 'demo:openconext:org:wolves', 3, 'urn:collab:person:surfnet.nl:wdoe');
 INSERT INTO `memberships` (`id`, `role`, `team_id`, `urn_team`, `person_id`, `urn_person`)
