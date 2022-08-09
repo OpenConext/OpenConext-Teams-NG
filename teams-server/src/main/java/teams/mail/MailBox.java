@@ -2,6 +2,7 @@ package teams.mail;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.MustacheFactory;
+import net.bytebuddy.asm.Advice;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import teams.domain.FederatedUser;
@@ -14,9 +15,11 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MailBox {
@@ -52,7 +55,9 @@ public class MailBox {
         variables.put(FEDERATED_USER, federatedUser);
         variables.put("invitation", invitation);
         if (invitation.getMembershipExpiryDate() != null) {
-            variables.put("membershipExpiryDate", new SimpleDateFormat("yyyy-MM-dd")
+            Locale locale = languageCode.equals(Language.DUTCH.getLanguageCode()) ? Locale.forLanguageTag("nl-NL") : Locale.ENGLISH;
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, locale);
+            variables.put("membershipExpiryDate", dateFormat
                     .format(Date.from(invitation.getMembershipExpiryDate())));
         }
         variables.put("invitationMessage", invitation.getLatestInvitationMessage());
