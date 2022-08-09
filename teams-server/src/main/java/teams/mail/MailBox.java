@@ -13,6 +13,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +25,10 @@ public class MailBox {
     private static final String BASE_URL = "baseUrl";
     private static final String FEDERATED_USER = "federatedUser";
 
-    private JavaMailSender mailSender;
-    private String baseUrl;
-    private String emailFrom;
-    private String productName;
+    private final JavaMailSender mailSender;
+    private final String baseUrl;
+    private final String emailFrom;
+    private final String productName;
 
     private final MustacheFactory mustacheFactory = new DefaultMustacheFactory();
 
@@ -49,6 +51,10 @@ public class MailBox {
         variables.put(TITLE, title);
         variables.put(FEDERATED_USER, federatedUser);
         variables.put("invitation", invitation);
+        if (invitation.getMembershipExpiryDate() != null) {
+            variables.put("membershipExpiryDate", new SimpleDateFormat("yyyy-MM-dd")
+                    .format(Date.from(invitation.getMembershipExpiryDate())));
+        }
         variables.put("invitationMessage", invitation.getLatestInvitationMessage());
         variables.put(BASE_URL, baseUrl);
         sendMail(

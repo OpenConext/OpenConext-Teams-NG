@@ -19,6 +19,13 @@
     account you are a member of the team.
 </p>
 
+{{#invitation.membershipExpiryDate}}
+<p>
+    If you accept the invitation, then your new membership of <strong>{{invitation.team.name}}</strong> will expire
+    at {{membershipExpiryDate}}.
+</p>
+{{/invitation.membershipExpiryDate}}
+
 <p>
     If you do not want to accept this invitation simply ignore this email.
     The invitation automatically expires after 30 days.
