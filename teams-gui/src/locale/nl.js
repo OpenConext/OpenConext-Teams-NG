@@ -69,6 +69,7 @@ I18n.translations.nl = {
     teamDetails: {
         members: "Leden",
         hideInvitees: "Verberg genodigden",
+        hideMembers: "Dit team geeft geen lidmaatschapsgegevens vrij",
         noInvitees: "Geen genodigden",
         inviteSent: "uitgenodigd",
         joinRequest: "toetredingsverzoek",

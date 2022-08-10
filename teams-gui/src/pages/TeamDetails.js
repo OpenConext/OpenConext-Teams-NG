@@ -780,8 +780,9 @@ const TeamDetail = ({user, showMembers = false}) => {
             {renderAlertBanners()}
             {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation && !showExternalTeams) && (
                 <div className="team-members">
-                    <h2>{I18n.t("teamDetails.members")} ({memberList.length})</h2>
-                    <span className="team-actions-bar">
+                    {!team.hideMembers && <h2>{I18n.t("teamDetails.members")} ({memberList.length})</h2>}
+                    {team.hideMembers && <h3>{I18n.t("teamDetails.hideMembers")}</h3>}
+                    {!team.hideMembers && <span className="team-actions-bar">
                         {renderFilterDropdown()}
                         <SearchBar
                             searchQuery={searchQuery}
@@ -818,7 +819,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                                          className="add-member-button"/>}
                             </span>
                         )}
-                    </span>
+                    </span>}
                     {renderMembersTable()}
                 </div>
             )}

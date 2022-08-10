@@ -29,6 +29,8 @@ public class TeamSummary {
 
     private boolean viewable;
 
+    private boolean hideMembers;
+
     private List<AdminMember> admins = new ArrayList<>();
 
     public TeamSummary(Team team, FederatedUser user, boolean includeAdmins) {
@@ -38,6 +40,7 @@ public class TeamSummary {
         this.membershipCount = team.getMembershipCount();
         this.description = team.getDescription();
         this.viewable = team.isViewable();
+        this.hideMembers = team.isHideMembers();
         Optional<Membership> membershipOptional = team.getMemberships()
                 .stream()
                 .filter(membership -> membership.getUrnPerson().equals(user.getUrn()))

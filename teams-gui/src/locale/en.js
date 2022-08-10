@@ -69,6 +69,7 @@ I18n.translations.en = {
     teamDetails: {
         members: "Members",
         hideInvitees: "Hide invitees",
+        hideMembers: "This team does not disclose membership information",
         noInvitees: "No invitees",
         inviteSent: "invite sent",
         joinRequest: "join request",
