@@ -57,7 +57,7 @@ div.checkbox {
     input[type="checkbox"]:checked + label span {
         border: 1px solid $primary-blue;
         background-color: $primary-blue;
-        border-radius: 2px;
+        border-radius: 3px;
         box-shadow: none;
         padding: 7px 4px 1px 4px;
         outline: none !important;
