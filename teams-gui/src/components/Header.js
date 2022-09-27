@@ -26,41 +26,44 @@ export const Header = ({user, toggleSuperAdminModus}) => {
 
 
     return (
-        <header className="header-container">
-            <div className="header">
-                <Link to="/" className="logo-container">
-                    <img src={surfLogo} alt="SURF"/>
-                    <span className="conext">CONEXT</span>
-                    <span className="idp-dashboard">Teams</span>
-                </Link>
-                {user.superAdmin &&
-                <CheckBox className="checkbox super-admin"
-                          onChange={doToggleSuperAdminModus}
-                          value={user.superAdminModus}
-                          name="super_admin"
-                          info={I18n.t("header.superAdmin.modus")}/>}
-                <div className="user-info">
-                    <div className="user">
-                        <span className="name">{user.person.name}</span>
-                    </div>
-                    <div className="user-toggle"
-                         onClick={() => setDroppedDown(!droppedDown)}
-                         tabIndex="1"
-                         onBlur={() => setTimeout(() => setDroppedDown(false), 750)}>
-                        <img src={droppedDown ? arrowUp : arrowDown} alt="drop"/>
-                    </div>
-                    {droppedDown && <div className="user-drop-down">
-                        <div>
-                            <span className="value">{user.person.email}</span>
-                        </div>
-                        <div>
-                            <span className="value">
+        <>
+            <div className="skiplink">
+                <a href="#content">Naar hoofdinhoud</a>
+            </div>
+            <header className="header-container">
+                <div className="header">
+                    <Link to="/" className="logo-container">
+                        <img src={surfLogo} alt="SURF"/>
+                        <span className="conext">CONEXT</span>
+                        <span className="idp-dashboard">Teams</span>
+                    </Link>
+                    {user.superAdmin &&
+                    <CheckBox className="checkbox super-admin"
+                              onChange={doToggleSuperAdminModus}
+                              value={user.superAdminModus}
+                              name="super_admin"
+                              info={I18n.t("header.superAdmin.modus")}/>}
+                    <nav aria-label="account" className="user-info">
+                        <button
+                            className="user"
+                            aria-expanded={droppedDown ? "true" : "false"}
+                            onKeyDown={e => e.key === "Escape" && setDroppedDown(false)}
+                            onBlur={() => setTimeout(() => setDroppedDown(false), 250)}
+                            onClick={() => setDroppedDown(!droppedDown)}>
+                                <span className="user text name">{user.person.name}</span>
+                            <div className="user-toggle">
+                                <img src={droppedDown ? arrowUp : arrowDown} alt="" aria-hidden="true"/>
+                            </div>
+                            <div className={`user-drop-down ${droppedDown ? "" : "visually-hidden"}`}>
+                                <span className="value">{user.person.email}</span>
+                                <span className="value">
                                 <a href="/logout" onClick={e => doLogOut(e)}>{I18n.t("profile.logout")}</a>
                             </span>
-                        </div>
-                    </div>}
+                            </div>
+                        </button>
+                    </nav>
                 </div>
-            </div>
-        </header>
+            </header>
+        </>
     );
 }

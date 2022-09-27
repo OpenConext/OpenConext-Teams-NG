@@ -26,7 +26,7 @@ const Flash = () => {
 
     return (
         <div className={`flash-container ${flash.className} ${flash.type}`}>
-            <img src={success} alt="info"/>
+            <img src={success} alt="" aria-hidden="true"/>
             <p className={`${flash.type}`}>{flash.msg}</p>
         </div>
     );

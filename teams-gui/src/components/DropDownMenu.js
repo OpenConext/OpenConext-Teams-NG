@@ -1,34 +1,62 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 
 import {ReactComponent as ArrowDown} from "../icons/arrow-down-1.svg";
 import {ReactComponent as ArrowUp} from "../icons/arrow-up-1.svg";
 import "./DropDownMenu.scss";
+import {stopEvent} from "../utils/utils";
 
 export const DropDownMenu = ({title, actions}) => {
     const [droppedDown, setDroppedDown] = useState(false);
+    const [activeItem, setActiveItme] = useState(-1);
+    const component = useRef(null);
 
     const performAction = (action) => {
         setDroppedDown(false);
         action.action();
+        component.current.focus();
     };
+
+    const buttonKeyDown = e => {
+        if (e.key === "ArrowDown") {
+            setDroppedDown(true);
+            setActiveItme(Math.min(activeItem + 1, actions.length - 1));
+        } else if (e.key === "ArrowUp") {
+            setDroppedDown(true);
+            setActiveItme(Math.max(activeItem - 1, 0));
+        } else if (e.key === "Escape") {
+            setDroppedDown(false);
+            setActiveItme(-1);
+        } else if ((e.key === "Enter" || e.key === " ") && activeItem !== -1 && droppedDown) {
+            setDroppedDown(false);
+            actions[activeItem].action();
+            stopEvent(e);
+            return false;
+        }
+    }
 
     return (
         <div className="dropdown-menu-container">
-            <div
+            <button
+                ref={component}
                 className={`dropdown-control ${droppedDown ? "focus":""}`}
-                onClick={() => setDroppedDown(!droppedDown)}
-                tabIndex={1}
+                onClick={() => {
+                    if (droppedDown) {
+                        setActiveItme(-1);
+                    }
+                    setDroppedDown(!droppedDown);
+                }}
+                onKeyDown={buttonKeyDown}
                 onBlur={() => setTimeout(() => setDroppedDown(false), 250)}
             >
                 <span>{title}</span>
                 {droppedDown ? <ArrowUp/> : <ArrowDown/>}
-            </div>
+            </button>
             {droppedDown && (
                 <div className="dropwdown-menu-items">
                     <ul className="dropdown-list">
-                        {actions.map((action) => (
+                        {actions.map((action, index) => (
                             <li
-                                className="dropdown-list-items"
+                                className={`dropdown-list-items ${index === activeItem ? "active" : ""}`}
                                 key={action.name}
                                 onClick={() => performAction(action)}
                             >

@@ -6,7 +6,7 @@ const ErrorIndicator = ({msg, standalone = false}) => {
     const className = `error-indication ${standalone ? "standalone" : ""}`;
     return (
         <span className={className}>
-            <img src={critical} alt="critical"/>
+            <img src={critical} alt="" aria-hidden="true"/>
             <span dangerouslySetInnerHTML={{__html: msg}}/>
         </span>);
 }

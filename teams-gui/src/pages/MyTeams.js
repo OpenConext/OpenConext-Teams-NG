@@ -59,7 +59,6 @@ export const MyTeams = ({user}) => {
                 label: `${I18n.t(`myteams.filters.allteams`)} (${allTeams.length})`
             });
             setLoaded(true);
-            setTimeout(() => searchInputRef.current.focus(), 500);
         });
     }, []);
 
@@ -153,9 +152,10 @@ export const MyTeams = ({user}) => {
         })
 
         return (
-            <span className={"filter-dropdown-span"}>
-                <DropDownMenu title={teamsFilter.label} actions={options.filter(option => option.count !== 0)}/>
-            </span>
+            <div className={"filter-dropdown-container"}>
+                <DropDownMenu title={teamsFilter.label}
+                              actions={options.filter(option => option.count !== 0)}/>
+            </div>
         )
     }
 
@@ -228,11 +228,11 @@ export const MyTeams = ({user}) => {
             return <SpinnerField/>;
         }
         return (
-            <Tabs>
-                <Tab title={I18n.t(`myteams.tabs.myTeams`)}>
+            <Tabs selectTab={window.location.href.indexOf("public") > 0 ? 1 : 0}>
+                <Tab title={I18n.t(`myteams.tabs.myTeams`)} path={"/my-teams"}>
                     <Page>
-                        <h2>{I18n.t("myteams.tabs.myTeams")}</h2>
-                        <span className="team-actions-bar">
+                        <h1>{I18n.t("myteams.tabs.myTeams")}</h1>
+                        <div className="team-actions-bar">
                         {renderFilterDropdown()}
                             <SearchBar searchQuery={searchQuery}
                                        setSearchQuery={setSearchQuery}
@@ -240,7 +240,7 @@ export const MyTeams = ({user}) => {
                             {!user.person.guest && <Button onClick={() => navigate("/new-team")}
                                                            txt={I18n.t(`myteams.new_team`)}
                                                            className="new-team-button"/>}
-                        </span>
+                        </div>
 
                         {confirmationOpen && <ConfirmationDialog isOpen={confirmationOpen}
                                                                  cancel={confirmation.cancel}
@@ -260,7 +260,7 @@ export const MyTeams = ({user}) => {
                         }
                     </Page>
                 </Tab>
-                <Tab title={I18n.t(`myteams.tabs.publicTeams`)}>
+                <Tab title={I18n.t(`myteams.tabs.publicTeams`)} path={"/public-teams"}>
                     <Page>
                         <PublicTeamsTab myteams={teams}/>
                     </Page>

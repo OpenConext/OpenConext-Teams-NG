@@ -24,7 +24,7 @@ export default function TeamWelcomeDialog({team, invitation, accept, denied, isO
             </section>
             {canBeAccepted && <section className={"team-welcome-role"}>
                 {canBeAccepted && <>
-                    <img src={informational} alt="info"/>
+                    <img src={informational} alt="" aria-hidden="true"/>
                     <span>{I18n.t("teamWelcomeDialog.header", {role: I18n.t(`roles.${invitation.intendedRole.toLowerCase()}`)})}</span>
                 </>}
             </section>}

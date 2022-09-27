@@ -10,39 +10,44 @@ export const Footer = ({user}) => {
         stopEvent(e);
         Cookies.set("lang", lang, {expires: 356, secure: document.location.protocol.endsWith("https:")});
         I18n.locale = lang;
+        document.documentElement.setAttribute("lang", lang);
         const urlSearchParams = new URLSearchParams(window.location.search);
         urlSearchParams.set("lang", lang);
         window.location.search = urlSearchParams.toString();
     };
 
     return (
-        <footer className="footer-container">
+        <nav aria-label="site info" className="footer-container">
             <div className="footer">
-                <div className="info">
-                    <span dangerouslySetInnerHTML={{
+                <ul className="info">
+                    <li dangerouslySetInnerHTML={{
                         __html: I18n.t("footer.faq")
                     }}/>
-                    <span dangerouslySetInnerHTML={{
+                    <li dangerouslySetInnerHTML={{
                         __html: I18n.t("footer.terms")
                     }}/>
-                    <span dangerouslySetInnerHTML={{
+                    <li dangerouslySetInnerHTML={{
                         __html: I18n.t("footer.privacy")
                     }}/>
-                </div>
-                <div className="lang">
-                    {user.config.supportedLanguageCodes.split(",")
-                        .map(lang => lang.trim())
-                        .map(lang => <a key={lang} className={I18n.currentLocale() === lang ? "active" : ""}
-                                        href={`/${lang}`} title={I18n.t("select_locale", {locale: lang})}
-                                        onClick={changeLanguage(lang)}>
-                            {I18n.t("code", {locale: lang})}
-                        </a>)
-                    }
-                </div>
+                </ul>
+                <nav className="lang" aria-label="lang">
+                    <ul>
+                        {user.config.supportedLanguageCodes.split(",")
+                            .map(lang => lang.trim())
+                            .map(lang => <li key={lang}>
+                                <a className={I18n.currentLocale() === lang ? "active" : ""}
+                                   hrefLang={`${lang}`}
+                                   href={`/${lang}`}
+                                   onClick={changeLanguage(lang)}>
+                                    {I18n.t("code", {locale: lang})}
+                                </a></li>)
+                        }
+                    </ul>
+                </nav>
                 <div className="info right">
-                    <img src={logo} alt="logo"/>
+                    <img src={logo} alt="SURF Logo" aria-hidden="true"/>
                 </div>
             </div>
-        </footer>
+        </nav>
     );
 }

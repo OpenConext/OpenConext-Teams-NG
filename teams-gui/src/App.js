@@ -1,6 +1,6 @@
 import './App.scss';
 import {useEffect, useState} from "react";
-import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
+import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import {getUser} from "./api";
 import {Header} from "./components/Header";
@@ -12,6 +12,7 @@ import Flash from "./flash/Flash";
 import {JoinRequest} from "./pages/JoinRequest";
 import {setSuperAdmin} from "./store/store";
 import {MissingAttributes} from "./pages/MissingAttributes";
+import I18n from "i18n-js";
 
 const App = () => {
 
@@ -19,6 +20,18 @@ const App = () => {
     const [user, setUser] = useState({person: {}, config: {supportedLanguageCodes: "nl,en"}});
     const [missingAttributes, setMissingAttributes] = useState({});
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const pathname = location.pathname;
+        if (pathname) {
+            const end = pathname.indexOf("/", 1);
+            const path = pathname.substring(1, end === -1 ? pathname.length : end);
+            const headerTitles = I18n.translations[I18n.locale].headerTitles;
+            const subTitle = headerTitles[path];
+            document.title = I18n.t("headerTitles.index", {page: subTitle || ""});
+        }
+    }, [location]);
 
     useEffect(() => {
         getUser()
@@ -60,10 +73,11 @@ const App = () => {
         <div className="teams">
             <Flash/>
             <Header user={user} toggleSuperAdminModus={toggleSuperAdminModus}/>
-            <main>
+            <main id={"content"}>
                 {<Routes>
                     <Route path="/" element={<Navigate replace to="my-teams"/>}/>
                     <Route path={"/my-teams"} element={<MyTeams user={user}/>}/>
+                    <Route path={"/public-teams"} element={<MyTeams user={user}/>}/>
                     <Route path={"/new-team"} element={<NewTeam user={user}/>}/>
                     <Route path={"/edit-team/:teamId"} element={<NewTeam user={user}/>}/>
                     <Route path={"/team-details/:teamId"} element={<TeamDetails user={user}/>}/>

@@ -22,9 +22,9 @@ export const PublicTeamsTab = ({user, myteams}) => {
 
     const searchInputRef = useRef(null);
 
-    useEffect(() => {
-        searchInputRef.current.focus();
-    }, []);
+    // useEffect(() => {
+    //     searchInputRef.current.focus();
+    // }, []);
 
     const updateDisplayedTeams = useCallback(() => {
         const toDisplay = [...teams];
@@ -111,7 +111,7 @@ export const PublicTeamsTab = ({user, myteams}) => {
 
             {(!searching && displayedTeams.length === 11) &&
             <div className="more-results">
-                <img src={informational} alt="info"/>
+                <img src={informational} alt="" aria-hidden="true"/>
                 <span>{I18n.t("publicTeams.moreResults")}</span>
             </div>}
             {(!searching && displayedTeams.length > 0) &&

@@ -16,16 +16,18 @@ export const BreadCrumb = ({paths}) => {
     }
 
     return (
-        <div className="bread-crumb">
-            {paths.map((path, index) => {
-                const last = isLast(index);
-                return <div key={index} className={`path ${isLast(index) ? "last" : ""}`}>
-                    {!last && getLink(path)}
-                    {!last && <img src={arrowRight} alt={`/${path.tp}`}/>}
-                    {last && <span>{path.name}</span>}
-                </div>;
-            })}
-        </div>
+        <nav className="bread-crumb" aria-label="breadcrumb">
+            <ol>
+                {paths.map((path, index) => {
+                    const last = isLast(index);
+                    return <li key={index} className={`path ${isLast(index) ? "last" : ""}`}>
+                        {!last && getLink(path)}
+                        {!last && <img src={arrowRight} alt="" aria-hidden="true"/>}
+                        {last && <span aria-current="page">{path.name}</span>}
+                    </li>;
+                })}
+            </ol>
+        </nav>
     );
 
 }

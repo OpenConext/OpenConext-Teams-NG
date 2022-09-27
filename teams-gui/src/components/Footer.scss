@@ -1,7 +1,7 @@
 @import "../styles/vars.scss";
 @import "../styles/responsive";
 
-footer.footer-container {
+nav.footer-container {
     @extend .component-container;
     background-color: $tertiary-grey;
     margin-top: auto;
@@ -11,9 +11,22 @@ footer.footer-container {
         justify-content: space-between;
         align-items: center;
 
-        div.info {
+        a {
+            color: $hover-blue;
+            &:hover {
+                color: darken($hover-blue, 15%);
+            }
+        }
+
+        ul.info {
             display: flex;
             flex-direction: column;
+
+            li {
+                &:not(&:last-child) {
+                    margin-bottom: 6px;
+                }
+            }
 
             &.right {
                 img {
@@ -23,22 +36,25 @@ footer.footer-container {
             }
         }
 
-        div.lang {
+        nav.lang ul {
             display: flex;
             flex-direction: row;
 
-            a {
+            li {
                 &:first-child {
                     border-right: 1px solid black;
                     padding-right: 10px;
                 }
+
                 &:last-child {
                     padding-left: 10px;
                 }
+
                 &:not(&:last-child) {
                     border-right: 1px solid black;
                     padding-right: 10px;
                 }
+
                 &.active {
                     color: black;
                     font-weight: bold;

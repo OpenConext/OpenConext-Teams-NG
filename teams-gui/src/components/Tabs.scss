@@ -2,47 +2,56 @@
 @import "../styles/responsive";
 
 .tabs {
-  width: 100%;
+    width: 100%;
 }
 
 div.tabs-nav-wrapper {
-  display: flex;
-  padding-top: 40px;
-  background-color: $tertiary-grey;
-  justify-content: center;
+    display: flex;
+    padding-top: 40px;
+    background-color: $tertiary-grey;
+    justify-content: center;
 }
 
 ul.nav {
-  @extend .component-container;
-  width: $width-app;
-  display: flex;
-  align-items: center;
-  padding-left: 0;
-  column-gap: 10px;
+    @extend .component-container;
+    width: $width-app;
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    column-gap: 10px;
 
-  @media (max-width: $width-app) {
-    width: 90%;
-  }
-
-  li {
-    background-color: $quinary-grey;
-    border-top: 3px solid $quinary-grey;
-    padding: 0.45rem 1rem 0.5rem 1rem;
-    list-style: none;
-    text-align: center;
-    cursor: pointer;
-
-    &:hover {
-      background: $primary-grey;
+    @media (max-width: $width-app) {
+        width: 90%;
     }
 
-    &.active {
-      background: white;
-      border-top: 3px solid $primary-green;
-      cursor: default;
+    li {
+        background-color: $quinary-grey;
+        border-top: 3px solid $quinary-grey;
+        padding: 0.45rem 1rem 0.5rem 1rem;
+        list-style: none;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover {
+            background: $primary-grey;
+        }
+
+        &.active {
+            background: white;
+            border-top: 3px solid $primary-green;
+            cursor: default;
+        }
     }
-  }
+    a.tab-link {
+        font-size: 18px;
+        line-height: 26px;
+        font-weight: 600;
+        font-family: Nunito, sans-serif;
+        text-decoration: none;
+        color: black;
+    }
 }
+
 div.tab-content {
-  padding-top: 20px;
+    padding-top: 20px;
 }

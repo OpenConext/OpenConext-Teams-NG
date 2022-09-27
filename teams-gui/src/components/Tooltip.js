@@ -10,7 +10,7 @@ const TooltipIcon = ({tooltip, name, label}) => {
                  <Tippy content={<span dangerouslySetInnerHTML={{
                      __html: tooltip
                  }}/>}>
-                    <img src={informational} alt="info"/>
+                    <img src={informational} alt="" aria-hidden="true"/>
                 </Tippy>
             </span>
     </>

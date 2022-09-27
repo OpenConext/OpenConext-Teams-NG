@@ -1,12 +1,20 @@
 @import "./vars.scss";
 
 input::placeholder, textarea::placeholder {
-  color: #919191;
+    color: #333333;
+}
+
+.visually-hidden {
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+    width: 0;
+    font-size: 0;
 }
 
 textarea {
-  font-family: "Source Sans Pro", sans-serif !important;
-  background-color: white;
-  font-size: 16px;
+    font-family: "Source Sans Pro", sans-serif !important;
+    background-color: white;
+    font-size: 16px;
 }
 

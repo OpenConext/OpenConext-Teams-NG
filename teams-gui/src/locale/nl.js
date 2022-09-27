@@ -6,7 +6,19 @@ I18n.translations.nl = {
             modus: "Super-Admin modus ingeschakeld"
         }
     },
-
+    headerTitles: {
+        index: "{{page}} | SURFConext teams",
+        "team-details": "Team details",
+        "public-teams": "Publieke teams",
+        "my-teams": "Mijn teams",
+        "new-team": "Nieuw team",
+        "edit-team": "Bewerk team",
+        "invitation": "Uitnodiging",
+        "public": "Publiek team",
+        "teams": "Toetredingsverzoek",
+        "join-request": "Toetredingsverzoek",
+        "missing-attributes": "Missende attributes",
+    },
     fileUploadDialog: {
         title: "Upload bestand",
         buttons: {
@@ -302,9 +314,9 @@ I18n.translations.nl = {
         }
     },
     footer: {
-        faq: "<a href='https://support.surfconext.nl/teams' target='_blank' referrerpolicy='origin'>FAQ</a>",
-        terms: "<a href='https://support.surfconext.nl/terms-nl' target='_blank' referrerpolicy='origin'>Gebruiksvoorwaarden</a>",
-        privacy: "<a href='https://support.surfconext.nl/privacy-nl' target='_blank' referrerpolicy='origin'>Privacybeleid</a>"
+        faq: "<a href='https://support.surfconext.nl/teams' referrerpolicy='origin'>FAQ</a>",
+        terms: "<a href='https://support.surfconext.nl/terms-nl' referrerpolicy='origin'>Gebruiksvoorwaarden</a>",
+        privacy: "<a href='https://support.surfconext.nl/privacy-nl' referrerpolicy='origin'>Privacybeleid</a>"
     },
     teamWelcomeDialog: {
         title: "Welkom bij {{name}}",

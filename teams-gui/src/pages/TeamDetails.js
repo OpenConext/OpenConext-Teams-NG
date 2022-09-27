@@ -178,7 +178,6 @@ const TeamDetail = ({user, showMembers = false}) => {
                 setMembersList(members);
                 setUserRoleInTeam(userMembershipRole);
                 setLoaded(true);
-                setTimeout(() => searchInputRef.current && searchInputRef.current.focus(), 750);
             } else {
                 navigate(`/join-request/${params.teamId}`);
             }
@@ -306,10 +305,10 @@ const TeamDetail = ({user, showMembers = false}) => {
         });
 
         return (
-            <span className="filter-dropdown-span">
+            <div className="filter-dropdown-container">
                 <DropDownMenu title={membersFilter.label}
                               actions={options.filter((option) => option.count !== 0)}/>
-            </span>);
+            </div>);
     };
 
     const doAcceptInvitation = () => {

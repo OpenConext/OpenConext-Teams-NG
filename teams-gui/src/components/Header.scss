@@ -1,6 +1,22 @@
 @import "../styles/vars.scss";
 @import "../styles/responsive";
 
+.skiplink a {
+    position: absolute;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+}
+
+.skiplinks a:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    clip: auto;
+}
+
 header.header-container {
     @extend .component-container;
     background-color: $primary-blue;
@@ -48,11 +64,29 @@ header.header-container {
             margin: auto;
         }
 
-        div.user-info {
+        nav.user-info {
             margin-left: auto;
             display: flex;
-            align-items: center;
             position: relative;
+
+            button {
+                color: white;
+                cursor: pointer;
+                border: none;
+                background-color: transparent;
+                display: flex;
+                align-items: center;
+
+                &:focus {
+                    border: 1px solid white;
+                }
+
+                span.text {
+                    font-weight: 700;
+                    font-size: 16px;
+                    margin-left: auto;
+                }
+            }
 
             div.user {
                 display: flex;
@@ -61,12 +95,9 @@ header.header-container {
                 span.name {
                     font-weight: bold;
                     margin-left: auto;
+                    margin-bottom: 5px;
                 }
 
-                span.role {
-                    color: $light-blue;
-                    margin-left: auto;
-                }
             }
 
             div.user-toggle {
@@ -95,14 +126,12 @@ header.header-container {
                 border-radius: 4px;
                 box-shadow: 1px 1px 4px rgba(black, .3);
                 font-size: 14px;
+                display: flex;
+                flex-direction: column;
 
-                div {
+                span.value {
+                    margin-left: auto;
                     margin-bottom: 5px;
-                    display: flex;
-
-                    span.value {
-                        margin-left: auto;
-                    }
                 }
             }
 

@@ -3,7 +3,7 @@
 
 div.my-teams-container {
 
-    h2 {
+    h1, h2 {
         padding: 10px 10px 10px 0;
     }
 
@@ -17,7 +17,7 @@ div.my-teams-container {
             flex-direction: column;
         }
 
-        .filter-dropdown-span {
+        .filter-dropdown-container {
             width: 250px;
             margin-right: 30px;
         }

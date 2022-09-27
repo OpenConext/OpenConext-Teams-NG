@@ -8,8 +8,11 @@ export const SearchBar = ({searchQuery, setSearchQuery, searchInputRef}) => {
 
     return (
         <span className={`search-bar ${hasFocus ? "focus" : ""}`}>
-            <input placeholder={I18n.t("forms.search")}
+            <label htmlFor={"search"} className="visually-hidden">Search</label>
+            <input id={"search"}
+                   placeholder={I18n.t("forms.search")}
                    value={searchQuery}
+                   type="search"
                    onBlur={() => setFocus(false)}
                    onFocus={() => setFocus(true)}
                    onChange={e => setSearchQuery(e.target.value)}

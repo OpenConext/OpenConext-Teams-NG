@@ -1,15 +1,17 @@
 import React, {useState} from "react";
 import "./Tabs.scss";
+import {useNavigate} from "react-router-dom";
+import {stopEvent} from "../utils/utils";
 
-export const Tab = ({title, children}) => {
+export const Tab = ({children}) => {
     return (
         {children}
     );
 };
 
 
-export const Tabs = ({children}) => {
-    const [activeTab, setActiveTab] = useState(0);
+export const Tabs = ({children, selectTab = 0}) => {
+    const [activeTab, setActiveTab] = useState(selectTab);
     return (
         <div className="tabs">
             <div className={"tabs-nav-wrapper"}>
@@ -18,6 +20,7 @@ export const Tabs = ({children}) => {
                         return <TabNavItem key={index}
                                            id={index}
                                            title={tab.props.title}
+                                           path={tab.props.path}
                                            activeTab={activeTab}
                                            setActiveTab={setActiveTab}/>
                     })}
@@ -25,25 +28,33 @@ export const Tabs = ({children}) => {
             </div>
 
             <div className="tab-display">
-                {children.map((tab, index) => {
-                    return <TabContent key={index} id={index} activeTab={activeTab}>
+                {children.map((tab, index) =>
+                    <TabContent key={index} id={index} activeTab={activeTab}>
                         {tab.props.children}
                     </TabContent>
-                })}
+                )}
             </div>
         </div>
     );
 };
 
-const TabNavItem = ({id, title, activeTab, setActiveTab}) => {
+const TabNavItem = ({id, title, path, activeTab, setActiveTab, moveFocus}) => {
+    const navigate = useNavigate();
 
-    const handleClick = () => {
+    const handleClick = (e, nextId = id) => {
+        stopEvent(e);
         setActiveTab(id);
+        if (path) {
+            navigate(path);
+        }
     };
 
     return (
         <li onClick={handleClick} className={activeTab === id ? "active" : ""}>
-            <h3>{title}</h3>
+            <a className={"tab-link"}
+               href={`/${title}`}
+               onKeyDown={e => e.key === " " && handleClick()}
+               onClick={handleClick}>{title}</a>
         </li>
     );
 };
