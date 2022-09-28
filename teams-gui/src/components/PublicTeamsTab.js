@@ -22,10 +22,6 @@ export const PublicTeamsTab = ({user, myteams}) => {
 
     const searchInputRef = useRef(null);
 
-    // useEffect(() => {
-    //     searchInputRef.current.focus();
-    // }, []);
-
     const updateDisplayedTeams = useCallback(() => {
         const toDisplay = [...teams];
         toDisplay.sort((a, b) => (a[sort.field] > b[sort.field]) ? 1 : -1);
@@ -69,6 +65,7 @@ export const PublicTeamsTab = ({user, myteams}) => {
         {
             name: "join",
             displayedName: I18n.t(`publicTeams.columns.join`),
+            emptyHeader: true,
             sortable: false
         }
     ]
@@ -87,12 +84,16 @@ export const PublicTeamsTab = ({user, myteams}) => {
                 <td data-label={"description"}>
                     <span className="team-description">
                         {shouldTruncateDescription ? description.substring(0, 50) + "..." : description}
-                        {shouldTruncateDescription && <TooltipIcon tooltip={description} name={`desc${index}}`}/>}
+                        {shouldTruncateDescription && <TooltipIcon tooltip={description}
+                                                                   name={`desc${index}}`}/>}
                     </span>
                 </td>
                 <td data-label={"join"}>
                     {(!isMember && !isSuperAdmin) &&
-                    <Link to={`/join-request/${team.id}`}>{I18n.t("publicTeams.joinRequest")}</Link>}
+                    <Link to={`/join-request/${team.id}`}>
+                        {I18n.t("publicTeams.joinRequest")}
+                        <span className={"visually-hidden"}> to team {team.name}</span>
+                    </Link>}
                     {(!isMember && isSuperAdmin) && I18n.t("publicTeams.superAdmin")}
                     {(isMember) && I18n.t("publicTeams.alreadyMember")}
                 </td>
@@ -103,7 +104,9 @@ export const PublicTeamsTab = ({user, myteams}) => {
         <div className="public-teams-tab">
             <h2>{I18n.t("myteams.tabs.publicTeams")}</h2>
             <span className="public-teams-actions-bar">
-                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} searchInputRef={searchInputRef}/>
+                <SearchBar searchQuery={searchQuery}
+                           setSearchQuery={setSearchQuery}
+                           searchInputRef={searchInputRef}/>
             </span>
             {searching && <SpinnerField/>}
             {(!searching && teams.length === 0 && debouncedSearchQuery.trim().length > 0) &&
@@ -112,12 +115,16 @@ export const PublicTeamsTab = ({user, myteams}) => {
             {(!searching && displayedTeams.length === 11) &&
             <div className="more-results">
                 <img src={informational} alt="" aria-hidden="true"/>
-                <span>{I18n.t("publicTeams.moreResults")}</span>
+                <span id="search-box">{I18n.t("publicTeams.moreResults")}</span>
             </div>}
             {(!searching && displayedTeams.length > 0) &&
-            <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
-                {displayedTeams.map((team, index) => renderPublicTeamsRow(team, index))}
-            </SortableTable>}
+            <div id="announce" aria-busy={searching} aria-live="polite">
+                <SortableTable columns={columns}
+                               currentSort={sort}
+                               setSort={setSort}>
+                    {displayedTeams.map((team, index) => renderPublicTeamsRow(team, index))}
+                </SortableTable>
+            </div>}
         </div>
     )
 }

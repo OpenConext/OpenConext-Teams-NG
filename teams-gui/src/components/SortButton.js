@@ -5,18 +5,18 @@ import "./SortButton.scss";
 
 
 export const SortButton = ({header, currentSort}) => {
-    if (currentSort.field !== header.sortField) {
-        return null;
-    }
+    const passive = currentSort.field !== header.sortField;
+
     const isAscending = currentSort.direction === "ascending";
     return (
-        <div className="sort-button-container">
-            <div className="up-caret-container">
+        <button className={`sort-button-container ${passive ? "passive" : ""}`}>
+            <span className="visually-hidden">{`Sort ${header.sortField} ${isAscending ? "Down": "Up"}`}</span>
+            <div className="up-caret-container" aria-hidden="true">
                 {!isAscending && <CaretUp className="up-caret"/>}
             </div>
-            <div className="down-caret-container">
+            <div className="down-caret-container" aria-hidden="true">
                 {isAscending && <CaretDown className="down-caret"/>}
             </div>
-        </div>
+        </button>
     )
 }

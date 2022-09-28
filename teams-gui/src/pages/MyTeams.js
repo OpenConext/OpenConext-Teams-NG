@@ -186,11 +186,18 @@ export const MyTeams = ({user}) => {
         if (team.role === "JOINREQUEST") {
             return I18n.t("myteams.joinRequest");
         }
-        return <Link to={`/team-details/${team.id}?add-members=true`}>{I18n.t("myteams.add_members")}</Link>
+        return <Link to={`/team-details/${team.id}?add-members=true`}>
+            {I18n.t("myteams.add_members")}
+            <span className={"visually-hidden"}> to team {team.name}</span>
+        </Link>
     }
 
     const renderDeleteButton = team => {
-        const icon = <span className="bin-icon" onClick={() => processDelete(team, true)}><BinIcon/></span>
+        const icon = <button className="bin-icon"
+                             aria-hidden="true"
+                             onClick={() => processDelete(team, true)}><BinIcon/>
+            <span className="visually-hidden">Remove team {team.name}</span>
+        </button>
         return (<>{[ROLES.OWNER, ROLES.ADMIN, "JOINREQUEST"].includes(team.role) ? icon : I18n.t("myteams.empty")}</>)
     }
 
@@ -211,16 +218,19 @@ export const MyTeams = ({user}) => {
             {
                 name: "private",
                 displayedName: I18n.t(`myteams.columns.private`),
+                emptyHeader: true,
                 sortable: false
             },
             {
                 name: "member",
                 displayedName: I18n.t(`myteams.columns.member`),
+                emptyHeader: true,
                 sortable: false
             },
             {
                 name: "bin",
                 displayedName: I18n.t(`myteams.columns.bin`),
+                emptyHeader: true,
                 sortable: false
             }
         ]

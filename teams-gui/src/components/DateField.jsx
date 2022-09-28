@@ -70,7 +70,7 @@ export const DateField = ({
                     maxDate={maxDate}
                     minDate={minDate}
                 />
-                <CalendarIcon onClick={toggle}/>
+                <button onClick={toggle} className={"calendar-icon-container"}><CalendarIcon/></button>
             </label>
         </div>
     );

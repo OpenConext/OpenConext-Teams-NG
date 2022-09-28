@@ -5,6 +5,16 @@
     position: relative;
     flex-direction: column;
 
+    button.calendar-icon-container {
+        border: none;
+        background-color: transparent;
+        width: 34px;
+        position: absolute;
+        right: 13px;
+        top: 8px;
+        height: 36px;
+    }
+
     label.date-picker-container {
         display: flex;
         width: 100%;
@@ -17,9 +27,6 @@
         }
 
         svg.calendar-alt {
-            position: absolute;
-            right: 12px;
-            top: 12px;
             color: $primary-blue;
             cursor: pointer;
             width: 20px;

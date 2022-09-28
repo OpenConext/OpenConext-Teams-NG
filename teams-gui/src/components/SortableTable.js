@@ -15,10 +15,11 @@ const renderHeader = (column, currentSort, setSort) => {
 
     return (
         <th className={column.name} key={column.name} onClick={handleSort}>
-            <div className={`header-wrapper ${column.sortable ? "sortable" : ""}`}>
+            {column.emptyHeader && <span className={"visually-hidden"}>{column.displayedName}</span> }
+            {!column.emptyHeader && <div className={`header-wrapper ${column.sortable ? "sortable" : ""}`}>
                 {column.displayedName}
                 {column.sortable ? <SortButton header={column} currentSort={currentSort}/> : null}
-            </div>
+            </div>}
         </th>)
 }
 

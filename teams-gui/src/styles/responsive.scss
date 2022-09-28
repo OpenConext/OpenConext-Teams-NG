@@ -16,7 +16,7 @@ table {
   @media (max-width: $width-app) {
 
     thead {
-      display: none;
+      visibility: hidden;
     }
 
     tr {

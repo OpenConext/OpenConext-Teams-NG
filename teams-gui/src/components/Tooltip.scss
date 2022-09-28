@@ -6,6 +6,11 @@ span.tool-tip-section {
     cursor: pointer;
     padding: 0 4px;
 
+    button {
+        background-color: transparent;
+        border: none;
+    }
+
     label {
         display: inline-block;
         margin: 12px 0 8px 0;

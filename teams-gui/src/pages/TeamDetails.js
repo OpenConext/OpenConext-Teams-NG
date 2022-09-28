@@ -96,6 +96,7 @@ const TeamDetail = ({user, showMembers = false}) => {
         setShowAddMembersForm(false);
         setShowAddAdminsButton(true);
         setIsNewTeam(false);
+        window.scrollTo(0, 0);
     };
 
     useEffect(() => {
@@ -365,12 +366,13 @@ const TeamDetail = ({user, showMembers = false}) => {
 
     const renderDeleteButton = member => {
         const icon = (
-            <span
+            <button
                 className="bin-icon"
-                onClick={() => processRemoveMember(member, true)}
-            >
+                aria-hidden="true"
+                onClick={() => processRemoveMember(member, true)}>
         <BinIcon/>
-      </span>
+                <span className="visually-hidden">Remove member {member.name}</span>
+      </button>
         );
         return (
             <>{[ROLES.OWNER, ROLES.ADMIN].includes(userRoleInTeam) ? icon : I18n.t("myteams.empty")} </>
@@ -412,6 +414,7 @@ const TeamDetail = ({user, showMembers = false}) => {
             {
                 name: "bin",
                 displayedName: I18n.t(`teamDetails.columns.bin`),
+                emptyHeader: true,
                 sortable: false,
             },
         ];

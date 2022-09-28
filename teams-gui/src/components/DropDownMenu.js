@@ -7,7 +7,7 @@ import {stopEvent} from "../utils/utils";
 
 export const DropDownMenu = ({title, actions}) => {
     const [droppedDown, setDroppedDown] = useState(false);
-    const [activeItem, setActiveItme] = useState(-1);
+    const [activeItem, setActiveItem] = useState(-1);
     const component = useRef(null);
 
     const performAction = (action) => {
@@ -19,13 +19,13 @@ export const DropDownMenu = ({title, actions}) => {
     const buttonKeyDown = e => {
         if (e.key === "ArrowDown") {
             setDroppedDown(true);
-            setActiveItme(Math.min(activeItem + 1, actions.length - 1));
+            setActiveItem(Math.min(activeItem + 1, actions.length - 1));
         } else if (e.key === "ArrowUp") {
             setDroppedDown(true);
-            setActiveItme(Math.max(activeItem - 1, 0));
+            setActiveItem(Math.max(activeItem - 1, 0));
         } else if (e.key === "Escape") {
             setDroppedDown(false);
-            setActiveItme(-1);
+            setActiveItem(-1);
         } else if ((e.key === "Enter" || e.key === " ") && activeItem !== -1 && droppedDown) {
             setDroppedDown(false);
             actions[activeItem].action();
@@ -41,7 +41,7 @@ export const DropDownMenu = ({title, actions}) => {
                 className={`dropdown-control ${droppedDown ? "focus":""}`}
                 onClick={() => {
                     if (droppedDown) {
-                        setActiveItme(-1);
+                        setActiveItem(-1);
                     }
                     setDroppedDown(!droppedDown);
                 }}

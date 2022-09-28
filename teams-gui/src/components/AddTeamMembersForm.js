@@ -69,7 +69,8 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
     return (
         <div className="add-members-form-container">
             <div className="add-emails-wrapper">
-                <h3>{I18n.t("teamDetails.addMembers.headers.addMembersHeader")}</h3>
+                <label className={"header"}
+                       htmlFor={"email-field"}>{I18n.t("teamDetails.addMembers.headers.addMembersHeader")}</label>
                 <EmailField emails={emails}
                             addEmail={addEmail}
                             removeMail={removeMail}
@@ -78,27 +79,31 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
                             pinnedEmails={[]}/>
             </div>
             <div className="add-emails-wrapper">
-                <h3>{I18n.t("teamDetails.addMembers.headers.roleHeader")}</h3>
+                <label className={"header"}
+                       htmlFor={"select-role"}>{I18n.t("teamDetails.addMembers.headers.roleHeader")}</label>
                 <Select className="select-role"
                         onChange={onChangeRole}
                         value={role}
+                        id={"select-role"}
                         isDisabled={roleOptions().length === 1}
                         options={roleOptions()}
                 />
             </div>
             <div className="extra-info-header">
-                <h3>{I18n.t("teamDetails.addMembers.headers.additionalInformationHeader")}</h3>
+                <label htmlFor={"custom-message-input"}
+                    className={"header"}>{I18n.t("teamDetails.addMembers.headers.additionalInformationHeader")}</label>
                 <small>{I18n.t("teamDetails.addMembers.invitationExpiry")}</small>
             </div>
             <textarea className="custom-message-input"
+                      id={"custom-message-input"}
                       placeholder={I18n.t("teamDetails.addMembers.placeholders.customMessage")}
                       onChange={(e) => setCustomMessage(e.target.value)}
                       value={customMessage}/>
             <div className="extra-info-header">
-                <h3>
+                <label className={"header"}>
                     {I18n.t("teamDetails.addMembers.expiryDate")}<Tooltip
                     tooltip={I18n.t("teamDetails.addMembers.expiryDateTooltip")}/>
-                </h3>
+                </label>
             </div>
             <DateField onChange={setExpiryDate}
                        value={expiryDate}
@@ -106,7 +111,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
                        minDate={addDays(30)}
             />
             <div className="language-selection-wrapper">
-                <h3>{I18n.t("teamDetails.addMembers.headers.invitationLanguageHeader")}</h3>
+                <label className={"header"}>{I18n.t("teamDetails.addMembers.headers.invitationLanguageHeader")}</label>
                 <div className="language-selection-buttons">
                     <label>
                         <input type="radio"

@@ -12,8 +12,13 @@ div.add-members-form-container {
     }
 
 
-    h3 {
+    label.header {
         margin: 40px 0 15px 0;
+        font-size: 18px;
+        line-height: 26px;
+        font-weight: 600;
+        font-family: Nunito, sans-serif;
+        display: block;
     }
 
     div.add-emails-wrapper {

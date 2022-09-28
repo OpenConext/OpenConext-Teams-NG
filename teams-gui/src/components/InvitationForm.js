@@ -89,7 +89,10 @@ export const InvitationForm = ({setShowForm, invitation, updateTeam}) => {
                 />
                 <div className="submit-button-wrapper">
                     <Button
-                        onClick={() => setShowForm(false)}
+                        onClick={() => {
+                            setShowForm(false);
+                            window.scrollTo(0, 0);
+                        }}
                         className={"cancel-invitation"}
                         txt={I18n.t("forms.cancel")}
                         cancelButton={true}

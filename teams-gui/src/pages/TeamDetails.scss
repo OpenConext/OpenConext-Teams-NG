@@ -27,6 +27,7 @@ div.team-actions {
 
         @media (max-width: $width-app) {
             flex-direction: column;
+            align-items: flex-start;
         }
 
         .private-label {
@@ -136,9 +137,12 @@ div.team-members {
         flex-direction: row;
         margin-top: 5px;
         margin-bottom: 30px;
+        align-items: center;
 
         @media (max-width: $width-app) {
             flex-direction: column;
+            align-items: flex-start;
+
         }
 
         .action-button-wrapper {
@@ -277,11 +281,14 @@ div.team-members {
         }
     }
 
-    span.bin-icon svg {
-        width: 20px;
-        cursor: pointer;
-
-        &:hover {
+    button.bin-icon  {
+        border: none;
+        background-color: transparent;
+        svg {
+            width: 20px;
+            cursor: pointer;
+        }
+        &:focus-visible, &:hover {
             color: $primary-red;
         }
     }

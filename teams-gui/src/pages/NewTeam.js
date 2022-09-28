@@ -164,7 +164,7 @@ const NewTeam = ({user}) => {
                         <label>{I18n.t("newTeam.visibility")}</label>
                         <div className="team-visibilities">
                             {visibilities.map((visibility, i) =>
-                                <div key={i} className={`visibility ${viewableActive(visibility.name) ? "active" : ""}`}
+                                <button key={i} className={`visibility ${viewableActive(visibility.name) ? "active" : ""}`}
                                      onClick={() => !viewableActive(visibility.name) && setTeam({
                                          ...team,
                                          viewable: !team.viewable,
@@ -175,7 +175,7 @@ const NewTeam = ({user}) => {
                                         <h2>{I18n.t(`newTeam.${visibility.name}`)}</h2>
                                     </section>
                                     <p>{I18n.t(`newTeam.${visibility.name}Info`)}</p>
-                                </div>)}
+                                </button>)}
                         </div>
                     </div>
                     {!team.id && <EmailField emails={backupEmails}

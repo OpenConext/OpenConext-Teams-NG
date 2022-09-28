@@ -13,6 +13,7 @@ export const SearchBar = ({searchQuery, setSearchQuery, searchInputRef}) => {
                    placeholder={I18n.t("forms.search")}
                    value={searchQuery}
                    type="search"
+                   aria-describedby="search-box"
                    onBlur={() => setFocus(false)}
                    onFocus={() => setFocus(true)}
                    onChange={e => setSearchQuery(e.target.value)}

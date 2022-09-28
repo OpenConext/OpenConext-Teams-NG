@@ -55,7 +55,7 @@ div.new-team {
         display: flex;
         justify-content: space-between;
 
-        div.visibility {
+        button.visibility {
             display: flex;
             flex-direction: column;
             border: 1px solid $quaternary-grey;

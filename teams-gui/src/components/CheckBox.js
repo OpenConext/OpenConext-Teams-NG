@@ -14,10 +14,14 @@ export const CheckBox = ({name, value, info, onChange, toolTip = null, readOnly 
 
     return (
         <div className="checkbox">
-            <input type="checkbox" id={name} name={name} checked={value}
-                   onChange={innerOnChange} disabled={readOnly}/>
+            <input type="checkbox"
+                   id={name}
+                   name={name}
+                   checked={value}
+                   onChange={innerOnChange}
+                   disabled={readOnly}/>
             <label htmlFor={name}>
-                <span tabIndex="0"><CheckIcon/></span>
+                <button disabled={readOnly} onClick={innerOnChange}><CheckIcon/></button>
             </label>
             {info && <span>
                     <label htmlFor={name} className={`info ${readOnly ? "disabled" : ""}`}

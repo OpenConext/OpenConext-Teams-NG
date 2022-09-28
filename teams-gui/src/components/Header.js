@@ -18,12 +18,23 @@ export const Header = ({user, toggleSuperAdminModus}) => {
     }
 
     const doLogOut = e => {
-        e.preventDefault();
+        if (e) {
+            e.preventDefault();
+        }
         logOut().then(res => {
             window.location.href = res.url;
         });
     };
 
+    const onKeyDown = e => {
+        if (e.key === "Escape" || e.key === "ArrowUp") {
+            setDroppedDown(false);
+        } else if (e.key === "ArrowDown") {
+            setDroppedDown(true);
+        } else if (e.key === " " && droppedDown) {
+            doLogOut(e);
+        }
+    }
 
     return (
         <>
@@ -47,16 +58,16 @@ export const Header = ({user, toggleSuperAdminModus}) => {
                         <button
                             className="user"
                             aria-expanded={droppedDown ? "true" : "false"}
-                            onKeyDown={e => e.key === "Escape" && setDroppedDown(false)}
+                            onKeyDown={onKeyDown}
                             onBlur={() => setTimeout(() => setDroppedDown(false), 250)}
                             onClick={() => setDroppedDown(!droppedDown)}>
-                                <span className="user text name">{user.person.name}</span>
+                            <span className="user text name">{user.person.name}</span>
                             <div className="user-toggle">
                                 <img src={droppedDown ? arrowUp : arrowDown} alt="" aria-hidden="true"/>
                             </div>
                             <div className={`user-drop-down ${droppedDown ? "" : "visually-hidden"}`}>
                                 <span className="value">{user.person.email}</span>
-                                <span className="value">
+                                <span className="value focus">
                                 <a href="/logout" onClick={e => doLogOut(e)}>{I18n.t("profile.logout")}</a>
                             </span>
                             </div>

@@ -35,9 +35,9 @@ I18n.translations.en = {
         columns: {
             title: "Team name",
             members: "Members",
-            private: "",
-            member: "",
-            bin: ""
+            private: "Private",
+            member: "Members",
+            bin: "Bin"
         },
         filters: {
             all: 'All',
@@ -71,7 +71,7 @@ I18n.translations.en = {
         columns: {
             title: "Team name",
             description: "Description",
-            join: ""
+            join: "Join"
         },
         joinRequest: "Request to join",
         alreadyMember: "Already a member",
@@ -140,7 +140,7 @@ I18n.translations.en = {
             email: "Email",
             role: "Role",
             joined: "Joined",
-            bin: ""
+            bin: "Bin"
         },
         filters: {
             all: 'All',

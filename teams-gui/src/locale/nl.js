@@ -35,9 +35,9 @@ I18n.translations.nl = {
         columns: {
             title: "Teamnaam",
             members: "Leden",
-            private: "",
-            member: "",
-            bin: ""
+            private: "Prive",
+            member: "Lid",
+            bin: "Bin"
         },
         filters: {
             all: 'Alles',
@@ -71,7 +71,7 @@ I18n.translations.nl = {
         columns: {
             title: "Teamnaam",
             description: "Omschrijving",
-            join: ""
+            join: "Lid worden"
         },
         joinRequest: "Word lid",
         alreadyMember: "Je bent al lid",

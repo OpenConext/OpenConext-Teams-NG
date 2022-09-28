@@ -25,6 +25,7 @@ export const JoinRequestForm = ({setShowForm, joinRequest, updateTeam}) => {
         } else {
             deleteJoinRequest(joinRequest.id).then(() => {
                 setShowForm(false);
+                window.scrollTo(0, 0);
                 updateTeam();
                 setFlash(I18n.t("teamDetails.flash.removeJoinRequest"))
             });
@@ -110,7 +111,10 @@ export const JoinRequestForm = ({setShowForm, joinRequest, updateTeam}) => {
                         deleteButton={true}
                     />
                     <Button
-                        onClick={() => setShowForm(false)}
+                        onClick={() => {
+                            setShowForm(false);
+                            window.scrollTo(0, 0);
+                        }}
                         className={"cancel-join-request"}
                         txt={I18n.t("forms.cancel")}
                         cancelButton={true}

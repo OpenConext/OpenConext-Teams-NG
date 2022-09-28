@@ -1,7 +1,15 @@
+@import "../styles/vars.scss";
+
 .sort-button-container {
     padding-top: 2px;
     width: 20px;
     height: 20px;
+    border: none;
+    background-color: transparent;
+
+    &.passive {
+        color: $background;
+    }
 
     .up-caret-container {
         display: flex;

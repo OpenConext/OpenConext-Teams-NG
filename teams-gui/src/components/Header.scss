@@ -132,6 +132,10 @@ header.header-container {
                 span.value {
                     margin-left: auto;
                     margin-bottom: 5px;
+
+                    &.focus {
+                        outline: 1px solid rgb(0,95,204);
+                    }
                 }
             }
 
