@@ -81,7 +81,7 @@ I18n.translations.nl = {
     teamDetails: {
         members: "Leden",
         hideInvitees: "Verberg genodigden",
-        hideMembers: "Dit team geeft geen lidmaatschapsgegevens vrij",
+        hideMembers: "Dit team geeft geen lidmaatschapsgegevens vrij aan leden",
         noInvitees: "Geen genodigden",
         inviteSent: "uitgenodigd",
         joinRequest: "toetredingsverzoek",
@@ -103,7 +103,8 @@ I18n.translations.nl = {
             expiryDate: "Vervaldatum lidmaatschap",
             expiryDateTooltip: "De optionele vervaldatum van het lidmaatschap. Hierna wordt het lidmaatschap beëindigd.",
             headers: {
-                addMembersHeader: "Leden toevoegen",
+                title: "Boeg leden toe aan {{name}}",
+                addMembersHeader: "E-mails uitnodigingen",
                 additionalInformationHeader: "Extra informatie",
                 invitationLanguageHeader: "Taal van het uitnodigingsbericht",
                 roleHeader: "Rol die de uitgenodigden zullen krijgen"

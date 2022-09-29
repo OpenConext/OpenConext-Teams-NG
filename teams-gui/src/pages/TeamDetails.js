@@ -125,10 +125,10 @@ const TeamDetail = ({user, showMembers = false}) => {
         promise.then((res) => {
             if (res.memberships) {
                 const userMembershipRole = (res.memberships.find(m => m.person.id === user.person.id) || {role: ROLES.MEMBER}).role;
-                const adminAlert =
+                const adminAlert = userMembershipRole !== ROLES.MEMBER &&
                     res.memberships.filter(member => member.role === ROLES.ADMIN || member.role === ROLES.OWNER).length < 2 &&
                     [ROLES.ADMIN].includes(userMembershipRole) &&
-                    res.invitations.filter(inv => inv.intendedRole === ROLES.ADMIN).length === 0;
+                    (res.invitations || []).filter(inv => inv.intendedRole === ROLES.ADMIN).length === 0;
                 setAlerts(adminAlert ? [I18n.t(`teamDetails.alerts.singleAdmin`)] : []);
 
                 const pendingInvitations = (res.invitations || [])
@@ -306,10 +306,11 @@ const TeamDetail = ({user, showMembers = false}) => {
         });
 
         return (
-            <div className="filter-dropdown-container">
+            <nav aria-label="team actions"
+                 className="filter-dropdown-container">
                 <DropDownMenu title={membersFilter.label}
                               actions={options.filter((option) => option.count !== 0)}/>
-            </div>);
+            </nav>);
     };
 
     const doAcceptInvitation = () => {
@@ -706,6 +707,7 @@ const TeamDetail = ({user, showMembers = false}) => {
     const location = window.location;
     const universalPublicLink = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/public/${team.publicLink}`;
 
+    const isMoreThenMember = [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam);
     return (
         <Page>
             <SubHeader>
@@ -718,32 +720,35 @@ const TeamDetail = ({user, showMembers = false}) => {
                         <div className="team-access-bar">
                             {!team.viewable && <PrivateTeamLabel/>}
                             <div className="urn-container">
-                                <label>{`${user.groupNameContext}${team.urn}`}</label>
-                                <span onClick={copyToClipBoard}>
+                                <span>{`${user.groupNameContext}${team.urn}`}</span>
+                                <button onClick={copyToClipBoard}>
+                                    <span className={"visually-hidden"}>Copy the group name</span>
                                     {!copied && <CopyIcon/>}
                                     {copied && <Tippy content={I18n.t("teamDetails.copied")} visible={true}>
                                         <CopyIcon/>
                                     </Tippy>}
-                                </span>
+                                </button>
                             </div>
                         </div>
                         {((userRoleInTeam === ROLES.ADMIN || userRoleInTeam === ROLES.OWNER) &&
                             !team.publicLinkDisabled) &&
                         <div className="team-access-bar">
                             <div className="urn-container">
-                                <label>{universalPublicLink}</label>
-                                <span onClick={() => copyPublicLinkToClipBoard(universalPublicLink)}>
+                                <span>{universalPublicLink}</span>
+                                <button onClick={() => copyPublicLinkToClipBoard(universalPublicLink)}>
+                                    <span className={"visually-hidden"}>Copy the group universal link</span>
                                     {!universalLinkCopied && <CopyIcon/>}
                                     {universalLinkCopied &&
                                     <Tippy content={I18n.t("teamDetails.copied")} visible={true}>
                                         <CopyIcon/>
                                     </Tippy>}
-                                </span>
-                                <span onClick={() => handleResetPublicLink(true)}>
-                                     <Tippy content={I18n.t("newTeam.publicLinkReset")}>
+                                </button>
+                                <button onClick={() => handleResetPublicLink(true)}>
+                                    <span className={"visually-hidden"}>Reset public link</span>
+                                    <Tippy content={I18n.t("newTeam.publicLinkReset")}>
                                         <ReloadIcon/>
                                     </Tippy>
-                                </span>
+                                </button>
                             </div>
                         </div>}
 
@@ -764,7 +769,6 @@ const TeamDetail = ({user, showMembers = false}) => {
                         <DateField onChange={d => setExpiryDate(d)}
                                    value={expiryDate}
                                    isOpen={true}
-                                   performValidateOnBlur={true}
                                    minDate={addDays(30)}
                         />
                     </div>}
@@ -784,14 +788,14 @@ const TeamDetail = ({user, showMembers = false}) => {
                 <div className="team-members">
                     {!team.hideMembers && <h2>{I18n.t("teamDetails.members")} ({memberList.length})</h2>}
                     {team.hideMembers && <h3>{I18n.t("teamDetails.hideMembers")}</h3>}
-                    {!team.hideMembers && <span className="team-actions-bar">
-                        {renderFilterDropdown()}
-                        <SearchBar
+                    <div className="team-actions-bar">
+                        {(isMoreThenMember || !team.hideMembers) && renderFilterDropdown()}
+                        {(isMoreThenMember || !team.hideMembers) && <SearchBar
                             searchQuery={searchQuery}
                             setSearchQuery={setSearchQuery}
                             searchInputRef={searchInputRef}
-                        />
-                        {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) && (
+                        />}
+                        {isMoreThenMember &&
                             <span className="hide-invitees-wrapper">
                                 <CheckBox name="hide-invitees-checkbox"
                                           info={team.invitations && team.invitations.length > 0
@@ -801,9 +805,9 @@ const TeamDetail = ({user, showMembers = false}) => {
                                           value={hideInvitees}
                                           readOnly={!team.invitations || team.invitations.length === 0}/>
                             </span>
-                        )}
-                        {[ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam) && (
-                            <span className="action-button-wrapper">
+                        }
+                        {isMoreThenMember &&
+                            <div className="action-button-wrapper">
                                 {(user.externalTeams && user.externalTeams.length > 0) &&
                                 <Button onClick={() => {
                                     addHistoryState();
@@ -819,9 +823,9 @@ const TeamDetail = ({user, showMembers = false}) => {
                                 }}
                                          txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
                                          className="add-member-button"/>}
-                            </span>
-                        )}
-                    </span>}
+                            </div>
+                        }
+                    </div>
                     {renderMembersTable()}
                 </div>
             )}

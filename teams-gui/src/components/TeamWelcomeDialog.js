@@ -13,6 +13,7 @@ export default function TeamWelcomeDialog({team, invitation, accept, denied, isO
     return (
         <Modal
             isOpen={isOpen}
+            onRequestClose={canBeAccepted ? null : denied}
             contentLabel={I18n.t("teamWelcomeDialog.title", {name: team.name})}
             className={"team-welcome-modal"}
             overlayClassName="team-welcome-overlay"
@@ -29,7 +30,6 @@ export default function TeamWelcomeDialog({team, invitation, accept, denied, isO
                 </>}
             </section>}
             <section className={"team-welcome-content"}>
-
                 {canBeAccepted && <MarkDown markdown={team.description}/>}
                 {invitation.expired && <p>{I18n.t("teamWelcomeDialog.expired")}</p>}
                 {invitation.alreadyMember && <p>{I18n.t("teamWelcomeDialog.alreadyMember")}</p>}

@@ -1,7 +1,7 @@
 @import "./vars.scss";
 
 input::placeholder, textarea::placeholder {
-    color: #333333;
+    color: #727272;
 }
 
 .visually-hidden {
@@ -18,5 +18,13 @@ textarea {
     font-family: "Source Sans Pro", sans-serif !important;
     background-color: white;
     font-size: 16px;
+
+    &:focus, &:focus-visible {
+        box-shadow: 0 0 0 3px #b3e5ff;
+        border: solid 1px #8c969f;
+        outline: none;
+        background-color: #fff;
+    }
+
 }
 

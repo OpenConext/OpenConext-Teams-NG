@@ -12,8 +12,9 @@ export const DropDownMenu = ({title, actions}) => {
 
     const performAction = (action) => {
         setDroppedDown(false);
+        setActiveItem(-1);
         action.action();
-        component.current.focus();
+        // component.current.focus();
     };
 
     const buttonKeyDown = e => {
@@ -27,8 +28,7 @@ export const DropDownMenu = ({title, actions}) => {
             setDroppedDown(false);
             setActiveItem(-1);
         } else if ((e.key === "Enter" || e.key === " ") && activeItem !== -1 && droppedDown) {
-            setDroppedDown(false);
-            actions[activeItem].action();
+            performAction(actions[activeItem]);
             stopEvent(e);
             return false;
         }
@@ -38,7 +38,8 @@ export const DropDownMenu = ({title, actions}) => {
         <div className="dropdown-menu-container">
             <button
                 ref={component}
-                className={`dropdown-control ${droppedDown ? "focus":""}`}
+                className={`dropdown-control ${droppedDown ? "focus" : ""}`}
+                aria-expanded={droppedDown}
                 onClick={() => {
                     if (droppedDown) {
                         setActiveItem(-1);
@@ -58,8 +59,7 @@ export const DropDownMenu = ({title, actions}) => {
                             <li
                                 className={`dropdown-list-items ${index === activeItem ? "active" : ""}`}
                                 key={action.name}
-                                onClick={() => performAction(action)}
-                            >
+                                onClick={() => performAction(action)}>
                                 <span>{action.name}</span>
                             </li>
                         ))}

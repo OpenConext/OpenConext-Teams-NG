@@ -35,12 +35,18 @@ export const Footer = ({user}) => {
                         {user.config.supportedLanguageCodes.split(",")
                             .map(lang => lang.trim())
                             .map(lang => <li key={lang}>
+                                {I18n.currentLocale() === lang &&
+                                <span className="active">
+                                    {I18n.t("code", {locale: lang})}
+                                </span>}
+                                {I18n.currentLocale() !== lang &&
                                 <a className={I18n.currentLocale() === lang ? "active" : ""}
                                    hrefLang={`${lang}`}
                                    href={`/${lang}`}
                                    onClick={changeLanguage(lang)}>
                                     {I18n.t("code", {locale: lang})}
-                                </a></li>)
+                                </a>}
+                            </li>)
                         }
                     </ul>
                 </nav>

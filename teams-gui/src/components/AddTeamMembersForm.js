@@ -68,6 +68,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
 
     return (
         <div className="add-members-form-container">
+            <h1>{I18n.t("teamDetails.addMembers.headers.title", {name: team.name})}</h1>
             <div className="add-emails-wrapper">
                 <label className={"header"}
                        htmlFor={"email-field"}>{I18n.t("teamDetails.addMembers.headers.addMembersHeader")}</label>
@@ -92,9 +93,10 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
             <div className="extra-info-header">
                 <label htmlFor={"custom-message-input"}
                     className={"header"}>{I18n.t("teamDetails.addMembers.headers.additionalInformationHeader")}</label>
-                <small>{I18n.t("teamDetails.addMembers.invitationExpiry")}</small>
+                <small id={"invitation-expiry"}>{I18n.t("teamDetails.addMembers.invitationExpiry")}</small>
             </div>
             <textarea className="custom-message-input"
+                      aria-describedby={"invitation-expiry"}
                       id={"custom-message-input"}
                       placeholder={I18n.t("teamDetails.addMembers.placeholders.customMessage")}
                       onChange={(e) => setCustomMessage(e.target.value)}
@@ -107,28 +109,22 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
             </div>
             <DateField onChange={setExpiryDate}
                        value={expiryDate}
-                       performValidateOnBlur={true}
-                       minDate={addDays(30)}
-            />
+                       minDate={addDays(90)}/>
             <div className="language-selection-wrapper">
                 <label className={"header"}>{I18n.t("teamDetails.addMembers.headers.invitationLanguageHeader")}</label>
                 <div className="language-selection-buttons">
-                    <label>
                         <input type="radio"
                                value="ENGLISH"
                                name="languageSelection"
                                onChange={e => setInvitationLanguage(e.target.value)}
                                checked={invitationLanguage === "ENGLISH"}/>
                         {I18n.t("teamDetails.addMembers.buttons.languageRadio.en")}
-                    </label>
-                    <label>
                         <input type="radio"
                                value="DUTCH"
                                onChange={e => setInvitationLanguage(e.target.value)}
                                name="languageSelection"
                                checked={invitationLanguage === "DUTCH"}/>
                         {I18n.t("teamDetails.addMembers.buttons.languageRadio.nl")}
-                    </label>
                 </div>
             </div>
             <div className="submit-button-wrapper">

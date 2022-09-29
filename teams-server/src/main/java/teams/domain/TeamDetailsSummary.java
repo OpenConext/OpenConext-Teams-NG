@@ -10,7 +10,7 @@ public class TeamDetailsSummary extends TeamSummary {
 
     private final boolean viewable;
     private final Set<ExternalTeam> externalTeams;
-    private Set<Membership> memberships;
+    private final Set<Membership> memberships;
 
     public TeamDetailsSummary(Team team, FederatedUser user) {
         super(team, user, false);

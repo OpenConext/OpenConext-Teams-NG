@@ -12,7 +12,8 @@ export const ActionMenu = ({title, actions}) => {
 
     const performAction = action => {
         setDroppedDown(false);
-        action();
+        setActiveItem(-1);
+        action.action();
         component.current.focus();
     }
 
@@ -27,8 +28,7 @@ export const ActionMenu = ({title, actions}) => {
             setDroppedDown(false);
             setActiveItem(-1);
         } else if ((e.key === "Enter" || e.key === " ") && activeItem !== -1 && droppedDown) {
-            setDroppedDown(false);
-            actions[activeItem].action();
+            performAction(actions[activeItem]);
             stopEvent(e);
             return false;
         }
@@ -54,7 +54,7 @@ export const ActionMenu = ({title, actions}) => {
                     {actions.map((action, index) =>
                         <li key={action.name}
                             className={`${index === activeItem ? "active" : ""}`}
-                            onClick={() => performAction(action.action)}>
+                            onClick={() => performAction(action)}>
                             <span>{action.name}</span>
                         </li>)}
                 </ul>

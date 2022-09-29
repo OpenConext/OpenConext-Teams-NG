@@ -12,6 +12,7 @@ export const Button = ({
                            className = ""
                        }) => {
     const cn = `button ${disabled ? "disabled" : ""} ${deleteButton ? "delete" : ""} ${cancelButton ? "cancel" : "green"} ${className}`;
+
     const onClickInternal = e => {
         stopEvent(e);
         if (!disabled) {
@@ -19,10 +20,16 @@ export const Button = ({
         }
     }
 
-    return (
-        <a className={cn} href={`/${encodeURIComponent(txt)}`} onClick={onClickInternal}>
+    return disabled ? <label className={cn}
+           disabled={true}>
+            {!deleteButton && txt}
+            {deleteButton && <BinIcon/>}
+        </label> :
+        <a className={cn}
+           href={`/${encodeURIComponent(txt)}`}
+           onClick={onClickInternal}>
             {!deleteButton && txt}
             {deleteButton && <BinIcon/>}
         </a>
-    );
+
 }

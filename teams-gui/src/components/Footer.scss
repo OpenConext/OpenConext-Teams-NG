@@ -13,6 +13,7 @@ nav.footer-container {
 
         a {
             color: $hover-blue;
+
             &:hover {
                 color: darken($hover-blue, 15%);
             }
@@ -55,7 +56,7 @@ nav.footer-container {
                     padding-right: 10px;
                 }
 
-                &.active {
+                span.active {
                     color: black;
                     font-weight: bold;
                 }

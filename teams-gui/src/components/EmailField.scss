@@ -19,6 +19,16 @@ div.email-field {
         font-weight: bold;
     }
 
+    textarea.email-field-textarea {
+
+        &:focus, &:focus-visible {
+            outline: none;
+            border: none;
+            box-shadow: none;
+        }
+
+    }
+
     .inner-email-field {
         display: flex;
         flex-wrap: wrap;

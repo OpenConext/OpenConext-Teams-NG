@@ -81,7 +81,7 @@ I18n.translations.en = {
     teamDetails: {
         members: "Members",
         hideInvitees: "Hide invitees",
-        hideMembers: "This team does not disclose membership information",
+        hideMembers: "This team does not disclose membership information to members",
         noInvitees: "No invitees",
         inviteSent: "invite sent",
         joinRequest: "join request",
@@ -103,7 +103,8 @@ I18n.translations.en = {
             expiryDate: "Membership expiry date",
             expiryDateTooltip: "The membership expiry date is an optional date after which this membership will be ended.",
             headers: {
-                addMembersHeader: "Add Members",
+                title: "Add members to {{name}}",
+                addMembersHeader: "Invitation emails",
                 additionalInformationHeader: "Additional information",
                 invitationLanguageHeader: "Invitation language",
                 roleHeader: "The intended role for the invitees"

@@ -4,43 +4,52 @@ import {ReactComponent as CalendarIcon} from "../icons/calendar-alt.svg";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DateField.scss"
 
-import {stopEvent} from "../utils/utils";
-
 export const DateField = ({
                               onChange,
                               value,
                               isOpen = false,
                               maxDate = null,
-                              minDate = null,
-                              performValidateOnBlur = true
+                              minDate = null
                           }) => {
 
     const component = useRef(null);
     const [initial, setInitial] = useState(true);
+    const [displayValue, setDisplayValue] = useState("");
 
-    const toggle = () => {
-        component.current.setOpen(true);
+    const toggle = (open = true) => {
+        component.current.setOpen(open);
     }
 
-    const validateOnBlur = e => {
-        if (!performValidateOnBlur) {
-            stopEvent(e);
-            return;
+    const onChangeRaw = e => {
+        setDisplayValue(e.target.value);
+    }
+
+    const onChangeInner = d => {
+        onChange(d);
+        if (d !== null) {
+            setDisplayValue(`${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`)
+        } else {
+            setDisplayValue("");
         }
-        if (e && e.target) {
-            const value = e.target.value;
-            if (value) {
-                const [day, month, year] = value.split('/');
-                const d = new Date(+year, month - 1, +day);
-                const valid = d instanceof Date && !isNaN(d);
-                if (!valid || (maxDate && d > maxDate) || (minDate && d < minDate)) {
-                    setTimeout(() => onChange(null), 250);
-                }
+
+    }
+
+    const validateOnBlur = (e, skipTimeOut) => {
+        if (!skipTimeOut) {
+            setTimeout(() => validateOnBlur(e, true), 250);
+        } else if (displayValue && displayValue.length > 0) {
+            const [day, month, year] = displayValue.split(/[-/]/);
+            const d = new Date(+year, month - 1, +day);
+            const valid = d instanceof Date && !isNaN(d);
+            if (!valid || (maxDate && d > maxDate) || (minDate && d < minDate)) {
+                onChange(null);
+                setDisplayValue("");
             } else {
-                setTimeout(() => onChange(null), 250);
+                onChange(d);
             }
         }
     }
+
 
     if (isOpen && initial) {
         setTimeout(() => {
@@ -58,11 +67,14 @@ export const DateField = ({
                     name={"date-field"}
                     id={"date-field"}
                     selected={value}
+                    value={displayValue}
                     preventOpenOnFocus
                     dateFormat={"dd/MM/yyyy"}
-                    onChange={onChange}
+                    onChange={onChangeInner}
+                    onChangeRaw={onChangeRaw}
                     showWeekNumbers
                     isClearable={true}
+                    placeholderText={"dd/MM/yyyy"}
                     showYearDropdown={true}
                     onBlur={validateOnBlur}
                     weekLabel="Week"
@@ -70,7 +82,11 @@ export const DateField = ({
                     maxDate={maxDate}
                     minDate={minDate}
                 />
-                <button onClick={toggle} className={"calendar-icon-container"}><CalendarIcon/></button>
+                <button onClick={toggle}
+                        onKeyDown={e => e.key === "Escape" && toggle(false)}
+                        className={"calendar-icon-container"}>
+                    <CalendarIcon/>
+                </button>
             </label>
         </div>
     );

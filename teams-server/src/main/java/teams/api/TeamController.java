@@ -146,6 +146,8 @@ public class TeamController extends ApiController implements TeamValidator {
         Role roleOfLoggedInPerson = membership(team, federatedUserUrn).getRole();
         onlyAdminAllowed(roleOfLoggedInPerson, federatedUser, team, "update");
 
+        boolean publicLinkDisabled = team.isPublicLinkDisabled();
+
         team.setDescription(teamProperties.getDescription());
         team.setViewable(teamProperties.isViewable());
         team.setPersonalNote(teamProperties.getPersonalNote());
@@ -154,6 +156,8 @@ public class TeamController extends ApiController implements TeamValidator {
 
         if (teamProperties.isPublicLinkDisabled()) {
             team.setPublicLink(null);
+        } else if (publicLinkDisabled && !teamProperties.isPublicLinkDisabled()) {
+            team.resetPublicLink();
         }
 
         log.info("Team {} updated by {}", team.getUrn(), federatedUserUrn);

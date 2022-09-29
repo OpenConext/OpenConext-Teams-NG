@@ -79,6 +79,7 @@ export const EmailField = ({
                             </span>}
                     </div>)}
                 {(!singleEmail && !disabled) && <textarea id="email-field"
+                                                          className={"email-field-textarea"}
                                                           value={email}
                                                           onChange={updateEmail}
                                                           onBlur={e => {
@@ -129,7 +130,7 @@ export const EmailField = ({
                                                       placeholder={emails.length === 0 ? placeHolder : ""} cols={2}/>}
             </div>
             {errorMails.length > 0 &&
-            <span className={"error"}>
+            <span className={"error"} aria-live="polite">
                 {I18n.t(`emails.${errorMails.length === 1 ? "single" : "multiple"}Invalid`, {emails: errorMails.join(", ")})}
             </span>}
         </div>

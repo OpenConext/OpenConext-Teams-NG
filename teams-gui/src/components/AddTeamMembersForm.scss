@@ -1,6 +1,6 @@
 @import "../styles/vars.scss";
 
-div.add-members-form-container {
+.add-members-form-container {
     display: flex;
     flex-direction: column;
 
@@ -11,6 +11,9 @@ div.add-members-form-container {
         padding: 0 10px 10px 10px;
     }
 
+    h1 {
+        margin-top: 25px;
+    }
 
     label.header {
         margin: 40px 0 15px 0;
@@ -59,12 +62,6 @@ div.add-members-form-container {
         border: solid $quaternary-grey 1px;
         border-radius: 6px;
         background-color: white;
-
-        &:focus {
-            outline: none;
-            border: solid $quaternary-grey 1px;
-            box-shadow: none;
-        }
     }
 
 
