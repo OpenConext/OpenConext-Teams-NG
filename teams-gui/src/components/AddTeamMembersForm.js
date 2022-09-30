@@ -3,13 +3,14 @@ import {React, useState} from "react";
 import "./AddTeamMembersForm.scss";
 import {Button} from "./Button";
 import {EmailField} from "./EmailField";
-import {addDays, stopEvent} from "../utils/utils";
+import {addDays, isEmpty, stopEvent} from "../utils/utils";
 import Select from "react-select";
 import {currentUserRoleInTeam, ROLES} from "../utils/roles";
 import {invite} from "../api";
 import {setFlash} from "../flash/events";
 import {DateField} from "./DateField";
 import Tooltip from "./Tooltip";
+import ErrorIndicator from "./ErrorIndicator";
 
 
 export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTeam, defaultRole}) => {
@@ -19,6 +20,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
     const [customMessage, setCustomMessage] = useState("");
     const [invitationLanguage, setInvitationLanguage] = useState(I18n.t(`teamDetails.addMembers.buttons.languageCode.${I18n.locale}`));
     const [expiryDate, setExpiryDate] = useState(null);
+    const [initial, setInitial] = useState(true);
 
     const roleOptions = () => {
         const role = currentUserRoleInTeam(team, user);
@@ -35,6 +37,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
     }
 
     const processSendInvitation = () => {
+        setInitial(false);
         if (emails.length > 0) {
             const body = {
                 teamId: team.id,
@@ -78,6 +81,10 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
                             marginTop={false}
                             placeHolder={I18n.t("teamDetails.addMembers.placeholders.emails")}
                             pinnedEmails={[]}/>
+                {(!initial && isEmpty(emails)) &&
+                <ErrorIndicator describedBy={"inner-email-field"} msg={I18n.t("forms.required", {
+                    attribute: I18n.t("missingAttributes.attributes.email")
+                })}/>}
             </div>
             <div className="add-emails-wrapper">
                 <label className={"header"}
@@ -109,7 +116,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
             </div>
             <DateField onChange={setExpiryDate}
                        value={expiryDate}
-                       minDate={addDays(90)}/>
+                       minDate={addDays(30)}/>
             <div className="language-selection-wrapper">
                 <label className={"header"}>{I18n.t("teamDetails.addMembers.headers.invitationLanguageHeader")}</label>
                 <div className="language-selection-buttons">
@@ -137,7 +144,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
                 <Button
                     onClick={processSendInvitation}
                     className="send-invite-button"
-                    disabled={emails.length === 0}
+                    disabled={isEmpty(emails) && !initial}
                     txt={I18n.t("teamDetails.addMembers.buttons.sendInvite")}/>
 
             </div>

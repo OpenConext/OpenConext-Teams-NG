@@ -69,7 +69,7 @@ export const EmailField = ({
         <div className={`email-field ${error ? "error" : ""} ${marginTop ? "" : "no-margin-top"}`}>
             {(name && !toolTip) && <label htmlFor={"email-field"}>{name}</label>}
             {toolTip && <Tooltip tooltip={toolTip} name={name} label={name}/>}
-            <div className={`inner-email-field ${error ? "error" : ""} ${disabled ? "disabled" : ""} ${hasFocus ? "focus" : ""}`}>
+            <div id="inner-email-field" className={`inner-email-field ${error ? "error" : ""} ${disabled ? "disabled" : ""} ${hasFocus ? "focus" : ""}`}>
                 {emails.map(mail =>
                     <div key={mail} className="email-tag">
                         <span className="value">{mail}</span>

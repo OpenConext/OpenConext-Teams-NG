@@ -589,11 +589,10 @@ const TeamDetail = ({user, showMembers = false}) => {
                     <span className="joined-wrapper">
                         <span>{getDateString(member.created)}</span>
                         {(member.isMember && [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam))
-                        && <a className={"expiry-date"}
-                              href={"/#"}
-                              onClick={e => showExpiryDate(e, member.id)}>
+                        && <button className={"btn-icon link"}
+                                   onClick={e => showExpiryDate(e, member.id)}>
                             {I18n.t(`teamDetails.${member.expiryDate ? "expires" : "noExpires"}`, {expiryDate: getDateString(member.expiryDate)})}
-                        </a>}
+                        </button>}
                         {(member.isInvitation && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam))
                         && <span className="details">
                             {I18n.t(`teamDetails.inviteSent`)}

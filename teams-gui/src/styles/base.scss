@@ -14,6 +14,19 @@ input::placeholder, textarea::placeholder {
     left: -999em;
 }
 
+button.btn-icon {
+    border: none;
+    background-color: transparent;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 16px;
+    padding: 0;
+
+    &.link {
+        color: #0077c8;
+        cursor: pointer;
+    }
+}
+
 textarea {
     font-family: "Source Sans Pro", sans-serif !important;
     background-color: white;

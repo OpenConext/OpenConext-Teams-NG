@@ -165,13 +165,13 @@ export const MyTeams = ({user}) => {
             <td data-label={I18n.t("myteams.columns.title")} onClick={() => navigate(linkUrl)}>
                 <Link to={linkUrl}>{team.name}</Link>
             </td>
-            <td data-label={I18n.t("myteams.columns.members")}  onClick={() => navigate(linkUrl)}
+            <td data-label={I18n.t("myteams.columns.members")} onClick={() => navigate(linkUrl)}
                 className={"membership-count"}>{team.membershipCount}</td>
-            <td className={"private"} data-label={I18n.t("myteams.columns.private")}  onClick={() => navigate(linkUrl)}>
+            <td className={"private"} data-label={I18n.t("myteams.columns.private")} onClick={() => navigate(linkUrl)}>
                 {(!team.viewable && !team.isJoinRequest) && <PrivateTeamLabel/>}
             </td>
             <td data-label={I18n.t("myteams.columns.member")}
-                onClick={() =>  (team.role === ROLES.MEMBER || team.isJoinRequest) ? navigate(linkUrl) :
+                onClick={() => (team.role === ROLES.MEMBER || team.isJoinRequest) ? navigate(linkUrl) :
                     navigate(`/team-details/${team.id}?add-members=true`)}>
                 {renderAddMemberLink(team)}
             </td>
@@ -186,10 +186,11 @@ export const MyTeams = ({user}) => {
         if (team.role === "JOINREQUEST") {
             return I18n.t("myteams.joinRequest");
         }
-        return <Link to={`/team-details/${team.id}?add-members=true`}>
-            {I18n.t("myteams.add_members")}
-            <span className={"visually-hidden"}> to team {team.name}</span>
-        </Link>
+        return (
+            <button className={"btn-icon link"} onClick={() => navigate(`/team-details/${team.id}?add-members=true`)}>
+                    {I18n.t("myteams.add_members")}
+                    <span className={"visually-hidden"}> to team {team.name}</span>
+            </button>);
     }
 
     const renderDeleteButton = team => {
@@ -243,7 +244,7 @@ export const MyTeams = ({user}) => {
                     <Page>
                         <h1>{I18n.t("myteams.tabs.myTeams")}</h1>
                         <div className="team-actions-bar">
-                        {renderFilterDropdown()}
+                            {renderFilterDropdown()}
                             <SearchBar searchQuery={searchQuery}
                                        setSearchQuery={setSearchQuery}
                                        searchInputRef={searchInputRef}/>
