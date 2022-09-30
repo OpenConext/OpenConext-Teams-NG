@@ -11,14 +11,6 @@ nav.footer-container {
         justify-content: space-between;
         align-items: center;
 
-        a {
-            color: $hover-blue;
-
-            &:hover {
-                color: darken($hover-blue, 15%);
-            }
-        }
-
         ul.info {
             display: flex;
             flex-direction: column;
