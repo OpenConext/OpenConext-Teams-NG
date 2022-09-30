@@ -69,9 +69,12 @@ div.new-team {
                 display: flex;
                 margin-bottom: 10px;
 
-                h2 {
+                span.visibility {
                     font-size: 24px;
                     margin-left: 15px;
+                    line-height: 30px;
+                    font-weight: 600;
+                    font-family: Nunito, sans-serif;
                 }
 
                 svg {

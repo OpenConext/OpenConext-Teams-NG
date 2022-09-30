@@ -13,7 +13,7 @@ export default function TeamWelcomeDialog({team, invitation, accept, denied, isO
     return (
         <Modal
             isOpen={isOpen}
-            onRequestClose={canBeAccepted ? null : denied}
+            onRequestClose={canBeAccepted ? accept : denied}
             contentLabel={I18n.t("teamWelcomeDialog.title", {name: team.name})}
             className={"team-welcome-modal"}
             overlayClassName="team-welcome-overlay"

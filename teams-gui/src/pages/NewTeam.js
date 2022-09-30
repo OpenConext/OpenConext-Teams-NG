@@ -110,18 +110,19 @@ const NewTeam = ({user}) => {
                                     setNameExists(false)
                                 }}
                                 toolTip={team.id ? I18n.t("newTeam.tooltips.immutableName") : ""}
+                                aria-describedby={"team-name"}
                                 disabled={team.id}
                                 placeholder={I18n.t("newTeam.placeholders.name")}
                                 onBlur={e => teamExistsByName(e.target.value).then(exists => setNameExists(exists))}
                                 error={nameExist || (!initial && isEmpty(team.name))}
                                 name={I18n.t("newTeam.name")}/>
                     {(!initial && isEmpty(team.name)) &&
-                    <ErrorIndicator msg={I18n.t("forms.required", {
+                    <ErrorIndicator describedBy={"team-name"} msg={I18n.t("forms.required", {
                         attribute: I18n.t("newTeam.name")
                     })}/>}
 
                     {nameExist &&
-                    <ErrorIndicator msg={I18n.t("forms.alreadyExists", {
+                    <ErrorIndicator describedBy={"team-name"} msg={I18n.t("forms.alreadyExists", {
                         object: I18n.t("newTeam.object").toLowerCase(),
                         attribute: I18n.t("newTeam.name").toLowerCase(),
                         value: team.name
@@ -172,7 +173,7 @@ const NewTeam = ({user}) => {
                                      })}>
                                     <section className="header">
                                         <visibility.icon/>
-                                        <h2>{I18n.t(`newTeam.${visibility.name}`)}</h2>
+                                        <span className={"visibility"}>{I18n.t(`newTeam.${visibility.name}`)}</span>
                                     </section>
                                     <p>{I18n.t(`newTeam.${visibility.name}Info`)}</p>
                                 </button>)}
