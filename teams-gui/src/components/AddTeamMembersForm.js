@@ -67,7 +67,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
     }
 
     return (
-        <div className="add-members-form-container">
+        <form className="add-members-form-container" method={"POST"} onSubmit={stopEvent}>
             <h1>{I18n.t("teamDetails.addMembers.headers.title", {name: team.name})}</h1>
             <div className="add-emails-wrapper">
                 <label className={"header"}
@@ -141,6 +141,6 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
                     txt={I18n.t("teamDetails.addMembers.buttons.sendInvite")}/>
 
             </div>
-        </div>
+        </form>
     );
 };

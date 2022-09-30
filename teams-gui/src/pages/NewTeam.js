@@ -103,7 +103,7 @@ const NewTeam = ({user}) => {
                 <h1>{I18n.t(`breadcrumbs.${team.id ? "editTeam" : "newTeam"}`, {name: team.name})}</h1>
             </SubHeader>
             <Page>
-                <div className="new-team">
+                <form className="new-team" method={"POST"} onSubmit={stopEvent}>
                     <InputField value={team.name || ""}
                                 onChange={e => {
                                     setTeam({...team, name: e.target.value.replace(/[^\w\s-]/gi, "")});
@@ -165,12 +165,13 @@ const NewTeam = ({user}) => {
                         <label>{I18n.t("newTeam.visibility")}</label>
                         <div className="team-visibilities">
                             {visibilities.map((visibility, i) =>
-                                <button key={i} className={`visibility ${viewableActive(visibility.name) ? "active" : ""}`}
-                                     onClick={() => !viewableActive(visibility.name) && setTeam({
-                                         ...team,
-                                         viewable: !team.viewable,
-                                         publicLinkDisabled: team.viewable || team.publicLinkDisabled
-                                     })}>
+                                <button key={i}
+                                        className={`visibility ${viewableActive(visibility.name) ? "active" : ""}`}
+                                        onClick={() => !viewableActive(visibility.name) && setTeam({
+                                            ...team,
+                                            viewable: !team.viewable,
+                                            publicLinkDisabled: team.viewable || team.publicLinkDisabled
+                                        })}>
                                     <section className="header">
                                         <visibility.icon/>
                                         <span className={"visibility"}>{I18n.t(`newTeam.${visibility.name}`)}</span>
@@ -207,7 +208,7 @@ const NewTeam = ({user}) => {
                             txt={I18n.t(`${team.id ? "forms.save" : "newTeam.create"}`)}/>
                     </ButtonContainer>
 
-                </div>
+                </form>
             </Page>
         </>
     );

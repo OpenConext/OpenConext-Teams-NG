@@ -36,7 +36,7 @@ import {ReactComponent as IDPIcon} from "../icons/idp-institutionn.svg";
 import {ReactComponent as GuestIDPIcon} from "../icons/idp-guest.svg";
 import {ReactComponent as UnknownIDPIcon} from "../icons/idp-unknown.svg";
 import {ReactComponent as EmailIcon} from "../icons/email-action-send-2.svg";
-import {ReactComponent as EnvelopeIcon} from "../icons/person-circle-plus-solid.svg";
+import {ReactComponent as JoinRequestIcon} from "../icons/person-circle-plus-solid.svg";
 import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
 import {SortableTable} from "../components/SortableTable";
 import {SearchBar} from "../components/SearchBar";
@@ -371,9 +371,9 @@ const TeamDetail = ({user, showMembers = false}) => {
                 className="bin-icon"
                 aria-hidden="true"
                 onClick={() => processRemoveMember(member, true)}>
-        <BinIcon/>
+                <BinIcon/>
                 <span className="visually-hidden">Remove member {member.name}</span>
-      </button>
+            </button>
         );
         return (
             <>{[ROLES.OWNER, ROLES.ADMIN].includes(userRoleInTeam) ? icon : I18n.t("myteams.empty")} </>
@@ -423,11 +423,11 @@ const TeamDetail = ({user, showMembers = false}) => {
             columns.splice(1, 1);
         }
         return (
-                <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
-                    {displayedMembers.map((member, index) =>
-                        renderMembersRow(member, index)
-                    )}
-                </SortableTable>
+            <SortableTable columns={columns} currentSort={sort} setSort={setSort}>
+                {displayedMembers.map((member, index) =>
+                    renderMembersRow(member, index)
+                )}
+            </SortableTable>
         );
     };
 
@@ -589,20 +589,32 @@ const TeamDetail = ({user, showMembers = false}) => {
                     <span className="joined-wrapper">
                         <span>{getDateString(member.created)}</span>
                         {(member.isMember && [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam))
-                        && <a className={"expiry-date"} href={"/#"} onClick={e => showExpiryDate(e, member.id)}>
+                        && <a className={"expiry-date"}
+                              href={"/#"}
+                              onClick={e => showExpiryDate(e, member.id)}>
                             {I18n.t(`teamDetails.${member.expiryDate ? "expires" : "noExpires"}`, {expiryDate: getDateString(member.expiryDate)})}
                         </a>}
                         {(member.isInvitation && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam))
                         && <span className="details">
                             {I18n.t(`teamDetails.inviteSent`)}
-                            <EmailIcon/>
-                            </span>}
+                            <button className={"btn-icon"}
+                                    aria-expanded={selectedInvitation && true}>
+                                <span className="visually-hidden">Open invitation</span>
+                                <EmailIcon/>
+                                </button>
+                            </span>
+                        }
                         {(member.isJoinRequest && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam))
                         && <span className="details">
                             {I18n.t(`teamDetails.joinRequest`)}
-                            <EnvelopeIcon/>
+                            <button className={"btn-icon"}
+                                    aria-expanded={selectedJoinRequest && true}>
+                                <span className="visually-hidden">Open JoinRequest</span>
+                                <JoinRequestIcon/>
+                            </button>
+
                             </span>}
-                    </span>
+                        </span>
                 </td>
                 <td data-label={I18n.t(`teamDetails.columns.bin`)}>
                     {renderDeleteButton(member)}
@@ -796,7 +808,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                             searchInputRef={searchInputRef}
                         />}
                         {isMoreThenMember &&
-                            <span className="hide-invitees-wrapper">
+                        <span className="hide-invitees-wrapper">
                                 <CheckBox name="hide-invitees-checkbox"
                                           info={team.invitations && team.invitations.length > 0
                                               ? I18n.t("teamDetails.hideInvitees")
@@ -807,23 +819,23 @@ const TeamDetail = ({user, showMembers = false}) => {
                             </span>
                         }
                         {isMoreThenMember &&
-                            <div className="action-button-wrapper">
-                                {(user.externalTeams && user.externalTeams.length > 0) &&
-                                <Button onClick={() => {
-                                    addHistoryState();
-                                    setShowExternalTeams(true);
-                                }}
-                                        txt={I18n.t(`teamDetails.includeTeam`)}
-                                        className="cancel"/>}
-                                {<Button onClick={() => {
-                                    addHistoryState();
-                                    setShowAddMembersForm(true);
-                                    setShowAddAdminsButton(false);
-                                    setDefaultRole(ROLES.MEMBER);
-                                }}
-                                         txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
-                                         className="add-member-button"/>}
-                            </div>
+                        <div className="action-button-wrapper">
+                            {(user.externalTeams && user.externalTeams.length > 0) &&
+                            <Button onClick={() => {
+                                addHistoryState();
+                                setShowExternalTeams(true);
+                            }}
+                                    txt={I18n.t(`teamDetails.includeTeam`)}
+                                    className="cancel"/>}
+                            {<Button onClick={() => {
+                                addHistoryState();
+                                setShowAddMembersForm(true);
+                                setShowAddAdminsButton(false);
+                                setDefaultRole(ROLES.MEMBER);
+                            }}
+                                     txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
+                                     className="add-member-button"/>}
+                        </div>
                         }
                     </div>
                     {renderMembersTable()}

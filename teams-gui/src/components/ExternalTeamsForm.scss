@@ -16,6 +16,11 @@ div.external-teams-form-container {
         display: flex;
         align-items: center;
         color: $primary-blue;
+        background-color: transparent;
+        border: none;
+        font-family: "Source Sans Pro", sans-serif;
+        font-size: 16px;
+        max-width: 100px;
 
         svg {
             width: 16px;

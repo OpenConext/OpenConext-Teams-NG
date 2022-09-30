@@ -25,7 +25,7 @@ const Flash = () => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div className={`flash-container ${flash.className} ${flash.type}`}>
+        <div className={`flash-container ${flash.className} ${flash.type}`} aria-live="polite">
             <img src={success} alt="" aria-hidden="true"/>
             <p className={`${flash.type}`}>{flash.msg}</p>
         </div>

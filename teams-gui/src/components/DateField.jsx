@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import {ReactComponent as CalendarIcon} from "../icons/calendar-alt.svg";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DateField.scss"
+import {stopEvent} from "../utils/utils";
 
 export const DateField = ({
                               onChange,
@@ -11,10 +12,11 @@ export const DateField = ({
                               maxDate = null,
                               minDate = null
                           }) => {
+    const dateFormat = date => `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
     const component = useRef(null);
     const [initial, setInitial] = useState(true);
-    const [displayValue, setDisplayValue] = useState("");
+    const [displayValue, setDisplayValue] = useState(value ? dateFormat(value) : "");
 
     const toggle = (open = true) => {
         component.current.setOpen(open);
@@ -24,14 +26,31 @@ export const DateField = ({
         setDisplayValue(e.target.value);
     }
 
-    const onChangeInner = d => {
-        onChange(d);
-        if (d !== null) {
-            setDisplayValue(`${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`)
+    const handleOnKeyDown = event => {
+        if (component.current) {
+            if (event.key === "Enter") {
+                stopEvent(event);
+                toggle();
+            } else if (event.key === "Escape") {
+                stopEvent(event);
+                toggle(false);
+            }
+        }
+    };
+    const onChangeInner = date => {
+        onChange(date);
+        if (date !== null) {
+            setDisplayValue(dateFormat(date))
         } else {
             setDisplayValue("");
         }
+    }
 
+    const onKeyEventButton = e => {
+        if (e.key === "Escape") {
+            toggle(false);
+            stopEvent(e);
+        }
     }
 
     const validateOnBlur = (e, skipTimeOut) => {
@@ -50,7 +69,6 @@ export const DateField = ({
         }
     }
 
-
     if (isOpen && initial) {
         setTimeout(() => {
             isOpen = false;
@@ -68,22 +86,24 @@ export const DateField = ({
                     id={"date-field"}
                     selected={value}
                     value={displayValue}
-                    preventOpenOnFocus
+                    enableTabLoop={false}
+                    preventOpenOnFocus={true}
                     dateFormat={"dd/MM/yyyy"}
                     onChange={onChangeInner}
                     onChangeRaw={onChangeRaw}
-                    showWeekNumbers
+                    showWeekNumbers={true}
                     isClearable={true}
                     placeholderText={"dd/MM/yyyy"}
                     showYearDropdown={true}
                     onBlur={validateOnBlur}
                     weekLabel="Week"
+                    onKeyDown={handleOnKeyDown}
                     todayButton={null}
                     maxDate={maxDate}
                     minDate={minDate}
                 />
                 <button onClick={toggle}
-                        onKeyDown={e => e.key === "Escape" && toggle(false)}
+                        onKeyDown={onKeyEventButton}
                         className={"calendar-icon-container"}>
                     <CalendarIcon/>
                 </button>

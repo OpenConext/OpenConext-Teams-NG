@@ -6,7 +6,7 @@ div.button-container {
         margin-left: auto;
     }
 
-    a:not(:first-child) {
+    a:not(:first-child), label {
         margin-left: 20px;
     }
 }

@@ -31,12 +31,12 @@ export const ExternalTeamsForm = ({setShowForm, user, team, updateTeam}) => {
 
     return (
         <div className="external-teams-form-container">
-            <div className="back" onClick={() => {
+            <button className="back" onClick={() => {
                 setShowForm(false);
                 window.scrollTo(0, 0);
             }}>
                 <BackIcon/><span>{I18n.t("forms.back")}</span>
-            </div>
+            </button>
             <h2>{I18n.t("externalTeams.header")}</h2>
             <p>{I18n.t("externalTeams.info", {productName: user.productName})}</p>
             <p className="last">{I18n.t("externalTeams.info2", {productName: user.productName})}</p>

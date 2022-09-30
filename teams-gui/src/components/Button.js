@@ -20,13 +20,13 @@ export const Button = ({
         }
     }
 
-    return disabled ? <label className={cn}
-           disabled={true}>
+    return disabled ? <label className={cn}>
             {!deleteButton && txt}
             {deleteButton && <BinIcon/>}
         </label> :
         <a className={cn}
            href={`/${encodeURIComponent(txt)}`}
+           onKeyDown={e => e.key === " " && onClickInternal(e)}
            onClick={onClickInternal}>
             {!deleteButton && txt}
             {deleteButton && <BinIcon/>}

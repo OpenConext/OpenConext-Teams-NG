@@ -127,7 +127,7 @@ export const EmailField = ({
                                                               doAddEmail(e);
                                                           }
                                                       }}
-                                                      placeholder={emails.length === 0 ? placeHolder : ""} cols={2}/>}
+                                                      placeholder={emails.length === 0 ? placeHolder : ""}/>}
             </div>
             {errorMails.length > 0 &&
             <span className={"error"} aria-live="polite">

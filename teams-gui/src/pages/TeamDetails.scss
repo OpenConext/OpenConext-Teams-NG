@@ -281,13 +281,20 @@ div.team-members {
         }
     }
 
-    button.bin-icon  {
+    button.btn-icon {
         border: none;
         background-color: transparent;
+    }
+
+    button.bin-icon {
+        border: none;
+        background-color: transparent;
+
         svg {
             width: 20px;
             cursor: pointer;
         }
+
         &:focus-visible, &:hover {
             color: $primary-red;
         }
