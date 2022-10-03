@@ -49,6 +49,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
             }
             invite(body).then(() => {
                 setShowForm(false);
+                document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.team-details")});
                 updateTeam();
                 setFlash(I18n.t("teamDetails.flash.sendInvitation"))
             });
@@ -99,7 +100,7 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
             </div>
             <div className="extra-info-header">
                 <label htmlFor={"custom-message-input"}
-                    className={"header"}>{I18n.t("teamDetails.addMembers.headers.additionalInformationHeader")}</label>
+                       className={"header"}>{I18n.t("teamDetails.addMembers.headers.additionalInformationHeader")}</label>
                 <small id={"invitation-expiry"}>{I18n.t("teamDetails.addMembers.invitationExpiry")}</small>
             </div>
             <textarea className="custom-message-input"
@@ -120,23 +121,27 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
             <div className="language-selection-wrapper">
                 <label className={"header"}>{I18n.t("teamDetails.addMembers.headers.invitationLanguageHeader")}</label>
                 <div className="language-selection-buttons">
-                        <input type="radio"
-                               value="ENGLISH"
-                               name="languageSelection"
-                               onChange={e => setInvitationLanguage(e.target.value)}
-                               checked={invitationLanguage === "ENGLISH"}/>
-                        {I18n.t("teamDetails.addMembers.buttons.languageRadio.en")}
-                        <input type="radio"
-                               value="DUTCH"
-                               onChange={e => setInvitationLanguage(e.target.value)}
-                               name="languageSelection"
-                               checked={invitationLanguage === "DUTCH"}/>
-                        {I18n.t("teamDetails.addMembers.buttons.languageRadio.nl")}
+                    <input type="radio"
+                           value="ENGLISH"
+                           name="languageSelection"
+                           onChange={e => setInvitationLanguage(e.target.value)}
+                           checked={invitationLanguage === "ENGLISH"}/>
+                    <span>{I18n.t("teamDetails.addMembers.buttons.languageRadio.en")}</span>
+                    <input type="radio"
+                           value="DUTCH"
+                           className={"last"}
+                           onChange={e => setInvitationLanguage(e.target.value)}
+                           name="languageSelection"
+                           checked={invitationLanguage === "DUTCH"}/>
+                    <span>{I18n.t("teamDetails.addMembers.buttons.languageRadio.nl")}</span>
                 </div>
             </div>
             <div className="submit-button-wrapper">
                 <Button
-                    onClick={() => setShowForm(false)}
+                    onClick={() => {
+                        setShowForm(false);
+                        document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.team-details")});
+                    }}
                     txt={I18n.t(`forms.${isNewTeam ? "skip" : "cancel"}`)}
                     className="cancel-button"
                     cancelButton={true}/>

@@ -34,6 +34,7 @@ export const InvitationForm = ({setShowForm, invitation, updateTeam}) => {
         } else {
             resendInvitation({id: invitation.id, message: message}).then(() => {
                 setShowForm(false);
+                document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.team-details")});
                 updateTeam();
                 window.scrollTo(0, 0);
                 setFlash(I18n.t("teamDetails.flash.resendInvitation"));
@@ -91,6 +92,7 @@ export const InvitationForm = ({setShowForm, invitation, updateTeam}) => {
                     <Button
                         onClick={() => {
                             setShowForm(false);
+                            document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.team-details")});
                             window.scrollTo(0, 0);
                         }}
                         className={"cancel-invitation"}

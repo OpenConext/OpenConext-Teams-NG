@@ -11,7 +11,6 @@ import {
     changeExpiryDate,
     changeRole,
     deleteInvitation,
-    deleteJoinRequest,
     deleteMember,
     deleteTeam,
     delinkExternalTeam,
@@ -20,6 +19,7 @@ import {
     getTeamDetail,
     getTeamDetailByHash,
     getTeamDetailByPublicLink,
+    rejectJoinRequest,
     resetPublicLink,
 } from "../api";
 import I18n from "i18n-js";
@@ -132,7 +132,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                 setAlerts(adminAlert ? [I18n.t(`teamDetails.alerts.singleAdmin`)] : []);
 
                 const pendingInvitations = (res.invitations || [])
-                    .filter(invitation => !invitation.expired && !invitation.accepted && !invitation.denied)
+                    .filter(invitation => !invitation.expired && !invitation.accepted && !invitation.declined)
                     .map(invitation => ({
                         person: {name: "-", email: invitation.email},
                         created: invitation.timestamp / 1000,
@@ -196,11 +196,24 @@ const TeamDetail = ({user, showMembers = false}) => {
             setShowAddAdminsButton(false);
         }
         if (params.hash) {
-            getInvitationInfo(params.hash).then(invitation => {
-                setInvitation(invitation);
-                setWelcomeOpen(true);
-                updateTeam();
-            })
+            getInvitationInfo(params.hash)
+                .then(invitation => {
+                    setInvitation(invitation);
+                    if (invitation.accepted || invitation.declined) {
+                        setConfirmation({
+                            cancel: null,
+                            confirmationTxt: I18n.t("invalidInvitation.confirm"),
+                            action: () => navigate("/"),
+                            warning: false,
+                            question: I18n.t(`invalidInvitation.${invitation.accepted ? "alreadyAccepted" : "alreadyDeclined"}`),
+                        });
+                        setConfirmationOpen(true);
+                        setLoaded(true);
+                    } else {
+                        setWelcomeOpen(true);
+                        updateTeam();
+                    }
+                }).catch(() => navigate("/404"))
         } else if (params.publicLink) {
             getPublicLink(params.publicLink).then(publicLink => {
                 setInvitation({alreadyMember: publicLink.alreadyMember, expired: false, intendedRole: ROLES.MEMBER});
@@ -211,7 +224,7 @@ const TeamDetail = ({user, showMembers = false}) => {
             updateTeam();
         }
 
-    }, [updateTeam, params]);
+    }, [updateTeam, params, navigate]);
 
     useEffect(() => {
         const updateDisplayedMembers = () => {
@@ -240,7 +253,6 @@ const TeamDetail = ({user, showMembers = false}) => {
     }, [memberList, sort, searchQuery, membersFilter, hideInvitees]);
 
     const renderAlertBanners = () => {
-
         return alerts.map((alert, index) => {
             return (
                 <div key={index} className="alert-banner-wrapper">
@@ -339,7 +351,7 @@ const TeamDetail = ({user, showMembers = false}) => {
             if (member.isInvitation) {
                 deleteInvitation(member.invitationID).then(updateTeam);
             } else if (member.isJoinRequest) {
-                deleteJoinRequest(member.id).then(updateTeam);
+                rejectJoinRequest(member.id).then(updateTeam);
             } else if (member.isExternalTeam) {
                 delinkExternalTeam(team.id, member.identifier).then(updateTeam);
             } else {
@@ -472,8 +484,10 @@ const TeamDetail = ({user, showMembers = false}) => {
     const tdClick = member => {
         addHistoryState();
         if (member.isJoinRequest) {
+            document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.join-request")});
             setSelectedJoinRequest(member);
         } else if (member.isInvitation) {
+            document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.invitation")});
             setSelectedInvitation(member);
         }
     }
@@ -587,7 +601,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                     className={`joined-entry ${tdClassName(member)}`}
                     onClick={() => tdClick(member)}>
                     <span className="joined-wrapper">
-                        <span>{getDateString(member.created)}</span>
+                        <span className={"date-string"}>{getDateString(member.created)}</span>
                         {(member.isMember && [ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam))
                         && <button className={"btn-icon link"}
                                    onClick={e => showExpiryDate(e, member.id)}>
@@ -719,12 +733,13 @@ const TeamDetail = ({user, showMembers = false}) => {
     const universalPublicLink = `${location.protocol}//${location.hostname}${location.port ? ":" + location.port : ""}/public/${team.publicLink}`;
 
     const isMoreThenMember = [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam);
+    const invitationInvalid = invitation && (invitation.accepted || invitation.declined || invitation.expired);
     return (
         <Page>
-            <SubHeader>
+            {!invitationInvalid && <SubHeader>
                 <BreadCrumb paths={paths}/>
-            </SubHeader>
-            <SubHeader>
+            </SubHeader>}
+            {!invitationInvalid && <SubHeader>
                 <div className="team-actions">
                     <div>
                         <h1 onClick={() => setShowAddMembersForm(false)}>{team.name}</h1>
@@ -768,12 +783,13 @@ const TeamDetail = ({user, showMembers = false}) => {
                     <ActionMenu title={actionDropDownTitle(team, user)}
                                 actions={getActions()}/>
                 </div>
-            </SubHeader>
+            </SubHeader>}
             {confirmationOpen && (
                 <ConfirmationDialog
                     isOpen={confirmationOpen}
                     cancel={confirmation.cancel}
                     confirm={confirmation.action}
+                    confirmationTxt={confirmation.confirmationTxt || I18n.t("confirmationDialog.confirm")}
                     isWarning={confirmation.warning}
                     question={confirmation.question}>
                     {showMemberExpiryDate && <div className={"change-expiry-date"}>
@@ -795,7 +811,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                 />
             )}
             {renderAlertBanners()}
-            {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation && !showExternalTeams) && (
+            {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation && !showExternalTeams && !invitationInvalid) && (
                 <div className="team-members">
                     {!team.hideMembers && <h2>{I18n.t("teamDetails.members")} ({memberList.length})</h2>}
                     {team.hideMembers && <h3>{I18n.t("teamDetails.hideMembers")}</h3>}
@@ -823,6 +839,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                             <Button onClick={() => {
                                 addHistoryState();
                                 setShowExternalTeams(true);
+                                document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.include-team")});
                             }}
                                     txt={I18n.t(`teamDetails.includeTeam`)}
                                     className="cancel"/>}
@@ -831,6 +848,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                                 setShowAddMembersForm(true);
                                 setShowAddAdminsButton(false);
                                 setDefaultRole(ROLES.MEMBER);
+                                document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.add-members")});
                             }}
                                      txt={I18n.t(`teamDetails.addMembers.buttons.add`)}
                                      className="add-member-button"/>}

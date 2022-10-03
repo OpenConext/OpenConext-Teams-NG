@@ -25,6 +25,7 @@ export const JoinRequestForm = ({setShowForm, joinRequest, updateTeam}) => {
         } else {
             deleteJoinRequest(joinRequest.id).then(() => {
                 setShowForm(false);
+                document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.team-details")});
                 window.scrollTo(0, 0);
                 updateTeam();
                 setFlash(I18n.t("teamDetails.flash.removeJoinRequest"))
@@ -44,6 +45,7 @@ export const JoinRequestForm = ({setShowForm, joinRequest, updateTeam}) => {
         } else {
             approveJoinRequest(joinRequest.id).then(() => {
                 setShowForm(false);
+                document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.team-details")});
                 updateTeam();
                 window.scrollTo(0, 0);
                 setFlash(I18n.t("teamDetails.flash.approveJoinRequest"));
@@ -63,6 +65,7 @@ export const JoinRequestForm = ({setShowForm, joinRequest, updateTeam}) => {
         } else {
             rejectJoinRequest(joinRequest.id).then(() => {
                 setShowForm(false);
+                document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.team-details")});
                 updateTeam();
                 window.scrollTo(0, 0);
                 setFlash(I18n.t("teamDetails.flash.rejectJoinRequest"));
@@ -108,11 +111,13 @@ export const JoinRequestForm = ({setShowForm, joinRequest, updateTeam}) => {
                 <div className="submit-button-wrapper">
                     <Button
                         onClick={() => doDeleteJoinRequest(true)}
+                        txt={I18n.t("forms.delete")}
                         deleteButton={true}
                     />
                     <Button
                         onClick={() => {
                             setShowForm(false);
+                            document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.team-details")});
                             window.scrollTo(0, 0);
                         }}
                         className={"cancel-join-request"}

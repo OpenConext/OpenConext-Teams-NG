@@ -33,6 +33,7 @@ export const ExternalTeamsForm = ({setShowForm, user, team, updateTeam}) => {
         <div className="external-teams-form-container">
             <button className="back" onClick={() => {
                 setShowForm(false);
+                document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.team-details")});
                 window.scrollTo(0, 0);
             }}>
                 <BackIcon/><span>{I18n.t("forms.back")}</span>

@@ -17,6 +17,8 @@ I18n.translations.en = {
         "public": "Public team",
         "teams": "Join request",
         "join-request": "Join request",
+        "add-members": "Add members",
+        "include-team" : "Include team",
         "missing-attributes": "Missing attributes",
     },
     fileUploadDialog: {
@@ -327,6 +329,11 @@ I18n.translations.en = {
         denied: "Bummer...",
         titleDenied: "You can't join team {{name}}",
         alreadyMember: "You are already a member of this team."
+    },
+    invalidInvitation: {
+        alreadyAccepted: "This invitation has already been accepted. You can't use it anymore.",
+        alreadyDeclined: "This invitation has already been declined. You can't use it anymore.",
+        confirm: "Ok"
     },
     emails: {
         singleInvalid: "Invalid email address: {{emails}}",

@@ -17,6 +17,8 @@ I18n.translations.nl = {
         "public": "Publiek team",
         "teams": "Toetredingsverzoek",
         "join-request": "Toetredingsverzoek",
+        "add-members": "Leden toevoegen",
+        "include-team" : "Team koppelen",
         "missing-attributes": "Missende attributes",
     },
     fileUploadDialog: {
@@ -327,6 +329,11 @@ I18n.translations.nl = {
         denied: "Helaas...",
         titleDenied: "Je kunt nu niet toetreden tot {{name}}",
         alreadyMember: "Je bent al lid van dit team."
+    },
+    invalidInvitation: {
+        alreadyAccepted: "Deze uitnodiging is al reeds geaccepteerd. Je kan deze niet meer gebruiken.",
+        alreadyDeclined: "Deze uitnodiging is al reeds geweigerd. Je kan deze niet meer gebruiken.",
+        confirm: "Ok"
     },
     emails: {
         singleInvalid: "Ongeldig e-mailadres: {{emails}}",

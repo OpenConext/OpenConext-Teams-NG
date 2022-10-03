@@ -74,6 +74,10 @@
 
         input {
             margin-right: 10px;
+
+            &.last {
+                margin-left: 40px;
+            }
         }
     }
 

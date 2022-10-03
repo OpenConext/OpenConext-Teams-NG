@@ -14,10 +14,10 @@
         background-color: white;
         border-radius: 4px;
         cursor: pointer;
-        width: 190px;
+        width: 200px;
 
         svg {
-            margin: 0 auto;
+            margin-left: auto;
             width: 22px;
         }
     }
@@ -27,7 +27,7 @@
         display: block;
         top: 58px;
         right: 0;
-        width: 190px;
+        width: 200px;
         z-index: 99;
         background: white;
         border: 1px solid $primary-grey;
