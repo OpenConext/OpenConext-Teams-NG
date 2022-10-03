@@ -123,17 +123,21 @@ export const AddTeamMembersForm = ({team, user, setShowForm, updateTeam, isNewTe
                 <div className="language-selection-buttons">
                     <input type="radio"
                            value="ENGLISH"
+                           id="english"
                            name="languageSelection"
                            onChange={e => setInvitationLanguage(e.target.value)}
                            checked={invitationLanguage === "ENGLISH"}/>
-                    <span>{I18n.t("teamDetails.addMembers.buttons.languageRadio.en")}</span>
+                    <label htmlFor={"english"}>{I18n.t("teamDetails.addMembers.buttons.languageRadio.en")}
+                    </label>
                     <input type="radio"
                            value="DUTCH"
+                           id="dutch"
                            className={"last"}
                            onChange={e => setInvitationLanguage(e.target.value)}
                            name="languageSelection"
                            checked={invitationLanguage === "DUTCH"}/>
-                    <span>{I18n.t("teamDetails.addMembers.buttons.languageRadio.nl")}</span>
+                    <label htmlFor={"dutch"}>{I18n.t("teamDetails.addMembers.buttons.languageRadio.nl")}
+                    </label>
                 </div>
             </div>
             <div className="submit-button-wrapper">

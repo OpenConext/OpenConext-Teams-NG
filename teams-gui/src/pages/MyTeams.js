@@ -171,8 +171,15 @@ export const MyTeams = ({user}) => {
                 {(!team.viewable && !team.isJoinRequest) && <PrivateTeamLabel/>}
             </td>
             <td data-label={I18n.t("myteams.columns.member")}
-                onClick={() => (team.role === ROLES.MEMBER || team.isJoinRequest) ? navigate(linkUrl) :
-                    navigate(`/team-details/${team.id}?add-members=true`)}>
+                onClick={() => {
+                    if (team.role === ROLES.MEMBER || team.isJoinRequest) {
+                        navigate(linkUrl)
+                    } else {
+                        navigate(`/team-details/${team.id}?add-members=true`);
+                        setTimeout(() => document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.invitation")}), 200);
+                    }
+
+                }}>
                 {renderAddMemberLink(team)}
             </td>
             <td data-label={I18n.t("myteams.columns.bin")}>{renderDeleteButton(team)}</td>
@@ -188,8 +195,8 @@ export const MyTeams = ({user}) => {
         }
         return (
             <button className={"btn-icon link"} onClick={() => navigate(`/team-details/${team.id}?add-members=true`)}>
-                    {I18n.t("myteams.add_members")}
-                    <span className={"visually-hidden"}> to team {team.name}</span>
+                {I18n.t("myteams.add_members")}
+                <span className={"visually-hidden"}> to team {team.name}</span>
             </button>);
     }
 

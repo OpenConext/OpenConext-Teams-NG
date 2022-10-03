@@ -72,8 +72,13 @@
             justify-content: space-between;
         }
 
+        label {
+            cursor: pointer;
+        }
+
         input {
             margin-right: 10px;
+            cursor: pointer;
 
             &.last {
                 margin-left: 40px;
