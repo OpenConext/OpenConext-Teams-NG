@@ -7,10 +7,10 @@ I18n.translations.en = {
         }
     },
     headerTitles: {
-        index: "{{page}} | SURFConext teams",
+        index: "{{page}} | SURFconext teams",
         "team-details": "Team details",
         "public-teams": "Public teams",
-        "my-teams": "Mine teams",
+        "my-teams": "My teams",
         "new-team": "New team",
         "edit-team": "Edit team",
         "invitation": "Invitation",
@@ -104,7 +104,7 @@ I18n.translations.en = {
             expiryDateTooltip: "The membership expiry date is an optional date after which this membership will be ended.",
             headers: {
                 title: "Add members to {{name}}",
-                addMembersHeader: "Invitation emails",
+                addMembersHeader: "Email addresses to invite",
                 additionalInformationHeader: "Additional information",
                 invitationLanguageHeader: "Invitation language",
                 roleHeader: "The intended role for the invitees"

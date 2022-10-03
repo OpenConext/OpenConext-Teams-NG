@@ -7,7 +7,7 @@ I18n.translations.nl = {
         }
     },
     headerTitles: {
-        index: "{{page}} | SURFConext teams",
+        index: "{{page}} | SURFconext teams",
         "team-details": "Team details",
         "public-teams": "Publieke teams",
         "my-teams": "Mijn teams",
@@ -103,8 +103,8 @@ I18n.translations.nl = {
             expiryDate: "Vervaldatum lidmaatschap",
             expiryDateTooltip: "De optionele vervaldatum van het lidmaatschap. Hierna wordt het lidmaatschap beëindigd.",
             headers: {
-                title: "Boeg leden toe aan {{name}}",
-                addMembersHeader: "E-mails uitnodigingen",
+                title: "Voeg leden toe aan {{name}}",
+                addMembersHeader: "E-mailadressen om uit te nodigen",
                 additionalInformationHeader: "Extra informatie",
                 invitationLanguageHeader: "Taal van het uitnodigingsbericht",
                 roleHeader: "Rol die de uitgenodigden zullen krijgen"
