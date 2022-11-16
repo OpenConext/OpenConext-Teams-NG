@@ -61,7 +61,7 @@ const App = () => {
 
 
     const toggleSuperAdminModus = val => {
-        const newUser = {...user, superAdminModus: val};
+        const newUser = {...user, superAdminModus: !user.superAdminModus};
         setUser(newUser);
         setSuperAdmin(val);
     }

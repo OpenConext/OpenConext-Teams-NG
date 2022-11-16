@@ -13,8 +13,8 @@ export const Header = ({user, toggleSuperAdminModus}) => {
 
     const [droppedDown, setDroppedDown] = useState(false);
 
-    const doToggleSuperAdminModus = e => {
-        toggleSuperAdminModus(e.target.checked);
+    const doToggleSuperAdminModus = () => {
+        toggleSuperAdminModus();
     }
 
     const doLogOut = e => {
@@ -51,7 +51,7 @@ export const Header = ({user, toggleSuperAdminModus}) => {
                     {user.superAdmin &&
                     <CheckBox className="checkbox super-admin"
                               onChange={doToggleSuperAdminModus}
-                              value={user.superAdminModus}
+                              value={user.superAdminModus || false}
                               name="super_admin"
                               info={I18n.t("header.superAdmin.modus")}/>}
                     <nav aria-label="account" className="user-info">

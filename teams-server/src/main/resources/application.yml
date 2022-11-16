@@ -79,13 +79,11 @@ voot:
 
 spring:
   session:
-    cleanup:
-      cron:
-        expression: 0 * * * * MON-FRI
     store-type: jdbc
     jdbc:
       schema: classpath:org/springframework/session/jdbc/schema-mysql.sql
       initialize-schema: always
+      cleanup-cron: "0 * * * * *"
   jpa:
     properties:
       hibernate:

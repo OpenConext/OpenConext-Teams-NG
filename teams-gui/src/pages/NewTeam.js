@@ -158,7 +158,7 @@ const NewTeam = ({user}) => {
                                   onChange={() => setTeam({...team, hideMembers: !team.hideMembers})}
                                   info={I18n.t("newTeam.hideMembers")}
                                   toolTip={I18n.t("newTeam.tooltips.hideMembers")}
-                                  value={team.hideMembers}/>
+                                  value={team.hideMembers || false}/>
                     </div>
 
                     <div className="input-field ">
