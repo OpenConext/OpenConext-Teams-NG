@@ -9,9 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import teams.domain.FederatedUser;
 import teams.domain.Person;
-import teams.domain.PersonAutocomplete;
-import teams.exception.IllegalSearchParamException;
-import teams.repository.PersonRepository;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,15 +20,11 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toSet;
-import static teams.domain.Feature.PERSON_EMAIL_PICKER;
 
 @RestController
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-
-    @Autowired
-    private PersonRepository personRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -55,20 +48,6 @@ public class UserController {
         SecurityContextHolder.clearContext();
         SecurityContextHolder.getContext().setAuthentication(null);
         return Collections.singletonMap("url", "/Shibboleth.sso/Logout");
-    }
-
-    @GetMapping("api/teams/users")
-    public Set<PersonAutocomplete> autocomplete(@RequestParam("query") String query, FederatedUser federatedUser) {
-        if (query.trim().length() < 2) {
-            throw new IllegalSearchParamException("Minimal query length is 2");
-        }
-        if (!federatedUser.featureEnabled(PERSON_EMAIL_PICKER)) {
-            return Collections.emptySet();
-        }
-        List<Person> persons = personRepository.findFirst10ByNameContainingOrEmailContainingAllIgnoreCase(query, query);
-        return persons.stream()
-                .map(person -> new PersonAutocomplete(person.getName(), person.getEmail()))
-                .collect(toSet());
     }
 
     @PostMapping("/api/teams/error")

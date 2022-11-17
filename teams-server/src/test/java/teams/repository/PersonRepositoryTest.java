@@ -24,18 +24,6 @@ public class PersonRepositoryTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void findByNameContainingIgnoreCase() throws Exception {
-        List<Person> persons = personRepository.findFirst10ByNameContainingOrEmailContainingAllIgnoreCase("OHN", "OHN");
-        assertEquals(2, persons.size());
-    }
-
-    @Test
-    public void findByEmailContainingIgnoreCase() throws Exception {
-        List<Person> persons = personRepository.findFirst10ByNameContainingOrEmailContainingAllIgnoreCase("EXA", "EXA");
-        assertEquals(5, persons.size());
-    }
-
-    @Test
     public void deleteExpiredMemberships() throws Exception {
         Person person = personRepository.findById(6L).get();
         Instant thePast = Instant.now().minus(15, ChronoUnit.DAYS);
