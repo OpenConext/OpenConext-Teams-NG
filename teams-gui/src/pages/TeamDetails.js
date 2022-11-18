@@ -124,7 +124,7 @@ const TeamDetail = ({user, showMembers = false}) => {
 
         promise.then((res) => {
             if (res.memberships) {
-                const userMembershipRole = (res.memberships.find(m => m.person.id === user.person.id) || {role: ROLES.MEMBER}).role;
+                const userMembershipRole = (res.memberships.find(m => m.person.id === user.person.id) || {role: ROLES.GUEST}).role;
                 const adminAlert = userMembershipRole !== ROLES.MEMBER &&
                     res.memberships.filter(member => member.role === ROLES.ADMIN || member.role === ROLES.OWNER).length < 2 &&
                     [ROLES.ADMIN].includes(userMembershipRole) &&
@@ -431,7 +431,7 @@ const TeamDetail = ({user, showMembers = false}) => {
                 sortable: false,
             },
         ];
-        if (![ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam)) {
+        if (![ROLES.ADMIN, ROLES.OWNER, ROLES.GUEST].includes(userRoleInTeam)) {
             columns.splice(1, 1);
         }
         return (
@@ -465,6 +465,9 @@ const TeamDetail = ({user, showMembers = false}) => {
     };
 
     const tdClassName = member => {
+        if (userRoleInTeam === ROLES.GUEST) {
+            return "";
+        }
         if (member.isJoinRequest || member.isInvitation) {
             return "clickable top-height";
         }
@@ -482,6 +485,9 @@ const TeamDetail = ({user, showMembers = false}) => {
     }
 
     const tdClick = member => {
+        if (userRoleInTeam === ROLES.GUEST) {
+            return;
+        }
         addHistoryState();
         if (member.isJoinRequest) {
             document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.join-request")});
@@ -578,13 +584,13 @@ const TeamDetail = ({user, showMembers = false}) => {
                     onClick={() => !member.isExternalTeam && tdClick(member)}>
                     {nameColumn(member)}
                 </td>
-                {[ROLES.ADMIN, ROLES.OWNER].includes(userRoleInTeam) && (
-                    <td data-label={I18n.t(`teamDetails.columns.idp`)}
-                        className={tdClassName(member)}
-                        onClick={() => tdClick(member)}>
-                        {idpColumn(member)}
-                    </td>
-                )}
+                {[ROLES.ADMIN, ROLES.OWNER, ROLES.GUEST].includes(userRoleInTeam) &&
+                <td data-label={I18n.t(`teamDetails.columns.idp`)}
+                    className={tdClassName(member)}
+                    onClick={() => tdClick(member)}>
+                    {idpColumn(member)}
+                </td>
+                }
                 <td data-label={I18n.t(`teamDetails.columns.email`)}
                     className={tdClassName(member)}
                     onClick={() => tdClick(member)}>
@@ -617,6 +623,9 @@ const TeamDetail = ({user, showMembers = false}) => {
                                 </button>
                             </span>
                         }
+                        {(member.isInvitation && userRoleInTeam === ROLES.GUEST) && <span className="details">
+                            {I18n.t(`teamDetails.inviteSent`)}<EmailIcon/>
+                        </span>}
                         {(member.isJoinRequest && [ROLES.ADMIN, ROLES.OWNER, ROLES.MANAGER].includes(userRoleInTeam))
                         && <span className="details">
                             {I18n.t(`teamDetails.joinRequest`)}
@@ -627,6 +636,10 @@ const TeamDetail = ({user, showMembers = false}) => {
                             </button>
 
                             </span>}
+                        {(member.isJoinRequest && userRoleInTeam === ROLES.GUEST) && <span className="details">
+                            {I18n.t(`teamDetails.joinRequest`)}
+                            <JoinRequestIcon/>
+                        </span>}
                         </span>
                 </td>
                 <td data-label={I18n.t(`teamDetails.columns.bin`)}>

@@ -83,7 +83,7 @@ export const InvitationForm = ({setShowForm, invitation, updateTeam}) => {
                 />
                 <InputField
                     name={I18n.t("invitationForm.message")}
-                    value={message}
+                    value={message || ""}
                     multiline={true}
                     placeholder={I18n.t("invitationForm.messagePlaceholder")}
                     onChange={e => setMessage(e.target.value)}

@@ -12,7 +12,7 @@ import {isSuperAdmin} from "../store/store";
 import informational from "../icons/alert-information-circle.svg";
 import removeMd from "remove-markdown";
 
-export const PublicTeamsTab = ({user, myteams}) => {
+export const PublicTeamsTab = ({myteams}) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [sort, setSort] = useState({field: "name", direction: "ascending"});
     const [teams, setTeams] = useState([]);

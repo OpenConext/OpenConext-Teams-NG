@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useCallback, useEffect, useRef, useState} from "react";
 
 import {deleteJoinRequest, deleteTeam, getMyTeams} from "../api";
@@ -18,6 +18,7 @@ import {PublicTeamsTab} from "../components/PublicTeamsTab";
 import {PrivateTeamLabel} from "../components/PrivateTeamLabel";
 import {SpinnerField} from "../components/SpinnerField";
 import {setFlash} from "../flash/events";
+import {stopEvent} from "../utils/utils";
 
 
 export const MyTeams = ({user}) => {
@@ -163,7 +164,10 @@ export const MyTeams = ({user}) => {
         const linkUrl = team.isJoinRequest ? `/join-request/${team.teamId}/${team.id}` : `/team-details/${team.id}`;
         return (<tr key={index} className={"clickable"}>
             <td data-label={I18n.t("myteams.columns.title")} onClick={() => navigate(linkUrl)}>
-                <Link to={linkUrl}>{team.name}</Link>
+                <a href={linkUrl} onClick={e => {
+                    stopEvent(e);
+                    navigate(linkUrl);
+                }}>{team.name}</a>
             </td>
             <td data-label={I18n.t("myteams.columns.members")} onClick={() => navigate(linkUrl)}
                 className={"membership-count"}>{team.membershipCount}</td>
@@ -194,7 +198,10 @@ export const MyTeams = ({user}) => {
             return I18n.t("myteams.joinRequest");
         }
         return (
-            <button className={"btn-icon link"} onClick={() => navigate(`/team-details/${team.id}?add-members=true`)}>
+            <button className={"btn-icon link"} onClick={e => {
+                stopEvent(e);
+                navigate(`/team-details/${team.id}?add-members=true`)
+            }}>
                 {I18n.t("myteams.add_members")}
                 <span className={"visually-hidden"}> to team {team.name}</span>
             </button>);
