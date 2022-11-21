@@ -17,8 +17,6 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     Optional<Person> findByUrnIgnoreCase(String urn);
 
-    List<Person> findFirst10ByNameContainingOrEmailContainingAllIgnoreCase(String name, String email);
-
     @Transactional(noRollbackFor = OptimisticLockException.class)
     @Modifying
     @Query(value = "DELETE FROM persons WHERE persons.last_login_date < (NOW() - INTERVAL :retentionDays DAY) " +

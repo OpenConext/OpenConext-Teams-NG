@@ -9,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.TeamValidator;
 import teams.domain.*;
-import teams.exception.IllegalSearchParamException;
 import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
 

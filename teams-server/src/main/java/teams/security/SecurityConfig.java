@@ -172,9 +172,6 @@ public class SecurityConfig {
         @Value("${teams.product-name}")
         private String productName;
 
-        @Value("${feature-toggles.person-email-picker}")
-        private boolean personEmailPicker;
-
         @Value("${config.support-email}")
         private String supportEmail;
 
@@ -241,7 +238,6 @@ public class SecurityConfig {
 
         private Map<Feature, Boolean> featureToggles() {
             Map<Feature, Boolean> toggles = new HashMap<>();
-            toggles.put(Feature.PERSON_EMAIL_PICKER, personEmailPicker);
             return toggles;
         }
 

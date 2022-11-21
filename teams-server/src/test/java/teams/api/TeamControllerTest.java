@@ -6,7 +6,6 @@ import teams.AbstractApplicationTest;
 import teams.domain.*;
 import teams.exception.DuplicateTeamNameException;
 import teams.exception.IllegalMembershipException;
-import teams.exception.IllegalSearchParamException;
 import teams.exception.NotAllowedException;
 
 import java.util.HashMap;

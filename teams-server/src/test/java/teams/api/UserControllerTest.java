@@ -6,8 +6,6 @@ import teams.AbstractApplicationTest;
 import teams.Seed;
 import teams.domain.Feature;
 import teams.domain.FederatedUser;
-import teams.domain.PersonAutocomplete;
-import teams.exception.IllegalSearchParamException;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,41 +41,6 @@ public class UserControllerTest extends AbstractApplicationTest implements Seed 
                 .then()
                 .statusCode(SC_OK)
                 .body("urn", equalTo("not-provisioned"));
-    }
-
-    @Test
-    public void autocomplete() throws Exception {
-        given()
-                .when()
-                .header("name-id", "urn:collab:person:surfnet.nl:mdoe")
-                .param("query", "john")
-                .get("api/teams/users")
-                .then()
-                .statusCode(SC_OK)
-                .body("size()", is(2))
-                .body("name", hasItems("John Doe"))
-                .body("email", hasItems("john.doe@example.org", "junior@domain.net"));
-    }
-
-    @Test
-    public void autoCompleteFeatureToggle() {
-        UserController userController = new UserController();
-        FederatedUser federatedUser = new FederatedUser(person("urn"), "urn:collab:group:demo.openconext.org:",
-                "OpenConext", Collections.emptyList(), Collections.singletonMap(Feature.PERSON_EMAIL_PICKER, false), new HashMap<>());
-
-        Set<PersonAutocomplete> personAutocompletes = userController.autocomplete("john", federatedUser);
-        assertEquals(0, personAutocompletes.size());
-    }
-
-    @Test
-    public void teamAutocompleteIllegalArgument() throws Exception {
-        given()
-                .param("query", "E ")
-                .when()
-                .get("api/teams/users")
-                .then()
-                .statusCode(SC_BAD_REQUEST)
-                .body("exception", equalTo(IllegalSearchParamException.class.getName()));
     }
 
     @Test

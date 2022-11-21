@@ -1,4 +1,3 @@
-import {isEmpty} from "../utils/utils";
 import {isSuperAdmin} from "../store/store";
 
 const apiPath = "/api/teams/";
@@ -100,10 +99,6 @@ export function getUser() {
 
 export function autoCompleteTeam(query) {
     return fetchJson("teams?query=" + encodeURIComponent(query));
-}
-
-export function autoCompletePerson(query) {
-    return isEmpty(query) || query.length < 2 ? Promise.resolve([]) : fetchJson("users?query=" + encodeURIComponent(query));
 }
 
 export function deleteTeam(id) {
