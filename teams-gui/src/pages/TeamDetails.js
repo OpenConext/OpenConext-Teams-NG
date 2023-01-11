@@ -387,8 +387,10 @@ const TeamDetail = ({user, showMembers = false}) => {
                 <span className="visually-hidden">Remove member {member.name}</span>
             </button>
         );
+        const isManagerWhoCanDeleteMembers = ROLES.MANAGER === userRoleInTeam && member.isMember && ROLES.MEMBER === member.role;
+        const isOwnerOrAdmin = [ROLES.OWNER, ROLES.ADMIN].includes(userRoleInTeam);
         return (
-            <>{[ROLES.OWNER, ROLES.ADMIN].includes(userRoleInTeam) ? icon : I18n.t("myteams.empty")} </>
+            <>{(isManagerWhoCanDeleteMembers || isOwnerOrAdmin) ? icon : I18n.t("myteams.empty")} </>
         );
     };
 
