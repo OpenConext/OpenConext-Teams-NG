@@ -98,6 +98,7 @@ spring:
   flyway:
     validate-on-migrate: false
     table: schema_version
+    enabled: true
   security:
     user:
       name: na
