@@ -59,3 +59,13 @@ jobs:
         tags: |
           ghcr.io/openconext/openconext-manage/teams-server:${{ github.ref_name }}
 
+    - name: Build and push the teams gui image
+      uses: docker/build-push-action@v4
+      with:
+        context: teams-gui
+        file: teams-gui/docker/Dockerfile
+        platforms: linux/amd64
+        push: true
+        tags: |
+          ghcr.io/openconext/openconext-manage/teams-gui:${{ github.ref_name }}
+
