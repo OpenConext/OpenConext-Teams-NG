@@ -7,3 +7,5 @@ DROP TABLE IF EXISTS requests;
 DROP TABLE IF EXISTS teams;
 DROP TABLE IF EXISTS persons;
 DROP TABLE IF EXISTS schema_version;
+DROP TABLE IF EXISTS applications;
+DROP TABLE IF EXISTS teams_applications;

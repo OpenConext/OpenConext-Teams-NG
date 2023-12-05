@@ -9,13 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 import teams.api.validations.HashGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
@@ -81,6 +75,13 @@ public class Team implements HashGenerator, Serializable {
 
     @ManyToMany(mappedBy = "teams", cascade = ALL)
     private Set<ExternalTeam> externalTeams = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "teams_applications",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "application_id"))
+    private Set<Application> applications = new HashSet<>();
 
     public Team(String urn, String name, String description, boolean viewable, boolean hideMembers, String personalNote) {
         this.urn = urn;

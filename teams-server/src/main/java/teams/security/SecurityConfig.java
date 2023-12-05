@@ -11,7 +11,6 @@ import org.springframework.core.env.Profiles;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -135,6 +134,34 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .antMatcher("/deprovision/**")
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
+                    .csrf().disable()
+                    .addFilterBefore(new BasicAuthenticationFilter(authenticationManager()), BasicAuthenticationFilter.class)
+                    .authorizeRequests()
+                    .antMatchers("/**").hasRole("USER");
+        }
+    }
+
+    @Order(4)
+    @Configuration
+    public static class InviteConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+        @Value("${invite.user}")
+        private String user;
+
+        @Value("${invite.password}")
+        private String password;
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+            auth.inMemoryAuthentication().withUser(user).password(password).authorities("ROLE_USER");
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .antMatcher("/api/v1/external/invite-app/**")
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .csrf().disable()

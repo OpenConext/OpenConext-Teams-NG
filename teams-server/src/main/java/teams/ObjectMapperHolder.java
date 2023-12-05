@@ -10,17 +10,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class JacksonConfiguration {
+public class ObjectMapperHolder {
+
+    public static final ObjectMapper objectMapper = new ObjectMapper();
+
+    static {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new Hibernate5Module());
+        objectMapper.registerModule(new Jdk8Module());
+    }
 
     @Bean
     @Primary
     public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.registerModule(new JavaTimeModule());
-        mapper.registerModule(new Hibernate5Module());
-        mapper.registerModule(new Jdk8Module());
-        return mapper;
+        return objectMapper;
     }
 
 }

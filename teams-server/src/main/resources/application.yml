@@ -73,6 +73,11 @@ voot:
   clientSecret: secret
   scopes: groups
 
+invite:
+  url: "http://localhost:8889//api/teams"
+  user: teams
+  password: secret
+
 spring:
   session:
     store-type: jdbc
@@ -116,10 +121,12 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health,info"
+        include: "health,info,mappings"
       base-path: "/internal"
   endpoint:
     info:
+      enabled: true
+    mappings:
       enabled: true
   info:
     git:

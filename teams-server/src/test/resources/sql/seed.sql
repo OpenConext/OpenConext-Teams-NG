@@ -105,3 +105,18 @@ VALUES
 INSERT INTO `requests` (`id`, `message`, `team_id`, `person_id`)
 VALUES
   (4, 'Please, please let me join', 7, 7);
+
+INSERT INTO `applications` (`id`, `manage_id`, `manage_type`, `landing_page`)
+VALUES
+    (1, '1', 'SAML20_SP', 'https://landingpage.com');
+INSERT INTO `applications` (`id`, `manage_id`, `manage_type`, `landing_page`)
+VALUES
+    (2, '6', 'OIDC10_RP', 'https://landingpage.com');
+
+INSERT INTO `teams_applications` (`id`, `team_id`, `application_id`)
+VALUES
+    (1, 2, 1);
+
+INSERT INTO `teams_applications` (`id`, `team_id`, `application_id`)
+VALUES
+    (2, 2, 2);
