@@ -74,7 +74,7 @@ voot:
   scopes: groups
 
 invite:
-  url: "http://localhost:8889//api/teams"
+  url: "http://localhost:8888/api/teams"
   user: teams
   password: secret
 
@@ -86,6 +86,7 @@ spring:
       initialize-schema: always
       cleanup-cron: "0 * * * * *"
   jpa:
+    open-in-view: true
     properties:
       hibernate:
         naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy

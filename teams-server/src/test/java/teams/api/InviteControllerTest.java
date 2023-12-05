@@ -2,6 +2,7 @@ package teams.api;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import io.restassured.common.mapper.TypeRef;
+import io.restassured.http.ContentType;
 import org.junit.Rule;
 import org.junit.Test;
 import teams.AbstractApplicationTest;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class InviteControllerTest extends AbstractApplicationTest {
 
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8889);
+    public WireMockRule wireMockRule = new WireMockRule(8888);
 
     @Test
     public void teamDetails() {
@@ -49,16 +50,19 @@ public class InviteControllerTest extends AbstractApplicationTest {
     @Test
     public void migrateTeam() {
         stubFor(put(
-                urlEqualTo("/api/v1/external/invite-app/migrate"))
+                urlEqualTo("/api/teams"))
                 .willReturn(aResponse().withStatus(200)));
+
+        assertTrue(super.teamRepository.findById(2L).isPresent());
+
         given()
                 .header("name-id", "urn:collab:person:surfnet.nl:super_admin")
+                .contentType(ContentType.JSON)
                 .body(Map.of("id", 2))
                 .when()
                 .put("/api/teams/invite-app/migrate")
                 .then()
                 .statusCode(201);
-        assertTrue(super.teamRepository.findById(2L).isEmpty());
     }
 
     @Test

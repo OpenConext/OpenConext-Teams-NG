@@ -16,8 +16,6 @@ import static org.hamcrest.Matchers.hasItems;
 
 public class VootApiControllerTest extends AbstractApplicationTest {
 
-    private String contextPath = "/api/voot/";
-
     @Value("${security.user.name}")
     protected String user;
 
@@ -120,6 +118,7 @@ public class VootApiControllerTest extends AbstractApplicationTest {
         RequestSpecification specification = given()
                 .auth().preemptive().basic(user, password);
         paramsOptional.ifPresent(params -> specification.queryParam(params[0], params[1]));
+        String contextPath = "/api/voot/";
         String fullPath = contextPath + path;
         return specification
                 .when()
