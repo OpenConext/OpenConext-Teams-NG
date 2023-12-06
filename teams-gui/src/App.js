@@ -41,8 +41,9 @@ const App = () => {
                 } else {
                     //shortcut notation
                     currentUser.superAdmin = currentUser.person.superAdmin;
-                    currentUser.superAdminModus = false;
+                    currentUser.superAdminModus = currentUser.superAdmin;
                     setUser(currentUser);
+                    setSuperAdmin(currentUser.superAdminModus);
                     setLoading(false);
                 }
             })

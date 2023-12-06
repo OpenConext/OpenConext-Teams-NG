@@ -15,8 +15,7 @@ public class MockShibbolethFilter extends GenericFilterBean {
 
     private final boolean test;
 
-    private final String userUrn = "urn:collab:person:surfnet.nl:jdoe";
-    //"urn:collab:person:surfnet.nl:super_admin"
+    private final String userUrn = "urn:collab:person:surfnet.nl:super_admin";//"urn:collab:person:surfnet.nl:jdoe";
 
     public MockShibbolethFilter(boolean test) {
         this.test = test;

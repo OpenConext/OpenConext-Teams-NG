@@ -52,6 +52,9 @@ export function isOnlyAdmin(team, currentUser) {
 }
 
 export const actionDropDownTitle = (team, user) => {
+    if (user.superAdminModus) {
+        return I18n.t("roles.title", {role: I18n.t("roles.superUser")});
+    }
     const membership = getMembership(team, user);
     if (!membership) {
         return I18n.t("roles.title", {role: I18n.t("roles.guest")});

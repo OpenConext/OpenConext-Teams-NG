@@ -18,6 +18,7 @@ I18n.translations.nl = {
         "teams": "Toetredingsverzoek",
         "join-request": "Toetredingsverzoek",
         "add-members": "Leden toevoegen",
+        "migrate": "Migreer team",
         "include-team" : "Team koppelen",
         "missing-attributes": "Missende attributes",
     },
@@ -32,7 +33,8 @@ I18n.translations.nl = {
     myteams: {
         tabs: {
             myTeams: "Mijn teams",
-            publicTeams: "Publieke teams"
+            publicTeams: "Publieke teams",
+            migrations: "Invite migratie"
         },
         columns: {
             title: "Teamnaam",
@@ -198,12 +200,14 @@ I18n.translations.nl = {
         manager: "Manager",
         admin: "Beheerder",
         owner: "Eigenaar",
+        superUser: "Superuser",
         title: "Je bent {{role}}"
     },
     details: {
         leave: "Verlaat team",
         delete: "Verwijder team",
         edit: "Bewerk team",
+        migrate: "Migreer",
         confirmations: {
             leave: "Weet je zeker dat je dit team wilt verlaten?",
             delete: "Weet je zeker dat je dit team wilt verwijderen?"

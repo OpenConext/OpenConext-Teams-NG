@@ -197,6 +197,14 @@ export function changeRole(membershipProperties) {
     return postPutJson("memberships", membershipProperties);
 }
 
+export function teamInviteAppDetails(id) {
+    return fetchJson(`invite-app/${id}`)
+}
+
+export function teamInviteAppMigrate(id) {
+    return postPutJson("invite-app/migrate", {id: id}, "PUT");
+}
+
 export function changeExpiryDate(membershipExpiryDate) {
     return postPutJson("memberships/expiry-date", membershipExpiryDate);
 }

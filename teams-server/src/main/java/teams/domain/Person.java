@@ -40,6 +40,9 @@ public class Person implements Serializable {
     private Instant lastLoginDate;
 
     @Column
+    private String schacHomeOrganization;
+
+    @Column
     private boolean guest;
 
     @OneToMany(mappedBy = "person", orphanRemoval = true)

@@ -67,5 +67,21 @@ public class InviteControllerTest extends AbstractApplicationTest {
 
     @Test
     public void migrateTeamExternal() {
+        stubFor(put(
+                urlEqualTo("/api/teams"))
+                .willReturn(aResponse().withStatus(200)));
+
+        assertTrue(super.teamRepository.findById(2L).isPresent());
+
+        given()
+                .auth()
+                .preemptive()
+                .basic("teams", "secret")
+                .contentType(ContentType.JSON)
+                .body(Map.of("id", 2))
+                .when()
+                .put("/api/v1/external/invite-app/migrate")
+                .then()
+                .statusCode(201);
     }
 }

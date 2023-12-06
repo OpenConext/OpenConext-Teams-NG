@@ -13,6 +13,7 @@ import teams.domain.Application;
 import teams.domain.FederatedUser;
 import teams.domain.Team;
 import teams.exception.NotAllowedException;
+import teams.exception.ResourceNotFoundException;
 import teams.repository.TeamRepository;
 
 import java.util.Map;
@@ -52,8 +53,9 @@ public class InviteController extends ApiController {
     }
 
     private ResponseEntity<Team> doTeamDetails(Long id) {
-        Team team = teamRepository.findFirstById(id);
+        Team team = teamRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         team.getApplications().forEach(Application::getLandingPage);
+        team.getMemberships().forEach(membership -> membership.getPerson().getSchacHomeOrganization());
         return ResponseEntity.ok(team);
     }
 
@@ -69,13 +71,13 @@ public class InviteController extends ApiController {
     }
 
     private ResponseEntity<Void> doMigrate(Map<String, Long> teamIdentifier) {
-        Team team = teamRepository.findFirstById(teamIdentifier.get("id"));
+        //We must avoid hibernateLazyInitializer errors, so do not use the repository
+        Team team = doTeamDetails(teamIdentifier.get("id")).getBody();
         //Must ensure the migration will work
         Set<Application> applications = team.getApplications();
         if (CollectionUtils.isEmpty(applications)) {
             throw new IllegalArgumentException("No applications");
         }
-
         restTemplate.put(inviteUrl, team);
         teamRepository.delete(team);
 

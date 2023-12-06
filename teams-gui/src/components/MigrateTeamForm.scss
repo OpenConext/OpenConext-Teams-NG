@@ -1,0 +1,84 @@
+@import "../styles/vars.scss";
+
+div.migrate-teams-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+
+    @media (max-width: $width-app) {
+        width: 100%;
+        padding: 0 10px 10px 10px;
+    }
+
+    .back {
+        margin: 25px 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: $primary-blue;
+        background-color: transparent;
+        border: none;
+        font-family: "Source Sans Pro", sans-serif;
+        font-size: 16px;
+        max-width: 100px;
+
+        svg {
+            width: 16px;
+            height: auto;
+            margin-right: 14px;
+        }
+    }
+
+    p {
+        margin: 25px 0 0 0;
+
+        &.last {
+            margin: 25px 0;
+        }
+    }
+
+    table {
+        margin: 20px 0 40px 0;
+
+        th, td {
+            padding: 10px 0;
+
+            &.attr {
+                width: 35%;
+            }
+
+            &.value {
+                width: 65%;
+            }
+
+        }
+
+        thead {
+            tr {
+                border-bottom: 1px solid black;
+            }
+        }
+
+        tbody {
+            tr {
+                border-bottom: 1px solid $primary-grey;
+                td {
+                    &.instance {
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+
+    }
+
+    div.actions {
+        display: flex;
+        margin-bottom: 25px;
+
+        a {
+            margin: 0 25px 25px auto;
+        }
+    }
+}
+

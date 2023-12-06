@@ -21,6 +21,7 @@ import {
     getTeamDetailByPublicLink,
     rejectJoinRequest,
     resetPublicLink,
+    teamInviteAppMigrate,
 } from "../api";
 import I18n from "i18n-js";
 import {ActionMenu} from "../components/ActionMenu";
@@ -51,6 +52,7 @@ import {setFlash} from "../flash/events";
 import TeamWelcomeDialog from "../components/TeamWelcomeDialog";
 import {MarkDown} from "../components/MarkDown";
 import {DateField} from "../components/DateField";
+import {MigrateTeamForm} from "../components/MigrateTeamForm";
 
 let currentExpiryDate;
 
@@ -69,6 +71,7 @@ const TeamDetail = ({user, showMembers = false}) => {
     });
     const [isNewTeam, setIsNewTeam] = useState(showMembers);
     const [showAddMembersForm, setShowAddMembersForm] = useState(showMembers);
+    const [showMigrateForm, setShowShowMigrateForm] = useState(showMembers);
     const [alerts, setAlerts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [memberList, setMembersList] = useState([]);
@@ -687,6 +690,19 @@ const TeamDetail = ({user, showMembers = false}) => {
         navigate(`/edit-team/${team.id}`);
     }
 
+    const startMigrationForm = () => {
+        addHistoryState();
+        setShowAddMembersForm(false);
+        setShowAddAdminsButton(false);
+        setShowShowMigrateForm(true);
+        document.title = I18n.t("headerTitles.index", {page: I18n.t("headerTitles.migrate")});
+    }
+
+    const migrateTeam = () => {
+        teamInviteAppMigrate(team.id)
+            .then(() => navigate("/"));
+    }
+
     const processDeleteTeam = (showConfirmation) => {
         if (showConfirmation) {
             setConfirmation({
@@ -723,6 +739,12 @@ const TeamDetail = ({user, showMembers = false}) => {
                 name: I18n.t("details.delete"),
                 action: () => processDeleteTeam(true),
             });
+        }
+        if (user.superAdminModus) {
+            actions.push({
+                name: I18n.t("details.migrate"),
+                action: () => startMigrationForm(),
+            })
         }
         return actions;
     };
@@ -826,7 +848,8 @@ const TeamDetail = ({user, showMembers = false}) => {
                 />
             )}
             {renderAlertBanners()}
-            {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation && !showExternalTeams && !invitationInvalid) && (
+            {(!showAddMembersForm && !selectedJoinRequest && !selectedInvitation && !showExternalTeams && !invitationInvalid
+            && !showMigrateForm) && (
                 <div className="team-members">
                     {!team.hideMembers && <h2>{I18n.t("teamDetails.members")} ({memberList.length})</h2>}
                     {team.hideMembers && <h3>{I18n.t("teamDetails.hideMembers")}</h3>}
@@ -891,6 +914,11 @@ const TeamDetail = ({user, showMembers = false}) => {
                                                      user={user}
                                                      team={team}
                                                      setShowForm={setShowExternalTeams}/>}
+
+            {showMigrateForm && <MigrateTeamForm migrateTeam={migrateTeam}
+                                                 user={user}
+                                                 team={team}
+                                                 setShowForm={setShowShowMigrateForm}/>}
         </Page>
     );
 };

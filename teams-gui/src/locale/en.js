@@ -18,6 +18,7 @@ I18n.translations.en = {
         "teams": "Join request",
         "join-request": "Join request",
         "add-members": "Add members",
+        "migrate": "Migrate team",
         "include-team" : "Include team",
         "missing-attributes": "Missing attributes",
     },
@@ -32,7 +33,8 @@ I18n.translations.en = {
     myteams: {
         tabs: {
             myTeams: "My teams",
-            publicTeams: "Public teams"
+            publicTeams: "Public teams",
+            migrations: "Invite migration"
         },
         columns: {
             title: "Team name",
@@ -198,12 +200,14 @@ I18n.translations.en = {
         manager: "Manager",
         admin: "Admin",
         owner: "Owner",
+        superUser: "Superuser",
         title: "You're {{role}}"
     },
     details: {
         leave: "Leave team",
         delete: "Delete team",
         edit: "Edit team",
+        migrate: "Migrate",
         confirmations: {
             leave: "Are you sure you want to leave this team?",
             delete: "Are you sure you want to delete this team?"
@@ -349,7 +353,25 @@ I18n.translations.en = {
             email: "Email"
         }
     },
-
+    migrateTeam: {
+        header: "Migration",
+        info: "Review the applications and schacHome values of the persons and hit 'Migrate' to transfer this team to the invite application. The team will be deleted after an successful migration.",
+        migrate: "Migrate",
+        table: {
+            attribute: "Attribute",
+            value: "Value",
+            name: "Name",
+            application: "Application",
+            manageId: "Manage identifier",
+            manageType: "Entity type",
+            landingPage: "Landing page",
+            membership: "Membership {{name}}",
+            role: "Role",
+            urn: "Unspecified urn",
+            schacHome: "SchacHome organization",
+            email: "Email"
+        }
+    }
 };
 
 export default I18n.translations.en;
