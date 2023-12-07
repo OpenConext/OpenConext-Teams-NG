@@ -63,9 +63,9 @@ function fetchJson(path, options = {}, headers = {}, showErrorDialog = true) {
         .then(res => res.json());
 }
 
-function postPutJson(path, body = {}, method) {
+function postPutJson(path, body = {}, method, showErrorDialog = true) {
     const httpMethod = method || (body.id === undefined ? "post" : "put");
-    return fetchJson(path, {method: httpMethod, body: JSON.stringify(body)});
+    return fetchJson(path, {method: httpMethod, body: JSON.stringify(body)}, {}, showErrorDialog);
 }
 
 function fetchDelete(path) {
@@ -202,7 +202,7 @@ export function teamInviteAppDetails(id) {
 }
 
 export function teamInviteAppMigrate(id) {
-    return postPutJson("invite-app/migrate", {id: id}, "PUT");
+    return postPutJson("invite-app/migrate", {id: id}, "PUT", false);
 }
 
 export function changeExpiryDate(membershipExpiryDate) {

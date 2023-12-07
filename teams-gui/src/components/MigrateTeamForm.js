@@ -1,12 +1,13 @@
 import I18n from "i18n-js";
-import {React, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
+import React from 'react';
 import "./MigrateTeamForm.scss";
 import {ReactComponent as BackIcon} from "../icons/arrow-left-1.svg";
 import {teamInviteAppDetails} from "../api";
 import {SpinnerField} from "./SpinnerField";
 import {Button} from "./Button";
 
-export const MigrateTeamForm = ({migrateTeam, user, team, setShowForm}) => {
+export const MigrateTeamForm = ({migrateTeam, team, setShowForm}) => {
 
     const [loaded, setLoaded] = useState(false);
     const [teamDetails, setTeamDetails] = useState(false);
@@ -42,7 +43,7 @@ export const MigrateTeamForm = ({migrateTeam, user, team, setShowForm}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {teamDetails.applications.map(application => <>
+                {teamDetails.applications.map((application, index) => <React.Fragment key={index}>
                     <tr>
                         <td className={"instance"} colSpan={2}>{I18n.t("migrateTeam.table.application")}</td>
                     </tr>
@@ -58,8 +59,8 @@ export const MigrateTeamForm = ({migrateTeam, user, team, setShowForm}) => {
                         <td>{I18n.t("migrateTeam.table.landingPage")}</td>
                         <td>{application.landingPage}</td>
                     </tr>
-                </>)}
-                {teamDetails.memberships.map(membership => <>
+                </React.Fragment>)}
+                {teamDetails.memberships.map(membership => <React.Fragment key={membership.id}>
                     <tr>
                         <td className={"instance"} colSpan={2}>{I18n.t("migrateTeam.table.membership", {name: membership.person.name})}</td>
                     </tr>
@@ -79,7 +80,7 @@ export const MigrateTeamForm = ({migrateTeam, user, team, setShowForm}) => {
                         <td>{I18n.t("migrateTeam.table.email")}</td>
                         <td>{membership.person.email}</td>
                     </tr>
-                </>) }
+                </React.Fragment>) }
                 </tbody>
             </table>
             <div className={"actions"}>

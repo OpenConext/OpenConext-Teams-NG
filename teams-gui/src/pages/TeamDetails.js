@@ -699,8 +699,38 @@ const TeamDetail = ({user, showMembers = false}) => {
     }
 
     const migrateTeam = () => {
+        setLoaded(false);
         teamInviteAppMigrate(team.id)
-            .then(() => navigate("/"));
+            .then(() => {
+                navigate("/my-teams");
+                setFlash(I18n.t("migrateTeam.success", {name: team.name}));
+            })
+            .catch(e => {
+                setLoaded(true);
+                if (e.response) {
+                    e.response.json().then(res => {
+                        setConfirmation({
+                            cancel: null,
+                            confirmationTxt: I18n.t("invalidInvitation.confirm"),
+                            action: () => setConfirmationOpen(false),
+                            warning: true,
+                            question: I18n.t("migrateTeam.error", {error: JSON.stringify(res)}),
+                        });
+                        setConfirmationOpen(true);
+                        setLoaded(true);
+                    })
+                } else {
+                    setConfirmation({
+                        cancel: null,
+                        confirmationTxt: I18n.t("invalidInvitation.confirm"),
+                        action: () => setConfirmationOpen(false),
+                        warning: true,
+                        question: I18n.t("migrateTeam.error", {error: JSON.stringify(e)}),
+                    });
+                    setConfirmationOpen(true);
+                    setLoaded(true);
+                }
+            });
     }
 
     const processDeleteTeam = (showConfirmation) => {
@@ -916,7 +946,6 @@ const TeamDetail = ({user, showMembers = false}) => {
                                                      setShowForm={setShowExternalTeams}/>}
 
             {showMigrateForm && <MigrateTeamForm migrateTeam={migrateTeam}
-                                                 user={user}
                                                  team={team}
                                                  setShowForm={setShowShowMigrateForm}/>}
         </Page>

@@ -2,10 +2,9 @@ package teams.api;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -60,17 +59,17 @@ public class InviteController extends ApiController {
     }
 
     @PutMapping("/api/v1/external/invite-app/migrate")
-    public ResponseEntity<Void> migrateTeam(@RequestBody Map<String, Long> teamIdentifier) {
+    public ResponseEntity<Map<String, Integer>> migrateTeam(@RequestBody Map<String, Long> teamIdentifier) {
         return doMigrate(teamIdentifier);
     }
 
     @PutMapping("/api/teams/invite-app/migrate")
-    public ResponseEntity<Void> migrateTeam(@RequestBody Map<String, Long> teamIdentifier, FederatedUser federatedUser) {
+    public ResponseEntity<Map<String, Integer>> migrateTeam(@RequestBody Map<String, Long> teamIdentifier, FederatedUser federatedUser) {
         confirmFederatedUser(federatedUser);
         return doMigrate(teamIdentifier);
     }
 
-    private ResponseEntity<Void> doMigrate(Map<String, Long> teamIdentifier) {
+    private ResponseEntity<Map<String, Integer>> doMigrate(Map<String, Long> teamIdentifier) {
         //We must avoid hibernateLazyInitializer errors, so do not use the repository
         Team team = doTeamDetails(teamIdentifier.get("id")).getBody();
         //Must ensure the migration will work
@@ -81,7 +80,7 @@ public class InviteController extends ApiController {
         restTemplate.put(inviteUrl, team);
         teamRepository.delete(team);
 
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("status", HttpStatus.CREATED.value()));
     }
 
     private static void confirmFederatedUser(FederatedUser federatedUser) {
