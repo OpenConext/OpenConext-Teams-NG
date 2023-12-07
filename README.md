@@ -115,4 +115,10 @@ And the actual `Deprovisioning` of the user:
 ```
 curl -X DELETE -u life:secret http://localhost:8080/deprovision/urn:collab:person:surfnet.nl:jdoe | jq
 ```
-    
+## Migration to Invite
+
+Teams GUI has functionality to migrate a team to the invite-database. You need to be super-user for this. There is
+also an endpoint to migrate teams:
+```
+curl -u teams:secret -X PUT -H 'Content-Type: application/json' -d '{"id":"35415"}'  "http://localhost:8080/api/v1/external/invite-app/migrate"
+```
