@@ -356,6 +356,7 @@ I18n.translations.nl = {
     migrateTeam: {
         header: "Migration",
         info: "Review the applications and schacHome values of the persons and hit 'Migrate' to transfer this team to the invite application. The team will be deleted after an successful migration.",
+        missingApplications: "This team can not be migrated, as there are no applications linked.",
         migrate: "Migrate",
         success: "Team {{name}} has been migrated to the invite-database and has been deleted in teams.",
         error: "An error occurred while migrating this team. {{error}}",

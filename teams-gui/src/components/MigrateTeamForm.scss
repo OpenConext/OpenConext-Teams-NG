@@ -75,8 +75,15 @@ div.migrate-teams-form-container {
     div.actions {
         display: flex;
         margin-bottom: 25px;
+        align-items: center;
 
-        a {
+        p.error {
+            color: $primary-red;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        a, label {
             margin: 0 25px 25px auto;
         }
     }

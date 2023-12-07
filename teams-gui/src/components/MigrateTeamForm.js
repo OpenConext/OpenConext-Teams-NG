@@ -6,6 +6,7 @@ import {ReactComponent as BackIcon} from "../icons/arrow-left-1.svg";
 import {teamInviteAppDetails} from "../api";
 import {SpinnerField} from "./SpinnerField";
 import {Button} from "./Button";
+import {isEmpty} from "../utils/utils";
 
 export const MigrateTeamForm = ({migrateTeam, team, setShowForm}) => {
 
@@ -23,6 +24,7 @@ export const MigrateTeamForm = ({migrateTeam, team, setShowForm}) => {
         return <SpinnerField/>;
     }
 
+    let noApplications = isEmpty(teamDetails.applications);
     return (
         <div className="migrate-teams-form-container">
             <button className="back" onClick={() => {
@@ -84,7 +86,9 @@ export const MigrateTeamForm = ({migrateTeam, team, setShowForm}) => {
                 </tbody>
             </table>
             <div className={"actions"}>
-                <Button onClick={migrateTeam} txt={I18n.t("migrateTeam.migrate")}/>
+                {noApplications &&
+                    <p className={"error"}>{I18n.t("migrateTeam.missingApplications")}</p>}
+                <Button onClick={migrateTeam} txt={I18n.t("migrateTeam.migrate")} disabled={noApplications}/>
             </div>
 
 
