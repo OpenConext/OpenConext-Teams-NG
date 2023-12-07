@@ -2,7 +2,9 @@ package teams.api;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -77,10 +79,11 @@ public class InviteController extends ApiController {
         if (CollectionUtils.isEmpty(applications)) {
             throw new IllegalArgumentException("No applications");
         }
-        restTemplate.put(inviteUrl, team);
+        ResponseEntity<Map<String, Integer>> responseEntity = restTemplate.exchange(inviteUrl, HttpMethod.PUT, new HttpEntity<>(team), new ParameterizedTypeReference<>() {
+        });
         teamRepository.delete(team);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("status", HttpStatus.CREATED.value()));
+        return responseEntity;
     }
 
     private static void confirmFederatedUser(FederatedUser federatedUser) {

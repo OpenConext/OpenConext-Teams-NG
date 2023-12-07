@@ -47,7 +47,7 @@ public abstract class AbstractApplicationTest implements Seed {
     protected ObjectMapper objectMapper;
 
     @LocalServerPort
-    private int serverPort;
+    protected int serverPort;
 
     @Before
     public void before() throws Exception {

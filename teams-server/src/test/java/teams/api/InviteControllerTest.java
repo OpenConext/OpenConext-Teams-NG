@@ -1,11 +1,14 @@
 package teams.api;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
-import org.junit.Rule;
-import org.junit.Test;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.springframework.http.HttpHeaders;
 import teams.AbstractApplicationTest;
+import teams.WireMockExtension;
 
 import java.util.List;
 import java.util.Map;
@@ -14,44 +17,31 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @SuppressWarnings("unchecked")
-public class InviteControllerTest extends AbstractApplicationTest {
+class InviteControllerTest extends AbstractApplicationTest {
 
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8888);
+    @RegisterExtension
+    WireMockExtension mockServer = new WireMockExtension(8888);
 
-    @Test
-    public void teamDetails() {
-        Map map = given()
-                .header("name-id", "urn:collab:person:surfnet.nl:super_admin")
-                .when()
-                .pathParams("id", String.valueOf(2))
-                .get("/api/teams/invite-app/{id}")
-                .as(new TypeRef<>() {
-                });
-        assertEquals(2, ((List) map.get("applications")).size());
+    @SneakyThrows
+    @BeforeEach
+    void beforeEach() {
+        super.before();
     }
 
+    @SneakyThrows
     @Test
-    public void teamDetailsExternal() {
-        Map map = given()
-                .auth()
-                .preemptive()
-                .basic("teams", "secret")
-                .when()
-                .pathParams("id", String.valueOf(2))
-                .get("/api/v1/external/invite-app/{id}")
-                .as(new TypeRef<>() {
-                });
-        assertEquals(2, ((List) map.get("applications")).size());
-    }
-
-    @Test
-    public void migrateTeam() {
+    void migrateTeam() {
+        String body = super.objectMapper.writeValueAsString(Map.of("status", 201));
         stubFor(put(
                 urlEqualTo("/api/teams"))
-                .willReturn(aResponse().withStatus(200)));
+                .willReturn(aResponse()
+                        .withBody(body)
+                        .withHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .withHeader(HttpHeaders.CONNECTION, "close")
+                        .withStatus(201)));
 
         assertTrue(super.teamRepository.findById(2L).isPresent());
 
@@ -65,11 +55,17 @@ public class InviteControllerTest extends AbstractApplicationTest {
                 .statusCode(201);
     }
 
+    @SneakyThrows
     @Test
-    public void migrateTeamExternal() {
+    void migrateTeamExternal() {
+        String body = super.objectMapper.writeValueAsString(Map.of("status", 201));
         stubFor(put(
                 urlEqualTo("/api/teams"))
-                .willReturn(aResponse().withStatus(200)));
+                .willReturn(aResponse()
+                        .withBody(body)
+                        .withHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .withHeader(HttpHeaders.CONNECTION, "close")
+                        .withStatus(201)));
 
         assertTrue(super.teamRepository.findById(2L).isPresent());
 
@@ -84,4 +80,31 @@ public class InviteControllerTest extends AbstractApplicationTest {
                 .then()
                 .statusCode(201);
     }
+
+    @Test
+    void teamDetails() {
+        Map map = given()
+                .header("name-id", "urn:collab:person:surfnet.nl:super_admin")
+                .when()
+                .pathParams("id", String.valueOf(2))
+                .get("/api/teams/invite-app/{id}")
+                .as(new TypeRef<>() {
+                });
+        assertEquals(2, ((List) map.get("applications")).size());
+    }
+
+    @Test
+    void teamDetailsExternal() {
+        Map map = given()
+                .auth()
+                .preemptive()
+                .basic("teams", "secret")
+                .when()
+                .pathParams("id", String.valueOf(2))
+                .get("/api/v1/external/invite-app/{id}")
+                .as(new TypeRef<>() {
+                });
+        assertEquals(2, ((List) map.get("applications")).size());
+    }
+
 }
