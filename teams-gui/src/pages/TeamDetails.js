@@ -71,7 +71,7 @@ const TeamDetail = ({user, showMembers = false}) => {
     });
     const [isNewTeam, setIsNewTeam] = useState(showMembers);
     const [showAddMembersForm, setShowAddMembersForm] = useState(showMembers);
-    const [showMigrateForm, setShowShowMigrateForm] = useState(showMembers);
+    const [showMigrateForm, setShowShowMigrateForm] = useState(false);
     const [alerts, setAlerts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [memberList, setMembersList] = useState([]);
