@@ -1,6 +1,8 @@
 package teams.api;
 
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -24,16 +26,22 @@ import java.util.Set;
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class InviteController extends ApiController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(InviteController.class);
+
     private final RestTemplate restTemplate = new RestTemplate();
     private final TeamRepository teamRepository;
     private final String inviteUrl;
+    private final String groupNameContext;
+
 
     public InviteController(TeamRepository teamRepository,
                             @Value("${invite.url}") String inviteUrl,
                             @Value("${invite.user}") String inviteUser,
-                            @Value("${invite.password}") String invitePassword) {
+                            @Value("${invite.password}") String invitePassword,
+                            @Value("${teams.group-name-context}") String groupNameContext) {
         this.teamRepository = teamRepository;
         this.inviteUrl = inviteUrl;
+        this.groupNameContext = groupNameContext;
         byte[] encodedAuth = Base64.encodeBase64((inviteUser + ":" + invitePassword).getBytes());
         this.restTemplate.getInterceptors()
                 .add((request, body, execution) -> {
@@ -79,6 +87,9 @@ public class InviteController extends ApiController {
         if (CollectionUtils.isEmpty(applications)) {
             throw new IllegalArgumentException("No applications");
         }
+        //Need to set the fully qualified team urn
+        team.setUrn(this.groupNameContext + team.getUrn());
+        LOG.debug("Migrating team {} {} to invite app {}", team.getName(), team.getUrn(), inviteUrl);
         ResponseEntity<Map<String, Integer>> responseEntity = restTemplate.exchange(inviteUrl, HttpMethod.PUT, new HttpEntity<>(team), new ParameterizedTypeReference<>() {
         });
         teamRepository.delete(team);

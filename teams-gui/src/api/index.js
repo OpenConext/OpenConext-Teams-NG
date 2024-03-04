@@ -1,4 +1,5 @@
 import {isSuperAdmin} from "../store/store";
+import {isEmpty} from "../utils/utils";
 
 const apiPath = "/api/teams/";
 let csrfToken = null;
@@ -30,7 +31,7 @@ function validateResponse(showErrorDialog) {
 
         const sessionAlive = res.headers.get("x-session-alive");
 
-        if (sessionAlive !== "true") {
+        if (isEmpty(sessionAlive)) {
             window.location.reload(true);
         }
         return res;
