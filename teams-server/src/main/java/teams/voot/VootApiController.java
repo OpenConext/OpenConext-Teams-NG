@@ -25,17 +25,23 @@ import static java.util.stream.Collectors.toSet;
 @RestController
 public class VootApiController {
 
-    @Autowired
-    private TeamRepository teamRepository;
+    private final TeamRepository teamRepository;
 
-    @Autowired
-    private MembershipRepository membershipRepository;
+    private final MembershipRepository membershipRepository;
 
-    @Autowired
-    private ExternalTeamRepository externalTeamRepository;
+    private final ExternalTeamRepository externalTeamRepository;
 
-    @Value("${teams.group-name-context}")
-    private String groupNameContext;
+    private final String groupNameContext;
+
+    public VootApiController(TeamRepository teamRepository,
+                             MembershipRepository membershipRepository,
+                             ExternalTeamRepository externalTeamRepository,
+                             @Value("${teams.group-name-context}") String groupNameContext) {
+        this.teamRepository = teamRepository;
+        this.membershipRepository = membershipRepository;
+        this.externalTeamRepository = externalTeamRepository;
+        this.groupNameContext = groupNameContext;
+    }
 
     @GetMapping("api/voot/group/{localGroupId:.+}")
     public Group findByLocalGroupId(@PathVariable("localGroupId") String localGroupId) {

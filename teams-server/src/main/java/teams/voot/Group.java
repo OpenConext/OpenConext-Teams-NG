@@ -12,11 +12,11 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Group {
 
-    private String id;
-    private String displayName;
-    private String description;
-    private String membership;
-    private String sourceID;
+    private final String id;
+    private final String displayName;
+    private final String description;
+    private final String membership;
+    private final String sourceID;
 
     public Group(String id, String displayName, String description, String membership) {
         this(id, displayName, description, membership, null);
