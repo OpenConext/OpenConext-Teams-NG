@@ -1,0 +1,55 @@
+teams:
+  default-stem-name: "dev:openconext:local"
+  group-name-context: "urn:collab:group:dev.openconext.local:"
+  product-name: "OpenConext"
+  non-guest-member-of: "urn:collab:org:dev.openconext.local"
+
+sp_dashboard:
+  user-name: spdashboard
+  password: secret
+  person-urn: "urn:collab:person:surfnet.nl:sp-dashboard-C133A36F-CFCA-4F3D-87CE-7ECE29773FE0"
+  name: "SP Dashboard"
+  email: "support@surfconext.nl"
+
+super-admins-team:
+  urns:
+    - "demo:openconext:org:super_admins"
+    - "demo:openconext:org:another_super_admins"
+
+voot:
+  serviceUrl: "https://voot.dev.openconext.local"
+  accessTokenUri: "https://connect.dev.openconext.local/oidc/token"
+  clientId: teams.dev.openconext.local
+  clientSecret: secretsecret
+  scopes: groups
+
+spring:
+  session:
+    store-type: jdbc
+    jdbc:
+      schema: classpath:org/springframework/session/jdbc/schema-mysql.sql
+      initialize-schema: always
+      cleanup-cron: "0 * * * * *"
+  jpa:
+    properties:
+      hibernate:
+        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        dialect: org.hibernate.dialect.MariaDB53Dialect
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://mariadb/teams?autoReconnect=true&useSSL=false&useMysqlMetadata=true
+    username: teamsrw
+    password: secret
+  mail:
+    host: mailcatcher
+    port: 25
+  main:
+    banner-mode: "off"
+  flyway:
+    validate-on-migrate: false
+    table: schema_version
+    enabled: true
+  security:
+    user:
+      name: na
+      password: na
