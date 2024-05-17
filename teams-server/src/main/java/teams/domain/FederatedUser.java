@@ -16,9 +16,9 @@ import static java.util.Collections.singletonList;
 public class FederatedUser extends User {
 
     private final Map<String, String> config;
+    private final String productName;
+    private final Person person;
     private String groupNameContext;
-    private String productName;
-    private Person person;
     private List<ExternalTeam> externalTeams;
     private Map<Feature, Boolean> featureToggles;
 

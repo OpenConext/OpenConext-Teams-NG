@@ -373,10 +373,10 @@ I18n.translations.nl = {
             urn: "Unspecified urn",
             schacHome: "SchacHome organization",
             email: "Email"
-        }
+        },
+        migrationOn: "SURF werkt aan de migratie van Teams naar <a href='https://wiki.surfnet.nl/display/surfconextdev/Upgrade+Guide%3A+Teams+naar+Invite' target='_blank' rel='noreferrer'>SURFconext Invite</a>" +
+            " - neem <a href='mailto:support@surfconext.nl'>contact</a> op als je een nieuw team wilt maken"
     }
-
-
 };
 
 export default I18n.translations.nl;

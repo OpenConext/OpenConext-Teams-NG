@@ -36,6 +36,9 @@ config:
   sponsor: SURF
   supported_language_codes: en,nl
 
+features:
+  invite-migration-on: true
+
 security:
   user:
     name: user

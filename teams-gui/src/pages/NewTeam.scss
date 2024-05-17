@@ -103,3 +103,28 @@ form.new-team {
         }
     }
 }
+
+.invite-migration-on-container {
+    display: flex;
+    margin-top: 40px;
+    background-color: #e9ecef;
+
+    .invite-migration-on {
+        max-width: 1086px;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+
+        padding: 20px;
+
+
+        svg {
+            color: darkred;
+            width: 44px;
+            height: auto;
+            margin-right: 15px;
+        }
+    }
+
+}

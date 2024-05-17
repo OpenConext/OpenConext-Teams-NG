@@ -232,6 +232,9 @@ public class SecurityConfig {
         @Value("${config.supported_language_codes}")
         private String supportedLanguageCodes;
 
+        @Value("${features.invite-migration-on}")
+        private boolean inviteMigrationOn;
+
         @Override
         protected void configure(AuthenticationManagerBuilder auth) {
             PreAuthenticatedAuthenticationProvider authenticationProvider = new PreAuthenticatedAuthenticationProvider();
@@ -264,8 +267,7 @@ public class SecurityConfig {
         }
 
         private Map<Feature, Boolean> featureToggles() {
-            Map<Feature, Boolean> toggles = new HashMap<>();
-            return toggles;
+            return Map.of(Feature.inviteMigrationOn, inviteMigrationOn);
         }
 
         @Override

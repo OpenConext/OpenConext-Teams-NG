@@ -11,6 +11,7 @@ import TooltipIcon from "../components/Tooltip";
 import InputField from "../components/InputField";
 import ErrorIndicator from "../components/ErrorIndicator";
 import {isEmpty, stopEvent} from "../utils/utils";
+import {ReactComponent as StopIcon} from "../icons/no-entry-symbol-svgrepo-com.svg";
 import {ReactComponent as privateTeam} from "../icons/allowances-no-talking.svg";
 import {ReactComponent as publicTeam} from "../icons/human-resources-offer-employee-1.svg";
 import {ButtonContainer} from "../components/ButtonContainer";
@@ -94,6 +95,127 @@ const NewTeam = ({user}) => {
     }
     breadCrumbs.push({name: I18n.t(`breadcrumbs.${team.id ? "editTeam" : "newTeam"}`, {name: ""})});
 
+    const renderInviteMigration = () => {
+        return (
+            <div className="invite-migration-on-container">
+                <div className="invite-migration-on">
+                    <StopIcon/>
+                    <span dangerouslySetInnerHTML={{__html: I18n.t("migrateTeam.migrationOn")}}/>
+                </div>
+            </div>
+        );
+    }
+
+    const renderTeamForm = () => {
+        return (
+            <form className="new-team" method={"POST"} onSubmit={stopEvent}>
+                <InputField value={team.name || ""}
+                            onChange={e => {
+                                setTeam({...team, name: e.target.value.replace(/[^\w\s-]/gi, "")});
+                                setNameExists(false)
+                            }}
+                            toolTip={team.id ? I18n.t("newTeam.tooltips.immutableName") : ""}
+                            aria-describedby={"team-name"}
+                            disabled={team.id}
+                            placeholder={I18n.t("newTeam.placeholders.name")}
+                            onBlur={e => teamExistsByName(e.target.value).then(exists => setNameExists(exists))}
+                            error={nameExist || (!initial && isEmpty(team.name))}
+                            name={I18n.t("newTeam.name")}/>
+                {(!initial && isEmpty(team.name)) &&
+                    <ErrorIndicator describedBy={"team-name"} msg={I18n.t("forms.required", {
+                        attribute: I18n.t("newTeam.name")
+                    })}/>}
+
+                {nameExist &&
+                    <ErrorIndicator describedBy={"team-name"} msg={I18n.t("forms.alreadyExists", {
+                        object: I18n.t("newTeam.object").toLowerCase(),
+                        attribute: I18n.t("newTeam.name").toLowerCase(),
+                        value: team.name
+                    })}/>}
+
+                <div className="input-field">
+                    <TooltipIcon tooltip={I18n.t("newTeam.tooltips.description")} name="description"
+                                 label={I18n.t("newTeam.description")}/>
+                    <MarkDown markdown={team.description || ""}
+                              onChange={val => setTeam({...team, description: val})}/>
+                </div>
+
+                <InputField value={team.personalNote || ""}
+                            onChange={e => {
+                                setTeam({...team, personalNote: e.target.value});
+                            }}
+                            placeholder={I18n.t("teamDetails.personalNotesPlaceholder")}
+                            multiline={true}
+                            toolTip={I18n.t("newTeam.tooltips.personalNote")}
+                            name={I18n.t("newTeam.personalNote")}/>
+
+                <div className="input-field ">
+                    <CheckBox name={"public-link"}
+                              onChange={() => setTeam({...team, publicLinkDisabled: !team.publicLinkDisabled})}
+                              readOnly={!team.viewable}
+                              info={I18n.t("newTeam.publicLinkDisabled")}
+                              toolTip={I18n.t("newTeam.tooltips.publicLinkDisabled")}
+                              value={!team.publicLinkDisabled}/>
+                </div>
+
+                <div className="input-field ">
+                    <CheckBox name={"hide-members"}
+                              onChange={() => setTeam({...team, hideMembers: !team.hideMembers})}
+                              info={I18n.t("newTeam.hideMembers")}
+                              toolTip={I18n.t("newTeam.tooltips.hideMembers")}
+                              value={team.hideMembers || false}/>
+                </div>
+
+                <div className="input-field ">
+                    <label>{I18n.t("newTeam.visibility")}</label>
+                    <div className="team-visibilities">
+                        {visibilities.map((visibility, i) =>
+                            <button key={i}
+                                    className={`visibility ${viewableActive(visibility.name) ? "active" : ""}`}
+                                    onClick={() => !viewableActive(visibility.name) && setTeam({
+                                        ...team,
+                                        viewable: !team.viewable,
+                                        publicLinkDisabled: team.viewable || team.publicLinkDisabled
+                                    })}>
+                                <section className="header">
+                                    <visibility.icon/>
+                                    <span className={"visibility"}>{I18n.t(`newTeam.${visibility.name}`)}</span>
+                                </section>
+                                <p>{I18n.t(`newTeam.${visibility.name}Info`)}</p>
+                            </button>)}
+                    </div>
+                </div>
+                {!team.id && <EmailField emails={backupEmails}
+                                         addEmail={addEmail}
+                                         singleEmail={true}
+                                         removeMail={removeMail}
+                                         name={I18n.t("newTeam.backupEmail")}
+                                         placeHolder={I18n.t("newTeam.placeholders.backupEmail")}
+                                         pinnedEmails={[user.person.email]}
+                />}
+
+                {!team.id && <InputField value={team.invitationMessage || ""}
+                                         onChange={e => {
+                                             setTeam({...team, invitationMessage: e.target.value});
+                                         }}
+                                         id={"invitation-messsage"}
+                                         multiline={true}
+                                         placeholder={I18n.t("newTeam.placeholders.invitationMessage")}
+                                         name={I18n.t("newTeam.invitationMessage")}/>}
+
+                <ButtonContainer>
+                    <Button cancelButton={true}
+                            onClick={() => navigate(team.id ? `/team-details/${team.id}` : "/my-teams")}
+                            txt={I18n.t("forms.cancel")}/>
+                    <Button
+                        onClick={submit}
+                        disabled={!initial && !isValid()}
+                        txt={I18n.t(`${team.id ? "forms.save" : "newTeam.create"}`)}/>
+                </ButtonContainer>
+            </form>
+        );
+    }
+
     return (
         <>
             <SubHeader>
@@ -102,113 +224,9 @@ const NewTeam = ({user}) => {
             <SubHeader child={true}>
                 <h1>{I18n.t(`breadcrumbs.${team.id ? "editTeam" : "newTeam"}`, {name: team.name})}</h1>
             </SubHeader>
+            {user.featureToggles.inviteMigrationOn && renderInviteMigration()}
             <Page>
-                <form className="new-team" method={"POST"} onSubmit={stopEvent}>
-                    <InputField value={team.name || ""}
-                                onChange={e => {
-                                    setTeam({...team, name: e.target.value.replace(/[^\w\s-]/gi, "")});
-                                    setNameExists(false)
-                                }}
-                                toolTip={team.id ? I18n.t("newTeam.tooltips.immutableName") : ""}
-                                aria-describedby={"team-name"}
-                                disabled={team.id}
-                                placeholder={I18n.t("newTeam.placeholders.name")}
-                                onBlur={e => teamExistsByName(e.target.value).then(exists => setNameExists(exists))}
-                                error={nameExist || (!initial && isEmpty(team.name))}
-                                name={I18n.t("newTeam.name")}/>
-                    {(!initial && isEmpty(team.name)) &&
-                    <ErrorIndicator describedBy={"team-name"} msg={I18n.t("forms.required", {
-                        attribute: I18n.t("newTeam.name")
-                    })}/>}
-
-                    {nameExist &&
-                    <ErrorIndicator describedBy={"team-name"} msg={I18n.t("forms.alreadyExists", {
-                        object: I18n.t("newTeam.object").toLowerCase(),
-                        attribute: I18n.t("newTeam.name").toLowerCase(),
-                        value: team.name
-                    })}/>}
-
-                    <div className="input-field">
-                        <TooltipIcon tooltip={I18n.t("newTeam.tooltips.description")} name="description"
-                                     label={I18n.t("newTeam.description")}/>
-                        <MarkDown markdown={team.description || ""}
-                                  onChange={val => setTeam({...team, description: val})}/>
-                    </div>
-
-                    <InputField value={team.personalNote || ""}
-                                onChange={e => {
-                                    setTeam({...team, personalNote: e.target.value});
-                                }}
-                                placeholder={I18n.t("teamDetails.personalNotesPlaceholder")}
-                                multiline={true}
-                                toolTip={I18n.t("newTeam.tooltips.personalNote")}
-                                name={I18n.t("newTeam.personalNote")}/>
-
-                    <div className="input-field ">
-                        <CheckBox name={"public-link"}
-                                  onChange={() => setTeam({...team, publicLinkDisabled: !team.publicLinkDisabled})}
-                                  readOnly={!team.viewable}
-                                  info={I18n.t("newTeam.publicLinkDisabled")}
-                                  toolTip={I18n.t("newTeam.tooltips.publicLinkDisabled")}
-                                  value={!team.publicLinkDisabled}/>
-                    </div>
-
-                    <div className="input-field ">
-                        <CheckBox name={"hide-members"}
-                                  onChange={() => setTeam({...team, hideMembers: !team.hideMembers})}
-                                  info={I18n.t("newTeam.hideMembers")}
-                                  toolTip={I18n.t("newTeam.tooltips.hideMembers")}
-                                  value={team.hideMembers || false}/>
-                    </div>
-
-                    <div className="input-field ">
-                        <label>{I18n.t("newTeam.visibility")}</label>
-                        <div className="team-visibilities">
-                            {visibilities.map((visibility, i) =>
-                                <button key={i}
-                                        className={`visibility ${viewableActive(visibility.name) ? "active" : ""}`}
-                                        onClick={() => !viewableActive(visibility.name) && setTeam({
-                                            ...team,
-                                            viewable: !team.viewable,
-                                            publicLinkDisabled: team.viewable || team.publicLinkDisabled
-                                        })}>
-                                    <section className="header">
-                                        <visibility.icon/>
-                                        <span className={"visibility"}>{I18n.t(`newTeam.${visibility.name}`)}</span>
-                                    </section>
-                                    <p>{I18n.t(`newTeam.${visibility.name}Info`)}</p>
-                                </button>)}
-                        </div>
-                    </div>
-                    {!team.id && <EmailField emails={backupEmails}
-                                             addEmail={addEmail}
-                                             singleEmail={true}
-                                             removeMail={removeMail}
-                                             name={I18n.t("newTeam.backupEmail")}
-                                             placeHolder={I18n.t("newTeam.placeholders.backupEmail")}
-                                             pinnedEmails={[user.person.email]}
-                    />}
-
-                    {!team.id && <InputField value={team.invitationMessage || ""}
-                                             onChange={e => {
-                                                 setTeam({...team, invitationMessage: e.target.value});
-                                             }}
-                                             id={"invitation-messsage"}
-                                             multiline={true}
-                                             placeholder={I18n.t("newTeam.placeholders.invitationMessage")}
-                                             name={I18n.t("newTeam.invitationMessage")}/>}
-
-                    <ButtonContainer>
-                        <Button cancelButton={true}
-                                onClick={() => navigate(team.id ? `/team-details/${team.id}` : "/my-teams")}
-                                txt={I18n.t("forms.cancel")}/>
-                        <Button
-                            onClick={submit}
-                            disabled={!initial && !isValid()}
-                            txt={I18n.t(`${team.id ? "forms.save" : "newTeam.create"}`)}/>
-                    </ButtonContainer>
-
-                </form>
+                {!user.featureToggles.inviteMigrationOn && renderTeamForm()}
             </Page>
         </>
     );
