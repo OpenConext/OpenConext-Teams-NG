@@ -37,7 +37,7 @@ config:
   supported_language_codes: en,nl
 
 features:
-  invite-migration-on: true
+  invite-migration-on: false
 
 security:
   user:

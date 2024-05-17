@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TeamValidatorTest implements Seed {
 
-    private TeamValidator subject = new TeamController();
+    private final TeamValidator subject = new TeamController(false);
 
     @Test
     public void onlyAdminAllowed() throws Exception {

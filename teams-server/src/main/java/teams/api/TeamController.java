@@ -1,10 +1,7 @@
 package teams.api;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import teams.api.validations.TeamValidator;
@@ -12,12 +9,9 @@ import teams.domain.*;
 import teams.exception.NotAllowedException;
 import teams.exception.ResourceNotFoundException;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -28,7 +22,15 @@ import static java.util.stream.Collectors.toList;
 public class TeamController extends ApiController implements TeamValidator {
 
     public static final int AUTOCOMPLETE_LIMIT = 11;
-    private TeamMatcher teamMatcher = new TeamMatcher();
+    private final TeamMatcher teamMatcher = new TeamMatcher();
+    private final boolean inviteMigrationOn;
+
+
+    public TeamController(@Value("${features.invite-migration-on}")
+                          boolean inviteMigrationOn) {
+        this.inviteMigrationOn = inviteMigrationOn;
+    }
+
 
     @GetMapping("api/teams/my-teams")
     public MyTeams myTeams(FederatedUser federatedUser) {
@@ -126,7 +128,10 @@ public class TeamController extends ApiController implements TeamValidator {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("api/teams/teams")
-    public Object createTeam(@Validated @RequestBody NewTeamProperties teamProperties, FederatedUser federatedUser) throws IOException, MessagingException {
+    public Object createTeam(@Validated @RequestBody NewTeamProperties teamProperties, FederatedUser federatedUser) {
+        if (this.inviteMigrationOn) {
+            throw new NotAllowedException("Migration to invite is on");
+        }
         Team team = doCreateTeam(teamProperties, federatedUser);
 
         Person person = federatedUser.getPerson();
