@@ -99,9 +99,12 @@ spring:
     url: jdbc:mysql://localhost/teams_ng?autoReconnect=true&useSSL=false&useMysqlMetadata=true
     username: root
     password:
+    hikari:
+      connection-timeout: 10_000
+      max-lifetime: 5_000
   mail:
     host: localhost
-    port: 3025
+    port: 1025
   main:
     banner-mode: "off"
   flyway:

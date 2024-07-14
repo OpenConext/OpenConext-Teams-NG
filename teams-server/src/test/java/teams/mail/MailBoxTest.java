@@ -2,6 +2,7 @@ package teams.mail;
 
 import com.icegreen.greenmail.junit.GreenMailRule;
 import com.icegreen.greenmail.store.FolderException;
+import com.icegreen.greenmail.util.ServerSetup;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,6 +26,12 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, value = {"spring.profiles.active=prod"})
 public class MailBoxTest extends AbstractApplicationTest {
 
+    private static final ServerSetup serverSetup = new ServerSetup(1025, "localhost", ServerSetup.PROTOCOL_SMTP);
+
+    static {
+        serverSetup.setServerStartupTimeout(500000);
+    }
+
     private static final String EMAIL = "test@test.org";
     private static final String TEAM_DESCRIPTION = "name";
 
@@ -32,7 +39,7 @@ public class MailBoxTest extends AbstractApplicationTest {
     private MailBox mailBox;
 
     @Rule
-    public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.SMTP);
+    public final GreenMailRule greenMail = new GreenMailRule(serverSetup);
 
     @Before
     public void before() throws FolderException {
