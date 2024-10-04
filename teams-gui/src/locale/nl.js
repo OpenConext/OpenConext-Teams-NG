@@ -20,7 +20,7 @@ I18n.translations.nl = {
         "add-members": "Leden toevoegen",
         "migrate": "Migreer team",
         "include-team" : "Team koppelen",
-        "missing-attributes": "Missende attributes",
+        "missing-attributes": "Ontbrekende attributen",
     },
     fileUploadDialog: {
         title: "Upload bestand",
