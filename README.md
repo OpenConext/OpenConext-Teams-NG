@@ -12,7 +12,7 @@ See the NOTICE file
 
 ## System Requirements
 
-- Java 11
+- Java 21
 - Maven 3
 - MySQL 8
 - node v14.17.3 (use for example `nvm use` to manage it - latest version of node does not work) 
