@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openconext</groupId>
         <artifactId>teams</artifactId>
-        <version>9.3.1</version>
+        <version>9.3.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
