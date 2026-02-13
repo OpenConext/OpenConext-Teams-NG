@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+# Update a teams team to link it to a Manage SP
+import sys
+import MySQLdb
+import requests
+from requests.auth import HTTPBasicAuth
+
+
+# Teams settings
+mysql_host='db12.prd.ams.surfconext.nl'
+mysql_user='teamsrw'
+mysql_password=''
+mysql_db='teams'
+stem='urn:collab:group:surfteams.nl:'
+# Manage settings
+manageurl = 'https://manage.surfconext.nl/manage'
+credentials = HTTPBasicAuth('scriptsro', '')
+
+
+if len(sys.argv) < 3:
+    print("Usage: %s team-urn SP-entity-id [landingurl]\nExample: %s urn:collab:group:surfteams.nl:nl:surfnet:diensten:loeki https://surfspot.nl/simplesaml/metadata https://surfspot.nl" % (sys.argv[0], sys.argv[0]))
+    sys.exit(1)
+
+db = MySQLdb.connect(mysql_host,mysql_user,mysql_password,mysql_db )
+cursor = db.cursor()
+
+def remove_prefix(text, prefix):
+    if text.startswith(prefix):
+        return text[len(prefix):]
+    return text
+
+def get_team(urn):
+    shorturn = remove_prefix(urn, stem)
+    sql = """select id,name from teams where urn = %s""" 
+    try:
+      cursor.execute(sql, (shorturn,)) 
+      result=cursor.fetchone()
+      print("Found team %s: '%s'" % (result[0], result[1]))
+      return result[0]
+    except:
+      print("error fetching team %s" % urn)
+      sys.exit(2)
+
+def get_manage_info(entityid):
+    foundsp = []
+    for collection in ["saml20_sp", "oidc10_rp"]:
+        r = requests.post(manageurl + '/api/internal/search/' + collection,
+            data = '{"state":"prodaccepted", "entityid": "%s", "REQUESTED_ATTRIBUTES":["metaDataFields.coin:application_url"]}' % entityid,
+            headers = {'Content-Type':'application/json'},
+            auth = credentials)
+
+        parsed = r.json()
+        if len(parsed) == 1:
+            foundsp = parsed
+
+    if len(foundsp) != 1:
+        print("Help! %s not found!" % entityid)
+        sys.exit(1)
+    thesp = foundsp[0]
+    print("Found %s %s: '%s'" % (thesp['type'], thesp['_id'], thesp['data']['metaDataFields']['name:en']))
+    return thesp
+
+
+def get_or_set_teams_app(managetype, manageid, appurl):
+    sql = """select id from applications where manage_id = %s""" 
+    cursor.execute(sql, (manageid,))
+    result=cursor.fetchone()
+    if(result != None):
+        print("Application already known to teams: %s" % result)
+        return result
+
+    sql = """INSERT INTO applications (manage_id,manage_type,landing_page) VALUES (%s, %s, %s)"""
+    cursor.execute(sql, (manageid, managetype, appurl))
+    db.commit()
+    print("Addded application to teams: %s" % (cursor.lastrowid))
+    return cursor.lastrowid
+
+def link_team_app(teamid, appid):
+    sql = """INSERT INTO teams_applications (team_id,application_id) VALUES (%s, %s)"""
+    cursor.execute(sql, (teamid, appid))
+    db.commit()
+    print("Successfully linked team and app: %s" % (cursor.lastrowid))
+    return cursor.lastrowid
+
+teamid = get_team(sys.argv[1])
+managesp = get_manage_info(sys.argv[2])
+if(len(sys.argv) < 4):
+    appurl = managesp['data']['metaDataFields']['coin:application_url']
+else:
+    appurl = sys.argv[3]
+teamsappid = get_or_set_teams_app(managesp['type'].upper(), managesp['_id'], appurl)
+
+link_team_app(teamid, teamsappid)
+
+cursor.close()
+db.close()
