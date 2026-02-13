@@ -117,8 +117,47 @@ curl -X DELETE -u life:secret http://localhost:8080/deprovision/urn:collab:perso
 ```
 ## Migration to Invite
 
-Teams GUI has functionality to migrate a team to the invite-database. You need to be super-user for this. There is
-also an endpoint to migrate teams:
+Migration from Teams to Invite can be done on a per-team basis. A migrated team will keep all its members and will keep the same URN.
+The `voot` API supports both Teams and Invite, so whether or not a team lives in Teams or Invite, the same URN will be returned for a user so the migration can be done one by one. Because PDP uses this API, PDP rules also do not need to change for a migration to succeeed and consuming SP's that receive the URN will also not see a difference. The only thing that is impacted by migration is the interface in which the members can be managed.
+
+The only thing that is not carried over in the invite is pending / not yet accepted invitations to become a member of a Team (since the already sent emails will have an obsolete link). You need to re-invite the users from Invite that did not yet accept their invitation from Teams.
+
+If you are planning migration to Invite, at any point in time you can enable the Teams feature flag to disable the creation of new teams in Teams by users.
+
+### Migration steps
+
+The migration is in some parts a bit bare-bones. It consists of the folling steps. They are described in more detail below.
+
+1. Enrichment of the data in the Teams database. Teams do not contain much metadata while Invite needs more, most notably application(s) associated with the Invite role.
+1. Migrate the actual team to Invite. After successful transfer is then immediately deleted from Teams as not to create duplications.
+1. Enrichment of the data on the Invite side.
+
+### Enrich Teams database
+
+The Teams database requires modifications to prepare a team before it can be transferred.
+
+1. Set the correct schacHomeOrganization for each user in the database. This can be done at once (and idempotently repeated) with this query:
+```sql
+UPDATE persons SET schac_home_organization = SUBSTRING_INDEX(SUBSTRING_INDEX(urn,':',4),':',-1) WHERE schac_home_organization IS NULL;
+```
+2. Add (the/one) (Manage) application / service provider that this team is used for, as Invite requires such an association. This also needs to be done in the database and may be customized depending on where you get the knowledge from what a team is for. E.g. is it used in the PDP to limit access, you can look up the application this team limits access to. If it's used as information released via AA / ARP for an SP, etc. Optionally you can also define a landing page.
+
+An example commandline script that can set this information for a specific SP is: [teams_set_app](teams_set_app).
+But you may choose to automate this differently.
+
+### Migrate an actual team
+
+The Teams GUI has functionality to migrate a team to the invite-database. You need to be super-user for this. Search a team and in the menu, press Migrate. The screen will show if the required metadata is present and list which members will be transferred. If you confirm, the team is then present in Invite and dropped from Teams.
+
+There is also an API endpoint to migrate teams to do this in bulk:
 ```
 curl -u teams:secret -X PUT -H 'Content-Type: application/json' -d '{"id":"35415"}'  "http://localhost:8080/api/v1/external/invite-app/migrate"
 ```
+
+### Post-migration steps
+
+After migration, the team will show in the Invite application, now called a role.
+
+You do need to set the organization GUID for a role by editing it or doing this in the database.
+
+For PDP, nothing needs to change since the voot API will still return the same URL. If you transfer the team URN in an attribute to SP's, you can (at any point after migration) in Manage upgrade the used source from `voot` to `invite` and remove any value filter. The `invite` AA source has knowledge of the SP that is authenticated to and will return only roles that are associated with this SP. Therefore the `invite` AA is a simpler variant to `voot` AA, but otherwise functionally identical.
