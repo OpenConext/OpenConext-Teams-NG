@@ -1,4 +1,11 @@
+
+
 # OpenConext-Teams-NG
+
+## Project is deprecated
+
+The functionality of OpenConext-Teams has been superseded by OpenConext-Invite. New installations should start there. To migrate to OpenConext Invite, see the section at the bottom of this README.
+
 [![Build Status](https://github.com/OpenConext/OpenConext-Teams-NG/actions/workflows/maven.yml/badge.svg)](https://github.com/OpenConext/OpenConext-Teams-NG/actions/workflows/maven.yml/badge.svg)
 [![codecov.io](https://codecov.io/github/OpenConext/OpenConext-Teams-NG/coverage.svg)](https://codecov.io/github/OpenConext/OpenConext-Teams-NG)
 
